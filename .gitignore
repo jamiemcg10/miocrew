@@ -43,3 +43,5 @@ next-env.d.ts
 
 # server
 server/__pycache__/
+*storybook.log
+storybook-static
