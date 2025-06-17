@@ -1,21 +1,57 @@
 'use client'
 
-import { Box, Drawer } from '@mui/material'
+import { AppBar, Box, Drawer, IconButton } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+// import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
 import { ReactNode, useState } from 'react'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 export default function DashboardLayout({
   children
 }: Readonly<{
   children: ReactNode
 }>) {
-  // rename when moved
+  // rename DashboardLayout when moved
+  // use useCallback for onClose function when finalized
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'))
+
   const [open, setOpen] = useState(true)
   return (
     <div>
-      <Drawer open={open}>
-        <Box sx={{ width: 250 }}></Box>
-      </Drawer>
-      {children}
+      <AppBar>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={() => setOpen(!open)}
+          edge="start"
+          sx={[
+            {
+              mr: 2,
+              height: '56px'
+            },
+            open && { display: 'none' }
+          ]}>
+          {/* <MenuIcon /> */}M
+        </IconButton>
+      </AppBar>
+      <div className="flex">
+        <Drawer
+          sx={{
+            width: '250px',
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: 'inherit'
+            }
+          }}
+          variant={matches ? 'permanent' : 'temporary'}
+          anchor="left"
+          open={matches || open}
+          onClose={() => setOpen(false)}>
+          <Box>dfree</Box>
+        </Drawer>
+        {children}
+      </div>
     </div>
   )
 }
