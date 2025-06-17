@@ -5,6 +5,11 @@ import { useTheme } from '@mui/material/styles'
 // import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
 import { ReactNode, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
+import List from '@mui/material/List'
+import Divider from '@mui/material/Divider'
 
 export default function DashboardLayout({
   children
@@ -48,7 +53,23 @@ export default function DashboardLayout({
           anchor="left"
           open={matches || open}
           onClose={() => setOpen(false)}>
-          <Box>dfree</Box>
+          <Box>
+            <List>
+              {['Dashboard', 'Schedule', 'Tasks', 'Planning', 'Expenses'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              <Divider />
+              <ListItem key={'Past trips'} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary="Past trips" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Box>
         </Drawer>
         {children}
       </div>
