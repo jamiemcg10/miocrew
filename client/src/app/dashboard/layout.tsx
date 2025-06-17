@@ -12,7 +12,6 @@ export default function DashboardLayout({
   children: ReactNode
 }>) {
   // rename DashboardLayout when moved
-  // use useCallback for onClose function when finalized
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
