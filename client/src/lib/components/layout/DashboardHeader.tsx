@@ -13,7 +13,7 @@ export default function DashboardHeader() {
           style={{ backgroundColor: bgColor }}>
           J
         </div>
-        <span>Hi, {name}!</span>
+        <span className="font-bold">Hi, {name}!</span>
       </div>
       <span>You have {n} upcoming trips!</span>
     </div>

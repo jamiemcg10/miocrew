@@ -4,18 +4,14 @@ import ListItemText from '@mui/material/ListItemText'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import { Box, Drawer } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface MenuProps {
   open: boolean
   handleClose: () => void
+  matches: boolean
 }
 
-export default function Menu({ open, handleClose }: MenuProps) {
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.up('sm')) // might be able to centralize this in layout
-
+export default function Menu({ open, handleClose, matches }: MenuProps) {
   return (
     <Drawer
       sx={{
@@ -28,7 +24,7 @@ export default function Menu({ open, handleClose }: MenuProps) {
       variant={matches ? 'permanent' : 'temporary'}
       anchor="left"
       open={matches || open}
-      onClose={handleClose}>
+      onClose={() => handleClose()}>
       <Box>
         <List>
           {['Dashboard', 'Schedule', 'Tasks', 'Planning', 'Expenses'].map((text) => (

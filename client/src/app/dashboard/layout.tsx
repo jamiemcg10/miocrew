@@ -1,25 +1,24 @@
 'use client'
 
-import { AppBar, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { ReactNode, useCallback, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import Menu from '@/lib/components/Menu'
+import Menu from '@/lib/components/layout/Menu'
+import TopBar from '@/lib/components/layout/TopBar'
 
 export default function DashboardLayout({
   children
 }: Readonly<{
   children: ReactNode
 }>) {
-  // rename DashboardLayout when moved
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
   const [open, setOpen] = useState(true)
 
-  const cachedCloseMenu = useCallback(
-    function () {
-      setOpen(false)
+  const cachedToggleMenu = useCallback(
+    function (open?: boolean) {
+      setOpen(open || false)
     },
     [setOpen]
   )
@@ -27,22 +26,9 @@ export default function DashboardLayout({
   return (
     <div>
       <div className="flex">
-        <Menu open={open} handleClose={cachedCloseMenu} />
+        <Menu open={open} handleClose={cachedToggleMenu} matches={matches} />
         <div className="w-full">
-          <AppBar sx={[{ position: 'relative', height: '56px' }, matches && { display: 'none' }]}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={() => setOpen(!open)}
-              sx={[
-                {
-                  mr: 2,
-                  width: 'max-content'
-                }
-              ]}>
-              M
-            </IconButton>
-          </AppBar>
+          <TopBar toggleMenu={cachedToggleMenu} matches={matches} />
           {children}
         </div>
       </div>
