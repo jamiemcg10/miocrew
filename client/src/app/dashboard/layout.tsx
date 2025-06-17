@@ -24,22 +24,6 @@ export default function DashboardLayout({
   const [open, setOpen] = useState(true)
   return (
     <div>
-      <AppBar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={() => setOpen(!open)}
-          edge="start"
-          sx={[
-            {
-              mr: 2,
-              height: '56px'
-            },
-            open && { display: 'none' }
-          ]}>
-          {/* <MenuIcon /> */}M
-        </IconButton>
-      </AppBar>
       <div className="flex">
         <Drawer
           sx={{
@@ -55,7 +39,7 @@ export default function DashboardLayout({
           onClose={() => setOpen(false)}>
           <Box>
             <List>
-              {['Dashboard', 'Schedule', 'Tasks', 'Planning', 'Expenses'].map((text, index) => (
+              {['Dashboard', 'Schedule', 'Tasks', 'Planning', 'Expenses'].map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton>
                     <ListItemText primary={text} />
@@ -71,7 +55,25 @@ export default function DashboardLayout({
             </List>
           </Box>
         </Drawer>
-        {children}
+        <div className="w-full">
+          <AppBar sx={[{ position: 'relative' }, matches && { display: 'none' }]}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setOpen(!open)}
+              edge="start"
+              sx={[
+                {
+                  mr: 2,
+                  height: '56px'
+                },
+                open && { display: 'none' }
+              ]}>
+              {/* <MenuIcon /> */}M
+            </IconButton>
+          </AppBar>
+          {children}
+        </div>
       </div>
     </div>
   )
