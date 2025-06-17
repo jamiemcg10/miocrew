@@ -1,14 +1,10 @@
 'use client'
 
-import { AppBar, Box, Drawer, IconButton } from '@mui/material'
+import { AppBar, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useCallback, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
-import List from '@mui/material/List'
-import Divider from '@mui/material/Divider'
+import Menu from '@/lib/components/Menu'
 
 export default function DashboardLayout({
   children
@@ -21,50 +17,18 @@ export default function DashboardLayout({
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
   const [open, setOpen] = useState(true)
+
+  const cachedCloseMenu = useCallback(
+    function () {
+      setOpen(false)
+    },
+    [setOpen]
+  )
+
   return (
     <div>
       <div className="flex">
-        <Drawer
-          sx={{
-            width: '250px',
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: 'inherit'
-            }
-          }}
-          variant={matches ? 'permanent' : 'temporary'}
-          anchor="left"
-          open={matches || open}
-          onClose={() => setOpen(false)}>
-          <Box>
-            <List>
-              {['Dashboard', 'Schedule', 'Tasks', 'Planning', 'Expenses'].map((text) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-              <Divider />
-              <ListItem key={'Messages'} disablePadding>
-                <ListItemButton>
-                  <ListItemText primary="Messages" />
-                </ListItemButton>
-              </ListItem>
-              <Divider />
-              <ListItem key={'Past trips'} disablePadding>
-                <ListItemButton>
-                  <ListItemText primary="Past trips" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem key={'Settings'} disablePadding>
-                <ListItemButton>
-                  <ListItemText primary="Settings" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Box>
-        </Drawer>
+        <Menu open={open} handleClose={cachedCloseMenu} />
         <div className="w-full">
           <AppBar sx={[{ position: 'relative', height: '56px' }, matches && { display: 'none' }]}>
             <IconButton
@@ -75,8 +39,7 @@ export default function DashboardLayout({
                 {
                   mr: 2,
                   width: 'max-content'
-                },
-                open && { display: 'none' }
+                }
               ]}>
               M
             </IconButton>
