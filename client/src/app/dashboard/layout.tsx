@@ -2,7 +2,6 @@
 
 import { AppBar, Box, Drawer, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-// import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
 import { ReactNode, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import ListItem from '@mui/material/ListItem'
@@ -47,29 +46,39 @@ export default function DashboardLayout({
                 </ListItem>
               ))}
               <Divider />
+              <ListItem key={'Messages'} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary="Messages" />
+                </ListItemButton>
+              </ListItem>
+              <Divider />
               <ListItem key={'Past trips'} disablePadding>
                 <ListItemButton>
                   <ListItemText primary="Past trips" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem key={'Settings'} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary="Settings" />
                 </ListItemButton>
               </ListItem>
             </List>
           </Box>
         </Drawer>
         <div className="w-full">
-          <AppBar sx={[{ position: 'relative' }, matches && { display: 'none' }]}>
+          <AppBar sx={[{ position: 'relative', height: '56px' }, matches && { display: 'none' }]}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
               onClick={() => setOpen(!open)}
-              edge="start"
               sx={[
                 {
                   mr: 2,
-                  height: '56px'
+                  width: 'max-content'
                 },
                 open && { display: 'none' }
               ]}>
-              {/* <MenuIcon /> */}M
+              M
             </IconButton>
           </AppBar>
           {children}
