@@ -14,7 +14,7 @@ export default function DashboardLayout({
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   const cachedToggleMenu = useCallback(
     function (open?: boolean) {
