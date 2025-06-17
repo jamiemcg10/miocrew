@@ -14,8 +14,8 @@ export default function Home() {
       .catch(console.error)
   }, [])
   return (
-    <div className="p-4 text-center flex flex-col py-12 not-sm:py-64 space-y-8 items-center">
-      <div>[Goose]</div>
+    <div className="p-4 text-center flex flex-col py-24 not-sm:py-36 space-y-8 items-center">
+      <div className="flex items-center justify-center h-32 w-32 border border-white">[Goose]</div>
       <div>
         <span className="text-9xl font-bold text-blue-400">Mio</span>
         <span
