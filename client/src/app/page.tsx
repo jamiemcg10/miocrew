@@ -2,6 +2,7 @@
 
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import Button from '@mui/material/Button'
 
 export default function Home() {
   const [message, setMessage] = useState('')
@@ -13,9 +14,22 @@ export default function Home() {
       .catch(console.error)
   }, [])
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">MioCrew</h1>
-      <p>Backend says: {message}</p>
+    <div className="p-4 text-center flex flex-col py-12 not-sm:py-64 space-y-8 items-center">
+      <div>[Goose]</div>
+      <div>
+        <span className="text-9xl font-bold text-blue-400">Mio</span>
+        <span
+          className="text-gray-400 text-4xl font-bold
+      ">
+          Crew
+        </span>
+      </div>
+      <div>Get your plans out of the group chat</div>
+      <div className="w-full sm:w-1/2">
+        <Button variant="contained" href="/dashboard" sx={{ width: '100%' }}>
+          Get started!
+        </Button>
+      </div>
     </div>
   )
 }
