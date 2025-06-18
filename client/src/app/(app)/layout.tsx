@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from '@mui/material/styles'
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from '@/lib/components/layout/Menu'
 import TopBar from '@/lib/components/layout/TopBar'
@@ -14,6 +14,7 @@ export default function DashboardLayout({
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
+  const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
 
   const cachedToggleMenu = useCallback(
@@ -22,6 +23,15 @@ export default function DashboardLayout({
     },
     [setOpen]
   )
+
+  useEffect(() => {
+    // needs to be last
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <div>
