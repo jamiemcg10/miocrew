@@ -43,7 +43,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
           </ListItem>
           <Divider />
           <ListItem key={'Past trips'} disablePadding>
-            <ListItemButton>
+            <ListItemButton href="/past">
               <ListItemText primary="Past trips" />
             </ListItemButton>
           </ListItem>

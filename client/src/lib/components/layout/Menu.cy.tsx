@@ -50,6 +50,11 @@ describe('<Menu />', () => {
     cy.contains('Past trips')
   })
 
+  it('"Past trips" option has correct href', () => {
+    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
+    cy.contains('Past trips').closest('a').should('have.attr', 'href', '/past')
+  })
+
   it('Has "Settings" option', () => {
     cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
     cy.contains('Settings')
