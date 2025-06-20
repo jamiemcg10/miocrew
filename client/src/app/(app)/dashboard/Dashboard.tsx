@@ -1,5 +1,7 @@
 'use client'
 
+import TripTable from '@/lib/components/TripTable'
+import { Trip } from '@/lib/types'
 import { Button } from '@mui/material'
 
 // dummy data
@@ -13,7 +15,7 @@ const trips = [
       { id: '3', name: 'Jamie Lynn Curtis', color: 'turquoise' }
     ],
     startDate: new Date('August 5, 2026'),
-    endDate: new Date('August 12, 2026') // optional
+    endDate: new Date('August 12, 2026')
   },
   {
     id: '2',
@@ -25,7 +27,7 @@ const trips = [
       { id: '6', name: 'Astro Streep', color: 'navy' }
     ],
     startDate: new Date('December 24, 2026'),
-    endDate: new Date('January 2, 2027') // optional
+    endDate: new Date('January 2, 2027')
   },
   {
     id: '3',
@@ -41,11 +43,7 @@ const trips = [
     ],
     startDate: new Date('October 4, 2025')
   }
-] // need trip type
-
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  dateStyle: 'medium'
-})
+] as Trip[]
 
 export default function Dashboard() {
   return (
@@ -58,50 +56,7 @@ export default function Dashboard() {
         Create trip
       </Button>
       <div className="text-xl font-bold mb-4">Upcoming trips</div>
-      <div>
-        {/* <div className="font-bold mb-2">
-          <span className="px-2 inline-flex w-2/5">Trip name</span>
-          <span className="px-2 inline-flex w-1/4">Date</span>
-          <span className="px-2 inline-flex w-1/5">Attendees</span>
-        </div> */}
-        {trips
-          .sort((a, b) => (a.startDate > b.startDate ? 1 : -1))
-          .map((trip) => {
-            return (
-              <div
-                key={trip.id}
-                className="h-16 sm:h-12 mb-4 bg-white/20 rounded-lg items-center flex justify-between">
-                <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
-                  <span className="px-2 inline-flex text-lg font-semibold">{trip.name}</span>
-                  <span className="text-right px-2 inline-flex font-semibold">
-                    {dateFormatter.format(trip.startDate)}{' '}
-                    {trip.endDate && ' - ' + dateFormatter.format(trip.endDate)}
-                  </span>
-                </div>
-                <span className="px-2 w-1/4 sm:w-1/5 inline-flex items-center shrink-0">
-                  {trip.attendees.slice(0, 5).map((attendee, i) => {
-                    return (
-                      <div
-                        className="relative inline-flex border-white border-2 rounded-full w-7 h-7 font-bold justify-center items-center sm:not-last:-mr-3 not-last:-mr-5"
-                        style={{ backgroundColor: attendee.color, zIndex: 5 - i }}
-                        key={attendee.id}>
-                        {attendee.name.charAt(0)}
-                      </div>
-                    )
-                  })}
-                  {trip.attendees.length > 5 ? (
-                    <>
-                      <span className="ml-6 sm:ml-5 text-sm text-nowrap">{`+ ${
-                        trip.attendees.length - 5
-                      }`}</span>
-                      <span className="hidden sm:block ml-1 text-sm">more</span>
-                    </>
-                  ) : null}
-                </span>
-              </div>
-            )
-          })}
-      </div>
+      <TripTable trips={trips} />
       <div className="text-xl font-bold mb-4">Action items</div>
       <div>You have no action items right now</div>
     </div>
