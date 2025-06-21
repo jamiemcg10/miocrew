@@ -20,26 +20,6 @@ describe('<Menu />', () => {
     cy.contains('Dashboard').closest('a').should('have.attr', 'href', '/dashboard')
   })
 
-  it('Has "Schedule" option', () => {
-    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
-    cy.contains('Schedule')
-  })
-
-  it('Has "Tasks" option', () => {
-    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
-    cy.contains('Tasks')
-  })
-
-  it('Has "Planning" option', () => {
-    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
-    cy.contains('Planning')
-  })
-
-  it('Has "Expenses" option', () => {
-    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
-    cy.contains('Expenses')
-  })
-
   it('Has "Messages" option', () => {
     cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
     cy.contains('Messages')

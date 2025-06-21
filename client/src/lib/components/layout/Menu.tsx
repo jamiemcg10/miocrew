@@ -28,13 +28,11 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
       onClose={() => handleClose()}>
       <Box>
         <List>
-          {['Dashboard', 'Schedule', 'Tasks', 'Planning', 'Expenses'].map((text) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton href="/dashboard">
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <ListItem key={'Dashboard'} disablePadding>
+            <ListItemButton href="/dashboard">
+              <ListItemText primary={'Dashboard'} />
+            </ListItemButton>
+          </ListItem>
           <Divider />
           <ListItem key={'Messages'} disablePadding>
             <ListItemButton>
@@ -47,6 +45,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
               <ListItemText primary="Past trips" />
             </ListItemButton>
           </ListItem>
+          <Divider />
           <ListItem key={'Settings'} disablePadding>
             <ListItemButton>
               <ListItemText primary="Settings" />
