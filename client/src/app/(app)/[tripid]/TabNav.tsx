@@ -3,7 +3,6 @@ import Tabs from '@mui/material/Tabs'
 import { Dispatch, SetStateAction, SyntheticEvent } from 'react'
 
 interface TabNavProps {
-  // consider using Redux
   page: number
   setPage: Dispatch<SetStateAction<number>>
 }
@@ -11,8 +10,10 @@ interface TabNavProps {
 const tabSx = {
   transition: '250ms',
   fontWeight: '600',
-  '&:hover': {
-    color: '#b8b83c'
+  '@media (min-width:640px)': {
+    '&:hover': {
+      color: '#b8b83c'
+    }
   },
   '&:active': {
     color: 'inherit'
