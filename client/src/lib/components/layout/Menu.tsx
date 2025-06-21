@@ -40,6 +40,12 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
             </ListItemButton>
           </ListItem>
           <Divider />
+          <ListItem key={'Craete trip'} disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Create trip" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
           <ListItem key={'Past trips'} disablePadding>
             <ListItemButton href="/past">
               <ListItemText primary="Past trips" />

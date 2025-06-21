@@ -25,6 +25,11 @@ describe('<Menu />', () => {
     cy.contains('Messages')
   })
 
+  it('Has "Create trip" option', () => {
+    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
+    cy.contains('Create trip')
+  })
+
   it('Has "Past trips" option', () => {
     cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
     cy.contains('Past trips')
