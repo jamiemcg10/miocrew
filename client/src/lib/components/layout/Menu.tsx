@@ -57,6 +57,12 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
               <ListItemText primary="Settings" />
             </ListItemButton>
           </ListItem>
+          <Divider />
+          <ListItem key={'Log out'} disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Log out" />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Box>
     </Drawer>

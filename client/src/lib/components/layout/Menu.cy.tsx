@@ -44,4 +44,9 @@ describe('<Menu />', () => {
     cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
     cy.contains('Settings')
   })
+
+  it('Has "Log out" option', () => {
+    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
+    cy.contains('Log out')
+  })
 })
