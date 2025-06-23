@@ -34,8 +34,8 @@ export default function DashboardLayout({
   }
 
   return (
-    <div>
-      <div className="flex">
+    <div className="absolute h-full w-full">
+      <div className="flex h-full">
         <Menu open={open} handleClose={cachedToggleMenu} matches={matches} />
         <div className="w-full">
           <TopBar toggleMenu={cachedToggleMenu} matches={matches} />
