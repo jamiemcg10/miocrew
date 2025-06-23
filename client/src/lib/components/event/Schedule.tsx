@@ -1,18 +1,6 @@
 import { trips } from '@/lib/utils/dummyData'
 import { Button } from '@mui/material'
 
-// dummy data
-const tripEvents = [
-  {
-    id: 'wm1',
-    name: 'Check into AirBnB and relax',
-    description: 'Arrive, hang out at AirBnB until dinner',
-    location: '132 Sonoma Crest Road',
-    startTime: new Date('August 5, 2026 2:00 PM'),
-    endTime: new Date('August 5, 2026 6:00 PM')
-  }
-]
-
 export default function Schedule() {
   const tripStart = trips[0].startDate
   const tripEnd = trips[0]?.endDate
