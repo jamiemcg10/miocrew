@@ -1,7 +1,7 @@
 'use client'
 
 import TripTable from '@/lib/components/TripTable'
-import { trips } from '@/lib/utils/dummyData/trips'
+import { trips } from '@/lib/utils/dummyData'
 import { Button } from '@mui/material'
 
 export default function Dashboard() {
