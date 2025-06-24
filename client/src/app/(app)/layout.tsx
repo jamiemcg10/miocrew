@@ -37,7 +37,7 @@ export default function DashboardLayout({
     <div className="absolute h-full w-full">
       <div className="flex h-full">
         <Menu open={open} handleClose={cachedToggleMenu} matches={matches} />
-        <div className="w-full">
+        <div className="w-full flex flex-col">
           <TopBar toggleMenu={cachedToggleMenu} matches={matches} />
           {children}
         </div>

@@ -43,7 +43,7 @@ export default function Schedule() {
             {days.map((day, i) => {
               return (
                 <div
-                  className="bg-[#29293A] w-full sm:w-[40%] md:w-[30%] shrink-0 h-full xbg-[#1a1a1a] rounded-sm"
+                  className="bg-[#29293A] w-[92%] sm:w-[40%] md:w-[30%] shrink-0 h-full xbg-[#1a1a1a] rounded-sm"
                   key={i}
                   ref={day.ref}
                   style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
