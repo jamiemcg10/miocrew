@@ -13,7 +13,7 @@ div {
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #2c2c2c;
+    background: #999999;
     border-radius: 10px;
   }
   *::-webkit-scrollbar-track {
@@ -21,5 +21,11 @@ div {
   }
   *::-webkit-scrollbar {
     max-height: 8px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  *::-webkit-scrollbar-thumb {
+    border-radius: 10px;
   }
 }

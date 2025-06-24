@@ -33,14 +33,13 @@ export default function Schedule() {
         <div className="flex w-full justify-end my-4 pr-4">
           <Button
             variant="contained"
-            color="secondary"
             startIcon={<AddRoundedIcon />}
             sx={{ width: 'initial', fontWeight: 600 }}>
             Add activity
           </Button>
         </div>
         <div className="grow relative mb-1">
-          <div className="absolute w-8 text-4xl content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-[#00001a]"></div>
+          <div className="absolute w-8 text-4xl content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-white dark:to-[#00001a]"></div>
           <div
             className="flex grow justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
             style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
@@ -53,7 +52,7 @@ export default function Schedule() {
                   <div className="text-center text-3xl">{day.date.format('dddd')}</div>
                   <div className="text-center text-2xl mb-4">{day.date.format('MMMM D, YYYY')}</div>
                   <div
-                    className="bg-[#29293A] xbg-[#1a1a1a] rounded-sm grow"
+                    className="bg-[#9b9bc7] dark:bg-[#29293A] rounded-sm grow"
                     ref={day.ref}
                     style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
                     <div className="bg-[teal] rounded-sm">Event</div>
@@ -62,7 +61,7 @@ export default function Schedule() {
               )
             })}
           </div>
-          <div className="absolute w-8 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-[#00001a]"></div>
+          <div className="absolute w-8 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-white dark:to-[#00001a]"></div>
         </div>
       </div>
     </>
