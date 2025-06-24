@@ -10,6 +10,12 @@ interface TabNavProps {
 const tabSx = {
   transition: '250ms',
   fontWeight: '600',
+  fontSize: '12px',
+  minWidth: '80px',
+  '@media (min-width:450px)': {
+    minWidth: 'initial',
+    fontSize: 'initial'
+  },
   '@media (min-width:640px)': {
     '&:hover': {
       color: '#b8b83c'
@@ -31,6 +37,7 @@ export default function TabNav({ page, setPage }: TabNavProps) {
       <Tab label="Tasks" sx={tabSx} />
       <Tab label="Planning" sx={tabSx} />
       <Tab label="Expenses" sx={tabSx} />
+      <Tab label="Crew" sx={tabSx} />
     </Tabs>
   )
 }
