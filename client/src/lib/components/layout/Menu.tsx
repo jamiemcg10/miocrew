@@ -5,6 +5,13 @@ import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
+import WorkHistoryRoundedIcon from '@mui/icons-material/WorkHistoryRounded'
+import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded'
+import TableChartRoundedIcon from '@mui/icons-material/TableChartRounded'
 
 interface MenuProps {
   open: boolean
@@ -30,36 +37,54 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
         <List>
           <ListItem key={'Dashboard'} disablePadding>
             <ListItemButton href="/dashboard">
+              <ListItemIcon>
+                <TableChartRoundedIcon />
+              </ListItemIcon>
               <ListItemText primary={'Dashboard'} />
             </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem key={'Messages'} disablePadding>
             <ListItemButton>
+              <ListItemIcon>
+                <EmailRoundedIcon />
+              </ListItemIcon>
               <ListItemText primary="Messages" />
             </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem key={'Craete trip'} disablePadding>
             <ListItemButton>
+              <ListItemIcon>
+                <EditCalendarRoundedIcon />
+              </ListItemIcon>
               <ListItemText primary="Create trip" />
             </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem key={'Past trips'} disablePadding>
             <ListItemButton href="/past">
+              <ListItemIcon>
+                <WorkHistoryRoundedIcon />
+              </ListItemIcon>
               <ListItemText primary="Past trips" />
             </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem key={'Settings'} disablePadding>
             <ListItemButton>
+              <ListItemIcon>
+                <SettingsRoundedIcon />
+              </ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem key={'Log out'} disablePadding>
             <ListItemButton>
+              <ListItemIcon>
+                <LogoutRoundedIcon />
+              </ListItemIcon>
               <ListItemText primary="Log out" />
             </ListItemButton>
           </ListItem>

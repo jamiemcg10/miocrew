@@ -4,6 +4,7 @@ import { trips } from '@/lib/utils/dummyData'
 import { Button } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { RefObject, useRef } from 'react'
+import AddRoundedIcon from '@mui/icons-material/AddRounded'
 
 interface Day {
   date: Dayjs
@@ -30,7 +31,11 @@ export default function Schedule() {
     <>
       <div className="flex flex-col grow">
         <div className="flex w-full justify-end my-4 pr-4">
-          <Button variant="contained" color="secondary" sx={{ width: 'initial' }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<AddRoundedIcon />}
+            sx={{ width: 'initial', fontWeight: 600 }}>
             Add activity
           </Button>
         </div>
