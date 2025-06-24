@@ -3,16 +3,12 @@ import './Schedule.css'
 import { trips } from '@/lib/utils/dummyData'
 import { Button } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
-import { RefObject, useRef } from 'react'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 
 interface Day {
   date: Dayjs
-  ref: RefObject<HTMLDivElement | null>
 }
 export default function Schedule() {
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
-
   const tripStart = dayjs(trips[0].startDate)
   const tripEnd = dayjs(trips[0]?.endDate || tripStart)
 
@@ -22,7 +18,7 @@ export default function Schedule() {
   // for # days, add startDay + n to array {date:Date, events:?}[]
   const days: Day[] = []
   for (let i = 0; i <= tripLength; i++) {
-    days.push({ date: tripStart.add(i, 'day'), ref: useRef(null) })
+    days.push({ date: tripStart.add(i, 'day') })
   }
 
   console.log({ days })
@@ -42,8 +38,7 @@ export default function Schedule() {
           <div className="absolute w-8 text-4xl content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background) dark:to-[#00001a]"></div>
           <div
             className="flex grow justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
-            style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
-            ref={scrollContainerRef}>
+            style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}>
             {days.map((day, i) => {
               return (
                 <div
@@ -53,7 +48,6 @@ export default function Schedule() {
                   <div className="text-center text-2xl mb-4">{day.date.format('MMMM D, YYYY')}</div>
                   <div
                     className="bg-[#9b9bc7] dark:bg-[#29293A] rounded-sm grow"
-                    ref={day.ref}
                     style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
                     <div className="bg-[teal] rounded-sm">Event</div>
                   </div>
