@@ -43,11 +43,16 @@ export default function Schedule() {
             {days.map((day, i) => {
               return (
                 <div
-                  className="bg-[#29293A] w-[92%] sm:w-[40%] md:w-[30%] shrink-0 h-full xbg-[#1a1a1a] rounded-sm"
                   key={i}
-                  ref={day.ref}
-                  style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
-                  <div className="bg-[teal] rounded-sm">Event</div>
+                  className="w-[92%] sm:w-[40%] md:w-[30%] shrink-0 h-full flex flex-col">
+                  <div className="text-center text-3xl">{day.date.format('dddd')}</div>
+                  <div className="text-center text-2xl mb-4">{day.date.format('MMMM D, YYYY')}</div>
+                  <div
+                    className="bg-[#29293A] xbg-[#1a1a1a] rounded-sm grow"
+                    ref={day.ref}
+                    style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
+                    <div className="bg-[teal] rounded-sm">Event</div>
+                  </div>
                 </div>
               )
             })}
