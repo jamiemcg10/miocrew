@@ -17,7 +17,7 @@ export default function TripTable({ trips }: TripTableProps) {
           return (
             <div
               key={trip.id}
-              className="h-16 sm:h-12 mb-4 bg-white/20 rounded-lg items-center flex justify-between">
+              className="h-16 sm:h-12 mb-4 bg-[#cccccc] dark:bg-white/20 rounded-lg items-center flex justify-between">
               <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
                 <span className="px-2 inline-flex text-lg font-semibold">{trip.name}</span>
                 <span className="text-right px-2 inline-flex font-semibold">

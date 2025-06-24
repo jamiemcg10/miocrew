@@ -6,7 +6,7 @@ export default function DashboardHeader() {
   //
 
   return (
-    <div className="flex justify-around py-4 items-center bg-[#ffffff2b]">
+    <div className="flex justify-around py-4 items-center bg-[#cee2f5] dark:bg-white/20">
       <div className="flex items-center space-x-2 sm:space-x-4">
         <div
           className="flex items-center justify-center rounded-full w-12 h-12 border-4 border-white text-2xl"

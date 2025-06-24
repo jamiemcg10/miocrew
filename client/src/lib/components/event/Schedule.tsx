@@ -39,7 +39,7 @@ export default function Schedule() {
           </Button>
         </div>
         <div className="grow relative mb-1">
-          <div className="absolute w-8 text-4xl content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-white dark:to-[#00001a]"></div>
+          <div className="absolute w-8 text-4xl content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background) dark:to-[#00001a]"></div>
           <div
             className="flex grow justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
             style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
@@ -61,7 +61,7 @@ export default function Schedule() {
               )
             })}
           </div>
-          <div className="absolute w-8 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-white dark:to-[#00001a]"></div>
+          <div className="absolute w-8 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-(--background) dark:to-[#00001a]"></div>
         </div>
       </div>
     </>
