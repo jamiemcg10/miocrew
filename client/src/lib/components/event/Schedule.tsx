@@ -1,8 +1,17 @@
+import './Schedule.css'
+
 import { trips } from '@/lib/utils/dummyData'
 import { Button } from '@mui/material'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
+import { RefObject, useRef } from 'react'
 
+interface Day {
+  date: Dayjs
+  ref: RefObject<HTMLDivElement | null>
+}
 export default function Schedule() {
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+
   const tripStart = dayjs(trips[0].startDate)
   const tripEnd = dayjs(trips[0]?.endDate || tripStart)
 
@@ -10,9 +19,9 @@ export default function Schedule() {
   const tripLength = tripEnd.diff(tripStart, 'day') // (tripEnd - tripStart) / MS_PER_DAY
 
   // for # days, add startDay + n to array {date:Date, events:?}[]
-  const days = []
+  const days: Day[] = []
   for (let i = 0; i <= tripLength; i++) {
-    days.push(tripStart.add(i, 'day'))
+    days.push({ date: tripStart.add(i, 'day'), ref: useRef(null) })
   }
 
   console.log({ days })
@@ -25,19 +34,25 @@ export default function Schedule() {
             Add activity
           </Button>
         </div>
-        <div
-          className="flex grow justify-between px-6 space-x-6 overflow-x-scroll"
-          style={{ scrollSnapType: 'x mandatory' }}>
-          {days.map((_day, i) => {
-            return (
-              <div
-                className="bg-[#29293A] w-full sm:w-[40%] md:w-[30%] shrink-0 h-full xbg-[#1a1a1a] rounded-sm"
-                key={i}
-                style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
-                <div className="bg-[teal] rounded-sm">Event</div>
-              </div>
-            )
-          })}
+        <div className="grow relative mb-1">
+          <div className="absolute w-8 text-4xl content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-[#00001a]"></div>
+          <div
+            className="flex grow justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
+            style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
+            ref={scrollContainerRef}>
+            {days.map((day, i) => {
+              return (
+                <div
+                  className="bg-[#29293A] w-full sm:w-[40%] md:w-[30%] shrink-0 h-full xbg-[#1a1a1a] rounded-sm"
+                  key={i}
+                  ref={day.ref}
+                  style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
+                  <div className="bg-[teal] rounded-sm">Event</div>
+                </div>
+              )
+            })}
+          </div>
+          <div className="absolute w-8 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-[#00001a]"></div>
         </div>
       </div>
     </>
