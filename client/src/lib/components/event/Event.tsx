@@ -1,19 +1,28 @@
 import { TripEvent } from '@/lib/types/tripEvent'
-
-const timeFormatter = new Intl.DateTimeFormat('en-US', {
-  timeStyle: 'short'
-})
+import dayjs from 'dayjs'
 
 interface EventProps {
   event: TripEvent
 }
 
 export default function Event({ event }: EventProps) {
+  const startTime = dayjs(event.startTime).format('h:mm A')
+  const endTime = dayjs(event.endTime).format('h:mm A')
+
+  const height = event.endTime ? dayjs(event.endTime).diff(dayjs(event.startTime), 'hour') : 0
+
+  const some = height * 60 + 80
+  console.log({ height, some })
   return (
-    <div className="rounded-sm" style={{ backgroundColor: event.color }}>
-      <div>
-        {timeFormatter.format(event.startTime)} - {event.name}
+    <div
+      className="rounded-xs p-2 min-h-20 max-h-72"
+      key={event.id}
+      style={{ backgroundColor: event.color, height: `${some}px` }}>
+      <div className="font-bold text-sm">
+        {startTime} {event.endTime ? `- ${endTime}` : null}
       </div>
+      <div className="font-bold">{event.name}</div>
+      <div className="text-sm line-clamp-1">{event.description}</div>
     </div>
   )
 }

@@ -1,31 +1,39 @@
 import './Schedule.css'
-
 import { trips } from '@/lib/utils/dummyData'
+import { tripEvents } from '@/lib/utils/dummyData'
 import { Button } from '@mui/material'
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
+import { TripEvent } from '@/lib/types/tripEvent'
+import ScheduleDay from './ScheduleDay'
 
-interface Day {
-  date: Dayjs
-}
 export default function Schedule() {
   const tripStart = dayjs(trips[0].startDate)
   const tripEnd = dayjs(trips[0]?.endDate || tripStart)
 
   // calculate number of days
-  const tripLength = tripEnd.diff(tripStart, 'day') // (tripEnd - tripStart) / MS_PER_DAY
+  const tripLength = tripEnd.diff(tripStart, 'day')
 
   // for # days, add startDay + n to array {date:Date, events:?}[]
-  const days: Day[] = []
+  const days: Record<string, { date: dayjs.Dayjs; events: TripEvent[] }> = {}
+
   for (let i = 0; i <= tripLength; i++) {
-    days.push({ date: tripStart.add(i, 'day') })
+    days[tripStart.add(i, 'day').format('MMMM D, YYYY')] = {
+      date: tripStart.add(i, 'day'),
+      events: []
+    }
   }
+
+  tripEvents.forEach((event) => {
+    const eventDate = dayjs(event.startTime).startOf('date').format('MMMM D, YYYY')
+    days[eventDate].events.push(event)
+  })
 
   console.log({ days })
 
   return (
     <>
-      <div className="flex flex-col grow">
+      <div className="flex flex-col grow overflow-y-hidden">
         <div className="flex w-full justify-end my-4 pr-4">
           <Button
             variant="contained"
@@ -34,25 +42,13 @@ export default function Schedule() {
             Add activity
           </Button>
         </div>
-        <div className="grow relative mb-1">
-          <div className="absolute w-8 text-4xl content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background) dark:to-[#00001a]"></div>
+        <div className="grow relative mb-1 overflow-y-hidden">
+          <div className="absolute w-8 z-1 content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background) dark:to-[#00001a]"></div>
           <div
-            className="flex grow justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
+            className="flex justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
             style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}>
-            {days.map((day, i) => {
-              return (
-                <div
-                  key={i}
-                  className="w-[92%] sm:w-[40%] md:w-[30%] shrink-0 h-full flex flex-col">
-                  <div className="text-center text-3xl">{day.date.format('dddd')}</div>
-                  <div className="text-center text-2xl mb-4">{day.date.format('MMMM D, YYYY')}</div>
-                  <div
-                    className="bg-[#9b9bc7] dark:bg-[#29293A] rounded-sm grow"
-                    style={{ scrollSnapAlign: 'start', scrollMargin: i ? '64px' : '32px' }}>
-                    <div className="bg-[teal] rounded-sm">Event</div>
-                  </div>
-                </div>
-              )
+            {Object.values(days).map((day, i) => {
+              return <ScheduleDay day={day} index={i} key={i} />
             })}
           </div>
           <div className="absolute w-8 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-(--background) dark:to-[#00001a]"></div>

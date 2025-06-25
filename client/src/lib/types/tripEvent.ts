@@ -4,6 +4,6 @@ export interface TripEvent {
   description?: string
   location: string
   startTime: Date
-  endTime: Date
+  endTime?: Date
   color: string
 }

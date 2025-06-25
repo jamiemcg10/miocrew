@@ -1,11 +1,13 @@
+import { TripEvent } from '@/lib/types/tripEvent'
+
 export const tripEvents = [
   {
     id: 'wm1',
     name: 'Check into AirBnB and relax',
-    description: 'Arrive, hang out at AirBnB until dinner',
+    description:
+      'Arrive, hang out at AirBnB until dinner. Early arrivers can start scoping out what we need',
     location: '132 Sonoma Crest Road Ext',
     startTime: new Date('August 5, 2026 2:00 PM'),
-    endTime: new Date('August 5, 2026 6:00 PM'),
     color: 'orangered'
   },
   {
@@ -31,7 +33,7 @@ export const tripEvents = [
     location: '414 Boston Ave.',
     startTime: new Date('August 7, 2026 12:00 PM'),
     endTime: new Date('August 7, 2026 1:30 PM'),
-    color: 'aliceblue'
+    color: 'goldenrod'
   },
   {
     id: 'wm5',
@@ -40,5 +42,21 @@ export const tripEvents = [
     startTime: new Date('August 7, 2026 10:00 PM'),
     endTime: new Date('August 8, 2026 3:00 AM'),
     color: 'navy'
+  },
+  {
+    id: 'wm6',
+    name: 'Check out of AirBnB',
+    location: '132 Sonoma Crest Road Ext',
+    startTime: new Date('August 12, 2026 11:00 AM'),
+    color: 'limegreen'
+  },
+  {
+    id: 'wm7',
+    name: 'Winery hopping down Main Street',
+    location: '416 Boston Ave.',
+    description: 'Go see the best of what Napa has to offer. Eat dinner somewhere in here.',
+    startTime: new Date('August 7, 2026 2:00 PM'),
+    endTime: new Date('August 7, 2026 7:30 PM'),
+    color: 'lime'
   }
-]
+] as TripEvent[]
