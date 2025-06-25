@@ -22,7 +22,9 @@ export default function Event({ event }: EventProps) {
         {startTime} {event.endTime ? `- ${endTime}` : null}
       </div>
       <div className="font-bold">{event.name}</div>
-      <div className="text-sm line-clamp-1">{event.description}</div>
+      <div className="text-sm line-clamp-1" title={event.description}>
+        {event.description}
+      </div>
     </div>
   )
 }
