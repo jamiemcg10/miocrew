@@ -11,13 +11,12 @@ export default function Event({ event }: EventProps) {
 
   const height = event.endTime ? dayjs(event.endTime).diff(dayjs(event.startTime), 'hour') : 0
 
-  const some = height * 60 + 80
-  console.log({ height, some })
+  const eventHeight = height * 60 + 80
   return (
     <div
       className="rounded-xs p-2 min-h-20 max-h-72"
       key={event.id}
-      style={{ backgroundColor: event.color, height: `${some}px` }}>
+      style={{ backgroundColor: event.color, height: `${eventHeight}px` }}>
       <div className="font-bold text-sm">
         {startTime} {event.endTime ? `- ${endTime}` : null}
       </div>
