@@ -11,7 +11,7 @@ interface CrewMemberProps {
 export default function CrewMember({ member, setAnchorEl }: CrewMemberProps) {
   return (
     <div className="flex justify-between">
-      <div className="basis-1/3 flex items-center space-x-4">
+      <div className="basis-7/12 sm:basis-1/3 flex items-center space-x-2 sm:space-x-4">
         <div
           className="h-10 w-10 rounded-full border-4 border-black dark:border-white font-bold text-center content-center"
           style={{ backgroundColor: member.color }}>
@@ -22,7 +22,7 @@ export default function CrewMember({ member, setAnchorEl }: CrewMemberProps) {
           {member.firstName} {member.lastName}
         </div>
       </div>
-      <div className="basis-1/4 flex items-center">{member.type}</div>
+      <div className="basis-1/5 sm:basis-1/4 flex items-center">{member.type}</div>
       <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
         <MoreHorizIcon />
       </IconButton>
