@@ -1,7 +1,11 @@
 export default function DashboardHeader() {
   // stub data
-  const name = 'Jamie' // from user
-  const bgColor = 'orangered' // from user
+  const user = {
+    firstName: 'Jamie', // from user
+    lastName: 'Smart',
+    color: 'orangered' // from user
+  }
+
   const n = 4
   //
 
@@ -10,10 +14,11 @@ export default function DashboardHeader() {
       <div className="flex items-center space-x-2 sm:space-x-4">
         <div
           className="flex items-center justify-center rounded-full w-12 h-12 border-4 border-white text-2xl"
-          style={{ backgroundColor: bgColor }}>
-          J
+          style={{ backgroundColor: user.color }}>
+          {user.firstName.charAt(0)}
+          {user.lastName.charAt(0)}
         </div>
-        <span className="font-bold">Hi, {name}!</span>
+        <span className="font-bold">Hi, {user.firstName}!</span>
       </div>
       <span>You have {n} upcoming trips!</span>
     </div>

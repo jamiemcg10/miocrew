@@ -32,7 +32,8 @@ export default function TripTable({ trips }: TripTableProps) {
                       className="relative inline-flex border-white border-2 rounded-full w-7 h-7 font-bold justify-center items-center sm:not-last:-mr-3 not-last:-mr-5"
                       style={{ backgroundColor: attendee.color, zIndex: 5 - i }}
                       key={attendee.id}>
-                      {attendee.name.charAt(0)}
+                      {attendee.firstName.charAt(0)}
+                      {attendee.lastName.charAt(0)}
                     </div>
                   )
                 })}
