@@ -54,7 +54,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
           </ListItem>
           <Divider />
           <ListItem key={'Craete trip'} disablePadding>
-            <ListItemButton>
+            <ListItemButton href="/create">
               <ListItemIcon>
                 <EditCalendarRoundedIcon />
               </ListItemIcon>

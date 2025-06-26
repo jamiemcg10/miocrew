@@ -30,6 +30,11 @@ describe('<Menu />', () => {
     cy.contains('Create trip')
   })
 
+  it('"Create trip" option has correct href', () => {
+    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
+    cy.contains('Past trips').closest('a').should('have.attr', 'href', '/create')
+  })
+
   it('Has "Past trips" option', () => {
     cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
     cy.contains('Past trips')
