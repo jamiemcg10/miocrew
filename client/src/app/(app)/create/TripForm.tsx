@@ -29,21 +29,14 @@ export default function TripForm() {
         </LocalizationProvider>
       </div>
       <div>
-        <TextField
-          variant="outlined"
-          label="Description"
-          multiline
-          rows={4}
-          maxRows={4}
-          sx={fieldStyles}
-        />
+        <TextField variant="outlined" label="Description" multiline rows={4} sx={fieldStyles} />
       </div>
       <div>
         <TextField
           variant="outlined"
           label="Crew"
           multiline
-          rows={2}
+          minRows={2}
           maxRows={3}
           sx={fieldStyles}
         />
