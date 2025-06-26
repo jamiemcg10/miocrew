@@ -1,4 +1,4 @@
-import './Crew.css'
+import '../../styles/VerticalScroll.css'
 
 import { trips } from '@/lib/utils/dummyData'
 import { useState } from 'react'
