@@ -14,7 +14,7 @@ export default function Crew() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   return (
-    <div className="px-24 py-12 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
+    <div className="mt-8 px-24 py-12 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
       <div className="flex justify-between mb-8">
         <div className="basis-1/3 border-b-2 border-b-white">Member</div>
         <div className="basis-1/4 border-b-2 border-b-white">Status</div>

@@ -29,8 +29,6 @@ export default function Schedule() {
     days[eventDate].events.push(event)
   })
 
-  console.log({ days })
-
   return (
     <>
       <div className="flex flex-col grow overflow-y-hidden">
@@ -42,7 +40,7 @@ export default function Schedule() {
             Add activity
           </Button>
         </div>
-        <div className="grow relative mb-1 overflow-y-hidden">
+        <div className="grow relative mt-4 mb-1 overflow-y-hidden">
           <div className="absolute w-8 z-1 content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background) dark:to-[#00001a]"></div>
           <div
             className="flex justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
