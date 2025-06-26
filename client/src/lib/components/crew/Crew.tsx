@@ -4,6 +4,7 @@ import { trips } from '@/lib/utils/dummyData'
 import { useState } from 'react'
 import CrewMenu from './CrewMenu'
 import CrewMember from './CrewMember'
+import { attendeeSort } from '@/lib/utils/sortFns'
 
 export default function Crew() {
   function handleCloseMenu() {
@@ -22,14 +23,9 @@ export default function Crew() {
       <div className="relative flex flex-col overflow-y-hidden grow">
         <div className="relative overflow-y-scroll py-2">
           <div className="space-y-4">
-            {trips[2].attendees
-              .sort((a, _b) => {
-                return a.type === 'Owner' ? -1 : a.type === 'Admin' ? 0 : 1
-              })
-              .map((a) => {
-                // move sort fns to file
-                return <CrewMember key={a.id} member={a} setAnchorEl={setAnchorEl} />
-              })}
+            {trips[2].attendees.sort(attendeeSort).map((a) => {
+              return <CrewMember key={a.id} member={a} setAnchorEl={setAnchorEl} />
+            })}
           </div>
         </div>
         <div className="absolute h-2 w-full top-0 bg-linear-to-b from-(--background) to-transparent"></div>
