@@ -13,7 +13,7 @@ export default function CrewMember({ member, setAnchorEl }: CrewMemberProps) {
     <div className="flex justify-between">
       <div className="basis-1/3 flex items-center space-x-4">
         <div
-          className="h-10 w-10 rounded-full border-4 border-white font-bold text-center content-center"
+          className="h-10 w-10 rounded-full border-4 border-black dark:border-white font-bold text-center content-center"
           style={{ backgroundColor: member.color }}>
           {member.firstName.charAt(0)}
           {member.lastName.charAt(0)}
