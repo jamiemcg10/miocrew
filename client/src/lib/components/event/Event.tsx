@@ -14,7 +14,7 @@ export default function Event({ event }: EventProps) {
   const eventHeight = height * 60 + 80
   return (
     <div
-      className="rounded-xs p-2 min-h-20 max-h-72"
+      className="rounded-xs p-2 min-h-20 max-h-72 overflow-y-hidden"
       key={event.id}
       style={{ backgroundColor: event.color, height: `${eventHeight}px` }}>
       <div className="font-bold text-sm">

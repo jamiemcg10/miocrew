@@ -21,7 +21,7 @@ div {
   }
   *::-webkit-scrollbar {
     max-height: 8px;
-    max-width: 0;
+    max-width: 0 !important;
   }
 }
 
