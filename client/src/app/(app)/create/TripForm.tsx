@@ -24,18 +24,18 @@ export default function TripForm() {
   return (
     <>
       <div>
-        <TextField variant="outlined" label="Trip name" sx={fieldStyles} />
+        <TextField variant="outlined" label="Trip name" sx={fieldStyles} required />
       </div>
       <div>
         <TextField variant="outlined" label="Trip location" sx={fieldStyles} />
       </div>
       <div className="flex justify-between">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Start date" sx={{ width: '40%' }} />
+          <DatePicker label="Start date" sx={{ width: '40%' }} disablePast />
         </LocalizationProvider>
         <span className="self-center italic text-gray-500">to</span>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="End date" sx={{ width: '40%' }} />
+          <DatePicker label="End date" sx={{ width: '40%' }} disablePast />
         </LocalizationProvider>
       </div>
       <div>
