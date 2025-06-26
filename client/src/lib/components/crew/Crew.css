@@ -1,0 +1,31 @@
+div {
+  scrollbar-color: '#2c2c2c' transparent;
+}
+
+/* Legacy browsers with `::-webkit-scrollbar-*` support */
+@supports selector(::-webkit-scrollbar) {
+  :root {
+    scrollbar-color: #2c2c2c;
+  }
+
+  *::-webkit-scrollbar-button {
+    height: 4px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar {
+    max-width: 4px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  *::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+  }
+}

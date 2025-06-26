@@ -28,6 +28,7 @@ const tabSx = {
 
 export default function TabNav({ page, setPage }: TabNavProps) {
   function handlePageChange(_e: SyntheticEvent, value: number) {
+    localStorage.setItem('tab', `${value}`)
     setPage(value)
   }
 

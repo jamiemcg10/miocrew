@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import TabNav from './TabNav'
 import Schedule from '@/lib/components/event/Schedule'
+import Crew from '@/lib/components/crew/Crew'
 
 export default function TripPage() {
-  const [page, setPage] = useState(0)
+  const initialPage = +(localStorage.getItem('tab') || '0')
+  const [page, setPage] = useState(initialPage)
 
   function renderPage() {
     switch (page) {
@@ -17,6 +19,8 @@ export default function TripPage() {
         return <div>Planning</div>
       case 3:
         return <div>Expenses</div>
+      case 4:
+        return <Crew />
     }
   }
 
