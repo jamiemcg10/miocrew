@@ -5,6 +5,8 @@ import { useState } from 'react'
 import CrewMenu from './CrewMenu'
 import CrewMember from './CrewMember'
 import { attendeeSort } from '@/lib/utils/sortFns'
+import Button from '@mui/material/Button'
+import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
 
 export default function Crew() {
   function handleCloseMenu() {
@@ -14,7 +16,19 @@ export default function Crew() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   return (
-    <div className="mt-8 py-10 px-8 sm:px-24 sm:py-12 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
+    <div className="py-10 px-8 sm:px-24 sm:py-12 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
+      <Button
+        variant="contained"
+        startIcon={<PersonAddRoundedIcon />}
+        sx={{
+          margin: '12px 0',
+          alignSelf: 'end',
+          width: 'initial',
+          fontWeight: 600,
+          top: '-6px'
+        }}>
+        Add crew
+      </Button>
       <div className="flex justify-between mb-8">
         <div className="basis-7/12 sm:basis-1/3 border-b-2 border-b-black dark:border-b-white">
           Member
