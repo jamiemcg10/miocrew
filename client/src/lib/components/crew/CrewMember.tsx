@@ -2,6 +2,7 @@ import { type CrewMember } from '@/lib/types'
 import IconButton from '@mui/material/IconButton'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { SetStateAction, Dispatch } from 'react'
+import Avatar from '@mui/material/Avatar'
 
 interface CrewMemberProps {
   member: CrewMember
@@ -12,12 +13,19 @@ export default function CrewMember({ member, setAnchorEl }: CrewMemberProps) {
   return (
     <div className="flex justify-between">
       <div className="basis-7/12 sm:basis-1/3 flex items-center space-x-2 sm:space-x-4">
-        <div
-          className="h-10 w-10 rounded-full border-4 border-black dark:border-white font-bold text-center content-center"
-          style={{ backgroundColor: member.color }}>
+        <Avatar
+          alt={member.firstName}
+          sx={{
+            color: 'var(--foreground)',
+            backgroundColor: member.color,
+            border: '4px solid var(--foreground)',
+            height: 40,
+            width: 40,
+            fontSize: '16px'
+          }}>
           {member.firstName.charAt(0)}
           {member.lastName.charAt(0)}
-        </div>
+        </Avatar>
         <div className="">
           {member.firstName} {member.lastName}
         </div>

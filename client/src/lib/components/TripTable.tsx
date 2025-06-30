@@ -1,5 +1,6 @@
 import { Trip } from '../types'
 import { dateFormatter } from '../utils/dateFormatter'
+import Avatar from '@mui/material/Avatar'
 
 interface TripTableProps {
   trips: Trip[]
@@ -25,13 +26,21 @@ export default function TripTable({ trips }: TripTableProps) {
               <span className="px-2 w-1/4 sm:w-1/5 inline-flex items-center shrink-0">
                 {trip.attendees.slice(0, 5).map((attendee, i) => {
                   return (
-                    <div
-                      className="relative inline-flex border-white border-2 rounded-full w-7 h-7 font-bold justify-center items-center sm:not-last:-mr-3 not-last:-mr-5"
-                      style={{ backgroundColor: attendee.color, zIndex: 5 - i }}
+                    <Avatar
+                      sx={{
+                        color: 'var(--foreground)',
+                        border: '2px solid var(--foreground) !important',
+                        backgroundColor: attendee.color,
+                        height: 28,
+                        width: 28,
+                        mr: '-12px',
+                        fontSize: 'small',
+                        zIndex: 6 - i
+                      }}
                       key={attendee.id}>
                       {attendee.firstName.charAt(0)}
                       {attendee.lastName.charAt(0)}
-                    </div>
+                    </Avatar>
                   )
                 })}
                 {trip.attendees.length > 5 ? (
