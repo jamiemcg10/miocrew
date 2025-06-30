@@ -1,9 +1,11 @@
+import { User } from './user'
+
 interface BaseTask {
   id: string
   name: string
   dueDate: Date
-  assignee: string
-  creator: string
+  creator: User
+  completed: boolean
   notes?: string
 }
 interface PollTask extends BaseTask {
@@ -13,9 +15,10 @@ interface PollTask extends BaseTask {
   assignee: 'Everyone'
 }
 
-interface ReservationTask extends BaseTask {
-  type: 'reservation'
+interface GeneralTask extends BaseTask {
+  type: 'general'
   description: string
+  assignee: User
 }
 
-export type Task = PollTask | ReservationTask
+export type Task = PollTask | GeneralTask
