@@ -1,8 +1,5 @@
 import { Trip } from '../types'
-
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  dateStyle: 'medium'
-})
+import { dateFormatter } from '../utils/dateFormatter'
 
 interface TripTableProps {
   trips: Trip[]
