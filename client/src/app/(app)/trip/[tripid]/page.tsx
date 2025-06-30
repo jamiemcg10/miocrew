@@ -5,6 +5,7 @@ import TabNav from './TabNav'
 import Schedule from '@/lib/components/event/Schedule'
 import Crew from '@/lib/components/crew/Crew'
 import { trips } from '@/lib/utils/dummyData'
+import Tasks from '@/lib/components/tasks/Tasks'
 
 export default function TripPage() {
   const initialPage = +(localStorage.getItem('tab') || '0')
@@ -15,7 +16,7 @@ export default function TripPage() {
       case 0:
         return <Schedule />
       case 1:
-        return <div>Tasks</div>
+        return <Tasks />
       case 2:
         return <div>Planning</div>
       case 3:
@@ -27,10 +28,10 @@ export default function TripPage() {
 
   return (
     <div className="relative h-full flex flex-col">
-      <TabNav page={page} setPage={setPage} />
-      <div className="absolute font-bold text-3xl top-16 left-4 z-1 line-clamp-1 text-(--foreground) dark:text-[#90caf9]">
+      <div className="my-4 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--foreground) dark:text-[#90caf9] border-b-4 dark:border-b-[#90caf9]">
         {trips[0].name}
       </div>
+      <TabNav page={page} setPage={setPage} />
       {renderPage()}
     </div>
   )
