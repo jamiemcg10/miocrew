@@ -28,7 +28,9 @@ export default function TripPage() {
 
   return (
     <div className="relative h-full flex flex-col">
-      <div className="my-4 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--foreground) dark:text-[#90caf9] border-b-4 dark:border-b-[#90caf9]">
+      <div
+        className="my-4 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--foreground) dark:text-[#90caf9] border-b-4 dark:border-b-[#90caf9]"
+        style={{ borderStyle: 'double' }}>
         {trips[0].name}
       </div>
       <TabNav page={page} setPage={setPage} />
