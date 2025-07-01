@@ -1,5 +1,5 @@
 import '../../styles/VerticalScroll.css'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import Button from '@mui/material/Button'
 import TaskItem from './TaskItem'
 import AddTaskRoundedIcon from '@mui/icons-material/AddTaskRounded'
@@ -9,6 +9,10 @@ import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutline
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Avatar from '@mui/material/Avatar'
 import { CrewMember } from '@/lib/types'
+
+interface TasksProps {
+  setOpenCreateDialog: Dispatch<SetStateAction<boolean>>
+}
 
 const tasks = [
   {
@@ -70,7 +74,7 @@ const tasks = [
 
 const attendees = trips[0].attendees
 
-export default function Tasks() {
+export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   function handleBasicFilterClick(value?: any) {
     const updatedFilters = filters.includes(value)
       ? filters.filter((f) => f !== value)
@@ -116,7 +120,8 @@ export default function Tasks() {
           alignSelf: 'end',
           width: 'initial',
           fontWeight: 600
-        }}>
+        }}
+        onClick={() => setOpenCreateDialog(true)}>
         Create task
       </Button>
       <div className="flex mb-8 space-x-1!">
