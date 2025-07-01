@@ -34,7 +34,9 @@ export default function TripPage() {
         {trips[0].name}
       </div>
       <TabNav page={page} setPage={setPage} />
-      {renderPage()}
+      <div className="py-8 px-8 sm:px-16 sm:py-4 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
+        {renderPage()}
+      </div>
     </div>
   )
 }

@@ -110,12 +110,12 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   const [crewFilter, setCrewFilter] = useState<string | null>(null)
 
   return (
-    <div className="py-10 px-8 sm:px-20 sm:py-12 sm:pt-4 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
+    <>
       <Button
         variant="contained"
         startIcon={<AddTaskRoundedIcon />}
         sx={{
-          margin: '12px 0 24px 0',
+          mb: '24px',
           alignSelf: 'end',
           width: 'initial',
           fontWeight: 600
@@ -170,6 +170,6 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           <div>There are no tasks or no tasks that match the current filters.</div>
         )}
       </div>
-    </div>
+    </>
   )
 }

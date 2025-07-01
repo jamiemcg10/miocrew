@@ -16,12 +16,12 @@ export default function Crew() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   return (
-    <div className="py-10 px-8 sm:px-24 sm:py-12 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
+    <>
       <Button
         variant="contained"
         startIcon={<PersonAddRoundedIcon />}
         sx={{
-          margin: '12px 0',
+          mb: '12px',
           alignSelf: 'end',
           width: 'initial',
           fontWeight: 600,
@@ -51,6 +51,6 @@ export default function Crew() {
       </div>
 
       <CrewMenu anchorEl={anchorEl} onClose={handleCloseMenu} />
-    </div>
+    </>
   )
 }

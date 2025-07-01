@@ -31,8 +31,8 @@ export default function Schedule() {
 
   return (
     <>
-      <div className="my-16 sm:my-0 flex flex-col grow overflow-y-hidden">
-        <div className="flex w-full justify-end my-4 pr-4">
+      <div className="mb-8 sm:my-0 flex flex-col grow overflow-y-hidden">
+        <div className="flex w-full justify-end pr-4">
           <Button
             variant="contained"
             startIcon={<AddRoundedIcon />}
