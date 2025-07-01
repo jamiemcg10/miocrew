@@ -1,17 +1,13 @@
 import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
-import { Dispatch, forwardRef, ReactElement, Ref, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import DialogPollOptions from './DialogPollOptions'
-import IconButton from '@mui/material/IconButton'
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
-import { Zoom, useMediaQuery, useTheme } from '@mui/material'
-import { TransitionProps } from '@mui/material/transitions'
+import Dialog from '../Dialog'
 
 interface CreateTaskDialogProps {
   open: boolean
@@ -20,33 +16,11 @@ interface CreateTaskDialogProps {
 
 type TaskType = 'General' | 'Poll'
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & {
-    children: ReactElement<any, any>
-  },
-  ref: Ref<unknown>
-) {
-  return <Zoom ref={ref} {...props} />
-})
-
 export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
   const [type, setType] = useState<'General' | 'Poll' | ''>('')
 
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-
   return (
-    <Dialog
-      open={open}
-      fullScreen={fullScreen}
-      slots={{ transition: Transition }}
-      slotProps={{
-        paper: { sx: { '@media (min-width: 560px)': { width: '50%' } } }
-      }}
-      onClose={() => setOpen(false)}>
-      <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={() => setOpen(false)}>
-        <CloseRoundedIcon />
-      </IconButton>
+    <Dialog open={open} setOpen={setOpen}>
       <DialogTitle sx={{ fontWeight: 700 }}>Create new task</DialogTitle>
       <form className="flex flex-col m-10">
         <TextField label="Task Name" required sx={{ mb: 2 }} />
