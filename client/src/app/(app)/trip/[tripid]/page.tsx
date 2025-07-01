@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import TabNav from './TabNav'
-import Schedule from '@/lib/components/event/Schedule'
+import SchedulePage from '@/lib/components/event/SchedulePage'
 import Crew from '@/lib/components/crew/Crew'
 import { trips } from '@/lib/utils/dummyData'
 import TaskPage from '@/lib/components/tasks/TaskPage'
@@ -14,7 +14,7 @@ export default function TripPage() {
   function renderPage() {
     switch (page) {
       case 0:
-        return <Schedule />
+        return <SchedulePage />
       case 1:
         return <TaskPage />
       case 2:

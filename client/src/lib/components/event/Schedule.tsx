@@ -6,8 +6,13 @@ import dayjs from 'dayjs'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { TripEvent } from '@/lib/types/tripEvent'
 import ScheduleDay from './ScheduleDay'
+import { Dispatch, SetStateAction } from 'react'
 
-export default function Schedule() {
+interface ScheduleProps {
+  setOpenAddDialog: Dispatch<SetStateAction<boolean>>
+}
+
+export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   const tripStart = dayjs(trips[0].startDate)
   const tripEnd = dayjs(trips[0]?.endDate || tripStart)
 
@@ -36,7 +41,8 @@ export default function Schedule() {
           <Button
             variant="contained"
             startIcon={<AddRoundedIcon />}
-            sx={{ width: 'initial', fontWeight: 600 }}>
+            sx={{ width: 'initial', fontWeight: 600 }}
+            onClick={() => setOpenAddDialog(true)}>
             Add activity
           </Button>
         </div>
