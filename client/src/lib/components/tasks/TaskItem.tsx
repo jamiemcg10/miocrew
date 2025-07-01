@@ -29,22 +29,24 @@ function getAssigneeName(assignee: 'Everyone' | User) {
 export default function TaskItem({ task }: TaskItemProps) {
   return (
     <div className="h-16 sm:h-12 mb-4 bg-[#cccccc] rounded-lg items-center flex justify-between dark:even:bg-white/20 dark:odd:bg-white/10">
-      <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
-        <span className="pr-4 pl-2 inline-flex items-center text-lg font-semibold gap-2 basis-3/5">
-          {task.completed ? (
-            <CheckBoxRoundedIcon fontSize="small" />
-          ) : (
-            <CheckBoxOutlineBlankRoundedIcon fontSize="small" />
-          )}
+      <div className="ml-2">
+        {task.completed ? (
+          <CheckBoxRoundedIcon fontSize="small" />
+        ) : (
+          <CheckBoxOutlineBlankRoundedIcon fontSize="small" />
+        )}
+      </div>
+      <div className="flex grow justify-between ml-2 mr-4 flex-col sm:flex-row">
+        <span className="pr-4 inline-flex items-center text-lg font-semibold gap-2 basis-2/3">
           {getImage(task.type)}
           {task.name}
         </span>
-        <span className="basis-1/5 italic text-sm content-center">
-          {getAssigneeName(task.assignee)}
-        </span>
-        <span className="text-right px-2 font-semibold basis-1/6 text-sm content-center">
-          {dateFormatter.format(task.dueDate)}
-        </span>
+        <div className="flex grow justify-between">
+          <span className="italic text-sm content-center">{getAssigneeName(task.assignee)}</span>
+          <span className="text-right px-2 font-semibold text-sm content-center">
+            {dateFormatter.format(task.dueDate)}
+          </span>
+        </div>
       </div>
     </div>
   )

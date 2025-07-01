@@ -123,7 +123,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
         onClick={() => setOpenCreateDialog(true)}>
         Create task
       </Button>
-      <div className="flex mb-8 space-x-1!">
+      <div className="flex flex-wrap mb-8 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
         <Chip
           label="Active"
           icon={<CheckBoxOutlineBlankRoundedIcon />}
