@@ -112,7 +112,6 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   return (
     <div className="py-10 px-8 sm:px-20 sm:py-12 sm:pt-4 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
       <Button
-        href="/create"
         variant="contained"
         startIcon={<AddTaskRoundedIcon />}
         sx={{
