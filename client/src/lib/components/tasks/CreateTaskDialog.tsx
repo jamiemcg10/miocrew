@@ -6,11 +6,12 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, forwardRef, ReactElement, Ref, SetStateAction, useState } from 'react'
 import DialogPollOptions from './DialogPollOptions'
 import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
-import { useMediaQuery, useTheme } from '@mui/material'
+import { Zoom, useMediaQuery, useTheme } from '@mui/material'
+import { TransitionProps } from '@mui/material/transitions'
 
 interface CreateTaskDialogProps {
   open: boolean
@@ -18,6 +19,15 @@ interface CreateTaskDialogProps {
 }
 
 type TaskType = 'General' | 'Poll'
+
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: ReactElement<any, any>
+  },
+  ref: Ref<unknown>
+) {
+  return <Zoom ref={ref} {...props} />
+})
 
 export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
   const [type, setType] = useState<'General' | 'Poll' | ''>('')
@@ -29,6 +39,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
     <Dialog
       open={open}
       fullScreen={fullScreen}
+      slots={{ transition: Transition }}
       slotProps={{
         paper: { sx: { '@media (min-width: 560px)': { width: '50%' } } }
       }}
