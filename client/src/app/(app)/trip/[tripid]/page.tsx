@@ -5,7 +5,7 @@ import TabNav from './TabNav'
 import Schedule from '@/lib/components/event/Schedule'
 import Crew from '@/lib/components/crew/Crew'
 import { trips } from '@/lib/utils/dummyData'
-import Tasks from '@/lib/components/tasks/Tasks'
+import TaskPage from '@/lib/components/tasks/TaskPage'
 
 export default function TripPage() {
   const initialPage = +(localStorage.getItem('tab') || '0')
@@ -16,7 +16,7 @@ export default function TripPage() {
       case 0:
         return <Schedule />
       case 1:
-        return <Tasks />
+        return <TaskPage />
       case 2:
         return <div>Planning</div>
       case 3:
