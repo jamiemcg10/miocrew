@@ -1,14 +1,18 @@
 import '../../styles/VerticalScroll.css'
 
 import { trips } from '@/lib/utils/dummyData'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import CrewMenu from './CrewMenu'
 import CrewMember from './CrewMember'
 import { attendeeSort } from '@/lib/utils/sortFns'
 import Button from '@mui/material/Button'
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
 
-export default function Crew() {
+interface CrewProps {
+  setOpenAddDialog: Dispatch<SetStateAction<boolean>>
+}
+
+export default function Crew({ setOpenAddDialog }: CrewProps) {
   function handleCloseMenu() {
     setAnchorEl(null)
   }
@@ -26,7 +30,8 @@ export default function Crew() {
           width: 'initial',
           fontWeight: 600,
           top: '-6px'
-        }}>
+        }}
+        onClick={() => setOpenAddDialog(true)}>
         Add crew
       </Button>
       <div className="flex justify-between mb-8">

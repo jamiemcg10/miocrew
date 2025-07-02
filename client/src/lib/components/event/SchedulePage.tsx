@@ -3,7 +3,7 @@ import { useState } from 'react'
 import AddEventDialog from './AddEventDialog'
 
 export default function TaskPage() {
-  const [addDialogOpen, setAddDialogOpen] = useState(true)
+  const [addDialogOpen, setAddDialogOpen] = useState(false)
   return (
     <>
       <Schedule setOpenAddDialog={setAddDialogOpen} />

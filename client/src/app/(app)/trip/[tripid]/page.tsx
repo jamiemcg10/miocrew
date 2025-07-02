@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import TabNav from './TabNav'
 import SchedulePage from '@/lib/components/event/SchedulePage'
-import Crew from '@/lib/components/crew/Crew'
+import CrewPage from '@/lib/components/crew/CrewPage'
 import { trips } from '@/lib/utils/dummyData'
 import TaskPage from '@/lib/components/tasks/TaskPage'
 
@@ -22,7 +22,7 @@ export default function TripPage() {
       case 3:
         return <div>Expenses</div>
       case 4:
-        return <Crew />
+        return <CrewPage />
     }
   }
 
