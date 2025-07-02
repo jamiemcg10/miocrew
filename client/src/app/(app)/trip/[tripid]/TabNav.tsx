@@ -18,7 +18,12 @@ const tabSx = {
   },
   '@media (min-width:640px)': {
     '&:hover': {
-      color: '#b8b83c'
+      color: '#1976d2'
+    }
+  },
+  '@media (min-width:640px) and (prefers-color-scheme:dark)': {
+    '&:hover': {
+      color: '#90caf9'
     }
   },
   '&:active': {
