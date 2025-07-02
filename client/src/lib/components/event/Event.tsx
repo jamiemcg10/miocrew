@@ -1,4 +1,5 @@
 import { TripEvent } from '@/lib/types/tripEvent'
+import { timeFormatter } from '@/lib/utils/dateFormatter'
 import dayjs from 'dayjs'
 
 interface EventProps {
@@ -7,8 +8,8 @@ interface EventProps {
 }
 
 export default function Event({ event, onClick }: EventProps) {
-  const startTime = dayjs(event.startTime).format('h:mm A')
-  const endTime = dayjs(event.endTime).format('h:mm A')
+  const startTime = timeFormatter(event.startTime)
+  const endTime = timeFormatter(event.endTime)
 
   const height = event.endTime ? dayjs(event.endTime).diff(dayjs(event.startTime), 'hour') : 0
 

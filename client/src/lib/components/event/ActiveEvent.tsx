@@ -6,7 +6,7 @@ import Dialog from '@mui/material/Dialog'
 import Zoom from '@mui/material/Zoom'
 import { TransitionProps } from '@mui/material/transitions'
 import dayjs from 'dayjs'
-import { dateFormatter } from '@/lib/utils/dateFormatter'
+import { dateFormatter, timeFormatter } from '@/lib/utils/dateFormatter'
 
 interface ActiveEventProps {
   activeEvent: TripEvent | null
@@ -23,8 +23,8 @@ const Transition = forwardRef(function Transition(
 })
 
 export default function ActiveEvent({ activeEvent, setActiveEvent }: ActiveEventProps) {
-  const startTime = dayjs(activeEvent?.startTime).format('h:mm A')
-  const endTime = dayjs(activeEvent?.endTime).format('h:mm A')
+  const startTime = timeFormatter(activeEvent?.startTime)
+  const endTime = timeFormatter(activeEvent?.endTime)
 
   const endsOnDifferentDay = dayjs(activeEvent?.endTime).isAfter(activeEvent?.startTime, 'day')
 
