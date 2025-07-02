@@ -19,8 +19,8 @@ export default function TripTable({ trips }: TripTableProps) {
               <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
                 <span className="px-2 inline-flex text-lg font-semibold">{trip.name}</span>
                 <span className="text-right px-2 inline-flex font-semibold">
-                  {dateFormatter.format(trip.startDate)}{' '}
-                  {trip.endDate && ' - ' + dateFormatter.format(trip.endDate)}
+                  {dateFormatter(trip.startDate)}{' '}
+                  {trip.endDate && ' - ' + dateFormatter(trip.endDate)}
                 </span>
               </div>
               <span className="px-2 w-1/4 sm:w-1/5 inline-flex items-center shrink-0">

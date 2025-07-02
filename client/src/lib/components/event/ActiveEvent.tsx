@@ -60,7 +60,7 @@ export default function ActiveEvent({ activeEvent, setActiveEvent }: ActiveEvent
       </IconButton>
       <div className="m-12">
         <div className="font-bold text-2xl">{activeEvent?.name}</div>
-        <div>{dateFormatter.format(activeEvent?.startTime)}</div>
+        <div>{dateFormatter(activeEvent?.startTime)}</div>
         <div>
           {startTime}
           {activeEvent?.endTime ? <> - {endTime}</> : null}

@@ -44,7 +44,7 @@ export default function TaskItem({ task }: TaskItemProps) {
         <div className="flex grow justify-between">
           <span className="italic text-sm content-center">{getAssigneeName(task.assignee)}</span>
           <span className="text-right px-2 font-semibold text-sm content-center">
-            {dateFormatter.format(task.dueDate)}
+            {dateFormatter(task.dueDate)}
           </span>
         </div>
       </div>
