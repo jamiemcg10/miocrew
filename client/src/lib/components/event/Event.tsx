@@ -3,9 +3,10 @@ import dayjs from 'dayjs'
 
 interface EventProps {
   event: TripEvent
+  onClick: () => void
 }
 
-export default function Event({ event }: EventProps) {
+export default function Event({ event, onClick }: EventProps) {
   const startTime = dayjs(event.startTime).format('h:mm A')
   const endTime = dayjs(event.endTime).format('h:mm A')
 
@@ -14,9 +15,10 @@ export default function Event({ event }: EventProps) {
   const eventHeight = height * 60 + 80
   return (
     <div
-      className="rounded-xs p-2 min-h-20 max-h-72 overflow-y-hidden"
+      className="rounded-xs p-2 min-h-20 max-h-72 overflow-y-hidden cursor-pointer"
       key={event.id}
-      style={{ backgroundColor: event.color, height: `${eventHeight}px` }}>
+      style={{ backgroundColor: event.color, height: `${eventHeight}px` }}
+      onClick={() => onClick()}>
       <div className="font-bold text-sm">
         {startTime} {event.endTime ? `- ${endTime}` : null}
       </div>
