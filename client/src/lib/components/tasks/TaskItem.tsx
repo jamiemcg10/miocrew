@@ -7,6 +7,7 @@ import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutline
 
 interface TaskItemProps {
   task: Task
+  onClick: () => void
 }
 
 function getImage(type: string) {
@@ -26,9 +27,11 @@ function getAssigneeName(assignee: 'Everyone' | User) {
   }
 }
 
-export default function TaskItem({ task }: TaskItemProps) {
+export default function TaskItem({ task, onClick }: TaskItemProps) {
   return (
-    <div className="h-16 sm:h-12 mb-4 bg-[#cccccc] rounded-lg items-center flex justify-between dark:even:bg-white/20 dark:odd:bg-white/10">
+    <div
+      className="h-16 sm:h-12 mb-4 cursor-pointer bg-[#cccccc] rounded-lg items-center flex justify-between dark:even:bg-white/20 dark:odd:bg-white/10"
+      onClick={() => onClick()}>
       <div className="ml-2">
         {task.completed ? (
           <CheckBoxRoundedIcon fontSize="small" />

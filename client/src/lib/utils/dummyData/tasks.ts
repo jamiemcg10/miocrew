@@ -6,6 +6,7 @@ export const tasks = [
     type: 'poll' as const,
     dueDate: new Date(),
     options: ['8/7', '8/8', '8/9'],
+    multiple: false,
     assignee: 'Everyone' as const,
     creator: {
       id: '2',
@@ -35,7 +36,7 @@ export const tasks = [
   {
     id: 'task3',
     name: 'Send out B-list invites',
-    description: '',
+    description: 'Invite some more people',
     type: 'general' as const,
     dueDate: new Date(),
     assignee: {
@@ -45,6 +46,31 @@ export const tasks = [
       color: 'turquoise',
       type: 'Attendee'
     },
+    creator: {
+      id: '2',
+      firstName: 'Meryll',
+      lastName: 'Streep',
+      color: 'orangered',
+      type: 'Attendee'
+    },
+    notes: 'Invited the people we talked about in Signal',
+    completed: true
+  },
+  {
+    id: 'task4',
+    name: 'Accomodation poll',
+    question: 'Where should we stay?',
+    type: 'poll' as const,
+    dueDate: new Date(),
+    options: [
+      'In Napa in a hotel',
+      'In Napa in an AirBnB',
+      'In Sonoma in a hotel',
+      'In Sonoma in an AirBnB',
+      "In Sacramento at Katie's house (free)"
+    ],
+    multiple: false,
+    assignee: 'Everyone' as const,
     creator: {
       id: '2',
       firstName: 'Meryll',

@@ -8,14 +8,16 @@ interface BaseTask {
   completed: boolean
   notes?: string
 }
-interface PollTask extends BaseTask {
+
+export interface PollTask extends BaseTask {
   type: 'poll'
   question: string
+  multiple: boolean
   options: string[]
   assignee: 'Everyone'
 }
 
-interface GeneralTask extends BaseTask {
+export interface GeneralTask extends BaseTask {
   type: 'general'
   description: string
   assignee: User

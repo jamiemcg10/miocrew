@@ -8,7 +8,8 @@ import { tasks, trips } from '@/lib/utils/dummyData'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Avatar from '@mui/material/Avatar'
-import { CrewMember } from '@/lib/types'
+import { CrewMember, Task } from '@/lib/types'
+import TaskView from './TaskView'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean>>
@@ -50,6 +51,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   const [filteredTasks, setFilteredTasks] = useState(tasks)
   const [filters, setFilters] = useState<string[]>([])
   const [crewFilter, setCrewFilter] = useState<string | null>(null)
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
 
   return (
     <>
@@ -106,12 +108,13 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           filteredTasks
             .sort((a, b) => (a.dueDate > b.dueDate ? 1 : -1))
             .map((task) => {
-              return <TaskItem task={task} key={task.id} />
+              return <TaskItem task={task} key={task.id} onClick={() => setActiveTask(task)} />
             })
         ) : (
           <div>There are no tasks or no tasks that match the current filters.</div>
         )}
       </div>
+      <TaskView activeTask={activeTask} onClose={() => setActiveTask(null)} />
     </>
   )
 }
