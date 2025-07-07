@@ -8,7 +8,7 @@ import { tasks } from '@/lib/utils/dummyData'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Avatar from '@mui/material/Avatar'
-import { Task, TripAttendee } from '@/lib/types'
+import { Task, User } from '@/lib/types'
 import TaskView from './TaskView'
 import { TripContext } from '@/lib/utils/TripContext'
 
@@ -88,7 +88,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           variant={filters.includes('Everyone') ? 'filled' : 'outlined'}
           onClick={() => handleBasicFilterClick('Everyone')}
         />
-        {attendees?.map((a: TripAttendee, i) => {
+        {attendees?.map((a: User, i) => {
           return (
             <Chip
               label={a.firstName}
