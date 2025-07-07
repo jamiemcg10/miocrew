@@ -3,11 +3,12 @@ export interface Trip {
   name: string
   startDate: Date
   endDate?: Date
-  attendees: any[]
+  attendees: TripAttendee[]
 }
 
 export interface TripAttendee {
   id: string
-  name: string
+  firstName: string
+  lastName: string
   color: string
 }

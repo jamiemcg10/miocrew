@@ -8,6 +8,7 @@ import { trips } from '@/lib/utils/dummyData'
 import TaskPage from '@/lib/components/tasks/TaskPage'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
+import { TripContext } from '@/lib/utils/TripContext'
 
 export default function TripPage() {
   const { tripid } = useParams<{ tripid: string }>()
@@ -44,7 +45,7 @@ export default function TripPage() {
       </div>
       <TabNav page={page} setPage={setPage} />
       <div className="py-8 px-8 sm:px-16 sm:py-4 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
-        {renderPage()}
+        <TripContext value={trip}>{renderPage()}</TripContext>
       </div>
     </div>
   )
