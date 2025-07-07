@@ -6,6 +6,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
 import { useState } from 'react'
 import Message from '@/lib/components/messages/Message'
+import type { BaseMessage } from '@/lib/types'
+import MessageView from '@/lib/components/messages/MessageView'
 
 export default function InboxPage() {
   const checkedMessages = messages.reduce((acc, c) => {
@@ -18,33 +20,51 @@ export default function InboxPage() {
   const [checked, setChecked] = useState(checkedMessages)
   const hasChecked = Object.values(checked).find((v) => v === true)
 
+  const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
+
   return (
-    <div className="p-8">
-      <div className="text-3xl">
-        <DraftsOutlinedIcon />
-        <span className="ml-2">Inbox</span>
-      </div>
-      <div className="py-4 flex flex-wrap-reverse justify-end">
-        <div
-          className={(hasChecked ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'}>
-          <Button size="small">Mark Read</Button>
-          <Button size="small">Mark Unread</Button>
-          <Button size="small" color="error">
-            Delete
+    <>
+      <div className="p-8">
+        <div className="text-3xl">
+          <DraftsOutlinedIcon />
+          <span className="ml-2">Inbox</span>
+        </div>
+        <div className="py-4 flex flex-wrap-reverse justify-end">
+          <div
+            className={(hasChecked ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'}>
+            <Button size="small">Mark Read</Button>
+            <Button size="small">Mark Unread</Button>
+            <Button size="small" color="error">
+              Delete
+            </Button>
+          </div>
+
+          <Button
+            variant="contained"
+            startIcon={<EditRoundedIcon />}
+            sx={{ fontWeight: 700, ml: 4, mb: 2 }}>
+            Compose
           </Button>
         </div>
-
-        <Button
-          variant="contained"
-          startIcon={<EditRoundedIcon />}
-          sx={{ fontWeight: 700, ml: 4, mb: 2 }}>
-          Compose
-        </Button>
+        <div className="text-xl mb-4">Messages</div>
+        {messages.map((m, i) => {
+          return (
+            <Message
+              message={m}
+              checked={checked}
+              setChecked={setChecked}
+              key={i}
+              onClick={() => setActiveMessage(m)}
+            />
+          )
+        })}
       </div>
-      <div className="text-xl mb-4">Messages</div>
-      {messages.map((m, i) => {
-        return <Message message={m} checked={checked} setChecked={setChecked} key={i} />
-      })}
-    </div>
+
+      <MessageView
+        message={activeMessage}
+        open={!!activeMessage}
+        onClose={() => setActiveMessage(null)}
+      />
+    </>
   )
 }

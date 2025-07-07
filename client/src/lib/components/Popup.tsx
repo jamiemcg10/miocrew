@@ -50,7 +50,7 @@ export default function Popup({ open, onClose, backgroundColor, children }: Popu
       <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={() => onClose()}>
         <CloseRoundedIcon />
       </IconButton>
-      <div className="m-8 sm:m-12">{children}</div>
+      <div className="m-8 sm:m-12 h-full">{children}</div>
     </Dialog>
   )
 }

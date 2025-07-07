@@ -4,15 +4,16 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
-import type { Message } from '@/lib/types'
+import type { BaseMessage } from '@/lib/types'
 
 interface MessageProps {
-  message: Message
+  message: BaseMessage
+  onClick: () => void
   checked: Record<string, boolean>
   setChecked: Dispatch<SetStateAction<Record<string, boolean>>>
 }
 
-export default function Message({ message, checked, setChecked }: MessageProps) {
+export default function Message({ message, onClick, checked, setChecked }: MessageProps) {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setChecked({
       ...checked,
@@ -21,7 +22,9 @@ export default function Message({ message, checked, setChecked }: MessageProps) 
   }
 
   return (
-    <div className="group h-16 sm:h-12 mb-0.5 rounded-lg flex items-center justify-start cursor-pointer bg-[#cccccc] dark:even:bg-white/20 dark:odd:bg-white/10">
+    <div
+      className="group h-16 sm:h-12 mb-0.5 rounded-lg flex items-center justify-start cursor-pointer bg-[#cccccc] dark:even:bg-white/20 dark:odd:bg-white/10"
+      onClick={onClick}>
       <Checkbox
         size="small"
         name={message.id}
