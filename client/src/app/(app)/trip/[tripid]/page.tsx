@@ -1,21 +1,18 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useState } from 'react'
 import TabNav from './TabNav'
 import SchedulePage from '@/lib/components/event/SchedulePage'
 import CrewPage from '@/lib/components/crew/CrewPage'
 import { trips } from '@/lib/utils/dummyData'
 import TaskPage from '@/lib/components/tasks/TaskPage'
 import { notFound } from 'next/navigation'
+import { useParams } from 'next/navigation'
 
-interface TaskPageProps {
-  params: Promise<{ slug: string }>
-}
+export default function TripPage() {
+  const { tripid } = useParams<{ tripid: string }>()
 
-export default function TripPage({ params }: TaskPageProps) {
-  const { slug } = use(params)
-
-  const trip = trips.find((trip) => trip.id === slug)
+  const trip = trips.find((trip) => trip.id === tripid)
   if (!trip) {
     notFound()
   }
