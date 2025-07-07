@@ -8,9 +8,8 @@ import TextField from '@mui/material/TextField'
 import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import DialogPollOptions from './DialogPollOptions'
 import Dialog from '../Dialog'
-import { trips } from '@/lib/utils/dummyData'
 import { TripContext } from '@/lib/utils/TripContext'
-import { TripAttendee } from '@/lib/types'
+import { User } from '@/lib/types'
 
 interface CreateTaskDialogProps {
   open: boolean
@@ -54,7 +53,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
               onChange={(e) => {
                 setAssignee(e.target.value)
               }}>
-              {trip?.attendees.map((a: TripAttendee) => {
+              {trip?.attendees.map((a: User) => {
                 return (
                   <MenuItem value={a.id} key={a.id}>
                     {a.firstName} {a.lastName}
