@@ -8,6 +8,7 @@ import { useState } from 'react'
 import Message from '@/lib/components/messages/Message'
 import type { BaseMessage } from '@/lib/types'
 import MessageView from '@/lib/components/messages/MessageView'
+import ComposeMessageDialog from '@/lib/components/messages/ComposeMessageDialog'
 
 export default function InboxPage() {
   const checkedMessages = messages.reduce((acc, c) => {
@@ -21,6 +22,7 @@ export default function InboxPage() {
   const hasChecked = Object.values(checked).find((v) => v === true)
 
   const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
+  const [composing, setComposing] = useState(false)
 
   return (
     <>
@@ -42,7 +44,8 @@ export default function InboxPage() {
           <Button
             variant="contained"
             startIcon={<EditRoundedIcon />}
-            sx={{ fontWeight: 700, ml: 4, mb: 2 }}>
+            sx={{ fontWeight: 700, ml: 4, mb: 2 }}
+            onClick={() => setComposing(true)}>
             Compose
           </Button>
         </div>
@@ -65,6 +68,7 @@ export default function InboxPage() {
         open={!!activeMessage}
         onClose={() => setActiveMessage(null)}
       />
+      <ComposeMessageDialog open={composing} onClose={() => setComposing(false)} />
     </>
   )
 }
