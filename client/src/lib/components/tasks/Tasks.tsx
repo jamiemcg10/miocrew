@@ -1,21 +1,20 @@
 import '../../styles/VerticalScroll.css'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState, useContext } from 'react'
 import Button from '@mui/material/Button'
 import TaskItem from './TaskItem'
 import AddTaskRoundedIcon from '@mui/icons-material/AddTaskRounded'
 import Chip from '@mui/material/Chip'
-import { tasks, trips } from '@/lib/utils/dummyData'
+import { tasks } from '@/lib/utils/dummyData'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Avatar from '@mui/material/Avatar'
-import { CrewMember, Task } from '@/lib/types'
+import { Task, TripAttendee } from '@/lib/types'
 import TaskView from './TaskView'
+import { TripContext } from '@/lib/utils/TripContext'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean>>
 }
-
-const attendees = trips[0].attendees
 
 export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   function handleBasicFilterClick(value?: any) {
@@ -53,6 +52,9 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   const [crewFilter, setCrewFilter] = useState<string | null>(null)
   const [activeTask, setActiveTask] = useState<Task | null>(null)
 
+  const trip = useContext(TripContext)
+  const attendees = trip?.attendees
+
   return (
     <>
       <Button
@@ -86,7 +88,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           variant={filters.includes('Everyone') ? 'filled' : 'outlined'}
           onClick={() => handleBasicFilterClick('Everyone')}
         />
-        {attendees.map((a: CrewMember, i) => {
+        {attendees?.map((a: TripAttendee, i) => {
           return (
             <Chip
               label={a.firstName}
