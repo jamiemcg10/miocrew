@@ -45,7 +45,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
           </ListItem>
           <Divider />
           <ListItem key={'Messages'} disablePadding>
-            <ListItemButton>
+            <ListItemButton href="/inbox">
               <ListItemIcon>
                 <EmailRoundedIcon />
               </ListItemIcon>
