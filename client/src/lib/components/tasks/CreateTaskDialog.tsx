@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField'
 import { Dispatch, SetStateAction, useState } from 'react'
 import DialogPollOptions from './DialogPollOptions'
 import Dialog from '../Dialog'
+import { trips } from '@/lib/utils/dummyData'
 
 interface CreateTaskDialogProps {
   open: boolean
@@ -18,6 +19,7 @@ type TaskType = 'General' | 'Poll'
 
 export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
   const [type, setType] = useState<'General' | 'Poll' | ''>('')
+  const [assignee, setAssignee] = useState<string>('')
 
   return (
     <Dialog open={open} setOpen={setOpen}>
@@ -37,9 +39,29 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
             <MenuItem value="Poll">Poll</MenuItem>
           </Select>
         </FormControl>
-        <TextField label="Description" multiline rows={3} sx={{ mb: 5 }} />
-        {type === 'Poll' ? <DialogPollOptions /> : null}
-        <Button variant="contained" sx={{ fontWeight: 700 }}>
+        <TextField label="Description" multiline rows={3} sx={{ mb: 2 }} />
+        {type === 'Poll' ? (
+          <DialogPollOptions />
+        ) : type === 'General' ? (
+          <FormControl>
+            <InputLabel>Assignee</InputLabel>
+            <Select
+              label="Assignee"
+              value={assignee}
+              onChange={(e) => {
+                setAssignee(e.target.value)
+              }}>
+              {trips[0].attendees.map((a) => {
+                return (
+                  <MenuItem value={a.id} key={a.id}>
+                    {a.firstName} {a.lastName}
+                  </MenuItem>
+                )
+              })}
+            </Select>
+          </FormControl>
+        ) : null}
+        <Button variant="contained" sx={{ fontWeight: 700, mt: 5 }}>
           Create Task
         </Button>
       </form>
