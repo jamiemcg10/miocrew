@@ -28,8 +28,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
           mb: '12px',
           alignSelf: 'end',
           width: 'initial',
-          fontWeight: 600,
-          top: '-6px'
+          fontWeight: 600
         }}
         onClick={() => setOpenAddDialog(true)}>
         Add crew
