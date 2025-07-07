@@ -33,8 +33,8 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
       anchor="left"
       open={matches || open}
       onClose={() => handleClose()}>
-      <Box>
-        <List>
+      <Box sx={{ height: '100%' }}>
+        <List sx={{ height: '100%' }}>
           <ListItem key={'Dashboard'} disablePadding>
             <ListItemButton href="/dashboard">
               <ListItemIcon>
@@ -80,14 +80,17 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
             </ListItemButton>
           </ListItem>
           <Divider />
-          <ListItem key={'Log out'} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <LogoutRoundedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Log out" />
-            </ListItemButton>
-          </ListItem>
+          <div className="absolute bottom-0 w-full">
+            <Divider />
+            <ListItem key={'Log out'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <LogoutRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Log out" />
+              </ListItemButton>
+            </ListItem>
+          </div>
         </List>
       </Box>
     </Drawer>
