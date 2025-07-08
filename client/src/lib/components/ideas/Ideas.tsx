@@ -1,16 +1,20 @@
 import '../../styles/VerticalScroll.css'
 
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import Button from '@mui/material/Button'
 import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import { ideas } from '@/lib/utils/dummyData/ideas'
 import IdeaCard from './IdeaCard'
+import ActiveIdea from './ActiveIdea'
+import { Idea } from '@/lib/types'
 
 interface IdeasProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
 }
 
 export default function Ideas({ setOpenAddDialog }: IdeasProps) {
+  const [activeIdea, setActiveIdea] = useState<Idea | null>(null)
+
   return (
     <>
       <Button
@@ -30,12 +34,13 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
         <div className="relative overflow-y-hidden">
           <div className="relative flex flex-wrap gap-y-4 gap-x-4">
             {ideas.map((idea) => {
-              return <IdeaCard idea={idea} key={idea.id} />
+              return <IdeaCard idea={idea} key={idea.id} onClick={() => setActiveIdea(idea)} />
             })}
           </div>
         </div>
         <div className="sticky -bottom-1 w-full h-3 bg-linear-to-t from-(--background) to-transparent"></div>
       </div>
+      <ActiveIdea activeIdea={activeIdea} setActiveIdea={setActiveIdea}></ActiveIdea>
     </>
   )
 }
