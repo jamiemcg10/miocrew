@@ -18,7 +18,7 @@ export default function ScheduleDay({ day, index }: ScheduleDayProps) {
       <div className="w-[92%] sm:w-[40%] md:w-[30%] shrink-0 h-full flex flex-col">
         <div className="relative grow flex flex-col overflow-y-hidden">
           <div className="text-center text-2xl sm:text-3xl">{day.date.format('dddd')}</div>
-          <div className="text-center text-xl sm:text-2xl mb-2 sm:mb-4 relative">
+          <div className="text-center text-xl mb-2 sm:mb-4 relative">
             {day.date.format('MMMM D, YYYY')}
             <div className="h-1 absolute -bottom-3 sm:-bottom-5 z-1 w-full rounded-t-sm bg-linear-to-b from-[#9b9bc7] dark:from-[#29293A] to-transparent"></div>
           </div>

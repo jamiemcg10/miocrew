@@ -1,20 +1,22 @@
 import './Schedule.css'
-import { trips } from '@/lib/utils/dummyData'
 import { tripEvents } from '@/lib/utils/dummyData'
 import { Button } from '@mui/material'
 import dayjs from 'dayjs'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { TripEvent } from '@/lib/types/tripEvent'
 import ScheduleDay from './ScheduleDay'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useContext } from 'react'
+import { TripContext } from '@/lib/utils/TripContext'
 
 interface ScheduleProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
 }
 
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
-  const tripStart = dayjs(trips[0].startDate)
-  const tripEnd = dayjs(trips[0]?.endDate || tripStart)
+  const trip = useContext(TripContext)
+
+  const tripStart = dayjs(trip?.startDate)
+  const tripEnd = dayjs(trip?.endDate || tripStart)
 
   // calculate number of days
   const tripLength = tripEnd.diff(tripStart, 'day')
@@ -31,7 +33,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
 
   tripEvents.forEach((event) => {
     const eventDate = dayjs(event.startTime).startOf('date').format('MMMM D, YYYY')
-    days[eventDate].events.push(event)
+    days[eventDate]?.events.push(event)
   })
 
   return (
