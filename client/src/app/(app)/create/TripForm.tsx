@@ -48,7 +48,7 @@ export default function TripForm() {
               params.inputValue !== '' &&
               !options.some((option) => option.email === params.inputValue)
             ) {
-              filtered.push({ id: '', email: params.inputValue })
+              filtered.push({ id: '', email: params.inputValue, type: 'user' })
             }
             return filtered
           }}
