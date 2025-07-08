@@ -19,4 +19,4 @@ export const appColors = [
   'sandybrown',
   'palegreen',
   'lavender'
-]
+] as const

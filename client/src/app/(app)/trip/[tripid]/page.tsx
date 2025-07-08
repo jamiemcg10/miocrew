@@ -9,6 +9,7 @@ import TaskPage from '@/lib/components/tasks/TaskPage'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { TripContext } from '@/lib/utils/TripContext'
+import IdeasPage from '@/lib/components/ideas/IdeasPage'
 
 export default function TripPage() {
   const { tripid } = useParams<{ tripid: string }>()
@@ -28,7 +29,7 @@ export default function TripPage() {
       case 1:
         return <TaskPage />
       case 2:
-        return <div>Planning</div>
+        return <IdeasPage />
       case 3:
         return <div>Expenses</div>
       case 4:
