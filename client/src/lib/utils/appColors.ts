@@ -1,0 +1,22 @@
+export const appColors = [
+  'lightpink',
+  'lightblue',
+  'orange',
+  'mediumseagreen',
+  'cornflowerblue',
+  'gold',
+  'plum',
+  'tomato',
+  'turquoise',
+  'salmon',
+  'skyblue',
+  'orchid',
+  'mediumpurple',
+  'darkkhaki',
+  'peachpuff',
+  'lightcoral',
+  'aquamarine',
+  'sandybrown',
+  'palegreen',
+  'lavender'
+]

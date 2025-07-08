@@ -1,25 +1,4 @@
-const pieChartColors = [
-  'lightpink',
-  'lightblue',
-  'orange',
-  'mediumseagreen',
-  'cornflowerblue',
-  'gold',
-  'plum',
-  'tomato',
-  'turquoise',
-  'salmon',
-  'skyblue',
-  'orchid',
-  'mediumpurple',
-  'darkkhaki',
-  'peachpuff',
-  'lightcoral',
-  'aquamarine',
-  'sandybrown',
-  'palegreen',
-  'lavender'
-]
+import { appColors } from '@/lib/utils/appColors'
 
 export default function PieChart() {
   const results = [
@@ -44,13 +23,11 @@ export default function PieChart() {
   let lastStop = 0
   mappedResults.forEach((result, i) => {
     const currentStop = Math.round(360 * result.pct) + lastStop
-    gradient.push(`${pieChartColors[19 - i]} ${lastStop ? lastStop + 'deg' : ''} ${currentStop}deg`)
+    gradient.push(`${appColors[19 - i]} ${lastStop ? lastStop + 'deg' : ''} ${currentStop}deg`)
     lastStop = currentStop
-    console.log({ result, currentStop, lastStop })
   })
 
   const gradientStr = `conic-gradient(${gradient.join(', ')})`
-  console.log({ gradientStr })
 
   return (
     <div className="flex flex-col items-center sm:max-w-4/5">
@@ -63,7 +40,7 @@ export default function PieChart() {
             <div className="flex items-center space-x-2 shrink-0" key={i}>
               <div
                 className="w-4 h-4 rounded-xs shrink-0"
-                style={{ backgroundColor: pieChartColors[19 - i] }}></div>
+                style={{ backgroundColor: appColors[19 - i] }}></div>
               <div
                 className={result.frequency === maxFreq ? 'font-bold' : 'font-light'}
                 title={`${(result.frequency / totalResponses) * 100}%`}>
