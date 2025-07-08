@@ -21,6 +21,8 @@ div {
   }
   *::-webkit-scrollbar {
     max-width: 4px;
+    /* max-height is test */
+    max-height: 8px;
   }
 }
 
