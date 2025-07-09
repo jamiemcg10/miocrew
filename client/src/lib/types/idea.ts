@@ -11,4 +11,5 @@ export interface Idea {
   description?: string
   color: AppColor
   likes: number
+  creator: string
 }

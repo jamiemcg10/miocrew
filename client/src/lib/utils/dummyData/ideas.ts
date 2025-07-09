@@ -5,7 +5,8 @@ export const ideas = [
     name: 'Vineyard Bike Tour',
     description: 'We can rent some bikes and bike around to some of the closer vineyards',
     color: 'cornflowerblue' as const,
-    likes: 3
+    likes: 3,
+    creator: 'Marilyn Monroe'
   },
   {
     tripId: '1',
@@ -16,7 +17,8 @@ export const ideas = [
     url: 'https://runnapatosonoma.com/',
     description: 'For the runners of the group',
     color: 'gold' as const,
-    likes: 1
+    likes: 1,
+    creator: 'Jill Sparrow'
   },
   {
     tripId: '1',
@@ -25,7 +27,8 @@ export const ideas = [
     url: 'http://www.californiarailroad.museum/',
     description: "Something to do if we stay in Sacramento. It's a cool museum about trains",
     color: 'plum' as const,
-    likes: 0
+    likes: 0,
+    creator: 'Judy Bloom'
   },
   {
     tripId: '1',
@@ -35,7 +38,8 @@ export const ideas = [
     img: 'https://www.trefethen.com/wp-content/uploads/2024/03/DSC3198-1024x683.jpg',
     description: 'My favorite vineyard',
     color: 'tomato' as const,
-    likes: 4
+    likes: 4,
+    creator: 'Mary-Kate and/or Ashley Olson'
   },
   {
     tripId: '1',
@@ -45,7 +49,8 @@ export const ideas = [
     img: 'https://cdn.getyourguide.com/img/tour/5d00f3137e7fc.jpeg/148.jpg',
     description: '4 hour hot air balloon ride above Napa Valley. Can see Mount Saint Helena!',
     color: 'turquoise' as const,
-    likes: 2
+    likes: 2,
+    creator: 'Jessica Day'
   },
   {
     tripId: '1',
@@ -56,7 +61,8 @@ export const ideas = [
     url: 'https://www.getyourguide.com/napa-valley-wine-train-l36554/napa-valley-gourmet-express-train-tour-t40736',
     description: '2-3 hours. Can do lunch or dinner. Alcohol is extra. $261+',
     color: 'salmon' as const,
-    likes: 3
+    likes: 3,
+    creator: 'Marge McDonald'
   },
   {
     tripId: '1',
@@ -65,6 +71,7 @@ export const ideas = [
     url: 'https://www.nps.gov/muwo/index.htm',
     description: 'A bit out of the way, but the trees are beautiful',
     color: 'skyblue' as const,
-    likes: 2
+    likes: 2,
+    creator: 'Jillian Chasez'
   }
 ]
