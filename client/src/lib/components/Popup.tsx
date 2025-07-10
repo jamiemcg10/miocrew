@@ -14,6 +14,7 @@ interface PopupProps {
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: ReactElement<any, any>
   },
   ref: Ref<unknown>

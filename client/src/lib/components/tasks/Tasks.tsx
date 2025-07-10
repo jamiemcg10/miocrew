@@ -17,7 +17,7 @@ interface TasksProps {
 }
 
 export default function Tasks({ setOpenCreateDialog }: TasksProps) {
-  function handleBasicFilterClick(value?: any) {
+  function handleBasicFilterClick(value: string) {
     const updatedFilters = filters.includes(value)
       ? filters.filter((f) => f !== value)
       : [...filters, value]
@@ -26,7 +26,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
     filterTasks({ updatedFilters })
   }
 
-  function handleCrewFilterClick(value: any) {
+  function handleCrewFilterClick(value: string) {
     const updatedCrewFilter = crewFilter === value ? null : value
     setCrewFilter(updatedCrewFilter)
 

@@ -16,7 +16,15 @@ const textFieldSx = {
 }
 
 export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
-  function getOptionLabel(option: any) {
+  function getOptionLabel(
+    option:
+      | string
+      | {
+          email: string
+          id: string
+          type: string
+        }
+  ) {
     return typeof option === 'string' ? option : option.email
   }
 
