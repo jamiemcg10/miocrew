@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { fn } from 'storybook/test'
+// import { fn } from 'storybook/test'
 
 import Event from './Event'
 
@@ -36,6 +36,9 @@ export const TripEvent: Story = {
       startTime: new Date('August 5, 2026 2:00 PM'),
       endTime: new Date('August 5, 2026 6:00 PM'),
       color: 'orangered'
+    },
+    onClick: () => {
+      console.log('click')
     }
   }
 }
