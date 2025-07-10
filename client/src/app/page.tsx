@@ -6,7 +6,7 @@ import Button from '@mui/material/Button'
 import Image from 'next/image'
 
 export default function Home() {
-  const [message, setMessage] = useState('')
+  const [_message, setMessage] = useState('')
 
   useEffect(() => {
     axios
