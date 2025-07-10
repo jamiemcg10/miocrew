@@ -19,7 +19,7 @@ export default function PieChart() {
     }
   })
 
-  let gradient: string[] = []
+  const gradient: string[] = []
   let lastStop = 0
   mappedResults.forEach((result, i) => {
     const currentStop = Math.round(360 * result.pct) + lastStop
