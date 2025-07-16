@@ -20,7 +20,7 @@ export const trips = [
       { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Admin' },
       { id: '5', firstName: 'Luca', lastName: 'Streep', color: 'pink', type: 'Attendee' },
       { id: '6', firstName: 'Astro', lastName: 'Streep', color: 'navy', type: 'Attendee' }
-    ] as CrewMember[],
+    ] as CrewMember[], // should possibly be record
     startDate: new Date('December 24, 2026'),
     endDate: new Date('January 2, 2027')
   },

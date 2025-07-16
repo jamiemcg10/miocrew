@@ -10,6 +10,7 @@ import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { TripContext } from '@/lib/utils/TripContext'
 import IdeasPage from '@/lib/components/ideas/IdeasPage'
+import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
 
 export default function TripPage() {
   const { tripid } = useParams<{ tripid: string }>()
@@ -31,7 +32,7 @@ export default function TripPage() {
       case 2:
         return <IdeasPage />
       case 3:
-        return <div>Expenses</div>
+        return <ExpensesPage />
       case 4:
         return <CrewPage />
     }
