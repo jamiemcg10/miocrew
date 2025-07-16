@@ -6,5 +6,5 @@ export interface User {
 }
 
 export interface CrewMember extends User {
-  type: 'Attendee' | 'Admin' | 'Owner'
+  type: 'Crew' | 'Admin' | 'Owner'
 }

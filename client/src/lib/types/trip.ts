@@ -5,5 +5,5 @@ export interface Trip {
   name: string
   startDate: Date
   endDate?: Date
-  attendees: CrewMember[]
+  attendees: Record<string, CrewMember>
 }

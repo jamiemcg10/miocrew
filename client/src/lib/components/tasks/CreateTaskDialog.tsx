@@ -53,7 +53,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
               onChange={(e) => {
                 setAssignee(e.target.value)
               }}>
-              {trip?.attendees.map((a: User) => {
+              {Object.values(trip?.attendees || {}).map((a: User) => {
                 return (
                   <MenuItem value={a.id} key={a.id}>
                     {a.firstName} {a.lastName}

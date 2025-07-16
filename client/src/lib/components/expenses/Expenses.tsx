@@ -36,7 +36,7 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
   }
 
   function filterExpenses({ updatedFilters = filters, updatedCrewFilter = crewFilter }) {
-    const _filteredExpenses = expenses
+    const _filteredExpenses = tripExpenses
       .filter((expense) => (updatedFilters.includes('Unsettled') ? !expense.settled : true))
       .filter((expense) => (updatedFilters.includes('Settled') ? expense.settled : true))
 
@@ -45,11 +45,13 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
     )
   }
 
-  const [filteredExpenses, setFilteredExpenses] = useState(expenses)
+  const tripExpenses = expenses.filter((expense) => expense.tripId === trip?.id)
+  const [filteredExpenses, setFilteredExpenses] = useState(tripExpenses)
   const [filters, setFilters] = useState<string[]>([])
   const [crewFilter, setCrewFilter] = useState<string | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
 
+  const attendees = trip?.attendees
   return (
     <>
       <Button
@@ -79,22 +81,24 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
               variant={filters.includes('Unsettled') ? 'filled' : 'outlined'}
               onClick={() => handleBasicFilterClick('Unsettled')}
             />
-            {trip?.attendees?.map((a: User, i) => {
-              return (
-                <Chip
-                  label={a.firstName}
-                  avatar={
-                    <Avatar alt={a.firstName} sx={{ backgroundColor: a.color }}>
-                      {a.firstName.charAt(0)}
-                      {a.lastName.charAt(0)}
-                    </Avatar>
-                  }
-                  key={i}
-                  variant={crewFilter === a.id ? 'filled' : 'outlined'}
-                  onClick={() => handleCrewFilterClick(a.id)}
-                />
-              )
-            })}
+            {!attendees
+              ? null
+              : Object.values(attendees)?.map((a: User, i) => {
+                  return (
+                    <Chip
+                      label={a.firstName}
+                      avatar={
+                        <Avatar alt={a.firstName} sx={{ backgroundColor: a.color }}>
+                          {a.firstName.charAt(0)}
+                          {a.lastName.charAt(0)}
+                        </Avatar>
+                      }
+                      key={i}
+                      variant={crewFilter === a.id ? 'filled' : 'outlined'}
+                      onClick={() => handleCrewFilterClick(a.id)}
+                    />
+                  )
+                })}
           </div>
           <div className="pr-4">
             {filteredExpenses.length ? (
@@ -115,7 +119,7 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                         className="h-[3.125rem] border border-transparent border-b-gray-300">
                         <td className="w-1/5">{dateFormatter(expense.date)}</td>
                         <td>{expense.name}</td>
-                        <td>{expense.paidBy}</td>
+                        <td>{attendees && attendees[expense.paidBy]?.firstName}</td>
                         <td className="w-1/3">You owe $</td>
                       </tr>
                     )

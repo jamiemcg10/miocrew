@@ -24,28 +24,30 @@ export default function TripTable({ trips }: TripTableProps) {
                   </span>
                 </div>
                 <span className="px-2 basis-1/4 sm:basis-1/5 inline-flex items-center shrink-0">
-                  {trip.attendees.slice(0, 5).map((attendee, i) => {
-                    return (
-                      <Avatar
-                        sx={{
-                          color: 'var(--foreground)',
-                          border: '2px solid var(--foreground) !important',
-                          backgroundColor: attendee.color,
-                          height: 28,
-                          width: 28,
-                          mr: '-12px',
-                          fontSize: 'small',
-                          zIndex: 6 - i
-                        }}
-                        key={attendee.id}>
-                        {attendee.firstName.charAt(0)}
-                        {attendee.lastName.charAt(0)}
-                      </Avatar>
-                    )
-                  })}
-                  {trip.attendees.length > 5 ? (
+                  {Object.values(trip.attendees)
+                    .slice(0, 5)
+                    .map((attendee, i) => {
+                      return (
+                        <Avatar
+                          sx={{
+                            color: 'var(--foreground)',
+                            border: '2px solid var(--foreground) !important',
+                            backgroundColor: attendee.color,
+                            height: 28,
+                            width: 28,
+                            mr: '-12px',
+                            fontSize: 'small',
+                            zIndex: 6 - i
+                          }}
+                          key={attendee.id}>
+                          {attendee.firstName.charAt(0)}
+                          {attendee.lastName.charAt(0)}
+                        </Avatar>
+                      )
+                    })}
+                  {Object.values(trip.attendees).length > 5 ? (
                     <span className="ml-6 sm:ml-5 text-sm text-nowrap">{`+ ${
-                      trip.attendees.length - 5
+                      Object.values(trip.attendees).length - 5
                     }`}</span>
                   ) : null}
                 </span>
