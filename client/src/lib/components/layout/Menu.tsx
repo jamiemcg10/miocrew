@@ -12,6 +12,10 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import WorkHistoryRoundedIcon from '@mui/icons-material/WorkHistoryRounded'
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded'
 import TableChartRoundedIcon from '@mui/icons-material/TableChartRounded'
+import { UserContext } from '@/lib/utils/UserContext'
+import { useContext } from 'react'
+import { Avatar } from '@heroui/avatar'
+import { getInitials } from '@/lib/utils/getInitials'
 
 interface MenuProps {
   open: boolean
@@ -20,6 +24,8 @@ interface MenuProps {
 }
 
 export default function Menu({ open, handleClose, matches }: MenuProps) {
+  const user = useContext(UserContext)
+
   return (
     <Drawer
       sx={{
@@ -35,6 +41,13 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
       onClose={() => handleClose()}>
       <Box sx={{ height: '100%' }}>
         <List sx={{ height: '100%' }}>
+          <ListItem key={'Greeting'}>
+            <ListItemIcon>
+              <Avatar name={getInitials(user)} isBordered />
+            </ListItemIcon>
+            <ListItemText primary={`Hi ${user?.firstName}!`} sx={{ fontWeight: 700 }} />
+          </ListItem>
+          <Divider />
           <ListItem key={'Dashboard'} disablePadding>
             <ListItemButton href="/dashboard">
               <ListItemIcon>

@@ -2,6 +2,7 @@
 
 import { createTheme, ThemeProvider } from '@mui/material'
 import { ReactNode } from 'react'
+import { ThemeProvider as NextThemesProvider } from 'next-themes'
 
 const theme = createTheme({
   colorSchemes: {
@@ -14,5 +15,9 @@ export default function Theme({
 }: Readonly<{
   children: ReactNode
 }>) {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  return (
+    <NextThemesProvider attribute="class" enableSystem={true} defaultTheme="system">
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </NextThemesProvider>
+  )
 }
