@@ -29,7 +29,7 @@ export default function DashboardLayout({
     id: '2',
     firstName: 'Meryll',
     lastName: 'Streep',
-    color: 'orangered',
+    color: 'orangered' as const,
     type: 'Crew'
   }
 

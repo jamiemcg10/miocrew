@@ -16,11 +16,24 @@ import { UserContext } from '@/lib/utils/UserContext'
 import { useContext } from 'react'
 import { Avatar } from '@heroui/avatar'
 import { getInitials } from '@/lib/utils/getInitials'
+import { UserColor } from '@/lib/types'
 
 interface MenuProps {
   open: boolean
   handleClose: () => void
   matches: boolean
+}
+
+// TODO: move this later if it works - to avatar component?
+const ringMap: Record<UserColor, string> = {
+  orangered: 'ring-[orangered]',
+  teal: 'ring-[teal]',
+  pink: 'ring-[pink]',
+  navy: 'ring-[navy]',
+  green: 'ring-[green]',
+  red: 'ring-[red]',
+  black: 'ring-[black]',
+  purple: 'ring-[purple]'
 }
 
 export default function Menu({ open, handleClose, matches }: MenuProps) {
@@ -41,12 +54,22 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
       onClose={() => handleClose()}>
       <Box sx={{ height: '100%' }}>
         <List sx={{ height: '100%' }}>
-          <ListItem key={'Greeting'}>
+          <ListItem key={'Greeting'} sx={{ pb: '1rem' }}>
             <ListItemIcon>
-              <Avatar name={getInitials(user)} isBordered />
+              {user ? (
+                <Avatar
+                  name={getInitials(user)}
+                  isBordered
+                  classNames={{ base: ringMap[user?.color], name: 'font-bold text-lg' }}
+                />
+              ) : null}
             </ListItemIcon>
-            <ListItemText primary={`Hi ${user?.firstName}!`} sx={{ fontWeight: 700 }} />
+            <ListItemText
+              primary={`Hi ${user?.firstName}!`}
+              slotProps={{ primary: { fontWeight: 700 } }}
+            />
           </ListItem>
+          <Divider />
           <Divider />
           <ListItem key={'Dashboard'} disablePadding>
             <ListItemButton href="/dashboard">
