@@ -63,7 +63,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
                         <Checkbox size="small" />
                       </td>
                       <td className="w-8">
-                        <CrewAvatar user={a} extraClasses="w-6 h-6" size="sm" />
+                        <CrewAvatar user={a} size="sm" />
                       </td>
                       <td className="w-50">
                         <div>
