@@ -18,3 +18,4 @@ export type UserColor =
   | 'red'
   | 'purple'
   | 'black'
+  | 'turquoise'
