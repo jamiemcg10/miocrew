@@ -95,7 +95,8 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
         <FormControlLabel
           label={
             <div>
-              <BoltIcon sx={{ ml: -1, mr: -0.5 }} /> <span>Request immediately</span>
+              <BoltIcon sx={{ ml: -1, mr: -0.5, color: 'yellow' }} />{' '}
+              <span>Request immediately</span>
             </div>
           }
           control={<Checkbox />}

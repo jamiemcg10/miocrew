@@ -83,5 +83,36 @@ export const expenses = [
     due: 'end' as const,
     date: new Date('October 5, 2025'),
     notes: 'They comped my muffin because it took so long.'
+  },
+  {
+    id: 'exp6',
+    tripId: '1',
+    paidBy: '2',
+    name: 'JetBlue flights',
+    total: 2032,
+    split: 'even' as const,
+    owe: {
+      '1': 677.33,
+      '2': 677.33,
+      '3': 677.34
+    },
+    settled: true,
+    due: 'immediate' as const,
+    date: new Date('June 4, 2026')
+  },
+  {
+    id: 'exp7',
+    tripId: '1',
+    paidBy: '1',
+    name: 'Airport coffee',
+    total: 10,
+    split: 'even' as const,
+    owe: {
+      '1': 5,
+      '3': 5
+    },
+    settled: false,
+    due: 'end' as const,
+    date: new Date('August 4, 2026')
   }
 ] as Expense[]

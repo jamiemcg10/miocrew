@@ -1,11 +1,11 @@
 import { Avatar } from '@heroui/avatar'
 import { getInitials } from '../utils/getInitials'
 import { User, UserColor } from '../types'
+import clsx from 'clsx'
 
 interface CrewAvatarProps {
-  user: User
-  size?: 'sm' | 'md' | 'lg'
-  extraClasses?: string
+  user?: User
+  size?: 'xs' | 'sm' | 'md' | 'lg'
 }
 
 const ringMap: Record<UserColor, string> = {
@@ -20,16 +20,37 @@ const ringMap: Record<UserColor, string> = {
   turquoise: 'ring-[turquoise]'
 }
 
-export default function CrewAvatar({ user, size, extraClasses }: CrewAvatarProps) {
+function getAvatarSize(size: CrewAvatarProps['size']) {
+  switch (size) {
+    case 'xs':
+      return 'w-4 h-4'
+    case 'sm':
+      return 'w-6 h-6'
+    default:
+      return ''
+  }
+}
+
+function getFontSize(size: CrewAvatarProps['size']) {
+  switch (size) {
+    case 'xs':
+      return 'text-xs'
+    case 'sm':
+      return 'text-sm'
+    default:
+      return 'text-lg'
+  }
+}
+export default function CrewAvatar({ user, size }: CrewAvatarProps) {
   return (
     <Avatar
       name={getInitials(user)}
       isBordered
       classNames={{
-        base: `${ringMap[user?.color]} ${extraClasses}`,
-        name: 'font-bold' + (size === 'sm' ? ' text-sm' : ' text-lg')
+        base: clsx(user && ringMap[user.color], getAvatarSize(size)),
+        name: clsx('font-bold', getFontSize(size))
       }}
-      size={size}
+      size={size === 'xs' ? 'sm' : size}
     />
   )
 }

@@ -11,6 +11,10 @@ import { TripContext } from '@/lib/utils/TripContext'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import ExpenseView from './ExpenseView'
 import { dateFormatter } from '@/lib/utils/dateFormatter'
+import { UserContext } from '@/lib/utils/UserContext'
+import BalanceText from './utils/BalanceText'
+import CrewAvatar from '../CrewAvatar'
+import BoltIcon from '@mui/icons-material/Bolt'
 
 interface TasksProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
@@ -18,6 +22,7 @@ interface TasksProps {
 
 export default function Expenses({ setOpenAddDialog }: TasksProps) {
   const trip = useContext(TripContext)
+  const user = useContext(UserContext)
 
   function handleBasicFilterClick(value: string) {
     const updatedFilters = filters.includes(value)
@@ -43,6 +48,18 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
     setFilteredExpenses(
       !updatedFilters.length && !updatedCrewFilter?.length ? expenses : _filteredExpenses
     )
+  }
+
+  function calculateCosts() {
+    expenses
+      .filter((e) => e.tripId === trip?.id)
+      .reduce((p, exp) => {
+        // Object.entries(exp.owe).forEach(([id, cost] => {
+        //   p[id] = (p[id] || 0) + cost
+        // }))
+
+        return p
+      }, {} as Record<string, number>)
   }
 
   const tripExpenses = expenses.filter((expense) => expense.tripId === trip?.id)
@@ -117,10 +134,23 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                       <tr
                         key={expense.id}
                         className="h-[3.125rem] border border-transparent border-b-gray-300">
-                        <td className="w-1/5">{dateFormatter(expense.date)}</td>
-                        <td>{expense.name}</td>
-                        <td>{attendees && attendees[expense.paidBy]?.firstName}</td>
-                        <td className="w-1/3">You owe $</td>
+                        <td className="w-1/5 text-sm">{dateFormatter(expense.date)}</td>
+                        <td>
+                          {expense.name}
+                          {expense.due === 'immediate' ? (
+                            <BoltIcon sx={{ color: 'yellow' }} />
+                          ) : null}
+                        </td>
+                        <td className="flex items-center h-[3.125rem]">
+                          <CrewAvatar user={attendees && attendees[expense.paidBy]} size="xs" />
+                          <span className="ml-2 text-sm">
+                            {attendees && attendees[expense.paidBy]?.firstName}{' '}
+                            {attendees && attendees[expense.paidBy]?.lastName}
+                          </span>
+                        </td>
+                        <td className="w-1/3">
+                          <BalanceText expense={expense} userId={user?.id} />
+                        </td>
                       </tr>
                     )
                   })}
