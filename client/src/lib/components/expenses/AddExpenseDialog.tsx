@@ -40,7 +40,15 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
         <TextField label="Name" required sx={{ mb: 2 }} size="small" />
         <TextField label="Description" multiline rows={1} sx={{ mb: 2 }} size="small" />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Expense date" sx={{ width: '60%', mb: 4 }} />
+          <DatePicker
+            label="Date"
+            slotProps={{
+              textField: {
+                size: 'small',
+                sx: { mb: 2, width: '60%' }
+              }
+            }}
+          />
         </LocalizationProvider>
         <FormControl>
           <FormLabel id="expense-split-type-label">Split expense</FormLabel>
@@ -60,7 +68,11 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
                 style: 'currency',
                 currency: 'USD'
               }}
-              classNames={{ base: 'w-20 place-self-center -ml-3 mr-4', inputWrapper: 'h-9' }}
+              isDisabled={typeValue === 'Custom'}
+              classNames={{
+                base: clsx('w-20 place-self-center -ml-3 mr-4'),
+                inputWrapper: 'h-9'
+              }}
             />
             <FormControlLabel value="Custom" control={<Radio />} label="Custom" />
           </RadioGroup>
