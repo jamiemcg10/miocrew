@@ -30,7 +30,10 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
               slotProps={{
                 popper: { modifiers: [{ name: 'offset', options: { offset: [12, -14] } }] }
               }}>
-              <BoltIcon fontSize="large" sx={{ color: 'yellow', ml: '-12px' }} />
+              <BoltIcon
+                fontSize="large"
+                sx={{ color: 'goldenrod', '.dark &': { color: 'yellow' }, ml: '-12px' }}
+              />
             </Tooltip>
           ) : null}
           {activeExpense.name}

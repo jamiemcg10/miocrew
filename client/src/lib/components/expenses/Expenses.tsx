@@ -24,6 +24,9 @@ interface TasksProps {
 export default function Expenses({ setOpenAddDialog }: TasksProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
+  const attendees = trip?.attendees
+
+  if (!attendees || !user) return
 
   function handleBasicFilterClick(value: string) {
     const updatedFilters = filters.includes(value)
@@ -43,11 +46,18 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
 
   function filterExpenses({ updatedFilters = filters, updatedCrewFilter = crewFilter }) {
     const _filteredExpenses = tripExpenses
-      .filter((expense) => (updatedFilters.includes('Unsettled') ? !expense.settled : true))
-      .filter((expense) => (updatedFilters.includes('Settled') ? expense.settled : true))
+      .filter((expense) =>
+        updatedFilters.includes('Unsettled') ? !expense.owe[user!.id]?.paid : true
+      )
+      .filter((expense) =>
+        updatedFilters.includes('Settled')
+          ? expense.settled || (expense.owe[user!.id]?.paid && expense.paidBy !== user!.id)
+          : true
+      )
+      .filter((expense) => (updatedCrewFilter ? expense.paidBy === updatedCrewFilter : true))
 
     setFilteredExpenses(
-      !updatedFilters.length && !updatedCrewFilter?.length ? expenses : _filteredExpenses
+      !updatedFilters.length && !updatedCrewFilter?.length ? tripExpenses : _filteredExpenses
     )
   }
 
@@ -57,7 +67,6 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
   const [crewFilter, setCrewFilter] = useState<string | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
 
-  const attendees = trip?.attendees
   return (
     <>
       <Button
@@ -88,24 +97,18 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
               variant={filters.includes('Unsettled') ? 'filled' : 'outlined'}
               onClick={() => handleBasicFilterClick('Unsettled')}
             />
-            {!attendees
-              ? null
-              : Object.values(attendees)?.map((a: User, i) => {
-                  return (
-                    <Chip
-                      label={a.firstName}
-                      avatar={
-                        <Avatar alt={a.firstName} sx={{ backgroundColor: a.color }}>
-                          {a.firstName.charAt(0)}
-                          {a.lastName.charAt(0)}
-                        </Avatar>
-                      }
-                      key={i}
-                      variant={crewFilter === a.id ? 'filled' : 'outlined'}
-                      onClick={() => handleCrewFilterClick(a.id)}
-                    />
-                  )
-                })}
+            {Object.values(attendees)?.map((a: User, i) => {
+              return (
+                <Chip
+                  label={`${a.firstName} ${a.lastName.charAt(0)}.`}
+                  avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
+                  key={i}
+                  variant={crewFilter === a.id ? 'filled' : 'outlined'}
+                  sx={{ pl: '8px' }}
+                  onClick={() => handleCrewFilterClick(a.id)}
+                />
+              )
+            })}
           </div>
           <div className="pr-4 overflow-y-scroll">
             {filteredExpenses.length ? (
@@ -129,14 +132,19 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                         <td className="mx-2">
                           {expense.name}
                           {expense.due === 'immediate' ? (
-                            <BoltIcon sx={{ color: 'yellow' }} />
+                            <BoltIcon
+                              sx={{
+                                color: 'goldenrod',
+                                '.dark &': { color: 'yellow' }
+                              }}
+                            />
                           ) : null}
                         </td>
                         <td className="flex items-center h-[3.125rem]">
-                          <CrewAvatar user={attendees && attendees[expense.paidBy]} size="xs" />
+                          <CrewAvatar user={attendees[expense.paidBy]} size="xs" />
                           <span className="mx-2 text-sm whitespace-nowrap">
-                            {attendees && attendees[expense.paidBy]?.firstName}{' '}
-                            {attendees && attendees[expense.paidBy]?.lastName.charAt(0)}.
+                            {attendees[expense.paidBy]?.firstName}{' '}
+                            {attendees[expense.paidBy]?.lastName.charAt(0)}.
                           </span>
                         </td>
                         <td className="w-1/6">

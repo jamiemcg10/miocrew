@@ -61,6 +61,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
             name="radio-buttons-group">
             <FormControlLabel value="Evenly" control={<Radio />} label="Evenly" />
             <NumberInput
+              aria-label="total-cost"
               size="sm"
               hideStepper
               placeholder="0.00"
@@ -104,6 +105,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
                           typeValue === 'Evenly' ? 'opacity-0' : 'opacity-100'
                         )}>
                         <NumberInput
+                          aria-label={`${a.firstName}-share`}
                           size="sm"
                           hideStepper
                           placeholder="0.00"
@@ -123,7 +125,9 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
         <FormControlLabel
           label={
             <div>
-              <BoltIcon sx={{ ml: -1, mr: -0.5, color: 'yellow' }} />{' '}
+              <BoltIcon
+                sx={{ ml: -1, mr: -0.5, color: 'goldenrod', '.dark &': { color: 'yellow' } }}
+              />{' '}
               <span>Request immediately</span>
             </div>
           }

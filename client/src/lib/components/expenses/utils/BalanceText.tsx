@@ -25,13 +25,18 @@ export default function BalanceText({ expense, userId }: BalanceTextProps) {
     return (
       <div>
         You{' '}
-        <span className={clsx(!paid && 'text-red-700')}>owe ${paid ? 0 : owe[userId].owes}</span>
+        <span className={clsx(!paid && 'text-red-700')}>
+          owe ${paid ? 0 : owe[userId].owes.toLocaleString('en-US')}
+        </span>
       </div>
     )
   } else {
     return (
       <div>
-        You <span className="text-green-700">lent ${amountLent.toFixed(2)}</span>
+        You{' '}
+        <span className="text-green-700">
+          lent ${(+amountLent.toFixed(2)).toLocaleString('en-US')}
+        </span>
       </div>
     )
   }
