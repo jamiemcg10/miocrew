@@ -5,7 +5,6 @@ import Chip from '@mui/material/Chip'
 import { expenses } from '@/lib/utils/dummyData'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
-import Avatar from '@mui/material/Avatar'
 import { Expense, User } from '@/lib/types'
 import { TripContext } from '@/lib/utils/TripContext'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
@@ -25,8 +24,6 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
   const attendees = trip?.attendees
-
-  if (!attendees || !user) return
 
   function handleBasicFilterClick(value: string) {
     const updatedFilters = filters.includes(value)
@@ -66,6 +63,8 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
   const [filters, setFilters] = useState<string[]>([])
   const [crewFilter, setCrewFilter] = useState<string | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
+
+  if (!attendees || !user) return
 
   return (
     <>
