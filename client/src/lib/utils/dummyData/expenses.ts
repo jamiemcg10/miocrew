@@ -9,7 +9,7 @@ export const expenses = [
     total: 3129.85,
     split: 'even' as const,
     owe: {
-      '1': { owes: 1043.28, paid: false },
+      '1': { owes: 1043.28, paid: true },
       '2': { owes: 1043.28, paid: false },
       '3': { owes: 1043.29, paid: false }
     },
@@ -26,7 +26,7 @@ export const expenses = [
     split: 'custom' as const,
     owe: {
       '1': { owes: 101, paid: false },
-      '2': { owes: 97.95, paid: false }
+      '2': { owes: 97.95, paid: true }
     },
     settled: false,
     due: 'end' as const,
@@ -42,7 +42,7 @@ export const expenses = [
     split: 'even' as const,
     owe: {
       '1': { owes: 22, paid: false },
-      '2': { owes: 22, paid: false },
+      '2': { owes: 22, paid: true },
       '3': { owes: 22, paid: false }
     },
     settled: false,
@@ -58,7 +58,7 @@ export const expenses = [
     split: 'custom' as const,
     owe: {
       '4': { owes: 1251.94, paid: false },
-      '7': { owes: 625.97, paid: false },
+      '7': { owes: 625.97, paid: true },
       '8': { owes: 625.97, paid: false },
       '9': { owes: 625.97, paid: false }
     },
@@ -74,7 +74,7 @@ export const expenses = [
     total: 225,
     split: 'custom' as const,
     owe: {
-      '4': { owes: 120, paid: false },
+      '4': { owes: 120, paid: true },
       '7': { owes: 35, paid: false },
       '8': { owes: 35, paid: false },
       '9': { owes: 35, paid: false }
@@ -108,7 +108,7 @@ export const expenses = [
     total: 10,
     split: 'even' as const,
     owe: {
-      '1': { owes: 5, paid: false },
+      '1': { owes: 5, paid: true },
       '3': { owes: 5, paid: false }
     },
     settled: false,
@@ -130,5 +130,54 @@ export const expenses = [
     settled: false,
     due: 'end' as const,
     date: new Date('August 4, 2026')
+  },
+  {
+    id: 'exp9',
+    tripId: '1',
+    paidBy: '2',
+    name: 'Uber to Sonoma',
+    total: 85.25,
+    split: 'custom' as const,
+    owe: {
+      '1': { owes: 25, paid: false },
+      '2': { owes: 35.25, paid: true },
+      '3': { owes: 25, paid: false }
+    },
+    settled: false,
+    due: 'end' as const,
+    date: new Date('August 8, 2026')
+  },
+  {
+    id: 'exp10',
+    tripId: '1',
+    paidBy: '3',
+    name: 'Late night pizza',
+    total: 45,
+    split: 'even' as const,
+    owe: {
+      '1': { owes: 15, paid: false },
+      '2': { owes: 15, paid: false },
+      '3': { owes: 15, paid: true }
+    },
+    settled: false,
+    due: 'end' as const,
+    date: new Date('August 10, 2026'),
+    notes: '1 lg pepperoni & jalapeno, 1 lg gyro'
+  },
+  {
+    id: 'exp11',
+    tripId: '1',
+    paidBy: '2',
+    name: 'Uber to airport',
+    total: 166,
+    split: 'even' as const,
+    owe: {
+      '1': { owes: 55, paid: false },
+      '2': { owes: 55, paid: true },
+      '3': { owes: 56, paid: false }
+    },
+    settled: false,
+    due: 'end' as const,
+    date: new Date('August 12, 2026')
   }
 ] as Expense[]

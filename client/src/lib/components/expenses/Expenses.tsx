@@ -15,6 +15,7 @@ import { UserContext } from '@/lib/utils/UserContext'
 import BalanceText from './utils/BalanceText'
 import CrewAvatar from '../CrewAvatar'
 import BoltIcon from '@mui/icons-material/Bolt'
+import Reimbursements from './utils/Reimbursements'
 
 interface TasksProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
@@ -50,18 +51,6 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
     )
   }
 
-  function calculateCosts() {
-    expenses
-      .filter((e) => e.tripId === trip?.id)
-      .reduce((p, exp) => {
-        // Object.entries(exp.owe).forEach(([id, cost] => {
-        //   p[id] = (p[id] || 0) + cost
-        // }))
-
-        return p
-      }, {} as Record<string, number>)
-  }
-
   const tripExpenses = expenses.filter((expense) => expense.tripId === trip?.id)
   const [filteredExpenses, setFilteredExpenses] = useState(tripExpenses)
   const [filters, setFilters] = useState<string[]>([])
@@ -83,8 +72,9 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
         onClick={() => setOpenAddDialog(true)}>
         Add Expense
       </Button>
-      <div className="flex grow">
-        <div className="grow">
+      <div className="@container flex grow flex-wrap-reverse overflow-y-hidden">
+        <div className="grow min-w-[654px] flex flex-col h-full relative @max-[890px]:h-2/3">
+          <div className="w-full h-2 absolute bottom-0  bg-linear-to-t from-(--background) to-transparent"></div>
           <div className="flex flex-wrap mb-8 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
             <Chip
               label="Paid"
@@ -117,10 +107,10 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                   )
                 })}
           </div>
-          <div className="pr-4">
+          <div className="pr-4 overflow-y-scroll">
             {filteredExpenses.length ? (
               <table className="w-full">
-                <thead>
+                <thead className="h-10 sticky top-0 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
                   <tr>
                     <td className="w-1/5">Date</td>
                     <td>Expense</td>
@@ -134,8 +124,8 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                       <tr
                         key={expense.id}
                         className="h-[3.125rem] border border-transparent border-b-gray-300">
-                        <td className="w-1/5 text-sm">{dateFormatter(expense.date)}</td>
-                        <td>
+                        <td className="w-1/6 text-sm">{dateFormatter(expense.date)}</td>
+                        <td className="mx-2">
                           {expense.name}
                           {expense.due === 'immediate' ? (
                             <BoltIcon sx={{ color: 'yellow' }} />
@@ -143,12 +133,12 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                         </td>
                         <td className="flex items-center h-[3.125rem]">
                           <CrewAvatar user={attendees && attendees[expense.paidBy]} size="xs" />
-                          <span className="ml-2 text-sm">
+                          <span className="mx-2 text-sm whitespace-nowrap">
                             {attendees && attendees[expense.paidBy]?.firstName}{' '}
-                            {attendees && attendees[expense.paidBy]?.lastName}
+                            {attendees && attendees[expense.paidBy]?.lastName.charAt(0)}.
                           </span>
                         </td>
-                        <td className="w-1/3">
+                        <td className="w-1/6">
                           <BalanceText expense={expense} userId={user?.id} />
                         </td>
                       </tr>
@@ -161,9 +151,7 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
             )}
           </div>
         </div>
-        <div className="h-full min-w-50 border border-transparent border-l-(--foreground) pl-4">
-          Who owes what
-        </div>
+        <Reimbursements expenses={tripExpenses} />
       </div>
       <ExpenseView activeExpense={activeExpense} onClose={() => setActiveExpense(null)} />
     </>
