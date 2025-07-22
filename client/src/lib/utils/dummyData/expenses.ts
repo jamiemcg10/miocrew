@@ -9,9 +9,9 @@ export const expenses = [
     total: 3129.85,
     split: 'even' as const,
     owe: {
-      '1': 1043.28,
-      '2': 1043.28,
-      '3': 1043.29
+      '1': { owes: 1043.28, paid: false },
+      '2': { owes: 1043.28, paid: false },
+      '3': { owes: 1043.29, paid: false }
     },
     settled: false,
     due: 'immediate' as const,
@@ -25,8 +25,8 @@ export const expenses = [
     total: 198.95,
     split: 'custom' as const,
     owe: {
-      '1': 101,
-      '2': 97.95
+      '1': { owes: 101, paid: false },
+      '2': { owes: 97.95, paid: false }
     },
     settled: false,
     due: 'end' as const,
@@ -41,9 +41,9 @@ export const expenses = [
     total: 66,
     split: 'even' as const,
     owe: {
-      '1': 22,
-      '2': 22,
-      '3': 22
+      '1': { owes: 22, paid: false },
+      '2': { owes: 22, paid: false },
+      '3': { owes: 22, paid: false }
     },
     settled: false,
     due: 'end' as const,
@@ -57,10 +57,10 @@ export const expenses = [
     total: 3129.85,
     split: 'custom' as const,
     owe: {
-      '4': 1251.94,
-      '7': 625.97,
-      '8': 625.97,
-      '9': 625.97
+      '4': { owes: 1251.94, paid: false },
+      '7': { owes: 625.97, paid: false },
+      '8': { owes: 625.97, paid: false },
+      '9': { owes: 625.97, paid: false }
     },
     settled: false,
     due: 'immediate' as const,
@@ -74,10 +74,10 @@ export const expenses = [
     total: 225,
     split: 'custom' as const,
     owe: {
-      '4': 120,
-      '7': 35,
-      '8': 35,
-      '9': 35
+      '4': { owes: 120, paid: false },
+      '7': { owes: 35, paid: false },
+      '8': { owes: 35, paid: false },
+      '9': { owes: 35, paid: false }
     },
     settled: false,
     due: 'end' as const,
@@ -92,9 +92,9 @@ export const expenses = [
     total: 2032,
     split: 'even' as const,
     owe: {
-      '1': 677.33,
-      '2': 677.33,
-      '3': 677.34
+      '1': { owes: 677.33, paid: true },
+      '2': { owes: 677.33, paid: true },
+      '3': { owes: 677.34, paid: true }
     },
     settled: true,
     due: 'immediate' as const,
@@ -108,8 +108,24 @@ export const expenses = [
     total: 10,
     split: 'even' as const,
     owe: {
-      '1': 5,
-      '3': 5
+      '1': { owes: 5, paid: false },
+      '3': { owes: 5, paid: false }
+    },
+    settled: false,
+    due: 'end' as const,
+    date: new Date('August 4, 2026')
+  },
+  {
+    id: 'exp8',
+    tripId: '1',
+    paidBy: '1',
+    name: 'Wine crate from Madonna Vineyards',
+    total: 225,
+    split: 'even' as const,
+    owe: {
+      '1': { owes: 75, paid: true },
+      '2': { owes: 75, paid: true },
+      '3': { owes: 75, paid: false }
     },
     settled: false,
     due: 'end' as const,
