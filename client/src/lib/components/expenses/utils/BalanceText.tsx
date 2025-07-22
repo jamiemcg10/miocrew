@@ -1,4 +1,5 @@
 import { Expense } from '@/lib/types'
+import clsx from 'clsx'
 
 interface BalanceTextProps {
   expense: Expense
@@ -6,8 +7,15 @@ interface BalanceTextProps {
 }
 
 export default function BalanceText({ expense, userId }: BalanceTextProps) {
-  const { owe, total, paidBy, settled } = expense
+  const { owe, paidBy, settled } = expense
+
   const mutedCostStyles = 'text-zinc-800 dark:text-zinc-500 italic text-sm'
+  const paid = userId && owe[userId]?.paid
+
+  const amountLent = Object.values(owe).reduce((p, owes) => {
+    p += !owes.paid ? owes.owes : 0
+    return p
+  }, 0)
 
   if (settled) {
     return <div className={mutedCostStyles}>Settled</div>
@@ -16,13 +24,14 @@ export default function BalanceText({ expense, userId }: BalanceTextProps) {
   } else if (paidBy !== userId) {
     return (
       <div>
-        You <span className="text-red-700">owe ${owe[userId]}</span>
+        You{' '}
+        <span className={clsx(!paid && 'text-red-700')}>owe ${paid ? 0 : owe[userId].owes}</span>
       </div>
     )
   } else {
     return (
       <div>
-        You <span className="text-green-700">lent ${(total - owe[userId]).toFixed(2)}</span>
+        You <span className="text-green-700">lent ${amountLent.toFixed(2)}</span>
       </div>
     )
   }
