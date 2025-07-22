@@ -7,7 +7,7 @@ export const expenses = [
     paidBy: '1',
     name: 'AirBnB',
     total: 3129.85,
-    split: 'even' as const,
+    split: 'Even' as const,
     owe: {
       '1': { owes: 1043.28, paid: true },
       '2': { owes: 1043.28, paid: false },
@@ -23,7 +23,7 @@ export const expenses = [
     paidBy: '2',
     name: 'Early brunch',
     total: 198.95,
-    split: 'custom' as const,
+    split: 'Custom' as const,
     owe: {
       '1': { owes: 101, paid: false },
       '2': { owes: 97.95, paid: true }
@@ -39,7 +39,7 @@ export const expenses = [
     paidBy: '2',
     name: 'Bike tour',
     total: 66,
-    split: 'even' as const,
+    split: 'Even' as const,
     owe: {
       '1': { owes: 22, paid: false },
       '2': { owes: 22, paid: true },
@@ -55,7 +55,7 @@ export const expenses = [
     paidBy: '7',
     name: 'Hotel',
     total: 3129.85,
-    split: 'custom' as const,
+    split: 'Custom' as const,
     owe: {
       '4': { owes: 1251.94, paid: false },
       '7': { owes: 625.97, paid: true },
@@ -72,7 +72,7 @@ export const expenses = [
     paidBy: '4',
     name: 'Tickets',
     total: 225,
-    split: 'custom' as const,
+    split: 'Custom' as const,
     owe: {
       '4': { owes: 120, paid: true },
       '7': { owes: 35, paid: false },
@@ -90,7 +90,7 @@ export const expenses = [
     paidBy: '2',
     name: 'JetBlue flights',
     total: 2032,
-    split: 'even' as const,
+    split: 'Even' as const,
     owe: {
       '1': { owes: 677.33, paid: true },
       '2': { owes: 677.33, paid: true },
@@ -106,7 +106,7 @@ export const expenses = [
     paidBy: '1',
     name: 'Airport coffee',
     total: 10,
-    split: 'even' as const,
+    split: 'Even' as const,
     owe: {
       '1': { owes: 5, paid: true },
       '3': { owes: 5, paid: false }
@@ -121,7 +121,7 @@ export const expenses = [
     paidBy: '1',
     name: 'Wine crate from Madonna Vineyards',
     total: 225,
-    split: 'even' as const,
+    split: 'Even' as const,
     owe: {
       '1': { owes: 75, paid: true },
       '2': { owes: 75, paid: true },
@@ -137,7 +137,7 @@ export const expenses = [
     paidBy: '2',
     name: 'Uber to Sonoma',
     total: 85.25,
-    split: 'custom' as const,
+    split: 'Custom' as const,
     owe: {
       '1': { owes: 25, paid: false },
       '2': { owes: 35.25, paid: true },
@@ -153,7 +153,7 @@ export const expenses = [
     paidBy: '3',
     name: 'Late night pizza',
     total: 45,
-    split: 'even' as const,
+    split: 'Even' as const,
     owe: {
       '1': { owes: 15, paid: false },
       '2': { owes: 15, paid: false },
@@ -170,7 +170,7 @@ export const expenses = [
     paidBy: '2',
     name: 'Uber to airport',
     total: 166,
-    split: 'even' as const,
+    split: 'Even' as const,
     owe: {
       '1': { owes: 55, paid: false },
       '2': { owes: 55, paid: true },

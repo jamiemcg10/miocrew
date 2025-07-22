@@ -4,7 +4,7 @@ export interface Expense {
   name: string
   paidBy: string // or user or userId
   total: number
-  split: 'even' | 'custom'
+  split: 'Even' | 'Custom'
   owe: Record<string, { owes: number; paid: boolean }>
   settled: boolean
   due: 'immediate' | 'end'

@@ -123,8 +123,9 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                     return (
                       <tr
                         key={expense.id}
-                        className="h-[3.125rem] border border-transparent border-b-gray-300">
-                        <td className="w-1/6 text-sm">{dateFormatter(expense.date)}</td>
+                        className="h-[3.125rem] cursor-pointer border border-transparent border-b-gray-300 transition-colors hover:bg-black/10 active:bg-black/10 dark:hover:bg-white/10 dark:active:bg-white/5"
+                        onClick={() => setActiveExpense(expense)}>
+                        <td className="w-1/6 text-sm pl-2">{dateFormatter(expense.date)}</td>
                         <td className="mx-2">
                           {expense.name}
                           {expense.due === 'immediate' ? (
