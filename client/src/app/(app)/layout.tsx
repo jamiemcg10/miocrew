@@ -5,6 +5,7 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from '@/lib/components/layout/Menu'
 import TopBar from '@/lib/components/layout/TopBar'
+import { UserContext } from '@/lib/utils/UserContext'
 
 export default function DashboardLayout({
   children
@@ -24,6 +25,14 @@ export default function DashboardLayout({
     [setOpen]
   )
 
+  const user = {
+    id: '2',
+    firstName: 'Meryll',
+    lastName: 'Streep',
+    color: 'orangered' as const,
+    type: 'Crew'
+  }
+
   useEffect(() => {
     // needs to be last
     setMounted(true)
@@ -34,14 +43,16 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="absolute h-full w-full">
-      <div className="flex h-full">
-        <Menu open={open} handleClose={cachedToggleMenu} matches={matches} />
-        <div className="w-full flex flex-col overflow-hidden">
-          <TopBar toggleMenu={cachedToggleMenu} matches={matches} />
-          {children}
+    <UserContext value={user}>
+      <div className="absolute h-full w-full">
+        <div className="flex h-full">
+          <Menu open={open} handleClose={cachedToggleMenu} matches={matches} />
+          <div className="w-full flex flex-col overflow-hidden">
+            <TopBar toggleMenu={cachedToggleMenu} matches={matches} />
+            {children}
+          </div>
         </div>
       </div>
-    </div>
+    </UserContext>
   )
 }

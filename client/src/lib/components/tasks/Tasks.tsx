@@ -53,7 +53,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
 
   const trip = useContext(TripContext)
-  const attendees = trip?.attendees
+  const attendees = Object.values(trip?.attendees || {})
 
   return (
     <>

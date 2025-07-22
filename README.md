@@ -16,4 +16,6 @@ The back-end will be built using Python, FastAPI, and a SQL database.
 
 ### Update log:
 
+7/22/25: Frontend is almost complete, with only the login and settings pages missing, along with some final cleanup. Backend still not implemented.
+
 7/9/25: Frontend is almost complete, with only the login and expenses pages missing. As there is no backend, some of the current data is shared between trips.

@@ -1,18 +1,20 @@
 import '../../styles/VerticalScroll.css'
 
-import { trips } from '@/lib/utils/dummyData'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import CrewMenu from './CrewMenu'
 import CrewMember from './CrewMember'
 import { attendeeSort } from '@/lib/utils/sortFns'
 import Button from '@mui/material/Button'
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
+import { TripContext } from '@/lib/utils/TripContext'
 
 interface CrewProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
 }
 
 export default function Crew({ setOpenAddDialog }: CrewProps) {
+  const trip = useContext(TripContext)
+
   function handleCloseMenu() {
     setAnchorEl(null)
   }
@@ -45,9 +47,12 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
       <div className="relative flex flex-col overflow-y-hidden grow">
         <div className="relative overflow-y-scroll py-2">
           <div className="space-y-4">
-            {trips[2].attendees.sort(attendeeSort).map((a) => {
-              return <CrewMember key={a.id} member={a} setAnchorEl={setAnchorEl} />
-            })}
+            {trip &&
+              Object.values(trip.attendees)
+                .sort(attendeeSort)
+                .map((a) => {
+                  return <CrewMember key={a.id} member={a} setAnchorEl={setAnchorEl} />
+                })}
           </div>
         </div>
         <div className="absolute h-2 w-full top-0 bg-linear-to-b from-(--background) to-transparent"></div>

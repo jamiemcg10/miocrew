@@ -10,6 +10,7 @@ import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { TripContext } from '@/lib/utils/TripContext'
 import IdeasPage from '@/lib/components/ideas/IdeasPage'
+import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
 
 export default function TripPage() {
   const { tripid } = useParams<{ tripid: string }>()
@@ -31,7 +32,7 @@ export default function TripPage() {
       case 2:
         return <IdeasPage />
       case 3:
-        return <div>Expenses</div>
+        return <ExpensesPage />
       case 4:
         return <CrewPage />
     }
@@ -40,7 +41,7 @@ export default function TripPage() {
   return (
     <div className="relative overflow-hidden flex flex-col grow">
       <div
-        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--foreground) dark:text-[#90caf9] border-b-4 dark:border-b-[#90caf9]"
+        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--foreground) dark:!text-[#90caf9] border-b-4 dark:!border-b-[#90caf9]"
         style={{ borderStyle: 'double' }}>
         {trip.name}
       </div>

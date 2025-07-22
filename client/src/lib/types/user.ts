@@ -2,9 +2,20 @@ export interface User {
   id: string
   firstName: string
   lastName: string
-  color: string
+  color: UserColor
 }
 
 export interface CrewMember extends User {
-  type: 'Attendee' | 'Admin' | 'Owner'
+  type: 'Crew' | 'Admin' | 'Owner'
 }
+
+export type UserColor =
+  | 'orangered'
+  | 'teal'
+  | 'pink'
+  | 'navy'
+  | 'green'
+  | 'red'
+  | 'purple'
+  | 'black'
+  | 'turquoise'

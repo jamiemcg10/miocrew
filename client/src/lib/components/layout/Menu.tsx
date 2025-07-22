@@ -12,6 +12,9 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import WorkHistoryRoundedIcon from '@mui/icons-material/WorkHistoryRounded'
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded'
 import TableChartRoundedIcon from '@mui/icons-material/TableChartRounded'
+import { UserContext } from '@/lib/utils/UserContext'
+import { useContext } from 'react'
+import CrewAvatar from '../CrewAvatar'
 
 interface MenuProps {
   open: boolean
@@ -20,6 +23,8 @@ interface MenuProps {
 }
 
 export default function Menu({ open, handleClose, matches }: MenuProps) {
+  const user = useContext(UserContext)
+
   return (
     <Drawer
       sx={{
@@ -35,6 +40,15 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
       onClose={() => handleClose()}>
       <Box sx={{ height: '100%' }}>
         <List sx={{ height: '100%' }}>
+          <ListItem key={'Greeting'} sx={{ pb: '1rem' }}>
+            <ListItemIcon>{user ? <CrewAvatar user={user} /> : null}</ListItemIcon>
+            <ListItemText
+              primary={`Hi ${user?.firstName}!`}
+              slotProps={{ primary: { fontWeight: 700 } }}
+            />
+          </ListItem>
+          <Divider />
+          <Divider />
           <ListItem key={'Dashboard'} disablePadding>
             <ListItemButton href="/dashboard">
               <ListItemIcon>

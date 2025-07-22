@@ -12,7 +12,7 @@ export const tasks = [
       id: '2',
       firstName: 'Meryll',
       lastName: 'Streep',
-      color: 'orangered',
+      color: 'orangered' as const,
       type: 'Attendee'
     },
     completed: false
@@ -23,12 +23,18 @@ export const tasks = [
     description: '',
     type: 'general' as const,
     dueDate: new Date(),
-    assignee: { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Owner' },
+    assignee: {
+      id: '1',
+      firstName: 'Jane',
+      lastName: 'Fonda',
+      color: 'purple' as const,
+      type: 'Owner'
+    },
     creator: {
       id: '2',
       firstName: 'Meryll',
       lastName: 'Streep',
-      color: 'orangered',
+      color: 'orangered' as const,
       type: 'Attendee'
     },
     completed: false
@@ -43,14 +49,14 @@ export const tasks = [
       id: '3',
       firstName: 'Jamie Lee',
       lastName: 'Curtis',
-      color: 'turquoise',
+      color: 'turquoise' as const,
       type: 'Attendee'
     },
     creator: {
       id: '2',
       firstName: 'Meryll',
       lastName: 'Streep',
-      color: 'orangered',
+      color: 'orangered' as const,
       type: 'Attendee'
     },
     notes: 'Invited the people we talked about in Signal',
@@ -75,7 +81,7 @@ export const tasks = [
       id: '2',
       firstName: 'Meryll',
       lastName: 'Streep',
-      color: 'orangered',
+      color: 'orangered' as const,
       type: 'Attendee'
     },
     completed: true
