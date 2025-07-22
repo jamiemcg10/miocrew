@@ -15,6 +15,9 @@ import FormControl from '@mui/material/FormControl'
 import BoltIcon from '@mui/icons-material/Bolt'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import clsx from 'clsx'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 interface AddExpenseDialogProps {
   open: boolean
@@ -33,9 +36,12 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   return (
     <Dialog open={open} setOpen={setOpen}>
       <DialogTitle sx={{ fontWeight: 700 }}>Add expense</DialogTitle>
-      <form className="flex flex-col m-10 mt-8">
+      <form className="flex flex-col m-10 mt-4">
         <TextField label="Name" required sx={{ mb: 2 }} size="small" />
         <TextField label="Description" multiline rows={1} sx={{ mb: 2 }} size="small" />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker label="Expense date" sx={{ width: '60%', mb: 4 }} />
+        </LocalizationProvider>
         <FormControl>
           <FormLabel id="expense-split-type-label">Split expense</FormLabel>
           <RadioGroup
@@ -46,6 +52,16 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
             defaultValue="Evenly"
             name="radio-buttons-group">
             <FormControlLabel value="Evenly" control={<Radio />} label="Evenly" />
+            <NumberInput
+              size="sm"
+              hideStepper
+              placeholder="0.00"
+              formatOptions={{
+                style: 'currency',
+                currency: 'USD'
+              }}
+              classNames={{ base: 'w-20 place-self-center -ml-3 mr-4', inputWrapper: 'h-9' }}
+            />
             <FormControlLabel value="Custom" control={<Radio />} label="Custom" />
           </RadioGroup>
         </FormControl>
