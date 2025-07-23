@@ -46,7 +46,7 @@ export default function TabNav({ page, setPage }: TabNavProps) {
       onSelectionChange={handlePageChange}
       classNames={{
         base: 'mx-4 w-auto',
-        tab: 'max-sm:px-2',
+        tab: 'max-sm:px-2 font-semibold',
         tabList: 'bg-(--background) max-sm:gap-1',
         cursor: 'bg-(--dk-blue) dark:bg-(--lt-blue) rounded-sm',
         tabContent:
