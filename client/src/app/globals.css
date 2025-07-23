@@ -11,6 +11,8 @@
   --background: #e9f1f9;
   --foreground: #171717;
   --heroui-background: transparent;
+  --lt-blue: #90caf9;
+  --dk-blue: #03034c;
 }
 
 @theme inline {
