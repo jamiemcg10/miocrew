@@ -2,11 +2,12 @@ import '../../styles/VerticalScroll.css'
 
 import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import CrewMenu from './CrewMenu'
-import CrewMember from './CrewMember'
 import { attendeeSort } from '@/lib/utils/sortFns'
 import Button from '@mui/material/Button'
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
 import { TripContext } from '@/lib/utils/TripContext'
+import { CrewMember } from '@/lib/types'
+import CrewMemberItem from './CrewMemberItem'
 
 interface CrewProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
@@ -17,9 +18,13 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
 
   function handleCloseMenu() {
     setAnchorEl(null)
+    setActiveCrewMemberType(undefined)
   }
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const [activeCrewMemberType, setActiveCrewMemberType] = useState<CrewMember['type'] | undefined>(
+    undefined
+  )
 
   return (
     <>
@@ -43,7 +48,14 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
               Object.values(trip.attendees)
                 .sort(attendeeSort)
                 .map((a) => {
-                  return <CrewMember key={a.id} member={a} setAnchorEl={setAnchorEl} />
+                  return (
+                    <CrewMemberItem
+                      key={a.id}
+                      member={a}
+                      setAnchorEl={setAnchorEl}
+                      setActiveCrewMemberType={setActiveCrewMemberType}
+                    />
+                  )
                 })}
           </div>
         </div>
@@ -51,7 +63,11 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
         <div className="absolute h-2 w-full bottom-0 bg-linear-to-t from-(--background) to-transparent"></div>
       </div>
 
-      <CrewMenu anchorEl={anchorEl} onClose={handleCloseMenu} />
+      <CrewMenu
+        anchorEl={anchorEl}
+        onClose={handleCloseMenu}
+        activeCrewMemberType={activeCrewMemberType}
+      />
     </>
   )
 }
