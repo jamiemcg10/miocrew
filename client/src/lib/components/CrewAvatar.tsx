@@ -38,6 +38,8 @@ function getFontSize(size: CrewAvatarProps['size']) {
       return 'text-xs'
     case 'sm':
       return 'text-sm'
+    case 'lg':
+      return 'text-2xl'
     default:
       return 'text-lg'
   }

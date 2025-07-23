@@ -86,7 +86,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
           </ListItem>
           <Divider />
           <ListItem key={'Settings'} disablePadding>
-            <ListItemButton>
+            <ListItemButton href="/settings">
               <ListItemIcon>
                 <SettingsRoundedIcon />
               </ListItemIcon>
