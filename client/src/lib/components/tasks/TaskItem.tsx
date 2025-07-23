@@ -30,7 +30,7 @@ function getAssigneeName(assignee: 'Everyone' | User) {
 export default function TaskItem({ task, onClick }: TaskItemProps) {
   return (
     <div
-      className="h-16 sm:h-12 mb-4 cursor-pointer bg-[#cccccc] rounded-lg items-center flex justify-between dark:even:bg-white/20 dark:odd:bg-white/10"
+      className="h-16 sm:h-12 cursor-pointer transition-colors border-b-gray-300 border-b-1 hover:bg-black/10 active:bg-black/5 dark:hover:bg-white/10 dark:active:bg-white/5 items-center flex justify-between"
       onClick={() => onClick()}>
       <div className="ml-2">
         {task.completed ? (
