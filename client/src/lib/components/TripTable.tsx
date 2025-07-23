@@ -15,7 +15,7 @@ export default function TripTable({ trips }: TripTableProps) {
         .map((trip) => {
           return (
             <Link href={`trip/${trip.id}`} key={trip.id}>
-              <div className="h-16 sm:h-14 mb-4 bg-[#cccccc] dark:bg-white/20 rounded-lg items-center flex justify-between">
+              <div className="h-16 sm:h-14 mb-4 transition-colors bg-black/15 hover:bg-black/20 active:bg-black/10  dark:bg-white/20 dark:hover:bg-white/25 dark:active:bg-white/15 rounded-lg items-center flex justify-between">
                 <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
                   <span className="px-2 inline-flex text-lg font-semibold">{trip.name}</span>
                   <span className="text-right px-2 inline-flex font-semibold">

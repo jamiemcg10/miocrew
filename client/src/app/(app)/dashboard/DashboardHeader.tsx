@@ -9,8 +9,6 @@ export default function DashboardHeader() {
   const nextTripStart = dayjs(nextTrip.startDate).diff(today, 'day')
   const nextTripStartMonths = dayjs(nextTrip.startDate).diff(today, 'month')
 
-  console.log({ nextTripStart, nextTripStartMonths })
-
   return (
     <div className="flex justify-around py-4 items-center bg-[#cee2f5] dark:bg-white/20 font-semibold">
       <div>
