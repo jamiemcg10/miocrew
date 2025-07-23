@@ -35,18 +35,10 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
         onClick={() => setOpenAddDialog(true)}>
         Add crew
       </Button>
-      <div className="flex justify-between mb-8">
-        <div className="basis-7/12 sm:basis-1/3 border-b-2 border-b-black dark:border-b-white">
-          Member
-        </div>
-        <div className="basis-1/5 sm:basis-1/4 border-b-2 border-b-black dark:border-b-white">
-          Status
-        </div>
-        <div className="w-10">&nbsp;</div>
-      </div>
+
       <div className="relative flex flex-col overflow-y-hidden grow">
         <div className="relative overflow-y-scroll py-2">
-          <div className="space-y-4">
+          <div className="flex sm:flex-wrap flex-col sm:flex-row space-y-4">
             {trip &&
               Object.values(trip.attendees)
                 .sort(attendeeSort)

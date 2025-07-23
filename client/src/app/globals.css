@@ -4,8 +4,8 @@
 @plugin './hero.ts';
 
 @source '../../node_modules/@heroui/theme/dist*.{js,ts,jsx,tsx}';
-@source './node_modules/@heroui/theme/dist/components/avatar.js';
-/* @source './node_modules/@heroui/theme/dist/components/(avatar|snippet|code|input).js'; */
+/* @source './node_modules/@heroui/theme/dist/components/avatar.js'; */
+@source './node_modules/@heroui/theme/dist/components/(avatar|number-input|user).js';
 
 :root {
   --background: #e9f1f9;

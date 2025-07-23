@@ -9,7 +9,7 @@ interface CrewAvatarProps {
   baseClasses?: string
 }
 
-const ringMap: Record<UserColor, string> = {
+export const ringMap: Record<UserColor, string> = {
   orangered: 'ring-[orangered]',
   teal: 'ring-[teal]',
   pink: 'ring-[pink]',

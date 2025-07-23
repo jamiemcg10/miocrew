@@ -19,6 +19,7 @@
     "@heroui/number-input": "^2.0.14",
     "@heroui/system": "^2.4.19",
     "@heroui/theme": "^2.4.19",
+    "@heroui/user": "^2.2.19",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@mui/x-date-pickers": "^8.5.3",
