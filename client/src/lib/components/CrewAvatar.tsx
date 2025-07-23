@@ -5,6 +5,7 @@ import clsx from 'clsx'
 
 interface CrewAvatarProps {
   user?: User
+  name?: string
   size?: 'xs' | 'sm' | 'md' | 'lg'
   baseClasses?: string
 }
@@ -44,10 +45,10 @@ function getFontSize(size: CrewAvatarProps['size']) {
       return 'text-lg'
   }
 }
-export default function CrewAvatar({ user, size, baseClasses }: CrewAvatarProps) {
+export default function CrewAvatar({ user, size, name, baseClasses }: CrewAvatarProps) {
   return (
     <Avatar
-      name={getInitials(user)}
+      name={getInitials(user) || name}
       isBordered
       classNames={{
         base: clsx(user && ringMap[user.color], getAvatarSize(size), baseClasses),
