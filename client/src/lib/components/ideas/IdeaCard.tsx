@@ -19,7 +19,7 @@ export default function IdeaCard({ idea, onClick }: IdeaCardProps) {
   return (
     <>
       <div
-        className="shrink-0 cursor-pointer relative inline-flex justify-between space-y-2 flex-col p-2 rounded-md h-52"
+        className="shrink-0 cursor-pointer relative inline-flex justify-between space-y-2 flex-col p-2 rounded-md h-52 transition-transform hover:scale-105 active:scale-100"
         style={{ backgroundColor: idea.color }}
         onClick={onClick}>
         <div className="basis-3/5 min-h-3/5 max-h-3/5 bg-gray-500 flex justify-center items-center rounded-sm">
