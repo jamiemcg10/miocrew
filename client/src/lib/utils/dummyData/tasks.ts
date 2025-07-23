@@ -28,7 +28,7 @@ export const tasks = [
       firstName: 'Jane',
       lastName: 'Fonda',
       color: 'purple' as const,
-      type: 'Owner'
+      type: 'Captain'
     },
     creator: {
       id: '2',

@@ -1,7 +1,7 @@
 import { CrewMember, Trip, TripEvent } from '../types'
 
 export const attendeeSort = (a: CrewMember, _b: CrewMember) => {
-  return a.type === 'Owner' ? -1 : a.type === 'Admin' ? 0 : 1
+  return a.type === 'Captain' ? -1 : a.type === 'Admin' ? 0 : 1
 }
 
 export const scheduleSort = (a: TripEvent, b: TripEvent) => {

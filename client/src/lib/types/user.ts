@@ -6,7 +6,7 @@ export interface User {
 }
 
 export interface CrewMember extends User {
-  type: 'Crew' | 'Admin' | 'Owner'
+  type: 'Crew' | 'Admin' | 'Captain'
 }
 
 export type UserColor =

@@ -5,7 +5,7 @@ export const pastTrips = [
     id: 'p1',
     name: 'Wine Moms Took on Napa',
     attendees: {
-      '1': { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Owner' }, // color should really be their avatar
+      '1': { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' }, // color should really be their avatar
       '2': { id: '2', firstName: 'Meryll', lastName: 'Streep', color: 'orangered', type: 'Crew' },
       '3': { id: '3', firstName: 'Jamie Lee', lastName: 'Curtis', color: 'turquoise', type: 'Crew' }
     },
@@ -16,7 +16,13 @@ export const pastTrips = [
     id: 'p2',
     name: "Last Year's Streep Family Vacation",
     attendees: {
-      '2': { id: '2', firstName: 'Meryll', lastName: 'Streep', color: 'orangered', type: 'Owner' },
+      '2': {
+        id: '2',
+        firstName: 'Meryll',
+        lastName: 'Streep',
+        color: 'orangered',
+        type: 'Captain'
+      },
       '4': { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Admin' }, // TODO: make users dummyData
       '5': { id: '5', firstName: 'Luca', lastName: 'Streep', color: 'pink', type: 'Crew' },
       '6': { id: '6', firstName: 'Astro', lastName: 'Streep', color: 'navy', type: 'Crew' }
@@ -29,7 +35,7 @@ export const pastTrips = [
     name: 'Monster Jam 2019',
     attendees: {
       '2': { id: '2', firstName: 'Meryll', lastName: 'Streep', color: 'orangered', type: 'Crew' },
-      '4': { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Owner' },
+      '4': { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Captain' },
       '5': { id: '5', firstName: 'Luca', lastName: 'Streep', color: 'pink', type: 'Crew' },
       '6': { id: '6', firstName: 'Astro', lastName: 'Streep', color: 'navy', type: 'Crew' },
       '7': { id: '7', firstName: 'Johnny', lastName: 'Walker', color: 'green', type: 'Admin' },
