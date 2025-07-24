@@ -47,13 +47,11 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
             ${activeExpense.total.toLocaleString('en-US')}
           </span>
           <span className="mr-3">paid by</span>
-          <CrewAvatar user={trip.attendees[activeExpense.paidBy]} size="xs" />
+          <CrewAvatar user={activeExpense.paidBy} size="xs" />
           <span className="ml-2">
-            {activeExpense.paidBy === user.id
+            {activeExpense.paidBy.id === user.id
               ? 'you'
-              : `${trip.attendees[activeExpense.paidBy].firstName} ${
-                  trip?.attendees[activeExpense.paidBy].lastName
-                }`}
+              : `${activeExpense.paidBy.firstName} ${activeExpense.paidBy.lastName}`}
           </span>
         </div>
         <div>{activeExpense?.split} split</div>
