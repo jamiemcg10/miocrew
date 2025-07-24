@@ -20,14 +20,16 @@ export default function ActionItems() {
 
   function getItem(item: Expense | Task) {
     return (
-      <div className="justify-between h-16 px-2 flex items-center border-b-gray-300 border-b-1 cursor-pointer transition-colors hover:bg-black/10 active:bg-black/5 dark:hover:bg-white/10 dark:active:bg-white/5">
+      <div
+        className="justify-between h-16 px-2 flex items-center border-b-gray-300 border-b-1 cursor-pointer transition-colors hover:bg-black/10 active:bg-black/5 dark:hover:bg-white/10 dark:active:bg-white/5"
+        key={item.id}>
         {isTask(item) && item.type ? (
           <>
             <span className="pr-4 inline-flex items-center text-lg font-semibold gap-2 basis-2/3">
               {getImage(item.type)}
               {item.name}
             </span>
-            <span>
+            <span className="shrink-0">
               Due <span className="font-semibold">{dateFormatter(item.dueDate)}</span>
             </span>
           </>
@@ -43,10 +45,10 @@ export default function ActionItems() {
                 }}
               />
             </div>
-            <div className="flex items-center gap-2 font-semibold">
+            <div className="flex items-center font-semibold h-[3.125rem] flex-wrap">
               <BalanceText expense={item} userId={user?.id} />
-              <span>{' to '}</span>
-              <div className="flex items-center h-[3.125rem] w-1/5 shrink-0 grow">
+              <span className="ml-2">{' to '}</span>
+              <div className="flex items-center w-1/5 shrink-0 grow justify-end ml-2">
                 <CrewAvatar user={item.paidBy} size="xs" />
                 <span className="mx-2 text-sm whitespace-nowrap">
                   {item.paidBy.firstName} {item.paidBy.lastName.charAt(0)}.

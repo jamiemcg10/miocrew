@@ -10,7 +10,7 @@ export default function DashboardHeader() {
   const nextTripStartMonths = dayjs(nextTrip.startDate).diff(today, 'month')
 
   return (
-    <div className="flex justify-around py-4 items-center bg-[#cee2f5] dark:bg-white/20 font-semibold">
+    <div className="flex justify-around px-4 py-4 items-center bg-[#cee2f5] dark:bg-white/20 font-semibold">
       <div>
         You have <span className="text-lg">{upcomingTrips.length}</span> upcoming trips!
       </div>

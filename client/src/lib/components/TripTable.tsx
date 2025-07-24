@@ -26,7 +26,7 @@ export default function TripTable({ trips }: TripTableProps) {
                   </span>
                 </div>
                 <span className="px-2 basis-1/4 sm:basis-1/5 inline-flex items-center shrink-0">
-                  <AvatarGroup isBordered max={6}>
+                  <AvatarGroup isBordered max={6} classNames={{ base: 'w-full' }}>
                     {Object.values(trip.attendees)
                       .slice(0, 5)
                       .map((user) => {
