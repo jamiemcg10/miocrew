@@ -5,6 +5,7 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import CrewAvatar from '../CrewAvatar'
 import { Dispatch, SetStateAction, useContext } from 'react'
 import { UserContext } from '@/lib/utils/UserContext'
+import TableRow from '../layout/TableRow'
 
 interface ExpenseItemProps {
   expense: Expense
@@ -17,30 +18,34 @@ export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemPr
   if (!user) return
 
   return (
-    <div
-      className="flex justify-between items-center h-[3.125rem] cursor-pointer border border-transparent border-b-gray-300 transition-colors hover:bg-black/10 active:bg-black/10 dark:hover:bg-white/10 dark:active:bg-white/5"
+    <TableRow
+      classes="flex justify-between items-center py-1"
       onClick={() => setActiveExpense(expense)}>
-      <div className="w-1/5 text-sm shrink-0">{dateFormatter(expense.date)}</div>
-      <div className="px-2 grow">
-        {expense.name}
-        {expense.due === 'immediate' ? (
-          <BoltIcon
-            sx={{
-              color: 'goldenrod',
-              '.dark &': { color: 'yellow' }
-            }}
-          />
-        ) : null}
+      <div className="w-1/4 sm:w-1/5 text-sm shrink-0 mr-2">{dateFormatter(expense.date)}</div>
+      <div className="flex flex-col sm:flex-row grow">
+        <div className="flex items-center grow">
+          <div className="pr-2 grow">
+            {expense.name}
+            {expense.due === 'immediate' ? (
+              <BoltIcon
+                sx={{
+                  color: 'goldenrod',
+                  '.dark &': { color: 'yellow' }
+                }}
+              />
+            ) : null}
+          </div>
+          <div className="flex items-center w-1/3 shrink-0 justify-end sm:justify-start">
+            <CrewAvatar user={expense.paidBy} size="xs" />
+            <span className="mx-2 text-sm whitespace-nowrap">
+              {expense.paidBy.firstName} {expense.paidBy.lastName.charAt(0)}.
+            </span>
+          </div>
+        </div>
+        <div className="w-1/4 shrink-0 whitespace-nowrap">
+          <BalanceText expense={expense} userId={user?.id} />
+        </div>
       </div>
-      <div className="flex items-center h-[3.125rem] w-1/5 shrink-0">
-        <CrewAvatar user={expense.paidBy} size="xs" />
-        <span className="mx-2 text-sm whitespace-nowrap">
-          {expense.paidBy.firstName} {expense.paidBy.lastName.charAt(0)}.
-        </span>
-      </div>
-      <div className="w-1/4 shrink-0">
-        <BalanceText expense={expense} userId={user?.id} />
-      </div>
-    </div>
+    </TableRow>
   )
 }

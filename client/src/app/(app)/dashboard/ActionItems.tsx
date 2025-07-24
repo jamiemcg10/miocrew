@@ -8,6 +8,7 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import BalanceText from '@/lib/components/expenses/utils/BalanceText'
 import CrewAvatar from '@/lib/components/CrewAvatar'
 import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded'
+import TableRow from '@/lib/components/layout/TableRow'
 
 export default function ActionItems() {
   const user = useContext(UserContext)
@@ -20,9 +21,7 @@ export default function ActionItems() {
 
   function getItem(item: Expense | Task) {
     return (
-      <div
-        className="justify-between h-16 px-2 flex items-center border-b-gray-300 border-b-1 cursor-pointer transition-colors hover:bg-black/10 active:bg-black/5 dark:hover:bg-white/10 dark:active:bg-white/5"
-        key={item.id}>
+      <TableRow classes="justify-between px-2 flex items-center " key={item.id} onClick={() => {}}>
         {isTask(item) && item.type ? (
           <>
             <span className="pr-4 inline-flex items-center text-lg font-semibold gap-2 basis-2/3">
@@ -57,7 +56,7 @@ export default function ActionItems() {
             </div>
           </>
         )}
-      </div>
+      </TableRow>
     )
   }
 

@@ -51,7 +51,7 @@ export default function CrewAvatar({ user, size, name, baseClasses }: CrewAvatar
       name={getInitials(user) || name}
       isBordered
       classNames={{
-        base: clsx(user && ringMap[user.color], getAvatarSize(size), baseClasses),
+        base: clsx(user && ringMap[user.color], getAvatarSize(size), 'shrink-0', baseClasses),
         name: clsx('font-bold', getFontSize(size))
       }}
       size={size === 'xs' ? 'sm' : size}

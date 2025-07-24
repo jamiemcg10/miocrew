@@ -81,8 +81,8 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
         onClick={() => setOpenAddDialog(true)}>
         Add Expense
       </Button>
-      <div className="@container flex grow flex-wrap-reverse overflow-y-hidden">
-        <div className="grow min-w-[654px] flex flex-col h-full relative @max-[890px]:h-2/3">
+      <div className="@container flex grow flex-wrap-reverse overflow-hidden">
+        <div className="grow w-[654px] flex flex-col h-full relative @max-[890px]:h-2/3">
           <div className="w-full h-2 absolute bottom-0  bg-linear-to-t from-(--background) to-transparent"></div>
           <div className="flex flex-wrap mb-8 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
             <Chip
@@ -110,15 +110,21 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
               )
             })}
           </div>
-          <div className="pr-4 overflow-y-scroll">
+          <div className="pr-0 sm:pr-4 overflow-y-scroll">
             {filteredExpenses.length ? (
               <div className="w-full">
-                <div className="h-10 sticky top-0 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
+                <div className="h-10 sticky -top-1 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
                   <div className="flex">
-                    <div className="w-1/5">Date</div>
-                    <div className="grow px-2">Expense</div>
-                    <div className="w-1/5">Paid by</div>
-                    <div className="w-1/4"></div>
+                    <div className="w-1/4 sm:w-1/5">Date</div>
+                    <div className="flex flex-col sm:flex-row grow">
+                      <div className="flex grow">
+                        <div className="grow px-2">Expense</div>
+                        <div className="w-1/3 justify-end sm:justify-start text-right sm:text-left">
+                          Paid by
+                        </div>
+                      </div>
+                      <div className="w-0 sm:w-1/4"></div>
+                    </div>
                   </div>
                 </div>
                 <div>
