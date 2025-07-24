@@ -15,6 +15,7 @@ import BalanceText from './utils/BalanceText'
 import CrewAvatar from '../CrewAvatar'
 import BoltIcon from '@mui/icons-material/Bolt'
 import Reimbursements from './utils/Reimbursements'
+import ExpenseItem from './ExpenseItem'
 
 interface TasksProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
@@ -48,10 +49,10 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
       )
       .filter((expense) =>
         updatedFilters.includes('Settled')
-          ? expense.settled || (expense.owe[user!.id]?.paid && expense.paidBy !== user!.id)
+          ? expense.settled || (expense.owe[user!.id]?.paid && expense.paidBy.id !== user!.id)
           : true
       )
-      .filter((expense) => (updatedCrewFilter ? expense.paidBy === updatedCrewFilter : true))
+      .filter((expense) => (updatedCrewFilter ? expense.paidBy.id === updatedCrewFilter : true))
 
     setFilteredExpenses(
       !updatedFilters.length && !updatedCrewFilter?.length ? tripExpenses : _filteredExpenses
@@ -111,49 +112,27 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
           </div>
           <div className="pr-4 overflow-y-scroll">
             {filteredExpenses.length ? (
-              <table className="w-full">
-                <thead className="h-10 sticky top-0 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
-                  <tr>
-                    <td className="w-1/5">Date</td>
-                    <td>Expense</td>
-                    <td>Paid by</td>
-                    <td className="w-1/3"></td>
-                  </tr>
-                </thead>
-                <tbody>
+              <div className="w-full">
+                <div className="h-10 sticky top-0 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
+                  <div className="flex">
+                    <div className="w-1/5">Date</div>
+                    <div className="grow px-2">Expense</div>
+                    <div className="w-1/5">Paid by</div>
+                    <div className="w-1/4"></div>
+                  </div>
+                </div>
+                <div>
                   {filteredExpenses.map((expense) => {
                     return (
-                      <tr
+                      <ExpenseItem
+                        expense={expense}
+                        setActiveExpense={setActiveExpense}
                         key={expense.id}
-                        className="h-[3.125rem] cursor-pointer border border-transparent border-b-gray-300 transition-colors hover:bg-black/10 active:bg-black/10 dark:hover:bg-white/10 dark:active:bg-white/5"
-                        onClick={() => setActiveExpense(expense)}>
-                        <td className="w-1/6 text-sm pl-2">{dateFormatter(expense.date)}</td>
-                        <td className="mx-2">
-                          {expense.name}
-                          {expense.due === 'immediate' ? (
-                            <BoltIcon
-                              sx={{
-                                color: 'goldenrod',
-                                '.dark &': { color: 'yellow' }
-                              }}
-                            />
-                          ) : null}
-                        </td>
-                        <td className="flex items-center h-[3.125rem]">
-                          <CrewAvatar user={attendees[expense.paidBy]} size="xs" />
-                          <span className="mx-2 text-sm whitespace-nowrap">
-                            {attendees[expense.paidBy]?.firstName}{' '}
-                            {attendees[expense.paidBy]?.lastName.charAt(0)}.
-                          </span>
-                        </td>
-                        <td className="w-1/6">
-                          <BalanceText expense={expense} userId={user?.id} />
-                        </td>
-                      </tr>
+                      />
                     )
                   })}
-                </tbody>
-              </table>
+                </div>
+              </div>
             ) : (
               <div>There are no expenses or no expenses that match the current filters.</div>
             )}
