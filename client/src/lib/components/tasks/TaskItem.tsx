@@ -10,7 +10,7 @@ interface TaskItemProps {
   onClick: () => void
 }
 
-function getImage(type: string) {
+export function getImage(type: string) {
   switch (type) {
     case 'poll':
       return <PieChartRoundedIcon />
