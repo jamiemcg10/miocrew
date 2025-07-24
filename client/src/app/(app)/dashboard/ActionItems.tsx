@@ -2,13 +2,15 @@ import { getImage } from '@/lib/components/tasks/TaskItem'
 import { Expense, Task } from '@/lib/types'
 import { expenses, tasks } from '@/lib/utils/dummyData'
 import { UserContext } from '@/lib/utils/UserContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { dateFormatter } from '@/lib/utils/dateFormatter'
 import BoltIcon from '@mui/icons-material/Bolt'
 import BalanceText from '@/lib/components/expenses/utils/BalanceText'
 import CrewAvatar from '@/lib/components/CrewAvatar'
 import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded'
 import TableRow from '@/lib/components/layout/TableRow'
+import TaskView from '@/lib/components/tasks/TaskView'
+import ExpenseView from '@/lib/components/expenses/ExpenseView'
 
 export default function ActionItems() {
   const user = useContext(UserContext)
@@ -21,7 +23,17 @@ export default function ActionItems() {
 
   function getItem(item: Expense | Task) {
     return (
-      <TableRow classes="px-2" key={item.id} onClick={() => {}}>
+      <TableRow
+        classes="px-2"
+        key={item.id}
+        onClick={() => {
+          if (isTask(item) && item.type) {
+            setActiveTask(item)
+          } else {
+            console.log('here', { item })
+            setActiveExpense(item)
+          }
+        }}>
         {isTask(item) && item.type ? (
           <>
             <span className="pr-4 inline-flex items-center text-lg font-semibold gap-2 basis-2/3">
@@ -69,6 +81,9 @@ export default function ActionItems() {
     })
   ]
 
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
+  const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
+
   return (
     <>
       <div className="text-xl font-bold my-4">Action items</div>
@@ -81,6 +96,8 @@ export default function ActionItems() {
       ) : (
         <div>You have no action items right now</div>
       )}
+      <TaskView activeTask={activeTask} onClose={() => setActiveTask(null)} />
+      <ExpenseView activeExpense={activeExpense} onClose={() => setActiveExpense(null)} />
     </>
   )
 }
