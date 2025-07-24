@@ -22,7 +22,6 @@ export default function Dashboard() {
         }}>
         Create trip
       </Button>
-      <div className="text-xl font-bold mb-4">Upcoming trips</div>
       <TripTable trips={trips} />
       <ActionItems />
     </div>

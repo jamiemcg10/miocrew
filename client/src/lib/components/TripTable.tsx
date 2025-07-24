@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { Trip } from '../types'
 import { dateFormatter } from '../utils/dateFormatter'
-import Avatar from '@mui/material/Avatar'
 import { AvatarGroup } from '@heroui/avatar'
 import CrewAvatar from './CrewAvatar'
+import TableRow from './layout/TableRow'
 
 interface TripTableProps {
   trips: Trip[]
@@ -12,12 +12,13 @@ interface TripTableProps {
 export default function TripTable({ trips }: TripTableProps) {
   return (
     <div>
+      <div className="text-xl font-bold my-4">Upcoming trips</div>
       {trips
         .sort((a, b) => (a.startDate > b.startDate ? 1 : -1))
         .map((trip) => {
           return (
             <Link href={`trip/${trip.id}`} key={trip.id}>
-              <div className="h-16 sm:h-14 mb-4 transition-colors bg-black/15 hover:bg-black/20 active:bg-black/10  dark:bg-white/20 dark:hover:bg-white/25 dark:active:bg-white/15 rounded-lg items-center flex justify-between">
+              <TableRow>
                 <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
                   <span className="px-2 inline-flex text-lg font-semibold">{trip.name}</span>
                   <span className="text-right px-2 inline-flex font-semibold">
@@ -37,7 +38,7 @@ export default function TripTable({ trips }: TripTableProps) {
                     ) : null}
                   </AvatarGroup>
                 </span>
-              </div>
+              </TableRow>
             </Link>
           )
         })}

@@ -18,9 +18,7 @@ export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemPr
   if (!user) return
 
   return (
-    <TableRow
-      classes="flex justify-between items-center py-1"
-      onClick={() => setActiveExpense(expense)}>
+    <TableRow classes="py-1" onClick={() => setActiveExpense(expense)}>
       <div className="w-1/4 sm:w-1/5 text-sm shrink-0 mr-2">{dateFormatter(expense.date)}</div>
       <div className="flex flex-col sm:flex-row grow">
         <div className="flex items-center grow">

@@ -21,7 +21,7 @@ export default function ActionItems() {
 
   function getItem(item: Expense | Task) {
     return (
-      <TableRow classes="justify-between px-2 flex items-center " key={item.id} onClick={() => {}}>
+      <TableRow classes="px-2" key={item.id} onClick={() => {}}>
         {isTask(item) && item.type ? (
           <>
             <span className="pr-4 inline-flex items-center text-lg font-semibold gap-2 basis-2/3">
@@ -69,11 +69,9 @@ export default function ActionItems() {
     })
   ]
 
-  console.log({ actionItems })
-
   return (
     <>
-      <div className="text-xl font-bold mb-4">Action items</div>
+      <div className="text-xl font-bold my-4">Action items</div>
       {actionItems ? (
         <div>
           {actionItems.map((item) => {

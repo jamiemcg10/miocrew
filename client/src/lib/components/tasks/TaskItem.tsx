@@ -30,7 +30,7 @@ function getAssigneeName(assignee: 'Everyone' | User) {
 
 export default function TaskItem({ task, onClick }: TaskItemProps) {
   return (
-    <TableRow classes="items-center flex justify-between" onClick={onClick}>
+    <TableRow onClick={onClick}>
       <div className="ml-2">
         {task.completed ? (
           <CheckBoxRoundedIcon fontSize="small" />
