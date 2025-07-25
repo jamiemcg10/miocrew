@@ -30,7 +30,6 @@ export default function ActionItems() {
           if (isTask(item) && item.type) {
             setActiveTask(item)
           } else {
-            console.log('here', { item })
             setActiveExpense(item)
           }
         }}>

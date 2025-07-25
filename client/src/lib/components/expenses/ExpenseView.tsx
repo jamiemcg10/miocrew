@@ -1,7 +1,6 @@
 import { Expense } from '@/lib/types'
 import Popup from '../Popup'
 import { dateFormatter } from '@/lib/utils/dateFormatter'
-import { TripContext } from '@/lib/utils/TripContext'
 import { useContext } from 'react'
 import { UserContext } from '@/lib/utils/UserContext'
 import CrewAvatar from '../CrewAvatar'
