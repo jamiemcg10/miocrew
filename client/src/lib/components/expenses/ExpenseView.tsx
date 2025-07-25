@@ -8,6 +8,7 @@ import CrewAvatar from '../CrewAvatar'
 import clsx from 'clsx'
 import BoltIcon from '@mui/icons-material/Bolt'
 import Tooltip from '@mui/material/Tooltip'
+import { users } from '@/lib/utils/dummyData/users'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
@@ -15,10 +16,9 @@ interface ExpenseViewProps {
 }
 
 export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps) {
-  const trip = useContext(TripContext)
   const user = useContext(UserContext)
 
-  if (!activeExpense || !trip || !user) return
+  if (!activeExpense || !user) return
 
   return (
     <Popup open={!!activeExpense} onClose={() => onClose()}>
@@ -66,11 +66,11 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
           {Object.entries(activeExpense?.owe || {}).map(([id, owes]) => {
             return (
               <div key={id} className="flex items-center my-2">
-                <CrewAvatar user={trip.attendees[id]} size="xs" />
+                <CrewAvatar user={users[id]} size="xs" />
                 <span className="ml-2 mr-1">
                   {id === user.id
                     ? 'You'
-                    : `${trip.attendees[id].firstName} ${trip?.attendees[id].lastName.charAt(0)}.`}
+                    : `${users[id].firstName} ${users[id].lastName.charAt(0)}.`}
                 </span>
                 <span className={clsx(!owes.paid && 'text-red-700 font-semibold')}>
                   {owes.paid ? 'paid' : id === user.id ? 'owe' : 'owes'} $
