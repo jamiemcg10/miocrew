@@ -27,7 +27,7 @@ export default function ScheduleDay({ day, index }: ScheduleDayProps) {
             style={{ scrollSnapAlign: 'start', scrollMargin: index ? '64px' : '32px' }}>
             <div className="flex flex-col space-y-3">
               {day.events.sort(scheduleSort).map((event) => {
-                return <Event event={event} key={event.id} onClick={() => setActiveEvent(event)} />
+                return <Event event={event} key={event.id} setActiveEvent={setActiveEvent} />
               })}
             </div>
           </div>
