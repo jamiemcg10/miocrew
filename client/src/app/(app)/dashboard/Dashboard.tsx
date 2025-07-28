@@ -22,7 +22,7 @@ export default function Dashboard() {
         }}>
         Create trip
       </Button>
-      <TripTable trips={trips} />
+      <TripTable trips={trips} title="Upcoming trips" />
       <ActionItems />
     </div>
   )

@@ -7,12 +7,13 @@ import TableRow from './layout/TableRow'
 
 interface TripTableProps {
   trips: Trip[]
+  title: string
 }
 
-export default function TripTable({ trips }: TripTableProps) {
+export default function TripTable({ trips, title }: TripTableProps) {
   return (
     <div>
-      <div className="text-xl font-bold my-4">Upcoming trips</div>
+      <div className="text-xl font-bold my-4">{title}</div>
       {trips
         .sort((a, b) => (a.startDate > b.startDate ? 1 : -1))
         .map((trip) => {
