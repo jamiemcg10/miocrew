@@ -24,7 +24,8 @@ const eslintConfig = [
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_'
         }
-      ]
+      ],
+      'react-hooks/react-compiler': 'error'
     }
   }
 ]
