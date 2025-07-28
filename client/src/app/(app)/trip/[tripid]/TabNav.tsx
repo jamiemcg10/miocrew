@@ -6,30 +6,6 @@ interface TabNavProps {
   setPage: Dispatch<SetStateAction<string>>
 }
 
-const tabSx = {
-  transition: '250ms',
-  fontWeight: '600',
-  fontSize: '12px',
-  minWidth: '80px',
-  '@media (min-width:450px)': {
-    minWidth: 'initial',
-    fontSize: 'initial'
-  },
-  '@media (min-width:640px)': {
-    '&:hover': {
-      color: '#1976d2'
-    }
-  },
-  '@media (min-width:640px) and (prefers-color-scheme:dark)': {
-    '&:hover': {
-      color: '#90caf9'
-    }
-  },
-  '&:active': {
-    color: 'inherit'
-  }
-}
-
 export default function TabNav({ page, setPage }: TabNavProps) {
   function handlePageChange(key: Key) {
     localStorage.setItem('tab', `${key as string}`)
