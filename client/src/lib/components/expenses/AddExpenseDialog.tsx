@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useState, ChangeEvent } from 'react'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/TripContext'
 import CrewAvatar from '../CrewAvatar'
@@ -25,7 +25,7 @@ interface AddExpenseDialogProps {
 export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProps) {
   const trip = useContext(TripContext)
 
-  function handleTypeChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
     setTypeValue((e.target as HTMLInputElement).value)
   }
 
