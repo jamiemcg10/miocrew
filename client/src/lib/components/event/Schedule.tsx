@@ -49,7 +49,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
           </Button>
         </div>
         <div className="grow relative mt-4 mb-1 overflow-y-hidden">
-          <div className="absolute w-8 z-1 content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background) dark:to-[#00001a]"></div>
+          <div className="absolute w-8 z-2 content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background)"></div>
           <div
             className="flex justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
             style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}>
@@ -57,7 +57,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
               return <ScheduleDay day={day} index={i} key={i} />
             })}
           </div>
-          <div className="absolute w-8 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-(--background) dark:to-[#00001a]"></div>
+          <div className="absolute w-8 z-2 top-0 bottom-4 right-0 text-4xl content-center bg-linear-to-r from-transparent to-(--background)"></div>
         </div>
       </div>
     </>
