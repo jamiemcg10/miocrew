@@ -31,7 +31,7 @@ export default function TripTable({ trips }: TripTableProps) {
                     {Object.values(trip.attendees)
                       .slice(0, 5)
                       .map((user) => {
-                        return <CrewAvatar user={user} size="sm" />
+                        return <CrewAvatar user={user} size="sm" key={user.id} />
                       })}
                     {Object.values(trip.attendees).length > 5 ? (
                       <CrewAvatar name={`+${Object.values(trip.attendees).length - 5}`} size="sm" />
