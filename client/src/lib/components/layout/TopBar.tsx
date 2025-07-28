@@ -7,6 +7,10 @@ interface TopBarProps {
 }
 
 export default function TopBar({ toggleMenu, matches }: TopBarProps) {
+  function onClick() {
+    toggleMenu(true)
+  }
+
   return (
     <AppBar
       sx={[
@@ -16,7 +20,7 @@ export default function TopBar({ toggleMenu, matches }: TopBarProps) {
       <IconButton
         color="inherit"
         aria-label="open drawer"
-        onClick={() => toggleMenu(true)}
+        onClick={onClick}
         sx={[
           {
             ml: 1,
