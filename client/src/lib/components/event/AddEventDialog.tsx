@@ -6,12 +6,12 @@ import Dialog from '../Dialog'
 import { DatePicker } from '@heroui/date-picker'
 import { TimeInput } from '@heroui/date-input'
 
-interface CreateTaskDialogProps {
+interface AddEventDialogProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
+export default function AddEventDialog({ open, setOpen }: AddEventDialogProps) {
   return (
     <Dialog open={open} setOpen={setOpen}>
       <DialogTitle sx={{ fontWeight: 700 }}>Add Event</DialogTitle>
