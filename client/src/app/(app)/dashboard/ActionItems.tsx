@@ -15,6 +15,9 @@ import ExpenseView from '@/lib/components/expenses/ExpenseView'
 export default function ActionItems() {
   const user = useContext(UserContext)
 
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
+  const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
+
   if (!user) return
 
   function isTask(item: Task | Expense): item is Task {
@@ -79,9 +82,6 @@ export default function ActionItems() {
       return e.due === 'immediate' && e.owe[user.id] && !e.owe[user.id].paid
     })
   ]
-
-  const [activeTask, setActiveTask] = useState<Task | null>(null)
-  const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
 
   return (
     <>
