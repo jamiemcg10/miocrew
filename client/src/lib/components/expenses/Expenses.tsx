@@ -56,6 +56,10 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
     )
   }
 
+  function onClickAddButton() {
+    setOpenAddDialog(true)
+  }
+
   const tripExpenses = expenses.filter((expense) => expense.tripId === trip?.id)
   const [filteredExpenses, setFilteredExpenses] = useState(tripExpenses)
   const [filters, setFilters] = useState<string[]>([])
@@ -75,7 +79,7 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
           width: 'initial',
           fontWeight: 600
         }}
-        onClick={() => setOpenAddDialog(true)}>
+        onClick={onClickAddButton}>
         Add Expense
       </Button>
       <div className="@container flex grow flex-wrap-reverse overflow-hidden">

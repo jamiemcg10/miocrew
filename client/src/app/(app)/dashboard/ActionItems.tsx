@@ -12,6 +12,14 @@ export default function ActionItems() {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
 
+  function onCloseTaskView() {
+    setActiveTask(null)
+  }
+
+  function onCloseExpenseView() {
+    setActiveExpense(null)
+  }
+
   if (!user) return
 
   const actionItems = [
@@ -43,8 +51,8 @@ export default function ActionItems() {
       ) : (
         <div>You have no action items right now</div>
       )}
-      <TaskView activeTask={activeTask} onClose={() => setActiveTask(null)} />
-      <ExpenseView activeExpense={activeExpense} onClose={() => setActiveExpense(null)} />
+      <TaskView activeTask={activeTask} onClose={onCloseTaskView} />
+      <ExpenseView activeExpense={activeExpense} onClose={onCloseExpenseView} />
     </>
   )
 }

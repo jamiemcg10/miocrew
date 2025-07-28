@@ -13,6 +13,10 @@ interface IdeasProps {
 }
 
 export default function Ideas({ setOpenAddDialog }: IdeasProps) {
+  function onClickAddButton() {
+    setOpenAddDialog(true)
+  }
+
   const [activeIdea, setActiveIdea] = useState<Idea | null>(null)
 
   return (
@@ -26,7 +30,7 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
           width: 'initial',
           fontWeight: 600
         }}
-        onClick={() => setOpenAddDialog(true)}>
+        onClick={onClickAddButton}>
         Add idea
       </Button>
       <div className="relative overflow-y-auto px-8 md:px-0">

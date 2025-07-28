@@ -22,6 +22,10 @@ const Transition = forwardRef(function Transition(
 })
 
 export default function Dialog({ open, setOpen, children }: DialogProps) {
+  function onClose() {
+    setOpen(false)
+  }
+
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -33,8 +37,8 @@ export default function Dialog({ open, setOpen, children }: DialogProps) {
       slotProps={{
         paper: { sx: { '@media (min-width: 560px)': { width: '50%' } } }
       }}
-      onClose={() => setOpen(false)}>
-      <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={() => setOpen(false)}>
+      onClose={onClose}>
+      <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={onClose}>
         <CloseRoundedIcon />
       </IconButton>
       {children}

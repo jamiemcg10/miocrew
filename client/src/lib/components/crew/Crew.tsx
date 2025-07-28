@@ -21,6 +21,10 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
     setActiveCrewMemberType(undefined)
   }
 
+  function onClickAddButton() {
+    setOpenAddDialog(true)
+  }
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [activeCrewMemberType, setActiveCrewMemberType] = useState<CrewMember['type'] | undefined>(
     undefined
@@ -37,7 +41,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
           width: 'initial',
           fontWeight: 600
         }}
-        onClick={() => setOpenAddDialog(true)}>
+        onClick={onClickAddButton}>
         Add crew
       </Button>
 

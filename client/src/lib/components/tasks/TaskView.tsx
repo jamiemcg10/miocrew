@@ -14,7 +14,7 @@ interface TaskViewProps {
 
 export default function TaskView({ activeTask, onClose }: TaskViewProps) {
   return (
-    <Popup open={!!activeTask} onClose={() => onClose()}>
+    <Popup open={!!activeTask} onClose={onClose}>
       <>
         <div className="flex text-2xl items-center space-x-2">
           {activeTask?.completed ? (

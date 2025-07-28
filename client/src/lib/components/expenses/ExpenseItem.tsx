@@ -13,12 +13,16 @@ interface ExpenseItemProps {
 }
 
 export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemProps) {
+  function onClick() {
+    setActiveExpense(expense)
+  }
+
   const user = useContext(UserContext)
 
   if (!user) return
 
   return (
-    <TableRow classes="py-1" onClick={() => setActiveExpense(expense)}>
+    <TableRow classes="py-1" onClick={onClick}>
       <div className="w-1/4 sm:w-1/5 text-sm shrink-0 mr-2">{dateFormatter(expense.date)}</div>
       <div className="flex flex-col sm:flex-row grow">
         <div className="flex items-center grow">
