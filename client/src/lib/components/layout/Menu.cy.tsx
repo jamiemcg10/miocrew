@@ -50,6 +50,11 @@ describe('<Menu />', () => {
     cy.contains('Settings')
   })
 
+  it('"Settings" option has correct href', () => {
+    cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
+    cy.contains('Settings').closest('a').should('have.attr', 'href', '/settings')
+  })
+
   it('Has "Log out" option', () => {
     cy.mount(<Menu open={true} matches={true} handleClose={() => {}} />)
     cy.contains('Log out')

@@ -15,7 +15,6 @@ interface PollTaskViewProps {
 // NOTE: Need to track who has completed poll to determine the view
 
 export default function PollTaskView({ activeTask }: PollTaskViewProps) {
-  console.log(activeTask)
   return (
     <>
       {activeTask?.completed ? (

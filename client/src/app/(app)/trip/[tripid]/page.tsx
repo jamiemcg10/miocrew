@@ -20,20 +20,20 @@ export default function TripPage() {
     notFound()
   }
 
-  const initialPage = +(localStorage.getItem('tab') || '0')
+  const initialPage = localStorage.getItem('tab') || 'schedule'
   const [page, setPage] = useState(initialPage)
 
   function renderPage() {
     switch (page) {
-      case 0:
+      case 'schedule':
         return <SchedulePage />
-      case 1:
+      case 'tasks':
         return <TaskPage />
-      case 2:
+      case 'planning':
         return <IdeasPage />
-      case 3:
+      case 'expenses':
         return <ExpensesPage />
-      case 4:
+      case 'crew':
         return <CrewPage />
     }
   }
@@ -41,7 +41,7 @@ export default function TripPage() {
   return (
     <div className="relative overflow-hidden flex flex-col grow">
       <div
-        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--foreground) dark:!text-[#90caf9] border-b-4 dark:!border-b-[#90caf9]"
+        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--dk-blue) dark:!text-(--lt-blue) border-b-4 !border-b-(--dk-blue) dark:!border-b-(--lt-blue)"
         style={{ borderStyle: 'double' }}>
         {trip.name}
       </div>

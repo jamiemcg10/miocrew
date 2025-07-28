@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar'
 import { Task, User } from '@/lib/types'
 import TaskView from './TaskView'
 import { TripContext } from '@/lib/utils/TripContext'
+import CrewAvatar from '../CrewAvatar'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean>>
@@ -92,14 +93,10 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           return (
             <Chip
               label={a.firstName}
-              avatar={
-                <Avatar alt={a.firstName} sx={{ backgroundColor: a.color }}>
-                  {a.firstName.charAt(0)}
-                  {a.lastName.charAt(0)}
-                </Avatar>
-              }
+              avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
               key={i}
               variant={crewFilter === a.id ? 'filled' : 'outlined'}
+              sx={{ pl: '8px' }}
               onClick={() => handleCrewFilterClick(a.id)}
             />
           )

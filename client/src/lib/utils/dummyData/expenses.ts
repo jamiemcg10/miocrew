@@ -4,7 +4,7 @@ export const expenses = [
   {
     id: 'exp1',
     tripId: '1',
-    paidBy: '1',
+    paidBy: { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' },
     name: 'AirBnB',
     total: 3129.85,
     split: 'Even' as const,
@@ -20,7 +20,13 @@ export const expenses = [
   {
     id: 'exp2',
     tripId: '1',
-    paidBy: '2',
+    paidBy: {
+      id: '2',
+      firstName: 'Meryll',
+      lastName: 'Streep',
+      color: 'orangered',
+      type: 'Crew'
+    },
     name: 'Early brunch',
     total: 198.95,
     split: 'Custom' as const,
@@ -36,7 +42,13 @@ export const expenses = [
   {
     id: 'exp3',
     tripId: '1',
-    paidBy: '2',
+    paidBy: {
+      id: '2',
+      firstName: 'Meryll',
+      lastName: 'Streep',
+      color: 'orangered',
+      type: 'Crew'
+    },
     name: 'Bike tour',
     total: 66,
     split: 'Even' as const,
@@ -52,7 +64,7 @@ export const expenses = [
   {
     id: 'exp4',
     tripId: '3',
-    paidBy: '7',
+    paidBy: { id: '7', firstName: 'Johnny', lastName: 'Walker', color: 'green', type: 'Admin' },
     name: 'Hotel',
     total: 3129.85,
     split: 'Custom' as const,
@@ -69,7 +81,7 @@ export const expenses = [
   {
     id: 'exp5',
     tripId: '3',
-    paidBy: '4',
+    paidBy: { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Captain' },
     name: 'Tickets',
     total: 225,
     split: 'Custom' as const,
@@ -87,7 +99,13 @@ export const expenses = [
   {
     id: 'exp6',
     tripId: '1',
-    paidBy: '2',
+    paidBy: {
+      id: '2',
+      firstName: 'Meryll',
+      lastName: 'Streep',
+      color: 'orangered',
+      type: 'Crew'
+    },
     name: 'JetBlue flights',
     total: 2032,
     split: 'Even' as const,
@@ -103,7 +121,7 @@ export const expenses = [
   {
     id: 'exp7',
     tripId: '1',
-    paidBy: '1',
+    paidBy: { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' },
     name: 'Airport coffee',
     total: 10,
     split: 'Even' as const,
@@ -118,7 +136,7 @@ export const expenses = [
   {
     id: 'exp8',
     tripId: '1',
-    paidBy: '1',
+    paidBy: { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' },
     name: 'Wine crate from Madonna Vineyards',
     total: 225,
     split: 'Even' as const,
@@ -134,7 +152,13 @@ export const expenses = [
   {
     id: 'exp9',
     tripId: '1',
-    paidBy: '2',
+    paidBy: {
+      id: '2',
+      firstName: 'Meryll',
+      lastName: 'Streep',
+      color: 'orangered',
+      type: 'Crew'
+    },
     name: 'Uber to Sonoma',
     total: 85.25,
     split: 'Custom' as const,
@@ -150,7 +174,13 @@ export const expenses = [
   {
     id: 'exp10',
     tripId: '1',
-    paidBy: '3',
+    paidBy: {
+      id: '3',
+      firstName: 'Jamie Lee',
+      lastName: 'Curtis',
+      color: 'turquoise',
+      type: 'Crew'
+    },
     name: 'Late night pizza',
     total: 45,
     split: 'Even' as const,
@@ -167,7 +197,13 @@ export const expenses = [
   {
     id: 'exp11',
     tripId: '1',
-    paidBy: '2',
+    paidBy: {
+      id: '2',
+      firstName: 'Meryll',
+      lastName: 'Streep',
+      color: 'orangered',
+      type: 'Crew'
+    },
     name: 'Uber to airport',
     total: 166,
     split: 'Even' as const,

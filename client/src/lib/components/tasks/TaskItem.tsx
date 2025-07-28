@@ -4,13 +4,14 @@ import PieChartRoundedIcon from '@mui/icons-material/PieChartRounded'
 import EventRoundedIcon from '@mui/icons-material/EventRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
+import TableRow from '../layout/TableRow'
 
 interface TaskItemProps {
   task: Task
   onClick: () => void
 }
 
-function getImage(type: string) {
+export function getImage(type: string) {
   switch (type) {
     case 'poll':
       return <PieChartRoundedIcon />
@@ -29,9 +30,7 @@ function getAssigneeName(assignee: 'Everyone' | User) {
 
 export default function TaskItem({ task, onClick }: TaskItemProps) {
   return (
-    <div
-      className="h-16 sm:h-12 mb-4 cursor-pointer bg-[#cccccc] rounded-lg items-center flex justify-between dark:even:bg-white/20 dark:odd:bg-white/10"
-      onClick={() => onClick()}>
+    <TableRow onClick={onClick}>
       <div className="ml-2">
         {task.completed ? (
           <CheckBoxRoundedIcon fontSize="small" />
@@ -51,6 +50,6 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {
           </span>
         </div>
       </div>
-    </div>
+    </TableRow>
   )
 }

@@ -1,34 +1,32 @@
-import Avatar from '@mui/material/Avatar'
+import { trips as upcomingTrips } from '@/lib/utils/dummyData'
+import { tripSort } from '@/lib/utils/sortFns'
+import dayjs from 'dayjs'
 
 export default function DashboardHeader() {
-  // stub data
-  const user = {
-    firstName: 'Jamie', // from user
-    lastName: 'Smart',
-    color: 'orangered' // from user
-  }
+  const nextTrip = upcomingTrips.sort(tripSort)[0]
 
-  const n = 4
-  //
+  const today = dayjs(new Date())
+  const nextTripStart = dayjs(nextTrip.startDate).diff(today, 'day')
+  const nextTripStartMonths = dayjs(nextTrip.startDate).diff(today, 'month')
 
   return (
-    <div className="flex justify-around py-4 items-center bg-[#cee2f5] dark:bg-white/20">
-      <div className="flex items-center space-x-2 sm:space-x-4">
-        <Avatar
-          alt={user.firstName}
-          sx={{
-            color: 'var(--foreground)',
-            backgroundColor: user.color,
-            border: '4px solid var(--foreground)',
-            height: 48,
-            width: 48
-          }}>
-          {user.firstName.charAt(0)}
-          {user.lastName.charAt(0)}
-        </Avatar>
-        <span className="font-bold">Hi, {user.firstName}!</span>
+    <div className="flex justify-around px-4 py-4 items-center bg-[#cee2f5] dark:bg-white/20 font-semibold">
+      <div>
+        You have <span className="text-lg">{upcomingTrips.length}</span> upcoming trips!
       </div>
-      <span>You have {n} upcoming trips!</span>
+      <div>
+        Your next trip is in{' '}
+        {nextTripStart <= 90 ? (
+          <span>
+            <span className="text-lg">{nextTripStart}</span> days
+          </span>
+        ) : (
+          <span>
+            <span className="text-lg">{nextTripStartMonths}</span> months
+          </span>
+        )}
+        !
+      </div>
     </div>
   )
 }

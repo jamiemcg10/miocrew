@@ -5,7 +5,7 @@ export const trips = [
     id: '1',
     name: 'Wine Moms Take on Napa',
     attendees: {
-      '1': { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Owner' }, // color should really be their avatar
+      '1': { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' }, // color should really be their avatar
       '2': {
         id: '2',
         firstName: 'Meryll',
@@ -28,7 +28,13 @@ export const trips = [
     id: '2',
     name: 'Streep Family Vacation',
     attendees: {
-      '2': { id: '2', firstName: 'Meryll', lastName: 'Streep', color: 'orangered', type: 'Owner' },
+      '2': {
+        id: '2',
+        firstName: 'Meryll',
+        lastName: 'Streep',
+        color: 'orangered',
+        type: 'Captain'
+      },
       '4': { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Admin' },
       '5': { id: '5', firstName: 'Luca', lastName: 'Streep', color: 'pink', type: 'Crew' },
       '6': { id: '6', firstName: 'Astro', lastName: 'Streep', color: 'navy', type: 'Crew' }
@@ -47,7 +53,7 @@ export const trips = [
         color: 'orangered',
         type: 'Attendee'
       },
-      '4': { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Owner' },
+      '4': { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Captain' },
       '5': { id: '5', firstName: 'Luca', lastName: 'Streep', color: 'pink', type: 'Crew' },
       '6': { id: '6', firstName: 'Astro', lastName: 'Streep', color: 'navy', type: 'Crew' },
       '7': { id: '7', firstName: 'Johnny', lastName: 'Walker', color: 'green', type: 'Admin' },

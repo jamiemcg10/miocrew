@@ -4,6 +4,8 @@ import { messages } from '@/lib/utils/dummyData/messages'
 import Button from '@mui/material/Button'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined'
 import { useState } from 'react'
 import Message from '@/lib/components/messages/Message'
 import type { BaseMessage } from '@/lib/types'
@@ -34,9 +36,20 @@ export default function InboxPage() {
         <div className="py-4 flex flex-wrap-reverse justify-end">
           <div
             className={(hasChecked ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'}>
-            <Button size="small">Mark Read</Button>
-            <Button size="small">Mark Unread</Button>
-            <Button size="small" color="error">
+            <Button size="small" startIcon={<DraftsOutlinedIcon />} sx={{ textTransform: 'none' }}>
+              Mark read
+            </Button>
+            <Button
+              size="small"
+              startIcon={<MarkunreadOutlinedIcon />}
+              sx={{ textTransform: 'none' }}>
+              Mark unread
+            </Button>
+            <Button
+              size="small"
+              startIcon={<DeleteRoundedIcon />}
+              sx={{ textTransform: 'none' }}
+              color="error">
               Delete
             </Button>
           </div>
