@@ -3,10 +3,8 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import { Dispatch, SetStateAction } from 'react'
 import Dialog from '../Dialog'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { TimePicker } from '@mui/x-date-pickers/TimePicker'
+import { DatePicker } from '@heroui/date-picker'
+import { TimeInput } from '@heroui/date-input'
 
 interface CreateTaskDialogProps {
   open: boolean
@@ -22,20 +20,12 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
         <TextField label="Event Description" multiline rows={3} sx={{ mb: 2 }} />
         <TextField label="Location" required sx={{ mb: 2 }} />
         <div className="flex mb-2">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="Start date" sx={{ width: '60%' }} disablePast />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker label="Start time" sx={{ width: '40%', ml: 2 }} />
-          </LocalizationProvider>
+          <DatePicker className="w-3/5" label="Start date" variant="bordered" size="sm" />
+          <TimeInput className="w-2/5 ml-2" label="Start time" variant="bordered" />
         </div>
         <div className="flex">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="End date" sx={{ width: '60%' }} disablePast />
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker label="End time" sx={{ width: '40%', ml: 2 }} />
-          </LocalizationProvider>
+          <DatePicker className="w-3/5" label="End date" variant="bordered" size="sm" />
+          <TimeInput className="w-2/5 ml-2" label="End time" variant="bordered" />
         </div>
         <Button variant="contained" sx={{ fontWeight: 700, mt: 5 }}>
           Add Event

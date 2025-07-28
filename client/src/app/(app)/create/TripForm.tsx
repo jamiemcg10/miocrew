@@ -1,12 +1,8 @@
-'use client'
-
 import '@/lib/styles/VerticalScroll.css'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DatePicker } from '@heroui/date-picker'
 import Autocomplete from '@mui/material/Autocomplete'
 import { dummyEmails } from '@/lib/utils/dummyData'
 
@@ -22,13 +18,9 @@ export default function TripForm() {
         <TextField variant="outlined" label="Trip location" sx={fieldStyles} />
       </div>
       <div className="flex justify-between">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="Start date" sx={{ width: '40%' }} disablePast />
-        </LocalizationProvider>
+        <DatePicker className="w-2/5" label="Start date" variant="bordered" size="sm" />
         <span className="self-center italic text-gray-500">to</span>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker label="End date" sx={{ width: '40%' }} disablePast />
-        </LocalizationProvider>
+        <DatePicker className="w-2/5" label="End date" variant="bordered" size="sm" />
       </div>
       <div>
         <TextField variant="outlined" label="Description" multiline rows={4} sx={fieldStyles} />
