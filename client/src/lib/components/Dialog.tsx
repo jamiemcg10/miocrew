@@ -1,9 +1,11 @@
 import _Dialog from '@mui/material/Dialog'
 import { Dispatch, forwardRef, ReactElement, ReactNode, Ref, SetStateAction } from 'react'
-import { Zoom, useMediaQuery, useTheme } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
 import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import Zoom from '@mui/material/Zoom'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material/styles'
 
 interface DialogProps {
   open: boolean

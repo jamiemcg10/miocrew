@@ -2,7 +2,7 @@
 
 import TripTable from '@/lib/components/TripTable'
 import { trips } from '@/lib/utils/dummyData'
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import ActionItems from './ActionItems'
 

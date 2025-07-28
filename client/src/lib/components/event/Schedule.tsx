@@ -1,6 +1,6 @@
 import './Schedule.css'
 import { tripEvents } from '@/lib/utils/dummyData'
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
 import dayjs from 'dayjs'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { TripEvent } from '@/lib/types/tripEvent'

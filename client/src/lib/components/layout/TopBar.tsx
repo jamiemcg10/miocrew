@@ -1,4 +1,6 @@
-import { AppBar, IconButton } from '@mui/material'
+import AppBar from '@mui/material/AppBar'
+import IconButton from '@mui/material/IconButton'
+
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
 
 interface TopBarProps {
