@@ -25,16 +25,15 @@ export default function ActionItem({
   setActiveTask,
   setActiveExpense
 }: ActionItemProps) {
+  function onClick() {
+    if (isTask(item) && item.type) {
+      setActiveTask(item)
+    } else {
+      setActiveExpense(item)
+    }
+  }
   return (
-    <TableRow
-      classes="px-2"
-      onClick={() => {
-        if (isTask(item) && item.type) {
-          setActiveTask(item)
-        } else {
-          setActiveExpense(item)
-        }
-      }}>
+    <TableRow classes="px-2" onClick={onClick}>
       {isTask(item) && item.type ? (
         <>
           <span className="pr-4 inline-flex items-center text-lg font-semibold gap-2 basis-2/3">
