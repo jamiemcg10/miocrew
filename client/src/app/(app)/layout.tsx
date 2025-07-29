@@ -19,6 +19,10 @@ export default function DashboardLayout({
   const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
 
+  function mount() {
+    setMounted(true)
+  }
+
   const cachedToggleMenu = useCallback(
     function (open?: boolean) {
       setOpen(open || false)
@@ -28,10 +32,8 @@ export default function DashboardLayout({
 
   const user = users['2']
 
-  useEffect(() => {
-    // needs to be last
-    setMounted(true)
-  }, [])
+  // needs to be last
+  useEffect(mount, [])
 
   if (!mounted) {
     return null
