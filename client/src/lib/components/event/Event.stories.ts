@@ -37,8 +37,6 @@ export const TripEvent: Story = {
       endTime: new Date('August 5, 2026 6:00 PM'),
       color: 'orangered'
     },
-    onClick: () => {
-      console.log('click')
-    }
+    setActiveEvent: () => {}
   }
 }
