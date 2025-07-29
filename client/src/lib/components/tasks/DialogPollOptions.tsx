@@ -6,7 +6,12 @@ import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
 export default function DialogPollOptions() {
+  function addOption() {
+    setOptions([...options, ''])
+  }
+
   const [options, setOptions] = useState<string[]>(['', ''])
+
   return (
     <>
       <TextField label="Poll Question" size="small" sx={{ mb: 2 }} />
@@ -41,7 +46,7 @@ export default function DialogPollOptions() {
       <Button
         startIcon={<AddRoundedIcon />}
         sx={{ my: 2, width: 'fit-content' }}
-        onClick={() => setOptions([...options, ''])}>
+        onClick={addOption}>
         Add Option
       </Button>
     </>

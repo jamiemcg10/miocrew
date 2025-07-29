@@ -11,11 +11,12 @@ interface ActiveIdeaProps {
 }
 
 export default function ActiveEvent({ activeIdea, setActiveIdea }: ActiveIdeaProps) {
+  function onClose() {
+    setActiveIdea(null)
+  }
+
   return (
-    <Popup
-      backgroundColor={activeIdea?.color}
-      open={!!activeIdea}
-      onClose={() => setActiveIdea(null)}>
+    <Popup backgroundColor={activeIdea?.color} open={!!activeIdea} onClose={onClose}>
       <div className="flex items-center space-x-1">
         <div className="font-bold text-2xl">{activeIdea?.name}</div>
         {activeIdea?.url ? (

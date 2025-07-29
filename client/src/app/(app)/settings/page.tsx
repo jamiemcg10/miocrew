@@ -8,6 +8,10 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
 import Tooltip from '@mui/material/Tooltip'
 
 export default function SettingsPage() {
+  function onClickUpload() {
+    inputRef.current?.click()
+  }
+
   const user = useContext(UserContext)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -33,7 +37,7 @@ export default function SettingsPage() {
                   bottom: 0,
                   transform: 'translate(-25%, 40%)'
                 }}
-                onClick={() => inputRef.current?.click()}>
+                onClick={onClickUpload}>
                 <AddAPhotoIcon sx={{ fontSize: '16px' }} />
               </IconButton>
             </Tooltip>

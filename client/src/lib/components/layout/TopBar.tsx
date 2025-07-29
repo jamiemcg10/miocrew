@@ -1,4 +1,6 @@
-import { AppBar, IconButton } from '@mui/material'
+import AppBar from '@mui/material/AppBar'
+import IconButton from '@mui/material/IconButton'
+
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
 
 interface TopBarProps {
@@ -7,6 +9,10 @@ interface TopBarProps {
 }
 
 export default function TopBar({ toggleMenu, matches }: TopBarProps) {
+  function onClick() {
+    toggleMenu(true)
+  }
+
   return (
     <AppBar
       sx={[
@@ -16,7 +22,7 @@ export default function TopBar({ toggleMenu, matches }: TopBarProps) {
       <IconButton
         color="inherit"
         aria-label="open drawer"
-        onClick={() => toggleMenu(true)}
+        onClick={onClick}
         sx={[
           {
             ml: 1,

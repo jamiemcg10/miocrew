@@ -37,7 +37,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
       variant={matches ? 'permanent' : 'temporary'}
       anchor="left"
       open={matches || open}
-      onClose={() => handleClose()}>
+      onClose={handleClose}>
       <Box sx={{ height: '100%' }}>
         <List sx={{ height: '100%' }}>
           <ListItem key={'Greeting'} sx={{ pb: '1rem' }}>

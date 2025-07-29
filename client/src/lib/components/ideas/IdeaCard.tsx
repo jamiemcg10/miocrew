@@ -5,17 +5,22 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import IconButton from '@mui/material/IconButton'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useState, useRef } from 'react'
+import { useState, useRef, Dispatch, SetStateAction } from 'react'
 import IdeaMenu from './IdeaMenu'
 
 interface IdeaCardProps {
   idea: Idea
-  onClick: () => void
+  setActiveIdea: Dispatch<SetStateAction<Idea | null>>
 }
 
-export default function IdeaCard({ idea, onClick }: IdeaCardProps) {
+export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
+  function onClick() {
+    setActiveIdea(idea)
+  }
+
   const menuRef = useRef(null)
   const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <>
       <div

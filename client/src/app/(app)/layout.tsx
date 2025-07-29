@@ -6,6 +6,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from '@/lib/components/layout/Menu'
 import TopBar from '@/lib/components/layout/TopBar'
 import { UserContext } from '@/lib/utils/UserContext'
+import { users } from '@/lib/utils/dummyData/users'
 
 export default function DashboardLayout({
   children
@@ -18,6 +19,10 @@ export default function DashboardLayout({
   const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
 
+  function mount() {
+    setMounted(true)
+  }
+
   const cachedToggleMenu = useCallback(
     function (open?: boolean) {
       setOpen(open || false)
@@ -25,18 +30,10 @@ export default function DashboardLayout({
     [setOpen]
   )
 
-  const user = {
-    id: '2',
-    firstName: 'Meryll',
-    lastName: 'Streep',
-    color: 'orangered' as const,
-    type: 'Crew'
-  }
+  const user = users['2']
 
-  useEffect(() => {
-    // needs to be last
-    setMounted(true)
-  }, [])
+  // needs to be last
+  useEffect(mount, [])
 
   if (!mounted) {
     return null

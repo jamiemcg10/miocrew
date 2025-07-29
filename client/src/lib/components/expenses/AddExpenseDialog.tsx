@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useState, ChangeEvent } from 'react'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/TripContext'
 import CrewAvatar from '../CrewAvatar'
@@ -15,9 +15,7 @@ import FormControl from '@mui/material/FormControl'
 import BoltIcon from '@mui/icons-material/Bolt'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import clsx from 'clsx'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DatePicker } from '@heroui/date-picker'
 
 interface AddExpenseDialogProps {
   open: boolean
@@ -27,7 +25,7 @@ interface AddExpenseDialogProps {
 export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProps) {
   const trip = useContext(TripContext)
 
-  function handleTypeChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
     setTypeValue((e.target as HTMLInputElement).value)
   }
 
@@ -39,17 +37,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
       <form className="flex flex-col m-10 mt-4">
         <TextField label="Name" required sx={{ mb: 2 }} size="small" />
         <TextField label="Description" multiline rows={1} sx={{ mb: 2 }} size="small" />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Date"
-            slotProps={{
-              textField: {
-                size: 'small',
-                sx: { mb: 2, width: '60%' }
-              }
-            }}
-          />
-        </LocalizationProvider>
+        <DatePicker className="w-3/5 mb-2" label="Date" variant="bordered" size="sm" />
         <FormControl>
           <FormLabel id="expense-split-type-label">Split expense</FormLabel>
           <RadioGroup

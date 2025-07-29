@@ -1,9 +1,11 @@
 import _Dialog from '@mui/material/Dialog'
 import { Dispatch, forwardRef, ReactElement, ReactNode, Ref, SetStateAction } from 'react'
-import { Zoom, useMediaQuery, useTheme } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
 import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import Zoom from '@mui/material/Zoom'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material/styles'
 
 interface DialogProps {
   open: boolean
@@ -22,6 +24,10 @@ const Transition = forwardRef(function Transition(
 })
 
 export default function Dialog({ open, setOpen, children }: DialogProps) {
+  function onClose() {
+    setOpen(false)
+  }
+
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -33,8 +39,8 @@ export default function Dialog({ open, setOpen, children }: DialogProps) {
       slotProps={{
         paper: { sx: { '@media (min-width: 560px)': { width: '50%' } } }
       }}
-      onClose={() => setOpen(false)}>
-      <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={() => setOpen(false)}>
+      onClose={onClose}>
+      <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={onClose}>
         <CloseRoundedIcon />
       </IconButton>
       {children}

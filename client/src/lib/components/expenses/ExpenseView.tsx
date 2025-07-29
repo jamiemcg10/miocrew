@@ -20,7 +20,7 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
   if (!activeExpense || !user) return
 
   return (
-    <Popup open={!!activeExpense} onClose={() => onClose()}>
+    <Popup open={!!activeExpense} onClose={onClose}>
       <>
         <div className="flex text-2xl items-center space-x-2 font-bold">
           {activeExpense.due === 'immediate' ? (

@@ -1,6 +1,6 @@
 import './Schedule.css'
 import { tripEvents } from '@/lib/utils/dummyData'
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
 import dayjs from 'dayjs'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { TripEvent } from '@/lib/types/tripEvent'
@@ -13,6 +13,10 @@ interface ScheduleProps {
 }
 
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
+  function setOpenAddDialogTrue() {
+    setOpenAddDialog(true)
+  }
+
   const trip = useContext(TripContext)
 
   const tripStart = dayjs(trip?.startDate)
@@ -44,7 +48,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
             variant="contained"
             startIcon={<AddRoundedIcon />}
             sx={{ width: 'initial', fontWeight: 600 }}
-            onClick={() => setOpenAddDialog(true)}>
+            onClick={setOpenAddDialogTrue}>
             Add activity
           </Button>
         </div>
