@@ -4,4 +4,5 @@ export interface BaseMessage {
   body: string
   read: boolean
   sender: string
+  recipients: string[] // put in separate table
 }
