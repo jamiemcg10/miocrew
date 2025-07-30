@@ -6,7 +6,7 @@ export const ideas = [
     description: 'We can rent some bikes and bike around to some of the closer vineyards',
     color: 'cornflowerblue' as const,
     likes: 3,
-    creator: 'Marilyn Monroe'
+    creator: '3'
   },
   {
     tripId: '1',
@@ -18,7 +18,7 @@ export const ideas = [
     description: 'For the runners of the group',
     color: 'gold' as const,
     likes: 1,
-    creator: 'Jill Sparrow'
+    creator: '1'
   },
   {
     tripId: '1',
@@ -28,7 +28,7 @@ export const ideas = [
     description: "Something to do if we stay in Sacramento. It's a cool museum about trains",
     color: 'plum' as const,
     likes: 0,
-    creator: 'Judy Bloom'
+    creator: '2'
   },
   {
     tripId: '1',
@@ -39,7 +39,7 @@ export const ideas = [
     description: 'My favorite vineyard',
     color: 'tomato' as const,
     likes: 4,
-    creator: 'Mary-Kate and/or Ashley Olson'
+    creator: '2'
   },
   {
     tripId: '1',
@@ -50,7 +50,7 @@ export const ideas = [
     description: '4 hour hot air balloon ride above Napa Valley. Can see Mount Saint Helena!',
     color: 'turquoise' as const,
     likes: 2,
-    creator: 'Jessica Day'
+    creator: '1'
   },
   {
     tripId: '1',
@@ -62,7 +62,7 @@ export const ideas = [
     description: '2-3 hours. Can do lunch or dinner. Alcohol is extra. $261+',
     color: 'salmon' as const,
     likes: 3,
-    creator: 'Marge McDonald'
+    creator: '1'
   },
   {
     tripId: '1',
@@ -72,6 +72,6 @@ export const ideas = [
     description: 'A bit out of the way, but the trees are beautiful',
     color: 'skyblue' as const,
     likes: 2,
-    creator: 'Jillian Chasez'
+    creator: '3'
   }
 ]

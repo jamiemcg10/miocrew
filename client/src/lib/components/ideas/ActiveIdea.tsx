@@ -4,6 +4,7 @@ import Popup from '../Popup'
 import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded'
 import IconButton from '@mui/material/IconButton'
+import { users } from '@/lib/utils/dummyData/users'
 
 interface ActiveIdeaProps {
   activeIdea: Idea | null
@@ -15,35 +16,39 @@ export default function ActiveEvent({ activeIdea, setActiveIdea }: ActiveIdeaPro
     setActiveIdea(null)
   }
 
+  if (!activeIdea) return
+
   return (
-    <Popup backgroundColor={activeIdea?.color} open={!!activeIdea} onClose={onClose}>
+    <Popup backgroundColor={activeIdea.color} open={!!activeIdea} onClose={onClose}>
       <div className="flex items-center space-x-1">
-        <div className="font-bold text-2xl">{activeIdea?.name}</div>
-        {activeIdea?.url ? (
-          <IconButton sx={{ rotate: '135deg' }} href={activeIdea?.url}>
+        <div className="font-bold text-2xl">{activeIdea.name}</div>
+        {activeIdea.url ? (
+          <IconButton sx={{ rotate: '135deg' }} href={activeIdea.url}>
             <LinkRoundedIcon />
           </IconButton>
         ) : null}
       </div>
-      <div className="italic text-sm">Suggested by {activeIdea?.creator}</div>
+      <div className="italic text-sm">
+        Suggested by {users[activeIdea.creator].firstName} {users[activeIdea.creator].lastName}
+      </div>
       <div
         className={
           'mt-2 justify-self-center w-full sm:w-4/5 basis-3/5 min-h-3/5 h-3/5 max-h-3/5 mb-2 flex justify-center items-center rounded-sm' +
-          (!activeIdea?.img ? ' bg-gray-500' : '')
+          (!activeIdea.img ? ' bg-gray-500' : '')
         }>
-        {activeIdea?.img ? (
-          <img className="h-full rouded-sm" src={activeIdea?.img} alt={activeIdea?.name} />
+        {activeIdea.img ? (
+          <img className="h-full rouded-sm" src={activeIdea.img} alt={activeIdea.name} />
         ) : (
           <EmojiObjectsRoundedIcon sx={{ fontSize: 216 }} />
         )}
       </div>
 
-      {activeIdea?.cost ? (
+      {activeIdea.cost ? (
         <div className="font-bold">
-          ${activeIdea?.cost} {activeIdea?.costType}
+          ${activeIdea.cost} {activeIdea.costType}
         </div>
       ) : null}
-      <div className="mt-8">{activeIdea?.description}</div>
+      <div className="mt-8">{activeIdea.description}</div>
     </Popup>
   )
 }
