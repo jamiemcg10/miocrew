@@ -4,9 +4,11 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@heroui/date-picker'
 import Autocomplete from '@mui/material/Autocomplete'
-import { dummyEmails } from '@/lib/utils/dummyData'
+import { users } from '@/lib/utils/dummyData'
 
 const fieldStyles = { width: '100%' }
+
+const userEmails = Object.values(users).map((u) => u.email)
 
 export default function TripForm() {
   return (
@@ -28,19 +30,15 @@ export default function TripForm() {
       <div>
         <Autocomplete
           id="add-crew"
-          options={dummyEmails}
-          getOptionLabel={(option) => (typeof option === 'string' ? option : option.email)}
+          options={userEmails}
           multiple
           freeSolo
-          filterOptions={(options, params) => {
-            const filtered = options.filter((option) =>
-              option.email.toLowerCase().includes(params.inputValue.toLowerCase())
+          filterOptions={(emails, params) => {
+            const filtered = emails.filter((email) =>
+              email.toLowerCase().includes(params.inputValue.toLowerCase())
             )
-            if (
-              params.inputValue !== '' &&
-              !options.some((option) => option.email === params.inputValue)
-            ) {
-              filtered.push({ id: '', email: params.inputValue, type: 'user' })
+            if (params.inputValue !== '' && !emails.some((email) => email === params.inputValue)) {
+              filtered.push(params.inputValue)
             }
             return filtered
           }}

@@ -3,7 +3,7 @@ import Popup from '../Popup'
 import TextField from '@mui/material/TextField'
 import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
-import { dummyEmails, trips } from '@/lib/utils/dummyData'
+import { trips, users } from '@/lib/utils/dummyData'
 import Autocomplete from '@mui/material/Autocomplete'
 
 interface ComposeMessageDialogProps {
@@ -31,7 +31,11 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
   const tripOptions = trips.map((t) => {
     return { email: t.name, id: t.id, type: 'trip' }
   })
-  const combinedRecipientOptions = [...tripOptions, ...dummyEmails]
+
+  const userOptions = Object.values(users).map((u) => {
+    return { email: u.email, id: u.id, type: 'user' }
+  })
+  const combinedRecipientOptions = [...tripOptions, ...userOptions]
 
   return (
     <Popup open={open} onClose={onClose}>

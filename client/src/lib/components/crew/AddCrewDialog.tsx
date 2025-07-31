@@ -3,13 +3,15 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import { Dispatch, SetStateAction } from 'react'
 import Dialog from '../Dialog'
-import { dummyEmails } from '@/lib/utils/dummyData'
+import { users } from '@/lib/utils/dummyData'
 import Autocomplete from '@mui/material/Autocomplete'
 
 interface AddCrewDialogProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
+
+const userEmails = Object.values(users).map((u) => u.email)
 
 export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
   return (
@@ -19,22 +21,21 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
         <div>
           <Autocomplete
             id="add-crew"
-            options={dummyEmails}
-            getOptionLabel={(option) => (typeof option === 'string' ? option : option.email)}
+            options={userEmails}
             multiple
             freeSolo
             sx={{
               '.MuiInputBase-root': { alignItems: 'flex-start' }
             }}
-            filterOptions={(options, params) => {
-              const filtered = options.filter((option) =>
-                option.email.toLowerCase().includes(params.inputValue.toLowerCase())
+            filterOptions={(emails, params) => {
+              const filtered = emails.filter((email) =>
+                email.toLowerCase().includes(params.inputValue.toLowerCase())
               )
               if (
                 params.inputValue !== '' &&
-                !options.some((option) => option.email === params.inputValue)
+                !emails.some((email) => email === params.inputValue)
               ) {
-                filtered.push({ id: '', email: params.inputValue, type: 'user' })
+                filtered.push(params.inputValue)
               }
               return filtered
             }}
