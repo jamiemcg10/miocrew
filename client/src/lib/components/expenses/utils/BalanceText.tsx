@@ -21,7 +21,7 @@ export default function BalanceText({ expense, userId }: BalanceTextProps) {
     return <div className={mutedCostStyles}>Settled</div>
   } else if (!userId || !owe[userId]) {
     return <div className={mutedCostStyles}>Not involved</div>
-  } else if (paidBy.id !== userId) {
+  } else if (paidBy !== userId) {
     return (
       <div className="shrink-0">
         You{' '}

@@ -46,10 +46,10 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
       )
       .filter((expense) =>
         updatedFilters.includes('Settled')
-          ? expense.settled || (expense.owe[user!.id]?.paid && expense.paidBy.id !== user!.id)
+          ? expense.settled || (expense.owe[user!.id]?.paid && expense.paidBy !== user!.id)
           : true
       )
-      .filter((expense) => (updatedCrewFilter ? expense.paidBy.id === updatedCrewFilter : true))
+      .filter((expense) => (updatedCrewFilter ? expense.paidBy === updatedCrewFilter : true))
 
     setFilteredExpenses(
       !updatedFilters.length && !updatedCrewFilter?.length ? tripExpenses : _filteredExpenses

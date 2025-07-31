@@ -19,6 +19,8 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
 
   if (!activeExpense || !user) return
 
+  const paidByUser = users[activeExpense.paidBy]
+
   return (
     <Popup open={!!activeExpense} onClose={onClose}>
       <>
@@ -46,11 +48,9 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
             ${activeExpense.total.toLocaleString('en-US')}
           </span>
           <span className="mr-3">paid by</span>
-          <CrewAvatar user={activeExpense.paidBy} size="xs" />
+          <CrewAvatar user={paidByUser} size="xs" />
           <span className="ml-2">
-            {activeExpense.paidBy.id === user.id
-              ? 'you'
-              : `${activeExpense.paidBy.firstName} ${activeExpense.paidBy.lastName}`}
+            {paidByUser.id === user.id ? 'you' : `${paidByUser.firstName} ${paidByUser.lastName}`}
           </span>
         </div>
         <div>{activeExpense?.split} split</div>

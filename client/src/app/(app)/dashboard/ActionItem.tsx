@@ -7,6 +7,7 @@ import BalanceText from '@/lib/components/expenses/utils/BalanceText'
 import CrewAvatar from '@/lib/components/CrewAvatar'
 import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded'
 import { SetStateAction, Dispatch } from 'react'
+import { users } from '@/lib/utils/dummyData'
 
 interface ActionItemProps {
   item: Expense | Task
@@ -32,6 +33,9 @@ export default function ActionItem({
       setActiveExpense(item)
     }
   }
+
+  const paidByUser = !isTask(item) ? users[item.paidBy] : undefined
+
   return (
     <TableRow classes="px-2" onClick={onClick}>
       {isTask(item) && item.type ? (
@@ -60,9 +64,9 @@ export default function ActionItem({
             <BalanceText expense={item} userId={userId} />
             <span className="ml-2">{' to '}</span>
             <div className="flex items-center w-1/5 shrink-0 grow justify-end ml-2">
-              <CrewAvatar user={item.paidBy} size="xs" />
+              <CrewAvatar user={paidByUser} size="xs" />
               <span className="mx-2 text-sm whitespace-nowrap">
-                {item.paidBy.firstName} {item.paidBy.lastName.charAt(0)}.
+                {paidByUser?.firstName} {paidByUser?.lastName.charAt(0)}.
               </span>
             </div>
           </div>
