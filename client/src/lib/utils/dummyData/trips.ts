@@ -82,7 +82,7 @@ export const trips = [
         firstName: 'Meryll',
         lastName: 'Streep',
         color: 'orangered',
-        type: 'Attendee',
+        type: 'Crew',
         email: 'meryll.streep@sagaftra.com'
       },
       '4': {
