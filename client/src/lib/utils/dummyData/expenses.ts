@@ -82,7 +82,7 @@ export const expenses = [
     settled: false,
     due: 'end' as const,
     date: new Date('October 5, 2025'),
-    notes: 'They comped my muffin because it took so long.'
+    notes: 'Family tickets grouped together'
   },
   {
     id: 'exp6',
