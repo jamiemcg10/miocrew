@@ -1,17 +1,16 @@
-import { User } from './user'
-
 interface BaseTask {
   id: string
+  tripId: string
   name: string
+  description: string // poll question or general task description
   dueDate: Date
-  creator: User
+  creator: string
   completed: boolean
   notes?: string
 }
 
 export interface PollTask extends BaseTask {
   type: 'poll'
-  question: string
   multiple: boolean
   options: string[]
   assignee: 'Everyone'
@@ -19,8 +18,7 @@ export interface PollTask extends BaseTask {
 
 export interface GeneralTask extends BaseTask {
   type: 'general'
-  description: string
-  assignee: User
+  assignee: string
 }
 
 export type Task = PollTask | GeneralTask

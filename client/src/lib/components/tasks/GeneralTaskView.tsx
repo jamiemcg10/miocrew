@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Button from '@mui/material/Button'
 import { useRef } from 'react'
+import { users } from '@/lib/utils/dummyData'
 
 interface GeneralTaskViewProps {
   activeTask: GeneralTask | null
@@ -12,25 +13,28 @@ interface GeneralTaskViewProps {
 export default function GeneralTaskView({ activeTask }: GeneralTaskViewProps) {
   const notesRef = useRef(null)
 
+  if (!activeTask) return
+
+  const assignee = users[activeTask.assignee]
+
   return (
     <>
       <div className="flex italic space-x-4 my-2">
         <div>
-          Assigned to {(activeTask?.assignee as User)?.firstName}{' '}
-          {(activeTask?.assignee as User)?.lastName}
+          Assigned to {assignee.firstName} {assignee.lastName}
         </div>
-        <div>Due {dateFormatter(activeTask?.dueDate)}</div>
+        <div>Due {dateFormatter(activeTask.dueDate)}</div>
       </div>
-      <div className="mb-8">{activeTask?.description}</div>
+      <div className="mb-8">{activeTask.description}</div>
       {/* TODO: Only let assignee edit notes */}
       <TextField
         label="Notes"
-        defaultValue={activeTask?.notes}
+        defaultValue={activeTask.notes}
         multiline
         rows={4}
         ref={notesRef}
         sx={{ width: '100%' }}
-        disabled={activeTask?.completed}
+        disabled={activeTask.completed}
       />
       <Button
         startIcon={<CheckBoxRoundedIcon fontSize="small" />}

@@ -12,12 +12,18 @@ interface PollTaskViewProps {
   activeTask: PollTask | null
 }
 
+interface SpecializedPollTaskViewProps {
+  activeTask: PollTask
+}
+
 // NOTE: Need to track who has completed poll to determine the view
 
 export default function PollTaskView({ activeTask }: PollTaskViewProps) {
+  if (!activeTask) return
+
   return (
     <>
-      {activeTask?.completed ? (
+      {activeTask.completed ? (
         <CompletedPoll activeTask={activeTask} />
       ) : (
         <UncompletedPoll activeTask={activeTask} />
@@ -26,11 +32,11 @@ export default function PollTaskView({ activeTask }: PollTaskViewProps) {
   )
 }
 
-function UncompletedPoll({ activeTask }: PollTaskViewProps) {
+function UncompletedPoll({ activeTask }: SpecializedPollTaskViewProps) {
   return (
     <form className="flex flex-col mt-8">
       <FormControl>
-        <FormLabel>{activeTask?.question}</FormLabel>
+        <FormLabel>{activeTask?.description}</FormLabel>
         <FormGroup>
           {activeTask?.options.map((option, i) => {
             return (
@@ -50,11 +56,11 @@ function UncompletedPoll({ activeTask }: PollTaskViewProps) {
   )
 }
 
-function CompletedPoll({ activeTask }: PollTaskViewProps) {
+function CompletedPoll({ activeTask }: SpecializedPollTaskViewProps) {
   return (
     <>
       <div className="italic">Results</div>
-      <div className="my-4 sm:my-2 text-lg">{activeTask?.question}</div>
+      <div className="my-4 sm:my-2 text-lg">{activeTask.description}</div>
       <PieChart />
     </>
   )

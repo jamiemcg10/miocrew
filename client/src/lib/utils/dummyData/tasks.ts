@@ -1,6 +1,7 @@
 export const tasks = [
   {
     id: 'task1',
+    tripId: '1',
     name: 'Group dinner date',
     question: 'Which day should we do group dinner?',
     type: 'poll' as const,
@@ -8,62 +9,35 @@ export const tasks = [
     options: ['8/7', '8/8', '8/9'],
     multiple: false,
     assignee: 'Everyone' as const,
-    creator: {
-      id: '2',
-      firstName: 'Meryll',
-      lastName: 'Streep',
-      color: 'orangered' as const,
-      type: 'Attendee'
-    },
+    creator: '2',
     completed: false
   },
   {
     id: 'task2',
+    tripId: '1',
     name: 'Make brunch reservation',
     description: '',
     type: 'general' as const,
     dueDate: new Date(),
-    assignee: {
-      id: '1',
-      firstName: 'Jane',
-      lastName: 'Fonda',
-      color: 'purple' as const,
-      type: 'Captain'
-    },
-    creator: {
-      id: '2',
-      firstName: 'Meryll',
-      lastName: 'Streep',
-      color: 'orangered' as const,
-      type: 'Attendee'
-    },
+    assignee: '1',
+    creator: '2',
     completed: false
   },
   {
     id: 'task3',
+    tripId: '3',
     name: 'Send out B-list invites',
     description: 'Invite some more people',
     type: 'general' as const,
     dueDate: new Date(),
-    assignee: {
-      id: '3',
-      firstName: 'Jamie Lee',
-      lastName: 'Curtis',
-      color: 'turquoise' as const,
-      type: 'Attendee'
-    },
-    creator: {
-      id: '2',
-      firstName: 'Meryll',
-      lastName: 'Streep',
-      color: 'orangered' as const,
-      type: 'Attendee'
-    },
+    assignee: '3',
+    creator: '2',
     notes: 'Invited the people we talked about in Signal',
     completed: true
   },
   {
     id: 'task4',
+    tripId: '1',
     name: 'Accomodation poll',
     question: 'Where should we stay?',
     type: 'poll' as const,
@@ -77,13 +51,7 @@ export const tasks = [
     ],
     multiple: false,
     assignee: 'Everyone' as const,
-    creator: {
-      id: '2',
-      firstName: 'Meryll',
-      lastName: 'Streep',
-      color: 'orangered' as const,
-      type: 'Attendee'
-    },
+    creator: '2',
     completed: true
   }
 ]

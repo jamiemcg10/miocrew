@@ -4,7 +4,7 @@ import Button from '@mui/material/Button'
 import TaskItem from './TaskItem'
 import AddTaskRoundedIcon from '@mui/icons-material/AddTaskRounded'
 import Chip from '@mui/material/Chip'
-import { tasks } from '@/lib/utils/dummyData'
+import { tasks, users } from '@/lib/utils/dummyData'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Avatar from '@mui/material/Avatar'
@@ -41,7 +41,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
       .filter((task) => (updatedFilters.includes('Everyone') ? task.assignee === 'Everyone' : true))
       .filter((task) =>
         updatedCrewFilter
-          ? task.assignee === 'Everyone' || task.assignee.id === updatedCrewFilter
+          ? task.assignee === 'Everyone' || users[task.assignee].id === updatedCrewFilter
           : true
       )
 

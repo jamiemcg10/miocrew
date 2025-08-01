@@ -5,6 +5,7 @@ import EventRoundedIcon from '@mui/icons-material/EventRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import TableRow from '../layout/TableRow'
+import { users } from '@/lib/utils/dummyData'
 
 interface TaskItemProps {
   task: Task
@@ -44,7 +45,9 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {
           {task.name}
         </span>
         <div className="flex grow justify-between">
-          <span className="italic text-sm content-center">{getAssigneeName(task.assignee)}</span>
+          <span className="italic text-sm content-center">
+            {getAssigneeName(users[task.assignee])}
+          </span>
           <span className="text-right px-2 font-semibold text-sm content-center">
             {dateFormatter(task.dueDate)}
           </span>
