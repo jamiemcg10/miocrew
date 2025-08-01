@@ -3,7 +3,7 @@ export const tasks = [
     id: 'task1',
     tripId: '1',
     name: 'Group dinner date',
-    question: 'Which day should we do group dinner?',
+    description: 'Which day should we do group dinner?',
     type: 'poll' as const,
     dueDate: new Date(),
     options: ['8/7', '8/8', '8/9'],
@@ -39,7 +39,7 @@ export const tasks = [
     id: 'task4',
     tripId: '1',
     name: 'Accomodation poll',
-    question: 'Where should we stay?',
+    description: 'Where should we stay?',
     type: 'poll' as const,
     dueDate: new Date(),
     options: [
