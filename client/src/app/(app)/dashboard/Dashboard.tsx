@@ -7,6 +7,10 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import ActionItems from './ActionItems'
 
 export default function Dashboard() {
+  const upcomingTrips = trips.filter((trip) => {
+    return trip.startDate >= new Date()
+  })
+
   return (
     <div className="flex flex-col px-4">
       <Button
@@ -22,7 +26,7 @@ export default function Dashboard() {
         }}>
         Create trip
       </Button>
-      <TripTable trips={trips} title="Upcoming trips" />
+      <TripTable trips={upcomingTrips} title="Upcoming trips" />
       <ActionItems />
     </div>
   )
