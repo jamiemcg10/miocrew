@@ -1,6 +1,5 @@
 export * from './trips'
 export * from './tripEvents'
 export * from './tasks'
-export * from './pastTrips'
 export * from './expenses'
 export * from './users'
