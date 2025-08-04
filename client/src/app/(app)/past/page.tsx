@@ -2,6 +2,7 @@ import TripTable from '@/lib/components/TripTable'
 import { trips } from '@/lib/utils/dummyData'
 
 export default function PastTripsPage() {
+  // get past trips
   const pastTrips = trips.filter((trip) => {
     return trip.startDate <= new Date()
   })

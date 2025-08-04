@@ -3,7 +3,7 @@ import { tripSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
 
 export default function DashboardHeader() {
-  const nextTrip = upcomingTrips.sort(tripSort)[0]
+  const nextTrip = upcomingTrips.filter((trip) => trip.startDate >= new Date()).sort(tripSort)[0]
 
   const today = dayjs(new Date())
   const nextTripStart = dayjs(nextTrip.startDate).diff(today, 'day')
