@@ -1,8 +1,9 @@
 export interface BaseMessage {
+  // TODO: rename this to Message
   id: string
   subject: string
   body: string
   read: boolean
-  sender: string
-  recipients: string[] // put in separate table
+  senderId: string
+  recipientId: string
 }

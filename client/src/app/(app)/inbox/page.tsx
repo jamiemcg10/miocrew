@@ -1,18 +1,34 @@
 'use client'
 
-import { messages } from '@/lib/utils/dummyData/messages'
 import Button from '@mui/material/Button'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined'
-import { useState } from 'react'
-import Message from '@/lib/components/messages/Message'
+import { useContext, useEffect, useState } from 'react'
 import type { BaseMessage } from '@/lib/types'
 import MessageView from '@/lib/components/messages/MessageView'
 import ComposeMessageDialog from '@/lib/components/messages/ComposeMessageDialog'
+import axios from 'axios'
+import { UserContext } from '@/lib/utils/UserContext'
+import MessageItem from '@/lib/components/messages/MessageItem'
 
 export default function InboxPage() {
+  const user = useContext(UserContext)
+
+  function getMessages() {
+    axios
+      .get(`http://localhost:8000/users/${user!.id}/messages`)
+      .then((response) => {
+        setMessages(response.data.messages)
+      })
+      .catch(console.error)
+  }
+
+  const [messages, setMessages] = useState<BaseMessage[]>([])
+  const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
+  const [composing, setComposing] = useState(false)
+
   const checkedMessages = messages.reduce((acc, c) => {
     return {
       ...acc,
@@ -23,8 +39,10 @@ export default function InboxPage() {
   const [checked, setChecked] = useState(checkedMessages)
   const hasChecked = Object.values(checked).find((v) => v === true)
 
-  const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
-  const [composing, setComposing] = useState(false)
+  // TODO: Make this a component
+  useEffect(getMessages, [])
+
+  if (!user) return
 
   return (
     <>
@@ -65,7 +83,7 @@ export default function InboxPage() {
         <div className="text-xl mb-4">Messages</div>
         {messages.map((m, i) => {
           return (
-            <Message
+            <MessageItem
               message={m}
               checked={checked}
               setChecked={setChecked}
