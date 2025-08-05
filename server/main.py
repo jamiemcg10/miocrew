@@ -4,6 +4,7 @@ from typing import Optional
 from typing import List
 from sqlalchemy import create_engine
 from sqlalchemy import String
+from sqlalchemy import Integer
 from sqlalchemy import select
 from sqlalchemy import join
 from sqlalchemy import ForeignKey
@@ -50,6 +51,24 @@ class Attendee(Base):
     attendee_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
     trip: Mapped["Trip"] = relationship(back_populates="attendees")
     user: Mapped["User"] = relationship(back_populates="attendees", lazy="joined")
+
+class Message(Base):
+    __tablename__ = 'messages'
+
+    id: Mapped[str] = mapped_column(primary_key=True)
+    subject: Mapped[str] = mapped_column(String)
+    body: Mapped[str] = mapped_column(String)
+    sender: Mapped[str] = mapped_column(String(8))
+    message_recipients: Mapped[List["Message_Recipient"]] = relationship() # Mapped[List["Message_Recipient"]] = relationship(back_populates="message", lazy="joined")
+
+class Message_Recipient(Base):
+    __tablename__ = 'message_recipients'
+
+    id: Mapped[str] = mapped_column(primary_key=True)
+    message_id: Mapped[str] = mapped_column(String, ForeignKey("messages.id"))
+    recipient: Mapped[str] = mapped_column(String)
+    read: Mapped[bool] = mapped_column(Integer)
+    message: Mapped["Message"] = relationship(back_populates="message_recipients")
 ####
 
 engine = create_engine("sqlite:///miocrew.db", echo=True)
@@ -105,3 +124,23 @@ async def trips():
         trips.append(flattened_trip)
 
     return {'trips': trips}
+
+@app.get("/users/{user_id}/messages/")
+async def messages(user_id: str):
+    messages = []
+
+    stmt = select(Message_Recipient).where(Message_Recipient.recipient == user_id)
+
+    for msg in session.scalars(stmt):
+        flattened_msg = {
+            "recipientId": "2",
+            "read": msg.read,
+            "senderId": msg.message.sender,
+            "id": msg.message.id,
+            "subject": msg.message.subject,
+            "body": msg.message.body
+        }
+
+        messages.append(flattened_msg)
+
+    return {"messages": messages}
