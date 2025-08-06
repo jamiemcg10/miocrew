@@ -23,9 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/hello")
-async def hello():
-    return { "message": "Hello from FastAPI server!"}
+@app.get("/api/ping")
+async def ping():
+    return { "data": "pong"}
 
 @app.get("/users/{user_id}/trips/{trip_id}")
 async def trip(user_id, trip_id):
