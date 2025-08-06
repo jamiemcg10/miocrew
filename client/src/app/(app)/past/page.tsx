@@ -13,7 +13,7 @@ export default function PastTripsPage() {
 
   function getPastTrips() {
     axios
-      .get(`http://localhost:8000/users/${user!.id}/trips`) // get address from env
+      .get(`http://localhost:8000/user/${user!.id}/trips`) // get address from env
       .then((response) => {
         console.log({ response })
         const _pastTrips = response.data.trips.filter((trip: Trip) => {

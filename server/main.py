@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.models import Trip, Message_Recipient, Attendee
+from models.models import Trips, Message_Recipients, Attendees, Ideas
 from utils.flatten import flatten_trip, flatten_message
 
 from sqlalchemy import create_engine
@@ -27,18 +27,18 @@ app.add_middleware(
 async def ping():
     return { "data": "pong"}
 
-@app.get("/users/{user_id}/trips/{trip_id}")
+@app.get("/user/{user_id}/trip/{trip_id}/")
 async def trip(user_id, trip_id):
-    stmt = select(Trip).options(selectinload(Trip.attendees)).join(Attendee).where(Attendee.attendee_id == user_id).where(Trip.id == trip_id)
+    stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)
 
     trip = session.scalar(stmt)
 
     return { "trip": flatten_trip(trip) }
 
-@app.get("/users/{user_id}/trips/")
+@app.get("/user/{user_id}/trips/")
 async def trips():
     # need table to attach trips to users
-    stmt = select(Trip).options(selectinload(Trip.attendees))
+    stmt = select(Trips).options(selectinload(Trips.attendees))
     trips = []
 
 
@@ -49,11 +49,11 @@ async def trips():
 
     return {'trips': trips}
 
-@app.get("/users/{user_id}/messages/")
+@app.get("/user/{user_id}/messages/")
 async def messages(user_id: str):
     messages = []
 
-    stmt = select(Message_Recipient).where(Message_Recipient.recipient == user_id)
+    stmt = select(Message_Recipients).where(Message_Recipients.recipient == user_id)
 
     for msg in session.scalars(stmt):
         flattened_msg = flatten_message(msg)
@@ -61,3 +61,14 @@ async def messages(user_id: str):
         messages.append(flattened_msg)
 
     return {"messages": messages}
+
+@app.get("/user/{user_id}/trip/{trip_id}/ideas/")
+async def ideas(user_id: str, trip_id):
+    ideas = []
+
+    stmt = select(Ideas).join(Trips).join(Attendees).where(Ideas.trip_id == Trips.id).where(trip_id == Ideas.trip_id).where(Attendees.attendee_id == user_id)
+
+    for idea in session.scalars(stmt):
+        ideas.append(idea)
+
+    return {"ideas": ideas}

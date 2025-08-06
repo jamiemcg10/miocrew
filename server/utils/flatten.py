@@ -15,7 +15,7 @@ def flatten_trip(trip):
     return {
         "id": trip.id,
         "name": trip.name,
-        "attendees": [flatten_attendee(a) for a in trip.attendees],
+        "attendees": [flatten_attendee(a) for a in trip.attendees], # TODO: return as dict
         "startDate": trip.start_date,
         "endDate": trip.end_date
     }

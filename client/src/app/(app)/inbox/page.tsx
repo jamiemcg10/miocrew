@@ -18,7 +18,7 @@ export default function InboxPage() {
 
   function getMessages() {
     axios
-      .get(`http://localhost:8000/users/${user!.id}/messages`)
+      .get(`http://localhost:8000/user/${user!.id}/messages`)
       .then((response) => {
         setMessages(response.data.messages)
       })

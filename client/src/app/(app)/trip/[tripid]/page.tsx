@@ -20,7 +20,7 @@ export default function TripPage() {
 
   function getTrip() {
     axios
-      .get(`http://localhost:8000/users/${user!.id}/trips/${tripid}`)
+      .get(`http://localhost:8000/user/${user!.id}/trip/${tripid}`)
       .then((response) => {
         const attendees = response.data.trip.attendees.reduce(
           (acc: Record<string, CrewMember>, c: CrewMember) => {

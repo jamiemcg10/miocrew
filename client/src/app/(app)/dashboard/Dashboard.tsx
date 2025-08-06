@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   function getUpcomingTrips() {
     axios
-      .get(`http://localhost:8000/users/${user!.id}/trips`) // get address from env
+      .get(`http://localhost:8000/user/${user!.id}/trips`) // get address from env
       .then((response) => {
         const _upcomingTrips = response.data.trips.filter((trip: Trip) => {
           const startDate = new Date(trip.startDate)

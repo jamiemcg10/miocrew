@@ -3,16 +3,16 @@ import '../../styles/VerticalScroll.css'
 import { Dispatch, SetStateAction, useState } from 'react'
 import Button from '@mui/material/Button'
 import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
-import { ideas } from '@/lib/utils/dummyData/ideas'
 import IdeaCard from './IdeaCard'
 import ActiveIdea from './ActiveIdea'
 import { Idea } from '@/lib/types'
 
 interface IdeasProps {
+  ideas: Idea[]
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
 }
 
-export default function Ideas({ setOpenAddDialog }: IdeasProps) {
+export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
   function onClickAddButton() {
     setOpenAddDialog(true)
   }
