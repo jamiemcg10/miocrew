@@ -17,7 +17,6 @@ export default function Dashboard() {
     axios
       .get(`http://localhost:8000/users/${user!.id}/trips`) // get address from env
       .then((response) => {
-        console.log({ response })
         const _upcomingTrips = response.data.trips.filter((trip: Trip) => {
           const startDate = new Date(trip.startDate)
           return startDate >= new Date()
