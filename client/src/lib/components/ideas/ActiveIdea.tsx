@@ -4,7 +4,6 @@ import Popup from '../Popup'
 import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded'
 import IconButton from '@mui/material/IconButton'
-import { users } from '@/lib/utils/dummyData/users'
 
 interface ActiveIdeaProps {
   activeIdea: Idea | null
@@ -29,7 +28,7 @@ export default function ActiveEvent({ activeIdea, setActiveIdea }: ActiveIdeaPro
         ) : null}
       </div>
       <div className="italic text-sm">
-        Suggested by {users[activeIdea.creator].firstName} {users[activeIdea.creator].lastName}
+        Suggested by {activeIdea.creator.firstName} {activeIdea.creator.lastName}
       </div>
       <div
         className={

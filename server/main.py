@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import Trips, Message_Recipients, Attendees, Ideas
-from utils.flatten import flatten_trip, flatten_message
+from utils.flatten import flatten_trip, flatten_message, flatten_idea
 
 from sqlalchemy import create_engine
 from sqlalchemy import select
@@ -66,9 +66,12 @@ async def messages(user_id: str):
 async def ideas(user_id: str, trip_id):
     ideas = []
 
-    stmt = select(Ideas).join(Trips).join(Attendees).where(Ideas.trip_id == Trips.id).where(trip_id == Ideas.trip_id).where(Attendees.attendee_id == user_id)
+    stmt = select(Ideas, Attendees).select_from(Ideas).join(Trips).join(Attendees).where(Ideas.trip_id == Trips.id).where(trip_id == Ideas.trip_id).where(Attendees.attendee_id == user_id)
 
-    for idea in session.scalars(stmt):
-        ideas.append(idea)
+    results = session.execute(stmt).all()
+
+    for idea, attendee in results: 
+        flattened_idea = flatten_idea(idea, attendee)
+        ideas.append(flattened_idea)
 
     return {"ideas": ideas}

@@ -1,5 +1,10 @@
 import { AppColor } from './appColor'
 
+interface Creator {
+  firstName: string
+  lastName: string
+}
+
 export interface Idea {
   tripId: string
   id: string
@@ -11,5 +16,6 @@ export interface Idea {
   description?: string
   color: AppColor
   likes: number
-  creator: string
+  creatorId: string
+  creator: Creator
 }

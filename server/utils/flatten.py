@@ -29,3 +29,24 @@ def flatten_message(message):
         "subject": message.message.subject,
         "body": message.message.body
         }
+
+def flatten_idea(idea, attendee):
+    return {
+        "description": idea.description,
+        "id": idea.id,
+        "likes": idea.likes,
+        "url": idea.url,
+        "cost": idea.cost,
+        "name": idea.name,
+        "color": idea.color,
+        "tripId": idea.trip_id,
+        "creatorId": idea.creator_id,
+        "creator": {
+            "firstName": attendee.user.first_name,
+            "lastName": attendee.user.last_name
+        },
+        "img": idea.img,
+        "costType": idea.cost_type
+    }
+
+    
