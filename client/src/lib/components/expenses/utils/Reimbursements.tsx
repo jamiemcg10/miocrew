@@ -1,5 +1,4 @@
-import { CrewMember, Expense } from '@/lib/types'
-import { TripContext } from '@/lib/utils/TripContext'
+import { Expense } from '@/lib/types'
 import { UserContext } from '@/lib/utils/UserContext'
 import { useContext } from 'react'
 
@@ -7,30 +6,34 @@ interface ReimbursementsProps {
   expenses: Expense[]
 }
 
+interface TotalOwed {
+  total: number
+  firstName: string
+  lastName: string
+}
+
 function calculateReimbursements(expenses: Expense[]) {
   // TODO: Simplify this
   return expenses.reduce((p, exp) => {
     Object.entries(exp.owe).forEach(([id, cost]) => {
-      p[id] = (p[id] || 0) + (!cost.paid ? cost.owes : 0)
+      p[id] = {
+        total: (p[id]?.total || 0) + (!cost.paid ? cost.owes : 0),
+        firstName: cost.firstName,
+        lastName: cost.lastName
+      }
     })
 
     return p
-  }, {} as Record<string, number>)
+  }, {} as Record<string, TotalOwed>)
 }
 
-function formatReimbursements(
-  reimbursements: Record<string, number>,
-  attendees?: Record<string, CrewMember>,
-  userId?: string
-) {
-  if (!attendees) return
-
+function formatReimbursements(reimbursements: Record<string, TotalOwed>, userId?: string) {
   return Object.entries(reimbursements).map(([id, amt]) => {
     return (
       <div key={id}>
-        {id === userId ? 'You' : `${attendees[id].firstName} ${attendees[id].lastName.charAt(0)}.`}{' '}
+        {id === userId ? 'You' : `${amt.firstName} ${amt.lastName.charAt(0)}.`}{' '}
         <span className="text-red-700">
-          {id === userId ? 'owe' : 'owes'} ${(+amt.toFixed(2)).toLocaleString('en-US')}
+          {id === userId ? 'owe' : 'owes'} ${(+amt.total.toFixed(2)).toLocaleString('en-US')}
         </span>
       </div>
     )
@@ -38,7 +41,6 @@ function formatReimbursements(
 }
 
 export default function Reimbursements({ expenses }: ReimbursementsProps) {
-  const trip = useContext(TripContext)
   const user = useContext(UserContext)
 
   const reimbursements = calculateReimbursements(expenses)
@@ -48,7 +50,7 @@ export default function Reimbursements({ expenses }: ReimbursementsProps) {
         <div className="text-2xl mb-2 sticky top-0  bg-linear-to-b from-(--background) from-80% to-transparent">
           Who owes what
         </div>
-        <div>{formatReimbursements(reimbursements, trip?.attendees, user?.id)}</div>
+        <div>{formatReimbursements(reimbursements, user?.id)}</div>
       </div>
       <div className="h-2 absolute bottom-0 w-full bg-linear-to-t from-(--background) to-transparent"></div>
     </div>

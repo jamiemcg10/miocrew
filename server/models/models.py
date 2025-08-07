@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy import Integer
+from sqlalchemy import Float
 from typing import Optional
 from typing import List
 
@@ -21,6 +22,8 @@ class Users(Base):
     avatar: Mapped[str] = mapped_column(String(30))
     email: Mapped[str] = mapped_column(String(75))
     attendees: Mapped[List["Attendees"]] = relationship(back_populates="user")
+    user: Mapped["Expenses_Owe"] = relationship(back_populates="debtor")
+    user: Mapped["Expenses"] = relationship(back_populates="paid_by_user")
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, firstName={self.name!r})"
@@ -32,7 +35,7 @@ class Trips(Base):
     name: Mapped[str] = mapped_column(String(100))
     attendees: Mapped[List["Attendees"]] = relationship()
     start_date: Mapped[str] = mapped_column(String(20))
-    end_date: Mapped[Optional[str]]
+    end_date: Mapped[Optional[str]] = mapped_column(String(20))
 
 class Attendees(Base):
     __tablename__ = 'trip_attendees'
@@ -51,7 +54,7 @@ class Messages(Base):
     subject: Mapped[str] = mapped_column(String)
     body: Mapped[str] = mapped_column(String)
     sender: Mapped[str] = mapped_column(String(8))
-    message_recipients: Mapped[List["Message_Recipients"]] = relationship() # Mapped[List["Message_Recipient"]] = relationship(back_populates="message", lazy="joined")
+    message_recipients: Mapped[List["Message_Recipients"]] = relationship() 
 
 class Message_Recipients(Base):
     __tablename__ = 'message_recipients'
@@ -76,3 +79,30 @@ class Ideas(Base):
     img: Mapped[Optional[str]] = mapped_column(String)
     cost: Mapped[Optional[int]] = mapped_column(Integer)
     cost_type: Mapped[Optional[str]] = mapped_column(String(5))
+
+class Expenses(Base):
+    __tablename__ = "expenses"
+
+    id: Mapped[str] = mapped_column(primary_key=True)
+    trip_id: Mapped[str] = mapped_column(String, ForeignKey("trips.id"))
+    name: Mapped[str] = mapped_column(String) 
+    paid_by: Mapped[str] = mapped_column(String, ForeignKey("users.id")) 
+    paid_by_user: Mapped["Users"] = relationship(lazy="joined")
+    total: Mapped[int] = mapped_column(Integer) 
+    split: Mapped[str] = mapped_column(String(6)) 
+    settled: Mapped[bool] = mapped_column(Integer)
+    owe: Mapped[List[any]] = relationship("Expenses_Owe", back_populates="expense")
+    due: Mapped[str] = mapped_column(String(9)) 
+    date: Mapped[str] = mapped_column(String(20)) 
+    notes: Mapped[Optional[str]] = mapped_column(String)
+
+class Expenses_Owe(Base): # go back to singular
+    __tablename__ = "expenses_owe"
+
+    id: Mapped[str] = mapped_column(primary_key=True)
+    expense_id: Mapped[str] = mapped_column(String, ForeignKey("expenses.id"))
+    user_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
+    debtor: Mapped["Users"] = relationship(lazy="joined")
+    owes: Mapped[float] = mapped_column(Float)
+    paid: Mapped[bool] = mapped_column(Integer)
+    expense = relationship("Expenses", back_populates="owe")

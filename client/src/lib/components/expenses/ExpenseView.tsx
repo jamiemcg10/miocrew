@@ -7,7 +7,6 @@ import CrewAvatar from '../CrewAvatar'
 import clsx from 'clsx'
 import BoltIcon from '@mui/icons-material/Bolt'
 import Tooltip from '@mui/material/Tooltip'
-import { users } from '@/lib/utils/dummyData/users'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
@@ -18,8 +17,6 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
   const user = useContext(UserContext)
 
   if (!activeExpense || !user) return
-
-  const paidByUser = users[activeExpense.paidBy]
 
   return (
     <Popup open={!!activeExpense} onClose={onClose}>
@@ -48,9 +45,11 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
             ${activeExpense.total.toLocaleString('en-US')}
           </span>
           <span className="mr-3">paid by</span>
-          <CrewAvatar user={paidByUser} size="xs" />
+          <CrewAvatar user={activeExpense.paidBy} size="xs" />
           <span className="ml-2">
-            {paidByUser.id === user.id ? 'you' : `${paidByUser.firstName} ${paidByUser.lastName}`}
+            {activeExpense.paidBy.id === user.id
+              ? 'you'
+              : `${activeExpense.paidBy.firstName} ${activeExpense.paidBy.lastName}`}
           </span>
         </div>
         <div>{activeExpense?.split} split</div>
@@ -65,11 +64,9 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
           {Object.entries(activeExpense?.owe || {}).map(([id, owes]) => {
             return (
               <div key={id} className="flex items-center my-2">
-                <CrewAvatar user={users[id]} size="xs" />
+                <CrewAvatar user={owes} size="xs" />
                 <span className="ml-2 mr-1">
-                  {id === user.id
-                    ? 'You'
-                    : `${users[id].firstName} ${users[id].lastName.charAt(0)}.`}
+                  {id === user.id ? 'You' : `${owes.firstName} ${owes.lastName.charAt(0)}.`}
                 </span>
                 <span className={clsx(!owes.paid && 'text-red-700 font-semibold')}>
                   {owes.paid ? 'paid' : id === user.id ? 'owe' : 'owes'} $

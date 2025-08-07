@@ -6,7 +6,6 @@ import CrewAvatar from '../CrewAvatar'
 import { Dispatch, SetStateAction, useContext } from 'react'
 import { UserContext } from '@/lib/utils/UserContext'
 import TableRow from '../layout/TableRow'
-import { users } from '@/lib/utils/dummyData'
 
 interface ExpenseItemProps {
   expense: Expense
@@ -21,8 +20,6 @@ export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemPr
   const user = useContext(UserContext)
 
   if (!user) return
-
-  const paidByUser = users[expense.paidBy]
 
   return (
     <TableRow classes="py-1" onClick={onClick}>
@@ -41,9 +38,9 @@ export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemPr
             ) : null}
           </div>
           <div className="flex items-center w-1/3 shrink-0 justify-end sm:justify-start">
-            <CrewAvatar user={paidByUser} size="xs" />
+            <CrewAvatar user={expense.paidBy} size="xs" />
             <span className="mx-2 text-sm whitespace-nowrap">
-              {paidByUser.firstName} {paidByUser.lastName.charAt(0)}.
+              {expense.paidBy.firstName} {expense.paidBy.lastName.charAt(0)}.
             </span>
           </div>
         </div>

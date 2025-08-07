@@ -49,4 +49,31 @@ def flatten_idea(idea, attendee):
         "costType": idea.cost_type
     }
 
+def flatten_debtor(debtor):
+    return {
+        "id": debtor.id,
+        "owes": debtor.owes,
+        "expenseId": debtor.expense_id,
+        "userId": debtor.user_id,
+        "paid": debtor.paid,
+        "firstName": debtor.debtor.first_name,
+        "lastName": debtor.debtor.last_name,
+        "color": debtor.debtor.color,
+        "email": debtor.debtor.email
+    }
+
+def flatten_expense(expense): 
+    return {
+        "paidBy": {"id": expense.paid_by, "firstName": expense.paid_by_user.first_name, "lastName": expense.paid_by_user.last_name, "color": expense.paid_by_user.color},
+        "id": expense.id,
+        "split": expense.split,
+        "due": expense.due,
+        "notes": expense.notes,
+        "name": expense.name,
+        "tripId": expense.trip_id,
+        "total": expense.total,
+        "settled": expense.settled,
+        "date": expense.date,
+        "owe": [flatten_debtor(debtor) for debtor in expense.owe]
+    }
     
