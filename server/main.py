@@ -76,16 +76,24 @@ async def ideas(user_id: str, trip_id):
 
     return {"ideas": ideas}
 
-@app.get("/user/{user_id}/expenses")
-async def user_expenses(user_id):
+@app.get("/user/{user_id}/action_items")
+async def action_items(user_id):
     expenses = []
+    tasks = []
 
-    stmt = select(Expenses, Expenses_Owe).options(selectinload(Expenses.owes)).join(Expenses_Owe).where(Expenses_Owe.user_id == user_id)
+    exp_stmt = select(Expenses, Expenses_Owe).options(selectinload(Expenses.owe)).join(Expenses_Owe).where(Expenses_Owe.user_id == user_id)
 
-    for expense in session.scalars(stmt):
-        expenses.append(expense)
+    for expense in session.scalars(exp_stmt):
+        flattened_expense = flatten_expense(expense)
+        expenses.append(flattened_expense)
 
-    return {"expenses": expenses}
+    # tsk_stmt = select(Tasks) ## narrow later
+
+    # for task in session.scalars(tsk_stmt):
+    #     print(task)
+    #     tasks.append(task)
+
+    return {"expenses": expenses, "tasks": tasks}
 
 @app.get("/user/{user_id}/trip/{trip_id}/expenses") 
 async def trip_expenses(user_id, trip_id):
@@ -95,7 +103,6 @@ async def trip_expenses(user_id, trip_id):
 
     for expense in session.scalars(stmt):
         flattened_expense = flatten_expense(expense)
-        print(expense.paid_by_user.first_name)
 
         expenses.append(flattened_expense)
 

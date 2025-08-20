@@ -24,6 +24,7 @@ class Users(Base):
     attendees: Mapped[List["Attendees"]] = relationship(back_populates="user")
     user: Mapped["Expenses_Owe"] = relationship(back_populates="debtor")
     user: Mapped["Expenses"] = relationship(back_populates="paid_by_user")
+    # user: Mapped["Tasks"] = relationship(back_populates="creator")
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, firstName={self.name!r})"
@@ -106,3 +107,19 @@ class Expenses_Owe(Base): # go back to singular
     owes: Mapped[float] = mapped_column(Float)
     paid: Mapped[bool] = mapped_column(Integer)
     expense = relationship("Expenses", back_populates="owe")
+
+# class Tasks(Base):
+#     __tablename__ = "tasks"
+#     id: Mapped[str] = mapped_column(primary_key=True)
+#     trip_id: Mapped[str] = mapped_column(String, ForeignKey("trips.id"))
+#     name: Mapped[str] = mapped_column(String)
+#     description: Mapped[str] = mapped_column(String)
+#     type: Mapped[str] = mapped_column(String(7))
+#     due_date: Mapped[str] = mapped_column(String(20))
+#     multiple: Mapped[int] = mapped_column(Integer)
+#     assignee_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
+#     #assignee: Mapped["Users"] = relationship(lazy="joined")
+#     creator_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
+#     creator: Mapped["Users"] = relationship(lazy="joined")
+#     completed: Mapped[int] = mapped_column(Integer)
+#     notes: Mapped[str] = mapped_column(String)

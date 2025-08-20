@@ -1,3 +1,5 @@
+import { UserColor } from '@/lib/types'
+
 export const tasks = [
   {
     id: 'task1',
@@ -19,7 +21,14 @@ export const tasks = [
     description: '',
     type: 'general' as const,
     dueDate: new Date(),
-    assignee: '1',
+    assignee: {
+      id: '1',
+      firstName: 'Jane',
+      lastName: 'Fonda',
+      color: 'purple' as UserColor,
+      type: 'Captain' as const,
+      email: 'jane.fonda@sagaftra.com'
+    },
     creator: '2',
     completed: false
   },
@@ -30,7 +39,14 @@ export const tasks = [
     description: 'Invite some more people',
     type: 'general' as const,
     dueDate: new Date(),
-    assignee: '3',
+    assignee: {
+      id: '3',
+      firstName: 'Jamie Lee',
+      lastName: 'Curtis',
+      color: 'turquoise' as UserColor,
+      type: 'Crew' as const,
+      email: 'jamie.lee.curtis@sagaftra.com'
+    },
     creator: '2',
     notes: 'Invited the people we talked about in Signal',
     completed: true

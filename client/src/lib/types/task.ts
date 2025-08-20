@@ -1,3 +1,5 @@
+import { CrewMember } from './user'
+
 interface BaseTask {
   id: string
   tripId: string
@@ -18,7 +20,7 @@ export interface PollTask extends BaseTask {
 
 export interface GeneralTask extends BaseTask {
   type: 'general'
-  assignee: string
+  assignee: CrewMember
 }
 
 export type Task = PollTask | GeneralTask

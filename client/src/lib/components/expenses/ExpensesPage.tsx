@@ -5,6 +5,7 @@ import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
 import { TripContext } from '@/lib/utils/TripContext'
 import { Expense } from '@/lib/types'
+import { arrayToObject } from '@/lib/utils/arrayToObject'
 
 export default function TaskPage() {
   function getExpenses() {
@@ -16,12 +17,7 @@ export default function TaskPage() {
           expenses.map((expense: Expense) => {
             return {
               ...expense,
-              owes: expense.owe.reduce((acc: Record<string, Expense>, c: Expense) => {
-                return {
-                  ...acc,
-                  [c.id]: c
-                }
-              }, {})
+              owes: expense.owe.reduce(arrayToObject, {})
             }
           })
           setExpenses(response.data.expenses)

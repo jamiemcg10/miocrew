@@ -7,7 +7,6 @@ import BalanceText from '@/lib/components/expenses/utils/BalanceText'
 import CrewAvatar from '@/lib/components/CrewAvatar'
 import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded'
 import { SetStateAction, Dispatch } from 'react'
-import { users } from '@/lib/utils/dummyData'
 
 interface ActionItemProps {
   item: Expense | Task
@@ -34,7 +33,7 @@ export default function ActionItem({
     }
   }
 
-  const paidByUser = !isTask(item) ? users[item.paidBy] : undefined
+  const paidByUser = !isTask(item) ? item.paidBy : undefined
 
   return (
     <TableRow classes="px-2" onClick={onClick}>
