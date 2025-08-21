@@ -1,10 +1,9 @@
-import { GeneralTask, User } from '@/lib/types'
+import { GeneralTask } from '@/lib/types'
 import { dateFormatter } from '@/lib/utils/dateFormatter'
 import TextField from '@mui/material/TextField'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Button from '@mui/material/Button'
 import { useRef } from 'react'
-import { users } from '@/lib/utils/dummyData'
 
 interface GeneralTaskViewProps {
   activeTask: GeneralTask | null
@@ -15,7 +14,7 @@ export default function GeneralTaskView({ activeTask }: GeneralTaskViewProps) {
 
   if (!activeTask) return
 
-  const assignee = users[activeTask.assignee]
+  const assignee = activeTask.assignee
 
   return (
     <>

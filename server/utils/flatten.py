@@ -11,6 +11,16 @@ def flatten_attendee(attendee):
         "avatar": attendee.user.avatar
     }
 
+def flatten_user(user):
+    return { 
+        "avatar": user.avatar,
+        "color": user.color, 
+        "email": user.email,
+        "firstName": user.first_name,
+        "id": user.id,
+        "lastName": user.last_name
+    }
+
 def flatten_trip(trip):
     return {
         "id": trip.id,
@@ -23,7 +33,7 @@ def flatten_trip(trip):
 def flatten_message(message):
     return {
         "recipientId": message.recipient,
-        "read": message.read,
+        "read": bool(message.read),
         "senderId": message.message.sender,
         "id": message.message.id,
         "subject": message.message.subject,
@@ -55,7 +65,7 @@ def flatten_debtor(debtor):
         "owes": debtor.owes,
         "expenseId": debtor.expense_id,
         "userId": debtor.user_id,
-        "paid": debtor.paid,
+        "paid": bool(debtor.paid),
         "firstName": debtor.debtor.first_name,
         "lastName": debtor.debtor.last_name,
         "color": debtor.debtor.color,
@@ -72,8 +82,33 @@ def flatten_expense(expense):
         "name": expense.name,
         "tripId": expense.trip_id,
         "total": expense.total,
-        "settled": expense.settled,
+        "settled": bool(expense.settled),
         "date": expense.date,
         "owe": [flatten_debtor(debtor) for debtor in expense.owe]
     }
+
+def flatten_poll_task_option(option):
+    return {
+        "label": option.label,
+        "id": option.id,
+        "taskId": option.task_id,
+        "votes": option.votes
+    }
     
+def flatten_task(task):
+    return {
+        "assignee": flatten_user(task.assignee) if task.assignee else None, # maybe make this a crew member
+        "assigneeId": task.assignee_id,
+        "completed": bool(task.completed),
+        "creator": flatten_user(task.creator),
+        "creatorId":  task.creator_id,
+        "description": task.description,
+        "dueDate": task.due_date,
+        "id": task.id,
+        "multiple": bool(task.multiple),
+        "name": task.name,
+        "notes": task.notes,
+        "options": [flatten_poll_task_option(option) for option in task.options],
+        "tripId": task.trip_id,
+        "type": task.type
+    }

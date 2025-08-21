@@ -1,5 +1,4 @@
 import { Expense, Task } from '@/lib/types'
-import { tasks } from '@/lib/utils/dummyData'
 import { UserContext } from '@/lib/utils/UserContext'
 import { useContext, useEffect, useState } from 'react'
 import TaskView from '@/lib/components/tasks/TaskView'
@@ -12,9 +11,11 @@ export default function ActionItems() {
     axios
       .get(`http://localhost:8000/user/${user!.id}/action_items`)
       .then((response) => {
-        console.log({ response })
         if (response.data.expenses) {
           setExpenses(response.data.expenses)
+        }
+        if (response.data.tasks) {
+          setTasks(response.data.tasks)
         }
       })
       .catch(console.error)
@@ -23,10 +24,10 @@ export default function ActionItems() {
   function formatActionItems() {
     setActionItems([
       ...tasks.filter((t) => {
-        return (t.assignee === 'Everyone' || t.assignee.id === user?.id) && !t.completed
+        return (t.assigneeId === 'Everyone' || t.assigneeId === user?.id) && !t.completed
       }),
       ...expenses.filter((e) => {
-        return e.due === 'immediate' && e.owe.find((u) => u.id === user?.id)?.paid == false
+        return e.due === 'immediate' && e.owe.find((u) => u.id === user?.id)?.paid === false
       })
     ])
   }
@@ -35,6 +36,7 @@ export default function ActionItems() {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
   const [expenses, setExpenses] = useState<Expense[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
   const [actionItems, setActionItems] = useState<(Expense | Task)[]>([])
 
   function onCloseTaskView() {

@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.models import Trips, Message_Recipients, Attendees, Ideas, Expenses, Expenses_Owe, Users
-from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense
+from models.models import Trips, Tasks, Message_Recipients, Attendees, Ideas, Expenses, Expenses_Owe, Users
+from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense, flatten_task
 
-from sqlalchemy import create_engine
-from sqlalchemy import select
+from sqlalchemy import create_engine, select, or_
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import selectinload
 
@@ -87,11 +86,10 @@ async def action_items(user_id):
         flattened_expense = flatten_expense(expense)
         expenses.append(flattened_expense)
 
-    # tsk_stmt = select(Tasks) ## narrow later
+    tsk_stmt = select(Tasks).options(selectinload(Tasks.options)).where(or_(Tasks.assignee_id == user_id, Tasks.assignee_id == 'Everyone'))
 
-    # for task in session.scalars(tsk_stmt):
-    #     print(task)
-    #     tasks.append(task)
+    for task in session.scalars(tsk_stmt):
+        tasks.append(flatten_task(task))
 
     return {"expenses": expenses, "tasks": tasks}
 
@@ -99,7 +97,7 @@ async def action_items(user_id):
 async def trip_expenses(user_id, trip_id):
     expenses = []
 
-    stmt = select(Expenses, Attendees).options(selectinload(Expenses.owe)).select_from(Expenses).join(Trips).join(Attendees).join(Users).where(Expenses.trip_id == trip_id).where(Attendees.attendee_id == user_id)
+    stmt = select(Expenses, Attendees).options(selectinload(Expenses.owe)).select_from(Expenses).join(Trips).join(Attendees).join(Users).where(Expenses.trip_id == trip_id).where(Attendees.attendee_id == user_id) # is users needed?
 
     for expense in session.scalars(stmt):
         flattened_expense = flatten_expense(expense)
@@ -107,3 +105,14 @@ async def trip_expenses(user_id, trip_id):
         expenses.append(flattened_expense)
 
     return {"expenses": expenses}
+
+@app.get("/user/{user_id}/trip/{trip_id}/tasks")
+async def action_items(user_id, trip_id):
+    tasks = []
+
+    stmt = select(Tasks).options(selectinload(Tasks.options)).select_from(Tasks).join(Attendees, Tasks.trip_id == Attendees.trip_id).where(Tasks.trip_id == trip_id).where(Attendees.attendee_id == user_id)
+
+    for task in session.scalars(stmt):
+        tasks.append(flatten_task(task))
+
+    return {"tasks": tasks}

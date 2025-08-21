@@ -1,21 +1,18 @@
+import { PollTaskOption } from '@/lib/types'
 import { appColors } from '@/lib/utils/appColors'
 
-export default function PieChart() {
-  const results = [
-    { response: 'In Napa in a hotel', frequency: 2 },
-    { response: 'In Napa in an AirBnB', frequency: 4 },
-    { response: 'In Sonoma in a hotel', frequency: 1 },
-    { response: 'In Sonoma in an AirBnB', frequency: 3 },
-    { response: "In Sacramento at Katie's house (free)", frequency: 2 }
-  ]
+interface PieChartProps {
+  results: PollTaskOption[]
+}
 
-  const totalResponses = results.reduce((acc, c) => acc + c.frequency, 0)
-  const maxFreq = Math.max(...(results.map((r) => r.frequency) as number[]))
+export default function PieChart({ results }: PieChartProps) {
+  const totalResponses = results.reduce((acc, c) => acc + c.votes, 0)
+  const maxFreq = Math.max(...(results.map((r) => r.votes) as number[]))
 
   const mappedResults = results.map((result) => {
     return {
       ...result,
-      pct: result.frequency / totalResponses
+      pct: result.votes / totalResponses
     }
   })
 
@@ -42,9 +39,9 @@ export default function PieChart() {
                 className="w-4 h-4 rounded-xs shrink-0"
                 style={{ backgroundColor: appColors[19 - i] }}></div>
               <div
-                className={result.frequency === maxFreq ? 'font-bold' : 'font-light'}
-                title={`${(result.frequency / totalResponses) * 100}%`}>
-                {result.response} - {Math.round(result.pct * 100)}%
+                className={result.votes === maxFreq ? 'font-bold' : 'font-light'}
+                title={`${(result.votes / totalResponses) * 100}%`}>
+                {result.label} - {Math.round(result.pct * 100)}%
               </div>
             </div>
           )

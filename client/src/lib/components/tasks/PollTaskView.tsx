@@ -41,8 +41,10 @@ function UncompletedPoll({ activeTask }: SpecializedPollTaskViewProps) {
           {activeTask?.options.map((option, i) => {
             return (
               <FormControlLabel
-                label={option}
-                control={activeTask?.multiple ? <Checkbox name={option}></Checkbox> : <Radio />}
+                label={option.label}
+                control={
+                  activeTask?.multiple ? <Checkbox name={option.label}></Checkbox> : <Radio />
+                }
                 key={i}
               />
             )
@@ -61,7 +63,7 @@ function CompletedPoll({ activeTask }: SpecializedPollTaskViewProps) {
     <>
       <div className="italic">Results</div>
       <div className="my-4 sm:my-2 text-lg">{activeTask.description}</div>
-      <PieChart />
+      <PieChart results={activeTask.options} />
     </>
   )
 }

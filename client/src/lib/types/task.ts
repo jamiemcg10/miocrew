@@ -11,15 +11,23 @@ interface BaseTask {
   notes?: string
 }
 
+export interface PollTaskOption {
+  label: string
+  id: string
+  taskId: string
+  votes: number
+}
+
 export interface PollTask extends BaseTask {
   type: 'poll'
   multiple: boolean
-  options: string[]
-  assignee: 'Everyone'
+  options: PollTaskOption[]
+  assigneeId: 'Everyone'
 }
 
 export interface GeneralTask extends BaseTask {
   type: 'general'
+  assigneeId: string
   assignee: CrewMember
 }
 
