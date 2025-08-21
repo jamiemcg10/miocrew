@@ -1,19 +1,38 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Dialog from '../Dialog'
-import { users } from '@/lib/utils/dummyData'
 import Autocomplete from '@mui/material/Autocomplete'
+import { User } from '@/lib/types'
+import axios from 'axios'
 
 interface AddCrewDialogProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const userEmails = Object.values(users).map((u) => u.email)
-
 export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
+  async function getUsers() {
+    axios
+      .get(`http://localhost:8000/users/`)
+      .then((response) => {
+        if (response.data.users) {
+          const users = response.data.users
+
+          const userEmails = Object.values(users as User[]).map((u: User) => u.email)
+          setUserEmails(userEmails)
+        }
+      })
+      .catch(console.error)
+  }
+
+  const [userEmails, setUserEmails] = useState<string[]>([])
+
+  useEffect(() => {
+    getUsers()
+  }, [])
+
   return (
     <Dialog open={open} setOpen={setOpen}>
       <DialogTitle sx={{ fontWeight: 700 }}>Add Crew Members</DialogTitle>
