@@ -1,11 +1,12 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
 import Dialog from '../Dialog'
 import Autocomplete from '@mui/material/Autocomplete'
 import { User } from '@/lib/types'
 import axios from 'axios'
+import { TripContext } from '@/lib/utils/TripContext'
 
 interface AddCrewDialogProps {
   open: boolean
@@ -20,12 +21,16 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
         if (response.data.users) {
           const users = response.data.users
 
-          const userEmails = Object.values(users as User[]).map((u: User) => u.email)
+          const userEmails = Object.values(users as User[])
+            .filter((u) => !trip?.attendees[u.id])
+            .map((u: User) => u.email)
           setUserEmails(userEmails)
         }
       })
       .catch(console.error)
   }
+
+  const trip = useContext(TripContext)
 
   const [userEmails, setUserEmails] = useState<string[]>([])
 
