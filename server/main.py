@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.models import Trips, Tasks, Message_Recipients, Attendees, Ideas, Expenses, Expenses_Owe, Users
-from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense, flatten_task
+from models.models import Trips, Tasks, Message_Recipients, Attendees, Ideas, Expenses, Expenses_Owe, Users, Events
+from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense, flatten_task, flatten_event
 
 from sqlalchemy import create_engine, select, or_
 from sqlalchemy.orm import Session
@@ -107,7 +107,7 @@ async def trip_expenses(user_id, trip_id):
     return {"expenses": expenses}
 
 @app.get("/user/{user_id}/trip/{trip_id}/tasks")
-async def action_items(user_id, trip_id):
+async def tasks(user_id, trip_id):
     tasks = []
 
     stmt = select(Tasks).options(selectinload(Tasks.options)).select_from(Tasks).join(Attendees, Tasks.trip_id == Attendees.trip_id).where(Tasks.trip_id == trip_id).where(Attendees.attendee_id == user_id)
@@ -116,3 +116,14 @@ async def action_items(user_id, trip_id):
         tasks.append(flatten_task(task))
 
     return {"tasks": tasks}
+
+@app.get("/user/{user_id}/trip/{trip_id}/events")
+async def events(user_id, trip_id):
+    events = []
+
+    stmt = select(Events).select_from(Events).join(Attendees, Events.trip_id == Attendees.trip_id).where(Events.trip_id == trip_id).where(Attendees.attendee_id == user_id)
+
+    for event in session.scalars(stmt):
+        events.append(flatten_event(event))
+
+    return {"events": events}

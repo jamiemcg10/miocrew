@@ -112,3 +112,14 @@ def flatten_task(task):
         "tripId": task.trip_id,
         "type": task.type
     }
+
+def flatten_event(event):
+    return {
+        "id": event.id,
+        "tripId": event.trip_id,
+        "name": event.name,
+        "description": event.description,
+        "startTime": event.start_time,
+        "endTime": event.end_time,
+        "color": event.color
+    }

@@ -128,8 +128,19 @@ class Tasks(Base):
 
 class Poll_Task_Options(Base):
     __tablename__ = "poll_task_options"
-    id: Mapped[str] = mapped_column(primary_key=True)
+    id: Mapped[str] = mapped_column(String, primary_key=True)
     task_id: Mapped[str] = mapped_column(String, ForeignKey("tasks.id"))
     label: Mapped[str] = mapped_column(String)
     votes: Mapped[int] = mapped_column(Integer)
     task: Mapped["Tasks"] = relationship("Tasks", back_populates="options")
+
+class Events(Base):
+    __tablename__ = "trip_events"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    trip_id: Mapped[str] = mapped_column(String, ForeignKey("trips.id"))
+    name: Mapped[str] = mapped_column(String)
+    description: Mapped[str] = mapped_column(String)
+    location: Mapped[str] = mapped_column(String)    
+    start_time: Mapped[str] = mapped_column(String(20))    
+    end_time: Mapped[str] = mapped_column(String(20))
+    color: Mapped[str] = mapped_column(String)

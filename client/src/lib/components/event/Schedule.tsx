@@ -1,23 +1,38 @@
 import './Schedule.css'
-import { tripEvents } from '@/lib/utils/dummyData'
 import Button from '@mui/material/Button'
 import dayjs from 'dayjs'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { TripEvent } from '@/lib/types/tripEvent'
 import ScheduleDay from './ScheduleDay'
-import { Dispatch, SetStateAction, useContext } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
 import { TripContext } from '@/lib/utils/TripContext'
+import axios from 'axios'
+import { UserContext } from '@/lib/utils/UserContext'
 
 interface ScheduleProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
 }
 
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
+  async function getEvents() {
+    axios
+      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/events`)
+      .then((response) => {
+        if (response.data.events) {
+          setEvents(response.data.events)
+        }
+      })
+      .catch(console.error)
+  }
+
   function setOpenAddDialogTrue() {
     setOpenAddDialog(true)
   }
 
   const trip = useContext(TripContext)
+  const user = useContext(UserContext)
+
+  const [events, setEvents] = useState<TripEvent[]>([])
 
   const tripStart = dayjs(trip?.startDate)
   const tripEnd = dayjs(trip?.endDate || tripStart)
@@ -35,10 +50,16 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
     }
   }
 
-  tripEvents.forEach((event) => {
+  events.forEach((event) => {
     const eventDate = dayjs(event.startTime).startOf('date').format('MMMM D, YYYY')
     days[eventDate]?.events.push(event)
   })
+
+  if (!trip || !user) return
+
+  useEffect(() => {
+    getEvents()
+  }, [])
 
   return (
     <>
