@@ -18,7 +18,7 @@ export default function ActionItems() {
           setTasks(response.data.tasks)
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching action items', e))
   }
 
   function formatActionItems() {

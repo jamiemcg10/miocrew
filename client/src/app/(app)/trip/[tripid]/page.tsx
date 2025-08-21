@@ -39,7 +39,7 @@ export default function TripPage() {
           notFound()
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error getching trip', e))
   }
 
   const { tripid } = useParams<{ tripid: string }>()

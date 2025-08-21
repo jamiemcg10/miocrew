@@ -15,15 +15,14 @@ export default function PastTripsPage() {
     axios
       .get(`http://localhost:8000/user/${user!.id}/trips`) // get address from env
       .then((response) => {
-        console.log({ response })
         const _pastTrips = response.data.trips.filter((trip: Trip) => {
           const startDate = new Date(trip.startDate)
           return startDate < new Date()
         })
+
         setPastTrips(_pastTrips)
-        console.log({ _pastTrips, pastTrips })
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching past trips', e))
   }
 
   useEffect(getPastTrips, [])

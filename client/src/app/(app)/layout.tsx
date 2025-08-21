@@ -23,7 +23,7 @@ export default function AppLayout({
           localStorage.setItem('user', JSON.stringify(response.data.user))
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching user', e))
   }
 
   const theme = useTheme()

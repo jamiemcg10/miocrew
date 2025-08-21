@@ -18,7 +18,7 @@ export default function DashboardPage() {
         })
         setUpcomingTrips(_upcomingTrips)
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching upcoming trips', e))
   }
 
   const user = useContext(UserContext)

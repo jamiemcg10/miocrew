@@ -38,7 +38,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
           setTrips(response.data.trips)
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching trips', e))
   }
 
   function getOptionLabel(

@@ -28,7 +28,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           setFilteredTasks(response.data.tasks)
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching tasks', e))
   }
 
   function handleBasicFilterClick(value: string) {

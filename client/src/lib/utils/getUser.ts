@@ -10,5 +10,5 @@ export async function getUsers(responseFn: Function) {
         responseFn(users)
       }
     })
-    .catch(console.error)
+    .catch((e) => console.error('Error fetching users', e))
 }

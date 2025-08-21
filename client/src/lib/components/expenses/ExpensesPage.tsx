@@ -23,7 +23,7 @@ export default function TaskPage() {
           setExpenses(response.data.expenses)
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching expenses', e))
   }
 
   const user = useContext(UserContext)

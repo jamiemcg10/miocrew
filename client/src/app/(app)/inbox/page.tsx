@@ -22,7 +22,7 @@ export default function InboxPage() {
       .then((response) => {
         setMessages(response.data.messages)
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching messages', e))
   }
 
   const [messages, setMessages] = useState<BaseMessage[]>([])

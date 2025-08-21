@@ -14,7 +14,7 @@ export default function IdeasPage() {
           setIdeas(response.data.ideas)
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching ideas', e))
   }
 
   const user = useContext(UserContext)

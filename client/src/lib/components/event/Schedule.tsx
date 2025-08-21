@@ -22,7 +22,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
           setEvents(response.data.events)
         }
       })
-      .catch(console.error)
+      .catch((e) => console.error('Error fetching scheduled events', e))
   }
 
   function setOpenAddDialogTrue() {
