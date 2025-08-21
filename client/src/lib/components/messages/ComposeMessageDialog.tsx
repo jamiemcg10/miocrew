@@ -3,12 +3,21 @@ import Popup from '../Popup'
 import TextField from '@mui/material/TextField'
 import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
-import { trips, users } from '@/lib/utils/dummyData'
 import Autocomplete from '@mui/material/Autocomplete'
+import axios from 'axios'
+import { useContext, useEffect, useState } from 'react'
+import { Trip, User } from '@/lib/types'
+import { UserContext } from '@/lib/utils/UserContext'
 
 interface ComposeMessageDialogProps {
   open: boolean
   onClose: () => void
+}
+
+interface RecipientOption {
+  email: string
+  id: string
+  type: string
 }
 
 const textFieldSx = {
@@ -16,6 +25,28 @@ const textFieldSx = {
 }
 
 export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
+  async function getUsers() {
+    axios
+      .get(`http://localhost:8000/users/`)
+      .then((response) => {
+        if (response.data.users) {
+          setUsers(response.data.users)
+        }
+      })
+      .catch(console.error)
+  }
+
+  async function getTrips() {
+    axios
+      .get(`http://localhost:8000/user/${user!.id}/trips`)
+      .then((response) => {
+        if (response.data.trips) {
+          setTrips(response.data.trips)
+        }
+      })
+      .catch(console.error)
+  }
+
   function getOptionLabel(
     option:
       | string
@@ -28,14 +59,29 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
     return typeof option === 'string' ? option : option.email
   }
 
-  const tripOptions = trips.map((t) => {
-    return { email: t.name, id: t.id, type: 'trip' }
-  })
+  const user = useContext(UserContext)
 
-  const userOptions = Object.values(users).map((u) => {
-    return { email: u.email, id: u.id, type: 'user' }
-  })
-  const combinedRecipientOptions = [...tripOptions, ...userOptions]
+  const [users, setUsers] = useState<User[]>([])
+  const [trips, setTrips] = useState<Trip[]>([])
+  const [combinedRecipientOptions, setCombinedRecipientOptions] = useState<RecipientOption[]>([])
+
+  useEffect(() => {
+    getUsers()
+    getTrips()
+  }, [])
+
+  useEffect(() => {
+    const tripOptions = trips.map((t) => {
+      return { email: t.name, id: t.id, type: 'trip' }
+    })
+
+    const userOptions = Object.values(users).map((u) => {
+      return { email: u.email, id: u.id, type: 'user' }
+    })
+    setCombinedRecipientOptions([...tripOptions, ...userOptions])
+  }, [users, trips])
+
+  if (!user) return
 
   return (
     <Popup open={open} onClose={onClose}>

@@ -26,6 +26,17 @@ app.add_middleware(
 async def ping():
     return { "data": "pong"}
 
+@app.get("/users/") # needs to be narrowed to friends & trip members eventually
+async def users():
+    users = []
+
+    stmt = select(Users)
+
+    for user in session.scalars(stmt):
+        users.append(user)
+
+    return {"users": users}
+
 @app.get("/user/{user_id}/trip/{trip_id}/")
 async def trip(user_id, trip_id):
     stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)
@@ -35,9 +46,9 @@ async def trip(user_id, trip_id):
     return { "trip": flatten_trip(trip) }
 
 @app.get("/user/{user_id}/trips/")
-async def trips():
-    # need table to attach trips to users
-    stmt = select(Trips).options(selectinload(Trips.attendees))
+async def trips(user_id):
+    # need table to attach trips to users - done, make sure it works
+    stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id)
     trips = []
 
 
