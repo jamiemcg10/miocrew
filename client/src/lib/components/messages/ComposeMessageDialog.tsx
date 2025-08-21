@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { Trip, User } from '@/lib/types'
 import { UserContext } from '@/lib/utils/UserContext'
+import { getUsers } from '@/lib/utils/getUser'
 
 interface ComposeMessageDialogProps {
   open: boolean
@@ -25,15 +26,8 @@ const textFieldSx = {
 }
 
 export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
-  async function getUsers() {
-    axios
-      .get(`http://localhost:8000/users/`)
-      .then((response) => {
-        if (response.data.users) {
-          setUsers(response.data.users)
-        }
-      })
-      .catch(console.error)
+  function getUsersResponseFn(users: User[]) {
+    setUsers(users)
   }
 
   async function getTrips() {
@@ -66,7 +60,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
   const [combinedRecipientOptions, setCombinedRecipientOptions] = useState<RecipientOption[]>([])
 
   useEffect(() => {
-    getUsers()
+    getUsers(getUsersResponseFn)
     getTrips()
   }, [])
 

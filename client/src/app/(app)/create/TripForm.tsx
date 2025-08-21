@@ -4,13 +4,24 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@heroui/date-picker'
 import Autocomplete from '@mui/material/Autocomplete'
-import { users } from '@/lib/utils/dummyData'
+import { useEffect, useState } from 'react'
+import { getUsers } from '@/lib/utils/getUser'
+import { User } from '@/lib/types'
 
 const fieldStyles = { width: '100%' }
 
-const userEmails = Object.values(users).map((u) => u.email)
-
 export default function TripForm() {
+  function getUsersResponseFn(users: User[]) {
+    const emails = Object.values(users).map((u) => u.email)
+    setUserEmails(emails)
+  }
+
+  const [userEmails, setUserEmails] = useState<string[]>([])
+
+  useEffect(() => {
+    getUsers(getUsersResponseFn)
+  }, [])
+
   return (
     <>
       <div>

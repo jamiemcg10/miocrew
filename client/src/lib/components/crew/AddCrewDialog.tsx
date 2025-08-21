@@ -5,8 +5,8 @@ import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react
 import Dialog from '../Dialog'
 import Autocomplete from '@mui/material/Autocomplete'
 import { User } from '@/lib/types'
-import axios from 'axios'
 import { TripContext } from '@/lib/utils/TripContext'
+import { getUsers } from '@/lib/utils/getUser'
 
 interface AddCrewDialogProps {
   open: boolean
@@ -14,20 +14,11 @@ interface AddCrewDialogProps {
 }
 
 export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
-  async function getUsers() {
-    axios
-      .get(`http://localhost:8000/users/`)
-      .then((response) => {
-        if (response.data.users) {
-          const users = response.data.users
-
-          const userEmails = Object.values(users as User[])
-            .filter((u) => !trip?.attendees[u.id])
-            .map((u: User) => u.email)
-          setUserEmails(userEmails)
-        }
-      })
-      .catch(console.error)
+  function getUsersResponseFn(users: User[]) {
+    const userEmails = Object.values(users as User[])
+      .filter((u) => !trip?.attendees[u.id])
+      .map((u: User) => u.email)
+    setUserEmails(userEmails)
   }
 
   const trip = useContext(TripContext)
@@ -35,7 +26,7 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
   const [userEmails, setUserEmails] = useState<string[]>([])
 
   useEffect(() => {
-    getUsers()
+    getUsers(getUsersResponseFn)
   }, [])
 
   return (
