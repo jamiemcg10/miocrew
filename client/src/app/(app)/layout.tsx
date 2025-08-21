@@ -6,13 +6,26 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from '@/lib/components/layout/Menu'
 import TopBar from '@/lib/components/layout/TopBar'
 import { UserContext } from '@/lib/utils/UserContext'
-import { users } from '@/lib/utils/dummyData/users'
+import { User } from '@/lib/types'
+import axios from 'axios'
 
-export default function DashboardLayout({
+export default function AppLayout({
   children
 }: Readonly<{
   children: ReactNode
 }>) {
+  async function getUser() {
+    axios
+      .get(`http://localhost:8000/user/2`) // user hardcoded for now
+      .then((response) => {
+        if (response.data.user) {
+          setUser(response.data.user)
+          localStorage.setItem('user', JSON.stringify(response.data.user))
+        }
+      })
+      .catch(console.error)
+  }
+
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
@@ -30,7 +43,18 @@ export default function DashboardLayout({
     [setOpen]
   )
 
-  const user = users['2']
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const _user = typeof window !== 'undefined' ? localStorage.getItem('user') : null
+    const userObject = _user ? JSON.parse(_user) : null
+
+    if (!userObject) {
+      getUser()
+    } else {
+      setUser(userObject)
+    }
+  }, [])
 
   // needs to be last
   useEffect(mount, [])

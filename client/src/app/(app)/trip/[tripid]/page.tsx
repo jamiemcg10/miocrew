@@ -19,8 +19,10 @@ export default function TripPage() {
   const [trip, setTrip] = useState<Trip | null>(null)
 
   function getTrip() {
+    if (!user) return
+
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${tripid}`)
+      .get(`http://localhost:8000/user/${user.id}/trip/${tripid}`)
       .then((response) => {
         const attendees = response.data.trip.attendees.reduce(
           (acc: Record<string, CrewMember>, c: CrewMember) => {
@@ -60,7 +62,7 @@ export default function TripPage() {
     }
   }
 
-  useEffect(getTrip, [])
+  useEffect(getTrip, [user])
 
   if (!trip) return
 

@@ -25,6 +25,8 @@ interface MenuProps {
 export default function Menu({ open, handleClose, matches }: MenuProps) {
   const user = useContext(UserContext)
 
+  if (!user) return
+
   return (
     <Drawer
       sx={{

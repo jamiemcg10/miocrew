@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import Trips, Tasks, Message_Recipients, Attendees, Ideas, Expenses, Expenses_Owe, Users, Events
-from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense, flatten_task, flatten_event
+from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense, flatten_task, flatten_event, flatten_user
 
 from sqlalchemy import create_engine, select, or_
 from sqlalchemy.orm import Session
@@ -25,6 +25,15 @@ app.add_middleware(
 @app.get("/api/ping")
 async def ping():
     return { "data": "pong"}
+
+@app.get("/user/{user_id}/")
+async def trip(user_id):
+    stmt = select(Users).where(Users.id == user_id)
+
+    user = session.scalar(stmt)
+
+    return { "user": flatten_user(user) }
+
 
 @app.get("/users/") # needs to be narrowed to friends & trip members eventually
 async def users():
