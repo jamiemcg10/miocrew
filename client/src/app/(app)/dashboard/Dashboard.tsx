@@ -4,32 +4,13 @@ import TripTable from '@/lib/components/TripTable'
 import Button from '@mui/material/Button'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import ActionItems from './ActionItems'
-import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
-import { useContext, useEffect, useState } from 'react'
 import { Trip } from '@/lib/types'
 
-export default function Dashboard() {
-  const user = useContext(UserContext)
-  const [upcomingTrips, setUpcomingTrips] = useState([])
+interface DashboardProps {
+  upcomingTrips: Trip[]
+}
 
-  function getUpcomingTrips() {
-    axios
-      .get(`http://localhost:8000/user/${user!.id}/trips`) // get address from env
-      .then((response) => {
-        const _upcomingTrips = response.data.trips.filter((trip: Trip) => {
-          const startDate = new Date(trip.startDate)
-          return startDate >= new Date()
-        })
-        setUpcomingTrips(_upcomingTrips)
-      })
-      .catch(console.error)
-  }
-
-  useEffect(getUpcomingTrips, [])
-
-  if (!user) return
-
+export default function Dashboard({ upcomingTrips }: DashboardProps) {
   return (
     <div className="flex flex-col px-4">
       <Button

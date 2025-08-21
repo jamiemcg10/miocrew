@@ -1,13 +1,19 @@
-import { trips as upcomingTrips } from '@/lib/utils/dummyData'
+import { Trip } from '@/lib/types'
 import { tripSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
 
-export default function DashboardHeader() {
-  const nextTrip = upcomingTrips.filter((trip) => trip.startDate >= new Date()).sort(tripSort)[0]
+interface DashboardHeaderProps {
+  upcomingTrips: Trip[]
+}
+
+export default function DashboardHeader({ upcomingTrips }: DashboardHeaderProps) {
+  const nextTrip = upcomingTrips
+    .filter((trip) => new Date(trip.startDate) >= new Date())
+    .sort(tripSort)[0]
 
   const today = dayjs(new Date())
-  const nextTripStart = dayjs(nextTrip.startDate).diff(today, 'day')
-  const nextTripStartMonths = dayjs(nextTrip.startDate).diff(today, 'month')
+  const nextTripStart = dayjs(nextTrip?.startDate).diff(today, 'day')
+  const nextTripStartMonths = dayjs(nextTrip?.startDate).diff(today, 'month')
 
   return (
     <div className="flex justify-around px-4 py-4 items-center bg-[#cee2f5] dark:bg-white/20 font-semibold">
