@@ -4,6 +4,8 @@ import AddIdeaDialog from './AddIdeaDialog'
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
 import { TripContext } from '@/lib/utils/TripContext'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
+import { Idea } from '@/lib/types'
 
 export default function IdeasPage() {
   function getIdeas() {
@@ -12,6 +14,7 @@ export default function IdeasPage() {
       .then((response) => {
         if (response.data.ideas?.length) {
           setIdeas(response.data.ideas)
+          LocalStorage.set('ideas', response.data.ideas)
         }
       })
       .catch((e) => console.error('Error fetching ideas', e))
@@ -21,9 +24,15 @@ export default function IdeasPage() {
   const trip = useContext(TripContext)
 
   const [addDialogOpen, setAddDialogOpen] = useState(false)
-  const [ideas, setIdeas] = useState([])
+  const [ideas, setIdeas] = useState<Idea[]>([])
 
-  useEffect(getIdeas, [])
+  useEffect(() => {
+    const storedIdeas = LocalStorage.get<Idea[]>('ideas')
+    if (storedIdeas) {
+      setIdeas(storedIdeas)
+    }
+    getIdeas()
+  }, [])
 
   return (
     <>

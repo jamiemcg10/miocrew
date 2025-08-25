@@ -13,6 +13,7 @@ import { TripContext } from '@/lib/utils/TripContext'
 import CrewAvatar from '../CrewAvatar'
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean>>
@@ -26,6 +27,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
         if (response.data.tasks) {
           setTasks(response.data.tasks)
           setFilteredTasks(response.data.tasks)
+          LocalStorage.set('tasks', response.data.tasks)
         }
       })
       .catch((e) => console.error('Error fetching tasks', e))
@@ -74,6 +76,12 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   const attendees = Object.values(trip?.attendees || {})
 
   useEffect(() => {
+    const storedTasks = LocalStorage.get<Task[]>('tasks')
+    if (storedTasks) {
+      setFilteredTasks(storedTasks)
+      setTasks(storedTasks)
+    }
+
     getTasks()
   }, [])
 

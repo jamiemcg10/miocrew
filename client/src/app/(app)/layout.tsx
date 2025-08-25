@@ -8,6 +8,7 @@ import TopBar from '@/lib/components/layout/TopBar'
 import { UserContext } from '@/lib/utils/UserContext'
 import { User } from '@/lib/types'
 import axios from 'axios'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 export default function AppLayout({
   children
@@ -20,7 +21,7 @@ export default function AppLayout({
       .then((response) => {
         if (response.data.user) {
           setUser(response.data.user)
-          localStorage.setItem('user', JSON.stringify(response.data.user))
+          LocalStorage.set('user', response.data.user)
         }
       })
       .catch((e) => console.error('Error fetching user', e))
@@ -46,13 +47,12 @@ export default function AppLayout({
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    const _user = typeof window !== 'undefined' ? localStorage.getItem('user') : null
-    const userObject = _user ? JSON.parse(_user) : null
+    const _user = LocalStorage.get<User>('user')
 
-    if (!userObject) {
+    if (!_user) {
       getUser()
     } else {
-      setUser(userObject)
+      setUser(_user)
     }
   }, [])
 

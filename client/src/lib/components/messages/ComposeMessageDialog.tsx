@@ -60,9 +60,11 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
   const [combinedRecipientOptions, setCombinedRecipientOptions] = useState<RecipientOption[]>([])
 
   useEffect(() => {
-    getUsers(getUsersResponseFn)
-    getTrips()
-  }, [])
+    if (user) {
+      getUsers(getUsersResponseFn)
+      getTrips()
+    }
+  }, [user])
 
   useEffect(() => {
     const tripOptions = trips.map((t) => {

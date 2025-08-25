@@ -8,6 +8,7 @@ import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react
 import { TripContext } from '@/lib/utils/TripContext'
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 interface ScheduleProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
@@ -20,6 +21,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
       .then((response) => {
         if (response.data.events) {
           setEvents(response.data.events)
+          LocalStorage.set('events', response.data.events)
         }
       })
       .catch((e) => console.error('Error fetching scheduled events', e))
@@ -58,6 +60,10 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   if (!trip || !user) return
 
   useEffect(() => {
+    const storedEvents = LocalStorage.get<TripEvent[]>('tasks')
+    if (storedEvents) {
+      setEvents(storedEvents)
+    }
     getEvents()
   }, [])
 

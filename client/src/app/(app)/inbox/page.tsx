@@ -12,15 +12,18 @@ import ComposeMessageDialog from '@/lib/components/messages/ComposeMessageDialog
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
 import MessageItem from '@/lib/components/messages/MessageItem'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 export default function InboxPage() {
   const user = useContext(UserContext)
 
   function getMessages() {
+    if (!user) return
     axios
-      .get(`http://localhost:8000/user/${user!.id}/messages`)
+      .get(`http://localhost:8000/user/${user.id}/messages`)
       .then((response) => {
         setMessages(response.data.messages)
+        LocalStorage.set('messages', response.data.messages)
       })
       .catch((e) => console.error('Error fetching messages', e))
   }
@@ -39,10 +42,13 @@ export default function InboxPage() {
   const [checked, setChecked] = useState(checkedMessages)
   const hasChecked = Object.values(checked).find((v) => v === true)
 
-  // TODO: Make this a component
-  useEffect(getMessages, [])
+  const storedMessages = LocalStorage.get<BaseMessage[]>('messages')
+  if (storedMessages) {
+    setMessages(storedMessages)
+  }
 
-  if (!user) return
+  // TODO: Make this a component
+  useEffect(getMessages, [user])
 
   return (
     <>

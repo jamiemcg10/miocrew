@@ -65,7 +65,7 @@ export default function TripPage() {
   useEffect(getTrip, [user])
 
   if (!trip) return
-
+  // put more stuff in context?
   return (
     <div className="relative overflow-hidden flex flex-col grow">
       <div
