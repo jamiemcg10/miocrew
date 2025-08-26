@@ -30,6 +30,7 @@ export const TripEvent: Story = {
   args: {
     event: {
       id: 'wm1',
+      tripId: '1',
       name: 'Check into AirBnB and relax',
       description: 'Arrive, hang out at AirBnB until dinner',
       location: '132 Sonoma Crest Road Ext',
