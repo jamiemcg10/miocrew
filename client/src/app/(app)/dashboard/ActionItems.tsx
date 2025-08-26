@@ -27,7 +27,7 @@ export default function ActionItems() {
         return (t.assigneeId === 'Everyone' || t.assigneeId === user?.id) && !t.completed
       }),
       ...expenses.filter((e) => {
-        return e.due === 'immediate' && e.owe.find((u) => u.id === user?.id)?.paid === false
+        return e.due === 'immediate' && user?.id && e.owe[user.id]?.paid === false
       })
     ])
   }

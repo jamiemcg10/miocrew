@@ -17,7 +17,7 @@ export interface Expense {
   paidBy: CrewMember
   total: number
   split: 'Even' | 'Custom'
-  owe: Debtor[]
+  owe: Record<string, Debtor>
   settled: boolean
   due: 'immediate' | 'end'
   date: Date

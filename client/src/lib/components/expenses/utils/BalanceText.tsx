@@ -8,7 +8,7 @@ interface BalanceTextProps {
 
 export default function BalanceText({ expense, userId }: BalanceTextProps) {
   const { owe, paidBy, settled } = expense
-  const userOwes = owe.find((d) => d.id === userId)
+  const userOwes = userId ? owe[userId] : undefined
 
   const mutedCostStyles = 'text-zinc-800 dark:text-zinc-500 italic text-sm'
   const paid = userId && userOwes?.paid

@@ -21,7 +21,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
       .then((response) => {
         if (response.data.events) {
           setEvents(response.data.events)
-          LocalStorage.set('events', response.data.events)
+          LocalStorage.set(`${trip?.id}:events`, response.data.events)
         }
       })
       .catch((e) => console.error('Error fetching scheduled events', e))
@@ -34,7 +34,8 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
 
-  const [events, setEvents] = useState<TripEvent[]>([])
+  const storedEvents = LocalStorage.get<TripEvent[]>(`${trip?.id}:events`)
+  const [events, setEvents] = useState<TripEvent[]>(storedEvents || [])
 
   const tripStart = dayjs(trip?.startDate)
   const tripEnd = dayjs(trip?.endDate || tripStart)
@@ -60,10 +61,6 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   if (!trip || !user) return
 
   useEffect(() => {
-    const storedEvents = LocalStorage.get<TripEvent[]>('tasks')
-    if (storedEvents) {
-      setEvents(storedEvents)
-    }
     getEvents()
   }, [])
 

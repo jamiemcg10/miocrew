@@ -14,7 +14,7 @@ export default function IdeasPage() {
       .then((response) => {
         if (response.data.ideas?.length) {
           setIdeas(response.data.ideas)
-          LocalStorage.set('ideas', response.data.ideas)
+          LocalStorage.set(`${trip?.id}:ideas`, response.data.ideas)
         }
       })
       .catch((e) => console.error('Error fetching ideas', e))
@@ -24,13 +24,11 @@ export default function IdeasPage() {
   const trip = useContext(TripContext)
 
   const [addDialogOpen, setAddDialogOpen] = useState(false)
-  const [ideas, setIdeas] = useState<Idea[]>([])
+
+  const storedIdeas = LocalStorage.get<Idea[]>(`${trip?.id}:ideas`)
+  const [ideas, setIdeas] = useState<Idea[]>(storedIdeas || [])
 
   useEffect(() => {
-    const storedIdeas = LocalStorage.get<Idea[]>('ideas')
-    if (storedIdeas) {
-      setIdeas(storedIdeas)
-    }
     getIdeas()
   }, [])
 

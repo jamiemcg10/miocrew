@@ -27,7 +27,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
         if (response.data.tasks) {
           setTasks(response.data.tasks)
           setFilteredTasks(response.data.tasks)
-          LocalStorage.set('tasks', response.data.tasks)
+          LocalStorage.set(`${trip?.id}:tasks`, response.data.tasks)
         }
       })
       .catch((e) => console.error('Error fetching tasks', e))
@@ -65,23 +65,19 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
     setFilteredTasks(!updatedFilters.length && !updatedCrewFilter?.length ? tasks : _filteredTasks)
   }
 
-  const [tasks, setTasks] = useState<Task[]>([])
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
-  const [filters, setFilters] = useState<string[]>([])
-  const [crewFilter, setCrewFilter] = useState<string | null>(null)
-  const [activeTask, setActiveTask] = useState<Task | null>(null)
-
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
   const attendees = Object.values(trip?.attendees || {})
 
-  useEffect(() => {
-    const storedTasks = LocalStorage.get<Task[]>('tasks')
-    if (storedTasks) {
-      setFilteredTasks(storedTasks)
-      setTasks(storedTasks)
-    }
+  const storedTasks = LocalStorage.get<Task[]>(`${trip?.id}:tasks`)
 
+  const [tasks, setTasks] = useState<Task[]>(storedTasks || [])
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>(storedTasks || [])
+  const [filters, setFilters] = useState<string[]>([])
+  const [crewFilter, setCrewFilter] = useState<string | null>(null)
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
+
+  useEffect(() => {
     getTasks()
   }, [])
 

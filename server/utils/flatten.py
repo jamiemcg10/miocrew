@@ -1,3 +1,6 @@
+from functools import reduce
+from utils.arrayToObject import arrayToObject
+
 def flatten_attendee(attendee):
     return {
         "id": attendee.id,
@@ -84,7 +87,7 @@ def flatten_expense(expense):
         "total": expense.total,
         "settled": bool(expense.settled),
         "date": expense.date,
-        "owe": [flatten_debtor(debtor) for debtor in expense.owe]
+        "owe": reduce(arrayToObject, [flatten_debtor(debtor) for debtor in expense.owe], {})
     }
 
 def flatten_poll_task_option(option):
