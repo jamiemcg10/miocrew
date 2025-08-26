@@ -34,13 +34,15 @@ def flatten_trip(trip):
     }
 
 def flatten_message(message):
+    print(message)
     return {
         "recipientId": message.recipient,
         "read": bool(message.read),
-        "senderId": message.message.sender,
+        "senderId": message.message.sender_id,
         "id": message.message.id,
         "subject": message.message.subject,
-        "body": message.message.body
+        "body": message.message.body,
+        "sender": flatten_user(message.message.sender)
         }
 
 def flatten_idea(idea, attendee):

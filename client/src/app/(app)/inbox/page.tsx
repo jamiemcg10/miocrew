@@ -19,6 +19,7 @@ export default function InboxPage() {
 
   function getMessages() {
     if (!user) return
+
     axios
       .get(`http://localhost:8000/user/${user.id}/messages`)
       .then((response) => {
@@ -28,7 +29,8 @@ export default function InboxPage() {
       .catch((e) => console.error('Error fetching messages', e))
   }
 
-  const [messages, setMessages] = useState<BaseMessage[]>([])
+  const storedMessages = LocalStorage.get<BaseMessage[]>('messages')
+  const [messages, setMessages] = useState<BaseMessage[]>(storedMessages || [])
   const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
   const [composing, setComposing] = useState(false)
 
@@ -41,11 +43,6 @@ export default function InboxPage() {
 
   const [checked, setChecked] = useState(checkedMessages)
   const hasChecked = Object.values(checked).find((v) => v === true)
-
-  const storedMessages = LocalStorage.get<BaseMessage[]>('messages')
-  if (storedMessages) {
-    setMessages(storedMessages)
-  }
 
   // TODO: Make this a component
   useEffect(getMessages, [user])

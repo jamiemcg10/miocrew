@@ -26,6 +26,7 @@ class Users(Base):
     user: Mapped["Expenses"] = relationship(back_populates="paid_by_user")  
     assigned_tasks: Mapped[List["Tasks"]] = relationship("Tasks", foreign_keys="Tasks.assignee_id", back_populates="assignee")
     created_tasks: Mapped[List["Tasks"]] = relationship("Tasks", foreign_keys="Tasks.creator_id", back_populates="creator")
+    message_sender: Mapped["Messages"] = relationship("Messages", foreign_keys="Messages.sender_id", back_populates="sender")
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, firstName={self.first_name!r})"
@@ -55,7 +56,8 @@ class Messages(Base):
     id: Mapped[str] = mapped_column(primary_key=True)
     subject: Mapped[str] = mapped_column(String)
     body: Mapped[str] = mapped_column(String)
-    sender: Mapped[str] = mapped_column(String(8))
+    sender_id: Mapped[str] = mapped_column(String(8), ForeignKey("users.id"))
+    sender: Mapped['Users'] = relationship(lazy="joined")
     message_recipients: Mapped[List["Message_Recipients"]] = relationship() 
 
 class Message_Recipients(Base):

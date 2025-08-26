@@ -1,3 +1,5 @@
+import { User } from './user'
+
 export interface BaseMessage {
   // TODO: rename this to Message
   id: string
@@ -5,5 +7,6 @@ export interface BaseMessage {
   body: string
   read: boolean
   senderId: string
+  sender: User
   recipientId: string
 }
