@@ -22,7 +22,7 @@ export default function TripPage() {
     if (!user) return
 
     axios
-      .get(`http://localhost:8000/user/${user.id}/trip/${tripid}`)
+      .get(`http://localhost:8000/user/${user.id}/trip/${tripid}`, { withCredentials: true })
       .then((response) => {
         const attendees = response.data.trip.attendees.reduce(
           (acc: Record<string, CrewMember>, c: CrewMember) => {

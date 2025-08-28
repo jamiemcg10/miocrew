@@ -32,7 +32,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
 
   async function getTrips() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trips`)
+      .get(`http://localhost:8000/user/${user!.id}/trips`, { withCredentials: true })
       .then((response) => {
         if (response.data.trips) {
           setTrips(response.data.trips)

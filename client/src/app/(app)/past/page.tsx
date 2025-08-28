@@ -13,7 +13,7 @@ export default function PastTripsPage() {
 
   function getPastTrips() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trips`) // get address from env
+      .get(`http://localhost:8000/user/${user!.id}/trips`, { withCredentials: true }) // TODO: get address from env
       .then((response) => {
         const _pastTrips = response.data.trips.filter((trip: Trip) => {
           const startDate = new Date(trip.startDate)

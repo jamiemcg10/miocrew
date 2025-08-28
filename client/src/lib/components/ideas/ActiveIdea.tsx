@@ -17,12 +17,14 @@ export default function ActiveEvent({ activeIdea, setActiveIdea }: ActiveIdeaPro
 
   if (!activeIdea) return
 
+  // TODO: fix http:// handling for url
+
   return (
     <Popup backgroundColor={activeIdea.color} open={!!activeIdea} onClose={onClose}>
       <div className="flex items-center space-x-1">
         <div className="font-bold text-2xl">{activeIdea.name}</div>
         {activeIdea.url ? (
-          <IconButton sx={{ rotate: '135deg' }} href={activeIdea.url}>
+          <IconButton sx={{ rotate: '135deg' }} href={activeIdea.url} target="_blank">
             <LinkRoundedIcon />
           </IconButton>
         ) : null}

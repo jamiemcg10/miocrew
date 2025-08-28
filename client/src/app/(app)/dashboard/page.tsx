@@ -10,7 +10,7 @@ import { Trip } from '@/lib/types'
 export default function DashboardPage() {
   function getUpcomingTrips() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trips`) // get address from env
+      .get(`http://localhost:8000/user/${user!.id}/trips`, { withCredentials: true }) // get address from env
       .then((response) => {
         const _upcomingTrips = response.data.trips.filter((trip: Trip) => {
           const startDate = new Date(trip.startDate)

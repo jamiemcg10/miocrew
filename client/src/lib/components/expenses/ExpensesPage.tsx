@@ -10,7 +10,9 @@ import { LocalStorage } from '@/lib/utils/LocalStorage'
 export default function TaskPage() {
   function getExpenses() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/expenses/`)
+      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/expenses/`, {
+        withCredentials: true
+      })
       .then((response) => {
         if (response.data.expenses) {
           setExpenses(response.data.expenses)

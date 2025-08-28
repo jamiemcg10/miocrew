@@ -17,7 +17,7 @@ export default function AppLayout({
 }>) {
   async function getUser() {
     axios
-      .get(`http://localhost:8000/user/2`) // user hardcoded for now
+      .get(`http://localhost:8000/user/2`, { withCredentials: true }) // user hardcoded for now
       .then((response) => {
         if (response.data.user) {
           setUser(response.data.user)

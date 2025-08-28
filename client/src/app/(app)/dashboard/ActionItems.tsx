@@ -9,7 +9,7 @@ import axios from 'axios'
 export default function ActionItems() {
   async function getItems() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/action_items`)
+      .get(`http://localhost:8000/user/${user!.id}/action_items`, { withCredentials: true })
       .then((response) => {
         if (response.data.expenses) {
           setExpenses(response.data.expenses)

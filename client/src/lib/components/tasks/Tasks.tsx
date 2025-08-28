@@ -22,7 +22,9 @@ interface TasksProps {
 export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   async function getTasks() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/tasks`)
+      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/tasks`, {
+        withCredentials: true
+      })
       .then((response) => {
         if (response.data.tasks) {
           setTasks(response.data.tasks)

@@ -17,7 +17,9 @@ interface ScheduleProps {
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   async function getEvents() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/events`)
+      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/events`, {
+        withCredentials: true
+      })
       .then((response) => {
         if (response.data.events) {
           setEvents(response.data.events)

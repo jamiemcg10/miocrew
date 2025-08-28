@@ -1,17 +1,16 @@
 from fastapi import FastAPI, Request, Response, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from models.models import Trips, Tasks, Message_Recipients, Attendees, Ideas, Expenses, Expenses_Owe, Users, Events
+from schemas import IdeasBase
 from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense, flatten_task, flatten_event, flatten_user
 
-from sqlalchemy import create_engine, select, or_
+from sqlalchemy import create_engine, select, or_, insert
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.orm import selectinload
 
 import sqlite3, uuid
-
-# engine = create_engine("sqlite:///miocrew.db", echo=True)
-# session = Session(engine)
 
 app = FastAPI()
 
@@ -27,10 +26,22 @@ app.add_middleware(
 BASE_DB = "miocrew.db"
 user_dbs: dict[str, Session] = {}
 
+# TODO: Delete stale dbs
+
+def get_user_db(request: Request, _response: Response):
+    # Check for existing session_id cookie
+    session_id = request.cookies.get("session_id")
+
+    # Ensure a scratch db exists for this user
+    if session_id not in user_dbs:
+        user_dbs[session_id] = make_scratch_session()
+
+    return user_dbs[session_id]
+
 def make_scratch_session() -> Session:
     dest = sqlite3.connect(":memory:", check_same_thread=False)
 
-    # copy db into memory
+    # Copy db into memory
     src = sqlite3.connect(BASE_DB)
     src.backup(dest)
     src.close()
@@ -40,17 +51,25 @@ def make_scratch_session() -> Session:
     SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
     return SessionLocal()
 
-def get_user_db(request: Request, response: Response) -> Session:
-    # Give each visitor their own scratch copy of the DB
-    session_id = request.cookies.get("session.id")
+@app.middleware("http")
+async def get_session(request: Request, call_next):
+    session_id = request.cookies.get("session_id")
+
     if not session_id:
         session_id = str(uuid.uuid4())
-        response.set_cookie("session_id", session_id)
 
+    # Ensure DB session exists
     if session_id not in user_dbs:
         user_dbs[session_id] = make_scratch_session()
 
-    return user_dbs[session_id]
+    response = await call_next(request)
+
+    # Set cookie if it wasn’t already set
+    if "session_id" not in request.cookies:
+        response.set_cookie(key="session_id", value=session_id, samesite="lax", httponly=True)
+
+    return response
+
 
 @app.get("/api/ping")
 async def ping():
@@ -124,6 +143,26 @@ async def ideas(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
         ideas.append(flattened_idea)
 
     return {"ideas": ideas}
+
+@app.post("/user/{user_id}/trip/{trip_id}/create_idea")
+async def create_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session = Depends(get_user_db)):
+    id = uuid.uuid4().hex[:8]
+    idea_dict= idea.dict(exclude_unset=True)
+    ideas_with_id = {"id": id, **idea_dict}
+
+    # Check that user belongs to trip
+    valid_request_stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)
+    valid_request = db.scalar(valid_request_stmt)
+    if not valid_request:
+        return {"status": "invalid request"}
+
+
+    # write
+    insert_stmt = insert(Ideas).values(**ideas_with_id)
+    db.execute(insert_stmt)
+    db.flush()
+
+    return {"status": "created", "id": id}
 
 @app.get("/user/{user_id}/action_items")
 async def action_items(user_id: str, db: Session = Depends(get_user_db)):

@@ -21,7 +21,7 @@ export default function InboxPage() {
     if (!user) return
 
     axios
-      .get(`http://localhost:8000/user/${user.id}/messages`)
+      .get(`http://localhost:8000/user/${user.id}/messages`, { withCredentials: true })
       .then((response) => {
         setMessages(response.data.messages)
         LocalStorage.set('messages', response.data.messages)

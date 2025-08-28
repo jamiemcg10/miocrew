@@ -10,7 +10,9 @@ import { Idea } from '@/lib/types'
 export default function IdeasPage() {
   function getIdeas() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/ideas/`)
+      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/ideas/`, {
+        withCredentials: true
+      })
       .then((response) => {
         if (response.data.ideas?.length) {
           setIdeas(response.data.ideas)
