@@ -1,18 +1,19 @@
-from fastapi import FastAPI, Request, Response, Depends
+from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
-from models.models import Trips, Tasks, Message_Recipients, Attendees, Ideas, Expenses, Expenses_Owe, Users, Events
-from schemas import IdeasBase
-from utils.flatten import flatten_trip, flatten_message, flatten_idea, flatten_expense, flatten_task, flatten_event, flatten_user
+from models.models import Trips, Tasks, Message_Recipients, Attendees, Expenses, Expenses_Owe, Users, Events
+import routes.ideas as ideas
+from utils.flatten import flatten_trip, flatten_message, flatten_expense, flatten_task, flatten_event, flatten_user
+from utils.get_user_db import user_dbs, make_scratch_session, get_user_db
 
-from sqlalchemy import create_engine, select, or_, insert
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import select, or_
+from sqlalchemy.orm import Session
 from sqlalchemy.orm import selectinload
 
-import sqlite3, uuid
+import uuid
 
 app = FastAPI()
+app.include_router(ideas.router)
 
 # Allow React dev server to talk to FastAPI
 app.add_middleware(
@@ -22,34 +23,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-BASE_DB = "miocrew.db"
-user_dbs: dict[str, Session] = {}
-
-# TODO: Delete stale dbs
-
-def get_user_db(request: Request, _response: Response):
-    # Check for existing session_id cookie
-    session_id = request.cookies.get("session_id")
-
-    # Ensure a scratch db exists for this user
-    if session_id not in user_dbs:
-        user_dbs[session_id] = make_scratch_session()
-
-    return user_dbs[session_id]
-
-def make_scratch_session() -> Session:
-    dest = sqlite3.connect(":memory:", check_same_thread=False)
-
-    # Copy db into memory
-    src = sqlite3.connect(BASE_DB)
-    src.backup(dest)
-    src.close()
-
-    # Build SQLAlchhemy engine bound to this connection
-    engine = create_engine("sqlite://", creator=lambda: dest, future=True, echo=True)
-    SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
-    return SessionLocal()
 
 @app.middleware("http")
 async def get_session(request: Request, call_next):
@@ -129,40 +102,6 @@ async def messages(user_id: str, db: Session = Depends(get_user_db)):
         messages.append(flattened_msg)
 
     return {"messages": messages}
-
-@app.get("/user/{user_id}/trip/{trip_id}/ideas/")
-async def ideas(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
-    ideas = []
-
-    stmt = select(Ideas, Attendees).select_from(Ideas).join(Trips).join(Attendees).where(Ideas.trip_id == Trips.id).where(trip_id == Ideas.trip_id).where(Attendees.attendee_id == user_id)
-
-    results = db.execute(stmt).all()
-
-    for idea, attendee in results: 
-        flattened_idea = flatten_idea(idea, attendee)
-        ideas.append(flattened_idea)
-
-    return {"ideas": ideas}
-
-@app.post("/user/{user_id}/trip/{trip_id}/create_idea")
-async def create_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session = Depends(get_user_db)):
-    id = uuid.uuid4().hex[:8]
-    idea_dict= idea.dict(exclude_unset=True)
-    ideas_with_id = {"id": id, **idea_dict}
-
-    # Check that user belongs to trip
-    valid_request_stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)
-    valid_request = db.scalar(valid_request_stmt)
-    if not valid_request:
-        return {"status": "invalid request"}
-
-
-    # write
-    insert_stmt = insert(Ideas).values(**ideas_with_id)
-    db.execute(insert_stmt)
-    db.flush()
-
-    return {"status": "created", "id": id}
 
 @app.get("/user/{user_id}/action_items")
 async def action_items(user_id: str, db: Session = Depends(get_user_db)):
