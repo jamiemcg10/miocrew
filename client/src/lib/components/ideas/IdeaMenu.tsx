@@ -8,8 +8,10 @@ interface IdeaMenuProps {
   open: boolean
   onClose: () => void
   anchorEl: HTMLButtonElement | null
+  onDelete: () => void
+  onEdit: () => void
 }
-export default function IdeaMenu({ open, anchorEl, onClose }: IdeaMenuProps) {
+export default function IdeaMenu({ open, anchorEl, onClose, onDelete, onEdit }: IdeaMenuProps) {
   return (
     <Menu
       open={open}
@@ -23,13 +25,18 @@ export default function IdeaMenu({ open, anchorEl, onClose }: IdeaMenuProps) {
         horizontal: 'left'
       }}
       onClose={onClose}>
-      <MenuItem dense>
+      <MenuItem
+        dense
+        onClick={() => {
+          onEdit()
+          onClose()
+        }}>
         <ListItemIcon>
           <EditRoundedIcon fontSize="small" />
         </ListItemIcon>
         Edit
       </MenuItem>
-      <MenuItem>
+      <MenuItem dense onClick={onDelete}>
         <ListItemIcon>
           <DeleteRoundedIcon fontSize="small" />
         </ListItemIcon>

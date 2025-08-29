@@ -1,7 +1,15 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { ChangeEvent, Dispatch, SetStateAction, useContext, useRef, useState } from 'react'
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Dialog from '../Dialog'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -13,10 +21,11 @@ import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
 import { TripContext } from '@/lib/utils/TripContext'
 import { assignAppColor } from '@/lib/utils/assignAppColor'
+import { Idea } from '@/lib/types'
 
 interface AddIdeaDialogProps {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+  open: boolean | Idea
+  setOpen: Dispatch<SetStateAction<boolean | Idea>>
 }
 
 export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
@@ -28,7 +37,37 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
     }
   }
 
-  function addIdea() {
+  function valuesAreUnchanged() {
+    if (
+      isIdea(open) &&
+      open.name === nameRef.current?.value &&
+      open.description === descriptionRef.current?.value &&
+      open.url === urlRef.current?.value &&
+      open.cost == costRef.current?.value &&
+      open.costType === costType
+    ) {
+      return true
+    }
+
+    return false
+  }
+
+  function getPayload() {
+    return {
+      trip_id: trip?.id,
+      name: nameRef.current?.value,
+      description: descriptionRef.current?.value,
+      color: isIdea(open) ? open.color : assignAppColor(),
+      likes: isIdea(open) ? open.likes : 0,
+      creator_id: user?.id,
+      url: urlRef.current?.value,
+      img: null, // TODO: get image from url
+      cost: costRef.current?.value ? +costRef.current?.value : null,
+      cost_type: costRef.current?.value ? costType : null
+    } as Partial<Idea>
+  }
+
+  function saveIdea() {
     if (!nameRef.current?.value) return
 
     // if cost, must have costType
@@ -37,26 +76,29 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
       return
     }
 
-    const payload = {
-      trip_id: trip?.id,
-      name: nameRef.current?.value,
-      description: descriptionRef.current?.value,
-      color: assignAppColor(),
-      likes: 0,
-      creator_id: user?.id,
-      url: linkRef.current?.value,
-      img: null, // TODO: get image from link
-      cost: costRef.current?.value ? +costRef.current.value : null,
-      cost_type: costType
+    if (valuesAreUnchanged()) {
+      setOpen(false)
+      return
     }
 
-    // TODO: Show new idea upon creation
-    axios
-      .post(`http://localhost:8000/user/${user?.id}/trip/${trip?.id}/create_idea`, payload, {
-        withCredentials: true
-      })
+    const payload = getPayload()
+
+    if (isIdea(open)) {
+      payload.id = open.id
+    }
+
+    const requestUrl = isIdea(open)
+      ? `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/idea/update`
+      : `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/ideas/create`
+
+    axios({
+      method: isIdea(open) ? 'patch' : 'post',
+      url: requestUrl,
+      data: payload,
+      withCredentials: true
+    })
       .catch((e) => {
-        console.error('Error adding idea', e.response.data.detail[0], e)
+        console.error(`Error ${isIdea(open) ? 'editing' : 'adding'} idea`, e)
       })
       .finally(() => {
         setOpen(false)
@@ -67,31 +109,58 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
   const trip = useContext(TripContext)
 
   const nameRef = useRef<HTMLInputElement | null>(null)
-  const linkRef = useRef<HTMLInputElement | null>(null)
+  const urlRef = useRef<HTMLInputElement | null>(null)
   const costRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
 
-  const [costType, setCostType] = useState('')
+  const [costType, setCostType] = useState<string | null>(null)
   const [costTypeError, setCostTypeError] = useState('')
 
+  function isIdea(open: boolean | Idea): open is Idea {
+    return typeof open !== 'boolean'
+  }
+
+  function getDefaultValue(prop: keyof Idea) {
+    if (!isIdea(open)) return undefined
+
+    return open[prop] ? open[prop] : undefined
+  }
+
+  useEffect(() => {
+    const value = getDefaultValue('costType')
+    setCostType(typeof value === 'string' ? value : null)
+  }, [open])
+
   return (
-    <Dialog open={open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Add Idea</DialogTitle>
+    <Dialog open={!!open} setOpen={setOpen}>
+      <DialogTitle sx={{ fontWeight: 700 }}>{isIdea(open) ? 'Edit' : 'Add'} Idea</DialogTitle>
       <div className="flex flex-col m-10 mt-5">
-        <TextField label="Name" required inputRef={nameRef} />
-        <TextField label="Link" sx={{ my: 2 }} size="small" inputRef={linkRef} />
+        <TextField
+          label="Name"
+          required
+          inputRef={nameRef}
+          defaultValue={getDefaultValue('name')}
+        />
+        <TextField
+          label="Link"
+          sx={{ my: 2 }}
+          size="small"
+          inputRef={urlRef}
+          defaultValue={getDefaultValue('url')}
+        />
         <div className="inline-flex">
           <TextField
             label="Cost"
             size="small"
             inputRef={costRef}
+            defaultValue={getDefaultValue('cost')}
             slotProps={{
               input: { startAdornment: <InputAdornment position="start">$</InputAdornment> }
             }}
             sx={{ width: 100, mr: 2 }}
           />
           <FormControl error={!!costTypeError}>
-            <RadioGroup row onChange={onChangeCostType}>
+            <RadioGroup row onChange={onChangeCostType} value={costType}>
               <FormControlLabel label="Each" value="each" control={<Radio size="small" />} />
               <FormControlLabel label="Total" value="total" control={<Radio size="small" />} />
             </RadioGroup>
@@ -103,12 +172,17 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
         <TextField
           label="Description"
           inputRef={descriptionRef}
+          defaultValue={getDefaultValue('description')}
           multiline
           rows={3}
           sx={{ mt: 2 }}
         />
-        <Button variant="contained" sx={{ fontWeight: 700, mt: 5 }} type="submit" onClick={addIdea}>
-          Add Idea
+        <Button
+          variant="contained"
+          sx={{ fontWeight: 700, mt: 5 }}
+          type="submit"
+          onClick={saveIdea}>
+          Save Idea
         </Button>
       </div>
     </Dialog>

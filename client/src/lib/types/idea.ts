@@ -12,7 +12,7 @@ export interface Idea {
   cost?: number
   costType?: 'each' | 'total'
   url?: string
-  img?: string
+  img: string | null
   description?: string
   color: AppColor
   likes: number

@@ -9,7 +9,7 @@ import { Idea } from '@/lib/types'
 
 interface IdeasProps {
   ideas: Idea[]
-  setOpenAddDialog: Dispatch<SetStateAction<boolean>>
+  setOpenAddDialog: Dispatch<SetStateAction<Idea | boolean>>
 }
 
 export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
@@ -38,7 +38,16 @@ export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
         <div className="relative overflow-y-hidden p-4">
           <div className="relative grid grid-cols-[repeat(1,_1fr)] md:grid-cols-[repeat(2,_1fr)] lg:grid-cols-[repeat(3,_1fr)] 2xl:grid-cols-[repeat(4,_1fr)] gap-6 md:gap-4">
             {ideas.map((idea) => {
-              return <IdeaCard idea={idea} key={idea.id} setActiveIdea={setActiveIdea} />
+              return (
+                <IdeaCard
+                  idea={idea}
+                  key={idea.id}
+                  setActiveIdea={setActiveIdea}
+                  onEditIdea={() => {
+                    setOpenAddDialog(idea)
+                  }}
+                />
+              )
             })}
           </div>
         </div>

@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 class IdeasBase(BaseModel):
-    # id to be added in request handler
+    id: Optional[str] = None
     trip_id: str
     name: str
     cost: Optional[float]

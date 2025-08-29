@@ -13,7 +13,6 @@ from sqlalchemy.orm import selectinload
 import uuid
 
 app = FastAPI()
-app.include_router(ideas.router)
 
 # Allow React dev server to talk to FastAPI
 app.add_middleware(
@@ -23,6 +22,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(ideas.router)
 
 @app.middleware("http")
 async def get_session(request: Request, call_next):

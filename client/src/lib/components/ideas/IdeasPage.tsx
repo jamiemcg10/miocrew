@@ -25,7 +25,7 @@ export default function IdeasPage() {
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
 
-  const [addDialogOpen, setAddDialogOpen] = useState(false)
+  const [addDialogOpen, setAddDialogOpen] = useState<boolean | Idea>(false)
 
   const storedIdeas = LocalStorage.get<Idea[]>(`${trip?.id}:ideas`)
   const [ideas, setIdeas] = useState<Idea[]>(storedIdeas || [])

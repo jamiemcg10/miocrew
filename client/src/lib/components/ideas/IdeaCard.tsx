@@ -5,21 +5,37 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import IconButton from '@mui/material/IconButton'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useState, useRef, Dispatch, SetStateAction } from 'react'
+import { useState, useRef, Dispatch, SetStateAction, useContext } from 'react'
 import IdeaMenu from './IdeaMenu'
+import axios from 'axios'
+import { UserContext } from '@/lib/utils/UserContext'
+import { TripContext } from '@/lib/utils/TripContext'
 
 interface IdeaCardProps {
   idea: Idea
   setActiveIdea: Dispatch<SetStateAction<Idea | null>>
+  onEditIdea: () => void
 }
 
-export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
+export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardProps) {
   function onClick() {
     setActiveIdea(idea)
   }
 
+  function onDeleteIdea() {
+    axios
+      .delete(`http://localhost:8000/user/${user?.id}/trip/${trip?.id}/idea/${idea.id}/delete`, {
+        withCredentials: true
+      })
+      .catch((e) => console.error('Error deleting idea', e))
+      .finally(() => setMenuOpen(false))
+  }
+
   const menuRef = useRef(null)
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const user = useContext(UserContext)
+  const trip = useContext(TripContext)
 
   return (
     <>
@@ -59,7 +75,13 @@ export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
           </div>
         </div>
       </div>
-      <IdeaMenu anchorEl={menuRef.current} open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <IdeaMenu
+        anchorEl={menuRef.current}
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onDelete={onDeleteIdea}
+        onEdit={onEditIdea}
+      />
     </>
   )
 }
