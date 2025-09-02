@@ -1,4 +1,4 @@
-import Schedule from '@/lib/components/event/Schedule'
+import Schedule from '@/lib/components/activity/Schedule'
 import { useState } from 'react'
 import AddActivityDialog from './AddActivityDialog'
 

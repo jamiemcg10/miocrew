@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from 'react'
 import TabNav from './TabNav'
-import SchedulePage from '@/lib/components/event/SchedulePage'
+import SchedulePage from '@/lib/components/activity/SchedulePage'
 import CrewPage from '@/lib/components/crew/CrewPage'
 import TaskPage from '@/lib/components/tasks/TaskPage'
 import { notFound } from 'next/navigation'
