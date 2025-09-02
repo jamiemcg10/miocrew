@@ -1,5 +1,5 @@
 from functools import reduce
-from utils.arrayToObject import arrayToObject
+from utils.array_to_object import array_to_object
 
 def flatten_attendee(attendee):
     return {
@@ -89,7 +89,7 @@ def flatten_expense(expense):
         "total": expense.total,
         "settled": bool(expense.settled),
         "date": expense.date,
-        "owe": reduce(arrayToObject, [flatten_debtor(debtor) for debtor in expense.owe], {})
+        "owe": reduce(array_to_object, [flatten_debtor(debtor) for debtor in expense.owe], {})
     }
 
 def flatten_poll_task_option(option):

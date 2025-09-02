@@ -136,8 +136,8 @@ class Poll_Task_Options(Base):
     votes: Mapped[int] = mapped_column(Integer)
     task: Mapped["Tasks"] = relationship("Tasks", back_populates="options")
 
-class Events(Base):
-    __tablename__ = "trip_events"
+class Activities(Base):
+    __tablename__ = "activities"
     id: Mapped[str] = mapped_column(String, primary_key=True)
     trip_id: Mapped[str] = mapped_column(String, ForeignKey("trips.id"))
     name: Mapped[str] = mapped_column(String)

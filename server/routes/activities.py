@@ -1,7 +1,7 @@
 import uuid
 from fastapi import Depends, APIRouter
 
-from models.models import Events, Attendees
+from models.models import Activities, Attendees
 from schemas import ActivitiesBase
 from utils.is_valid_user import is_valid_user
 
@@ -12,13 +12,12 @@ from utils.flatten import flatten_activity
 from utils.get_user_db import get_user_db
 
 router = APIRouter(tags=["activities"])
-# TODO: Change events to activities
 
 @router.get("/user/{user_id}/trip/{trip_id}/activities")
 async def activities(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
     activities = []
 
-    stmt = select(Events).select_from(Events).join(Attendees, Events.trip_id == Attendees.trip_id).where(Events.trip_id == trip_id).where(Attendees.attendee_id == user_id)
+    stmt = select(Activities).select_from(Activities).join(Attendees, Activities.trip_id == Attendees.trip_id).where(Activities.trip_id == trip_id).where(Attendees.attendee_id == user_id)
 
     for activity in db.scalars(stmt):
         activities.append(flatten_activity(activity))
@@ -36,7 +35,7 @@ async def create_activity(user_id: str, trip_id: str, activity: ActivitiesBase, 
 
 
     # write
-    insert_stmt = insert(Events).values(**activities_with_id)
+    insert_stmt = insert(Activities).values(**activities_with_id)
     db.execute(insert_stmt)
     db.flush()
 
