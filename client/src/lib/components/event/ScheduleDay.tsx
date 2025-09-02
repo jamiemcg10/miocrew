@@ -1,17 +1,17 @@
-import Event from './Activity'
-import { Activity } from '@/lib/types/activity'
+import Activity from './Activity'
+import { type Activity as ActivityType } from '@/lib/types'
 import { scheduleSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
 import ActiveActivity from './ActiveActivity'
 import { useState } from 'react'
 
 interface ScheduleDayProps {
-  day: { date: dayjs.Dayjs; activities: Activity[] }
+  day: { date: dayjs.Dayjs; activities: ActivityType[] }
   index: number
 }
 
 export default function ScheduleDay({ day, index }: ScheduleDayProps) {
-  const [activeActivity, setActiveActivity] = useState<Activity | null>(null)
+  const [activeActivity, setActiveActivity] = useState<ActivityType | null>(null)
 
   return (
     <>
@@ -28,7 +28,11 @@ export default function ScheduleDay({ day, index }: ScheduleDayProps) {
             <div className="flex flex-col space-y-3">
               {day.activities.sort(scheduleSort).map((activity) => {
                 return (
-                  <Event event={activity} key={activity.id} setActiveEvent={setActiveActivity} />
+                  <Activity
+                    activity={activity}
+                    key={activity.id}
+                    setActiveActivity={setActiveActivity}
+                  />
                 )
               })}
             </div>
