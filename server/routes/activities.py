@@ -40,3 +40,16 @@ async def create_activity(user_id: str, trip_id: str, activity: ActivitiesBase, 
     db.flush()
 
     return {"status": "created", "id": id}
+
+@router.delete("/user/{user_id}/trip/{trip_id}/activity/{activity_id}/delete")
+async def delete_idea(user_id: str, trip_id: str, activity_id: str, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+
+    # write
+    delete_stmt = delete(Activities).where(Activities.id == activity_id)
+    db.execute(delete_stmt)
+    db.flush()
+
+    return {"status": "deleted", "id": activity_id}
+

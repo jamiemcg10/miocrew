@@ -3,9 +3,7 @@ import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import Checkbox from '@mui/material/Checkbox'
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
-import IconButton from '@mui/material/IconButton'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useState, useRef, Dispatch, SetStateAction, useContext } from 'react'
+import { useState, Dispatch, SetStateAction, useContext } from 'react'
 import ContextMenu from '../layout/ContextMenu'
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
@@ -31,7 +29,6 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardPr
       .finally(() => setMenuOpen(false))
   }
 
-  const menuRef = useRef(null)
   const [menuOpen, setMenuOpen] = useState(false)
 
   const user = useContext(UserContext)
@@ -55,15 +52,13 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardPr
             {idea.name}
           </div>
           <div className="flex justify-between items-center h-6 -mx-[7px]">
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation()
-                setMenuOpen(true)
-              }}
-              ref={menuRef}
-              size="small">
-              <MoreHorizIcon fontSize="small" />
-            </IconButton>
+            <ContextMenu
+              open={menuOpen}
+              setMenuOpen={setMenuOpen}
+              onClose={() => setMenuOpen(false)}
+              onDelete={onDeleteIdea}
+              onEdit={onEditIdea}
+            />
             <div className="">
               <span className="font-light text-sm -mr-[7px]">{idea.likes ? idea.likes : null}</span>
               <Checkbox
@@ -75,13 +70,6 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardPr
           </div>
         </div>
       </div>
-      <ContextMenu
-        anchorEl={menuRef.current}
-        open={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        onDelete={onDeleteIdea}
-        onEdit={onEditIdea}
-      />
     </>
   )
 }
