@@ -20,7 +20,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
 import { TripContext } from '@/lib/utils/TripContext'
-import { assignAppColor } from '@/lib/utils/assignAppColor'
+import { assignAppColor } from '@/lib/utils/assignColor'
 import { Idea } from '@/lib/types'
 
 interface AddIdeaDialogProps {

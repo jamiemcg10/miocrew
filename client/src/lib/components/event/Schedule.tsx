@@ -17,13 +17,13 @@ interface ScheduleProps {
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   async function getEvents() {
     axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/events`, {
+      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/activities`, {
         withCredentials: true
       })
       .then((response) => {
-        if (response.data.events) {
-          setEvents(response.data.events)
-          LocalStorage.set(`${trip?.id}:events`, response.data.events)
+        if (response.data.activities) {
+          setEvents(response.data.activities)
+          LocalStorage.set(`${trip?.id}:events`, response.data.activities)
         }
       })
       .catch((e) => console.error('Error fetching scheduled events', e))

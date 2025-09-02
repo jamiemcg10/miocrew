@@ -1,9 +1,10 @@
 from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.models import Trips, Tasks, Message_Recipients, Attendees, Expenses, Expenses_Owe, Users, Events
+from models.models import Trips, Tasks, Message_Recipients, Attendees, Expenses, Expenses_Owe, Users
 import routes.ideas as ideas
-from utils.flatten import flatten_trip, flatten_message, flatten_expense, flatten_task, flatten_event, flatten_user
+import routes.activities as activities
+from utils.flatten import flatten_trip, flatten_message, flatten_expense, flatten_task, flatten_user
 from utils.get_user_db import user_dbs, make_scratch_session, get_user_db
 
 from sqlalchemy import select, or_
@@ -24,6 +25,7 @@ app.add_middleware(
 )
 
 app.include_router(ideas.router)
+app.include_router(activities.router)
 
 @app.middleware("http")
 async def get_session(request: Request, call_next):
@@ -145,14 +147,3 @@ async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
         tasks.append(flatten_task(task))
 
     return {"tasks": tasks}
-
-@app.get("/user/{user_id}/trip/{trip_id}/events")
-async def events(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
-    events = []
-
-    stmt = select(Events).select_from(Events).join(Attendees, Events.trip_id == Attendees.trip_id).where(Events.trip_id == trip_id).where(Attendees.attendee_id == user_id)
-
-    for event in db.scalars(stmt):
-        events.append(flatten_event(event))
-
-    return {"events": events}

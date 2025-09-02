@@ -1,5 +1,5 @@
 import { PollTaskOption } from '@/lib/types'
-import { appColors } from '@/lib/utils/appColors'
+import { appColors } from '@/lib/utils/colors/appColors'
 
 interface PieChartProps {
   results: PollTaskOption[]

@@ -1,4 +1,4 @@
-import { AppColor } from './appColor'
+import { AppColor } from './colors'
 
 interface Creator {
   firstName: string

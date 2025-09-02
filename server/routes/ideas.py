@@ -13,9 +13,6 @@ import uuid
 
 router = APIRouter(tags=["ideas"])
 
-BASE_DB = "miocrew.db"
-user_dbs: dict[str, Session] = {}
-
 def is_valid_user(user_id: str, trip_id: str, db: Session):
     # Check that user belongs to trip
     valid_request_stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)
@@ -61,8 +58,6 @@ async def update_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session =
     if not is_valid_user(user_id, trip_id, db):
         return {"status": "invalid request"}
 
-    print(idea.dict())
-    
     # write
     update_stmt = update(Ideas).where(Ideas.id == idea.id).values(idea.dict())
     db.execute(update_stmt)
