@@ -10,7 +10,7 @@ interface ActiveIdeaProps {
   setActiveIdea: Dispatch<SetStateAction<Idea | null>>
 }
 
-export default function ActiveEvent({ activeIdea, setActiveIdea }: ActiveIdeaProps) {
+export default function ActiveIdea({ activeIdea, setActiveIdea }: ActiveIdeaProps) {
   function onClose() {
     setActiveIdea(null)
   }
