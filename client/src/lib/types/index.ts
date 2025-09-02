@@ -1,6 +1,6 @@
 export * from './trip'
 export * from './user'
-export * from './tripEvent'
+export * from './activity'
 export * from './task'
 export * from './message'
 export * from './idea'

@@ -1,4 +1,4 @@
-export interface TripEvent {
+export interface Activity {
   id: string
   tripId: string
   name: string

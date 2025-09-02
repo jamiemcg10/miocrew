@@ -1,4 +1,4 @@
-import { TripEvent } from '@/lib/types/tripEvent'
+import { TripEvent } from '@/lib/types/activity'
 
 export const tripEvents = [
   {

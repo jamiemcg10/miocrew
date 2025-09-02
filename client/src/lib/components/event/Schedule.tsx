@@ -2,7 +2,7 @@ import './Schedule.css'
 import Button from '@mui/material/Button'
 import dayjs from 'dayjs'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
-import { TripEvent } from '@/lib/types/tripEvent'
+import { Activity } from '@/lib/types'
 import ScheduleDay from './ScheduleDay'
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
 import { TripContext } from '@/lib/utils/TripContext'
@@ -15,18 +15,18 @@ interface ScheduleProps {
 }
 
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
-  async function getEvents() {
+  async function getActivities() {
     axios
       .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/activities`, {
         withCredentials: true
       })
       .then((response) => {
         if (response.data.activities) {
-          setEvents(response.data.activities)
-          LocalStorage.set(`${trip?.id}:events`, response.data.activities)
+          setActivities(response.data.activities)
+          LocalStorage.set(`${trip?.id}:activities`, response.data.activities)
         }
       })
-      .catch((e) => console.error('Error fetching scheduled events', e))
+      .catch((e) => console.error('Error fetching scheduled activities', e))
   }
 
   function setOpenAddDialogTrue() {
@@ -36,8 +36,8 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
 
-  const storedEvents = LocalStorage.get<TripEvent[]>(`${trip?.id}:events`)
-  const [events, setEvents] = useState<TripEvent[]>(storedEvents || [])
+  const storedActivities = LocalStorage.get<Activity[]>(`${trip?.id}:activities`)
+  const [activities, setActivities] = useState<Activity[]>(storedActivities || [])
 
   const tripStart = dayjs(trip?.startDate)
   const tripEnd = dayjs(trip?.endDate || tripStart)
@@ -45,25 +45,25 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   // calculate number of days
   const tripLength = tripEnd.diff(tripStart, 'day')
 
-  // for # days, add startDay + n to array {date:Date, events:?}[]
-  const days: Record<string, { date: dayjs.Dayjs; events: TripEvent[] }> = {}
+  // for # days, add startDay + n to array {date:Date, activities:?}[]
+  const days: Record<string, { date: dayjs.Dayjs; activities: Activity[] }> = {}
 
   for (let i = 0; i <= tripLength; i++) {
     days[tripStart.add(i, 'day').format('MMMM D, YYYY')] = {
       date: tripStart.add(i, 'day'),
-      events: []
+      activities: []
     }
   }
 
-  events.forEach((event) => {
-    const eventDate = dayjs(event.startTime).startOf('date').format('MMMM D, YYYY')
-    days[eventDate]?.events.push(event)
+  activities.forEach((activity) => {
+    const activityDate = dayjs(activity.startTime).startOf('date').format('MMMM D, YYYY')
+    days[activityDate]?.activities.push(activity)
   })
 
   if (!trip || !user) return
 
   useEffect(() => {
-    getEvents()
+    getActivities()
   }, [])
 
   return (
