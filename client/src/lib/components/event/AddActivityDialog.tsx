@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useContext, useRef } from 'react'
 import Dialog from '../Dialog'
 import { DatePicker } from '@heroui/date-picker'
 import { TimeInput } from '@heroui/date-input'
-import { assignEventColor } from '@/lib/utils/assignColor'
+import { assignActivityColor } from '@/lib/utils/colors/assignColor'
 import { Activity } from '@/lib/types'
 import { TripContext } from '@/lib/utils/TripContext'
 import axios from 'axios'
@@ -31,7 +31,7 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
       end_time: endDateRef?.current?.value
         ? `${endDateRef?.current?.value} ${endTimeRef?.current?.value || ''}`
         : null,
-      color: isActivity(open) ? open.color : assignEventColor()
+      color: isActivity(open) ? open.color : assignActivityColor()
     } as Partial<Activity>
   }
 

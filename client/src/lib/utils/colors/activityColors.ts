@@ -1,4 +1,4 @@
-export const eventColors = [
+export const activityColors = [
   'orangered',
   'teal',
   'violet',
