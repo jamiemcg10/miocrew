@@ -6,7 +6,7 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import IconButton from '@mui/material/IconButton'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useState, useRef, Dispatch, SetStateAction, useContext } from 'react'
-import IdeaMenu from './IdeaMenu'
+import ContextMenu from '../layout/ContextMenu'
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/UserContext'
 import { TripContext } from '@/lib/utils/TripContext'
@@ -75,7 +75,7 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardPr
           </div>
         </div>
       </div>
-      <IdeaMenu
+      <ContextMenu
         anchorEl={menuRef.current}
         open={menuOpen}
         onClose={() => setMenuOpen(false)}

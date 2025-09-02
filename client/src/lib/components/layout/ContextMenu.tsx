@@ -4,14 +4,20 @@ import MenuItem from '@mui/material/MenuItem'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 
-interface IdeaMenuProps {
+interface ContextMenuProps {
   open: boolean
   onClose: () => void
   anchorEl: HTMLButtonElement | null
   onDelete: () => void
   onEdit: () => void
 }
-export default function IdeaMenu({ open, anchorEl, onClose, onDelete, onEdit }: IdeaMenuProps) {
+export default function ContextMenu({
+  open,
+  anchorEl,
+  onClose,
+  onDelete,
+  onEdit
+}: ContextMenuProps) {
   return (
     <Menu
       open={open}
