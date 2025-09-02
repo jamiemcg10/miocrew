@@ -4,7 +4,7 @@ export interface Activity {
   name: string
   description?: string
   location: string
-  startTime: Date
-  endTime?: Date
+  startTime: string
+  endTime?: string
   color: string
 }

@@ -2,23 +2,16 @@ from fastapi import Depends, APIRouter
 
 from models.models import Trips, Attendees, Ideas
 from schemas import IdeasBase
+from utils.is_valid_user import is_valid_user
 from utils.flatten import flatten_idea
 from utils.get_user_db import get_user_db
 
 from sqlalchemy import select, insert, delete, update
 from sqlalchemy.orm import Session
-from sqlalchemy.orm import selectinload
 
 import uuid
 
 router = APIRouter(tags=["ideas"])
-
-def is_valid_user(user_id: str, trip_id: str, db: Session):
-    # Check that user belongs to trip
-    valid_request_stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)
-    valid_request = db.scalar(valid_request_stmt)
-
-    return valid_request
 
 
 @router.get("/user/{user_id}/trip/{trip_id}/ideas/")

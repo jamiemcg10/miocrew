@@ -34,8 +34,8 @@ export const TripActivity: Story = {
       name: 'Check into AirBnB and relax',
       description: 'Arrive, hang out at AirBnB until dinner',
       location: '132 Sonoma Crest Road Ext',
-      startTime: new Date('August 5, 2026 2:00 PM'),
-      endTime: new Date('August 5, 2026 6:00 PM'),
+      startTime: 'August 5, 2026 2:00 PM',
+      endTime: 'August 5, 2026 6:00 PM',
       color: 'orangered'
     },
     setActiveActivity: () => {}
