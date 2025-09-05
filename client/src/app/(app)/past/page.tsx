@@ -2,7 +2,7 @@
 
 import TripTable from '@/lib/components/TripTable'
 import { Trip } from '@/lib/types'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import axios from 'axios'
 import { useContext, useState, useEffect } from 'react'
 

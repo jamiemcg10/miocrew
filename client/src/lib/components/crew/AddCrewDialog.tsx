@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react
 import Dialog from '../Dialog'
 import Autocomplete from '@mui/material/Autocomplete'
 import { User } from '@/lib/types'
-import { TripContext } from '@/lib/utils/TripContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { getUsers } from '@/lib/utils/getUser'
 
 interface AddCrewDialogProps {

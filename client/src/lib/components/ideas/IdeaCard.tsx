@@ -6,8 +6,8 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import { useState, Dispatch, SetStateAction, useContext } from 'react'
 import ContextMenu from '../layout/ContextMenu'
 import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
-import { TripContext } from '@/lib/utils/TripContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 
 interface IdeaCardProps {
   idea: Idea

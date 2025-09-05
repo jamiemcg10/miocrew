@@ -1,7 +1,7 @@
 'use client'
 
 import CrewAvatar from '@/lib/components/CrewAvatar'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import IconButton from '@mui/material/IconButton'
 import { useContext, useRef } from 'react'
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'

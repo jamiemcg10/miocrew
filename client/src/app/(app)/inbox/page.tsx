@@ -10,7 +10,7 @@ import type { BaseMessage } from '@/lib/types'
 import MessageView from '@/lib/components/messages/MessageView'
 import ComposeMessageDialog from '@/lib/components/messages/ComposeMessageDialog'
 import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import MessageItem from '@/lib/components/messages/MessageItem'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 

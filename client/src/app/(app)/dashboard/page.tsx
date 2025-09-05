@@ -4,7 +4,7 @@ import DashboardHeader from './DashboardHeader'
 import Dashboard from './Dashboard'
 import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { Trip } from '@/lib/types'
 
 export default function DashboardPage() {

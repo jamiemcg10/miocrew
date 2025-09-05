@@ -1,5 +1,5 @@
 import { Expense } from '@/lib/types'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useContext } from 'react'
 
 interface ReimbursementsProps {

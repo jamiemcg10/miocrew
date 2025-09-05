@@ -1,5 +1,5 @@
 import { Expense, Task } from '@/lib/types'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useContext, useEffect, useState } from 'react'
 import TaskView from '@/lib/components/tasks/TaskView'
 import ExpenseView from '@/lib/components/expenses/ExpenseView'

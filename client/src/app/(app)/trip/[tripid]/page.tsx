@@ -7,11 +7,11 @@ import CrewPage from '@/lib/components/crew/CrewPage'
 import TaskPage from '@/lib/components/tasks/TaskPage'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
-import { TripContext } from '@/lib/utils/TripContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import IdeasPage from '@/lib/components/ideas/IdeasPage'
 import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
 import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CrewMember, Trip } from '@/lib/types'
 
 export default function TripPage() {

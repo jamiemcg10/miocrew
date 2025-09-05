@@ -7,7 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { Trip, User } from '@/lib/types'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { getUsers } from '@/lib/utils/getUser'
 
 interface ComposeMessageDialogProps {

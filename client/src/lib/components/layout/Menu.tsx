@@ -12,7 +12,7 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import WorkHistoryRoundedIcon from '@mui/icons-material/WorkHistoryRounded'
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded'
 import TableChartRoundedIcon from '@mui/icons-material/TableChartRounded'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useContext } from 'react'
 import CrewAvatar from '../CrewAvatar'
 

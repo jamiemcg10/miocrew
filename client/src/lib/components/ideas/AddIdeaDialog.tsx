@@ -18,8 +18,8 @@ import InputAdornment from '@mui/material/InputAdornment'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
-import { TripContext } from '@/lib/utils/TripContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { assignAppColor } from '@/lib/utils/colors/assignColor'
 import { Idea } from '@/lib/types'
 
@@ -53,7 +53,7 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
   }
 
   function getPayload() {
-    return {
+    const payload = {
       trip_id: trip?.id,
       name: nameRef.current?.value,
       description: descriptionRef.current?.value,
@@ -65,6 +65,12 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
       cost: costRef.current?.value ? +costRef.current?.value : null,
       cost_type: costRef.current?.value ? costType : null
     } as Partial<Idea>
+
+    if (isIdea(open)) {
+      payload.id = open.id
+    }
+
+    return payload
   }
 
   function saveIdea() {
@@ -82,10 +88,6 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
     }
 
     const payload = getPayload()
-
-    if (isIdea(open)) {
-      payload.id = open.id
-    }
 
     const requestUrl = isIdea(open)
       ? `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/idea/update`

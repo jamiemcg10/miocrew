@@ -9,10 +9,10 @@ import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Avatar from '@mui/material/Avatar'
 import { Task, User } from '@/lib/types'
 import TaskView from './TaskView'
-import { TripContext } from '@/lib/utils/TripContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import CrewAvatar from '../CrewAvatar'
 import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 interface TasksProps {
