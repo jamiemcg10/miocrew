@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from models.models import Trips, Tasks, Message_Recipients, Attendees, Expenses, Expenses_Owe, Users
 import routes.ideas as ideas
 import routes.activities as activities
+import routes.expenses as expenses
 from utils.flatten import flatten_trip, flatten_message, flatten_expense, flatten_task, flatten_user
 from utils.get_user_db import user_dbs, make_scratch_session, get_user_db
 
@@ -26,6 +27,7 @@ app.add_middleware(
 
 app.include_router(ideas.router)
 app.include_router(activities.router)
+app.include_router(expenses.router)
 
 @app.middleware("http")
 async def get_session(request: Request, call_next):
@@ -123,19 +125,6 @@ async def action_items(user_id: str, db: Session = Depends(get_user_db)):
         tasks.append(flatten_task(task))
 
     return {"expenses": expenses, "tasks": tasks}
-
-@app.get("/user/{user_id}/trip/{trip_id}/expenses") 
-async def trip_expenses(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
-    expenses = []
-
-    stmt = select(Expenses, Attendees).options(selectinload(Expenses.owe)).select_from(Expenses).join(Trips).join(Attendees).join(Users).where(Expenses.trip_id == trip_id).where(Attendees.attendee_id == user_id) # is users needed?
-
-    for expense in db.scalars(stmt):
-        flattened_expense = flatten_expense(expense)
-
-        expenses.append(flattened_expense)
-
-    return {"expenses": expenses}
 
 @app.get("/user/{user_id}/trip/{trip_id}/tasks")
 async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
