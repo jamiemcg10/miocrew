@@ -25,19 +25,21 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const activity = {
+  id: 'wm1',
+  tripId: '1',
+  name: 'Check into AirBnB and relax',
+  description: 'Arrive, hang out at AirBnB until dinner',
+  location: '132 Sonoma Crest Road Ext',
+  startTime: 'August 5, 2026 2:00 PM',
+  endTime: 'August 5, 2026 6:00 PM',
+  color: 'orangered'
+}
+
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const TripActivity: Story = {
   args: {
-    activity: {
-      id: 'wm1',
-      tripId: '1',
-      name: 'Check into AirBnB and relax',
-      description: 'Arrive, hang out at AirBnB until dinner',
-      location: '132 Sonoma Crest Road Ext',
-      startTime: 'August 5, 2026 2:00 PM',
-      endTime: 'August 5, 2026 6:00 PM',
-      color: 'orangered'
-    },
+    activity,
     setActiveActivity: () => {}
   }
 }

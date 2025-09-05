@@ -41,8 +41,21 @@ async def create_activity(user_id: str, trip_id: str, activity: ActivitiesBase, 
 
     return {"status": "created", "id": id}
 
+@router.patch("/user/{user_id}/trip/{trip_id}/activity/update")
+async def update_activity(user_id: str, trip_id: str, activity: ActivitiesBase, db: Session = Depends(get_user_db)):
+    
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+
+    # write
+    update_stmt = update(Activities).where(Activities.id == activity.id).values(activity.dict())
+    db.execute(update_stmt)
+    db.flush()
+
+    return {"status": "updated", "id": activity.id}
+
 @router.delete("/user/{user_id}/trip/{trip_id}/activity/{activity_id}/delete")
-async def delete_idea(user_id: str, trip_id: str, activity_id: str, db: Session = Depends(get_user_db)):
+async def delete_activity(user_id: str, trip_id: str, activity_id: str, db: Session = Depends(get_user_db)):
     if not is_valid_user(user_id, trip_id, db):
         return {"status": "invalid request"}
 

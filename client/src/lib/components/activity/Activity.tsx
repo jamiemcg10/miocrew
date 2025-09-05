@@ -4,8 +4,9 @@ import dayjs from 'dayjs'
 import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import ContextMenu from '../layout/ContextMenu'
 import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
-import { TripContext } from '@/lib/utils/TripContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
+import { ScheduleContext } from '@/lib/utils/contexts/ScheduleContext'
 
 interface ActivityProps {
   activity: Activity
@@ -16,8 +17,6 @@ export default function Activity({ activity, setActiveActivity }: ActivityProps)
   function handleClick() {
     setActiveActivity(activity)
   }
-
-  function onEditActivity() {}
 
   function onDeleteActivity() {
     axios
@@ -33,6 +32,7 @@ export default function Activity({ activity, setActiveActivity }: ActivityProps)
 
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
+  const { onEdit } = useContext(ScheduleContext)
 
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -63,7 +63,7 @@ export default function Activity({ activity, setActiveActivity }: ActivityProps)
           setMenuOpen={setMenuOpen}
           onClose={() => setMenuOpen(false)}
           onDelete={onDeleteActivity}
-          onEdit={onEditActivity}
+          onEdit={() => onEdit(activity)}
         />
       </div>
       <div className="font-bold">{activity.name}</div>

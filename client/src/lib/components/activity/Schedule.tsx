@@ -5,13 +5,13 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { Activity } from '@/lib/types'
 import ScheduleDay from './ScheduleDay'
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
-import { TripContext } from '@/lib/utils/TripContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import axios from 'axios'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 interface ScheduleProps {
-  setOpenAddDialog: Dispatch<SetStateAction<boolean>>
+  setOpenAddDialog: Dispatch<SetStateAction<boolean | Activity>>
 }
 
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
