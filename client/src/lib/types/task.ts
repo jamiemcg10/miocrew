@@ -5,7 +5,7 @@ interface BaseTask {
   tripId: string
   name: string
   description: string // poll question or general task description
-  dueDate: Date
+  dueDate: string
   creator: string
   completed: boolean
   notes?: string
