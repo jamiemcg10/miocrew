@@ -28,14 +28,14 @@ async def activities(user_id: str, trip_id: str, db: Session = Depends(get_user_
 async def create_activity(user_id: str, trip_id: str, activity: ActivitiesBase, db: Session = Depends(get_user_db)):
     id = uuid.uuid4().hex[:8]
     activity_dict= activity.dict(exclude_unset=True)
-    activities_with_id = { **activity_dict, "id": id}
+    activity_with_id = { **activity_dict, "id": id}
 
     if not is_valid_user(user_id, trip_id, db):
         return {"status": "invalid request"}
 
 
     # write
-    insert_stmt = insert(Activities).values(**activities_with_id)
+    insert_stmt = insert(Activities).values(**activity_with_id)
     db.execute(insert_stmt)
     db.flush()
 
