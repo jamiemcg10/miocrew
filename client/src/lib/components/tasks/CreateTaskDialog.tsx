@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField'
 import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import DialogPollOptions from './DialogPollOptions'
 import Dialog from '../Dialog'
-import { TripContext } from '@/lib/utils/TripContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { User } from '@/lib/types'
 
 interface CreateTaskDialogProps {

@@ -3,23 +3,36 @@ import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import Checkbox from '@mui/material/Checkbox'
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
-import IconButton from '@mui/material/IconButton'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useState, useRef, Dispatch, SetStateAction } from 'react'
-import IdeaMenu from './IdeaMenu'
+import { useState, Dispatch, SetStateAction, useContext } from 'react'
+import ContextMenu from '../layout/ContextMenu'
+import axios from 'axios'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 
 interface IdeaCardProps {
   idea: Idea
   setActiveIdea: Dispatch<SetStateAction<Idea | null>>
+  onEditIdea: () => void
 }
 
-export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
+export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardProps) {
   function onClick() {
     setActiveIdea(idea)
   }
 
-  const menuRef = useRef(null)
+  function onDeleteIdea() {
+    axios
+      .delete(`http://localhost:8000/user/${user?.id}/trip/${trip?.id}/idea/${idea.id}/delete`, {
+        withCredentials: true
+      })
+      .catch((e) => console.error('Error deleting idea', e))
+      .finally(() => setMenuOpen(false))
+  }
+
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const user = useContext(UserContext)
+  const trip = useContext(TripContext)
 
   return (
     <>
@@ -39,15 +52,13 @@ export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
             {idea.name}
           </div>
           <div className="flex justify-between items-center h-6 -mx-[7px]">
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation()
-                setMenuOpen(true)
-              }}
-              ref={menuRef}
-              size="small">
-              <MoreHorizIcon fontSize="small" />
-            </IconButton>
+            <ContextMenu
+              open={menuOpen}
+              setMenuOpen={setMenuOpen}
+              onClose={() => setMenuOpen(false)}
+              onDelete={onDeleteIdea}
+              onEdit={onEditIdea}
+            />
             <div className="">
               <span className="font-light text-sm -mr-[7px]">{idea.likes ? idea.likes : null}</span>
               <Checkbox
@@ -59,7 +70,6 @@ export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
           </div>
         </div>
       </div>
-      <IdeaMenu anchorEl={menuRef.current} open={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   )
 }

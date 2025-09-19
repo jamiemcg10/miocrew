@@ -5,7 +5,7 @@ import CrewMenu from './CrewMenu'
 import { attendeeSort } from '@/lib/utils/sortFns'
 import Button from '@mui/material/Button'
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
-import { TripContext } from '@/lib/utils/TripContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { CrewMember } from '@/lib/types'
 import CrewMemberItem from './CrewMemberItem'
 

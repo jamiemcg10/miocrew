@@ -1,9 +1,10 @@
-export interface TripEvent {
+export interface Activity {
   id: string
+  tripId: string
   name: string
   description?: string
   location: string
-  startTime: Date
-  endTime?: Date
+  startTime: string
+  endTime?: string
   color: string
 }

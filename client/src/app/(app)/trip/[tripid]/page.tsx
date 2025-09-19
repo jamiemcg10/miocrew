@@ -1,24 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import TabNav from './TabNav'
-import SchedulePage from '@/lib/components/event/SchedulePage'
+import SchedulePage from '@/lib/components/activity/SchedulePage'
 import CrewPage from '@/lib/components/crew/CrewPage'
-import { trips } from '@/lib/utils/dummyData'
 import TaskPage from '@/lib/components/tasks/TaskPage'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
-import { TripContext } from '@/lib/utils/TripContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import IdeasPage from '@/lib/components/ideas/IdeasPage'
 import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
+import axios from 'axios'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { CrewMember, Trip } from '@/lib/types'
 
 export default function TripPage() {
-  const { tripid } = useParams<{ tripid: string }>()
+  const user = useContext(UserContext)
+  const [trip, setTrip] = useState<Trip | null>(null)
 
-  const trip = trips.find((trip) => trip.id === tripid)
-  if (!trip) {
-    notFound()
+  function getTrip() {
+    if (!user) return
+
+    axios
+      .get(`http://localhost:8000/user/${user.id}/trip/${tripid}`, { withCredentials: true })
+      .then((response) => {
+        const attendees = response.data.trip.attendees.reduce(
+          (acc: Record<string, CrewMember>, c: CrewMember) => {
+            return {
+              ...acc,
+              [c.id]: c
+            }
+          },
+          {}
+        )
+        if (response.data.trip) {
+          setTrip({ ...response.data.trip, attendees })
+        } else {
+          notFound()
+        }
+      })
+      .catch((e) => console.error('Error getching trip', e))
   }
+
+  const { tripid } = useParams<{ tripid: string }>()
 
   const initialPage = localStorage.getItem('tab') || 'schedule'
   const [page, setPage] = useState(initialPage)
@@ -38,6 +62,10 @@ export default function TripPage() {
     }
   }
 
+  useEffect(getTrip, [user])
+
+  if (!trip) return
+  // put more stuff in context?
   return (
     <div className="relative overflow-hidden flex flex-col grow">
       <div

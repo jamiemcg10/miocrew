@@ -2,12 +2,11 @@ import { Expense } from '@/lib/types'
 import Popup from '../Popup'
 import { dateFormatter } from '@/lib/utils/dateFormatter'
 import { useContext } from 'react'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import CrewAvatar from '../CrewAvatar'
 import clsx from 'clsx'
 import BoltIcon from '@mui/icons-material/Bolt'
 import Tooltip from '@mui/material/Tooltip'
-import { users } from '@/lib/utils/dummyData/users'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
@@ -65,11 +64,9 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
           {Object.entries(activeExpense?.owe || {}).map(([id, owes]) => {
             return (
               <div key={id} className="flex items-center my-2">
-                <CrewAvatar user={users[id]} size="xs" />
+                <CrewAvatar user={owes} size="xs" />
                 <span className="ml-2 mr-1">
-                  {id === user.id
-                    ? 'You'
-                    : `${users[id].firstName} ${users[id].lastName.charAt(0)}.`}
+                  {id === user.id ? 'You' : `${owes.firstName} ${owes.lastName.charAt(0)}.`}
                 </span>
                 <span className={clsx(!owes.paid && 'text-red-700 font-semibold')}>
                   {owes.paid ? 'paid' : id === user.id ? 'owe' : 'owes'} $

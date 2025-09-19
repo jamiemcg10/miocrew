@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles'
 
 interface DialogProps {
   open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+  setOpen: Dispatch<SetStateAction<boolean | any>>
   children: ReactNode
 }
 

@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 
-export function dateFormatter(date: Date | undefined) {
+export function dateFormatter(date: string | undefined) {
   return dayjs(date).format('MMM D, YYYY')
 }
 
-export function timeFormatter(date: Date | undefined) {
+export function timeFormatter(date: string | undefined) {
   return dayjs(date).format('h:mm A')
 }

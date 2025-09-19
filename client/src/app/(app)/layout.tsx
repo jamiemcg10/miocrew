@@ -5,14 +5,28 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from '@/lib/components/layout/Menu'
 import TopBar from '@/lib/components/layout/TopBar'
-import { UserContext } from '@/lib/utils/UserContext'
-import { users } from '@/lib/utils/dummyData/users'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { User } from '@/lib/types'
+import axios from 'axios'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
 
-export default function DashboardLayout({
+export default function AppLayout({
   children
 }: Readonly<{
   children: ReactNode
 }>) {
+  async function getUser() {
+    axios
+      .get(`http://localhost:8000/user/2`, { withCredentials: true }) // user hardcoded for now
+      .then((response) => {
+        if (response.data.user) {
+          setUser(response.data.user)
+          LocalStorage.set('user', response.data.user)
+        }
+      })
+      .catch((e) => console.error('Error fetching user', e))
+  }
+
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
@@ -30,7 +44,17 @@ export default function DashboardLayout({
     [setOpen]
   )
 
-  const user = users['2']
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const _user = LocalStorage.get<User>('user')
+
+    if (!_user) {
+      getUser()
+    } else {
+      setUser(_user)
+    }
+  }, [])
 
   // needs to be last
   useEffect(mount, [])

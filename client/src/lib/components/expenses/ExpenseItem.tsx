@@ -4,7 +4,7 @@ import BalanceText from './utils/BalanceText'
 import BoltIcon from '@mui/icons-material/Bolt'
 import CrewAvatar from '../CrewAvatar'
 import { Dispatch, SetStateAction, useContext } from 'react'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import TableRow from '../layout/TableRow'
 
 interface ExpenseItemProps {

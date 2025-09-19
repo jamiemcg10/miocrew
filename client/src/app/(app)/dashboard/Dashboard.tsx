@@ -1,12 +1,16 @@
 'use client'
 
 import TripTable from '@/lib/components/TripTable'
-import { trips } from '@/lib/utils/dummyData'
 import Button from '@mui/material/Button'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import ActionItems from './ActionItems'
+import { Trip } from '@/lib/types'
 
-export default function Dashboard() {
+interface DashboardProps {
+  upcomingTrips: Trip[]
+}
+
+export default function Dashboard({ upcomingTrips }: DashboardProps) {
   return (
     <div className="flex flex-col px-4">
       <Button
@@ -22,7 +26,7 @@ export default function Dashboard() {
         }}>
         Create trip
       </Button>
-      <TripTable trips={trips} title="Upcoming trips" />
+      <TripTable trips={upcomingTrips} title="Upcoming trips" />
       <ActionItems />
     </div>
   )

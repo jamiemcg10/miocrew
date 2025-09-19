@@ -1,10 +1,11 @@
-import { Task, User } from '@/lib/types'
+import { GeneralTask, PollTask, Task, User } from '@/lib/types'
 import { dateFormatter } from '@/lib/utils/dateFormatter'
 import PieChartRoundedIcon from '@mui/icons-material/PieChartRounded'
 import EventRoundedIcon from '@mui/icons-material/EventRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import TableRow from '../layout/TableRow'
+import CrewAvatar from '../CrewAvatar'
 
 interface TaskItemProps {
   task: Task
@@ -20,12 +21,16 @@ export function getImage(type: string) {
   }
 }
 
-function getAssigneeName(assignee: 'Everyone' | User) {
-  if (assignee === 'Everyone') {
-    return 'Everyone'
-  } else {
-    return `${assignee.firstName} ${assignee.lastName}`
-  }
+function isPollTask(task: GeneralTask | PollTask): task is PollTask {
+  return task.assigneeId === 'Everyone'
+}
+
+function getAssigneeName(assignee: User) {
+  return (
+    <div className="flex gap-2">
+      <CrewAvatar user={assignee} size="xs" /> {assignee.firstName} {assignee.lastName}
+    </div>
+  )
 }
 
 export default function TaskItem({ task, onClick }: TaskItemProps) {
@@ -44,7 +49,9 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {
           {task.name}
         </span>
         <div className="flex grow justify-between">
-          <span className="italic text-sm content-center">{getAssigneeName(task.assignee)}</span>
+          <span className="italic text-sm content-center">
+            {isPollTask(task) ? 'Everyone' : getAssigneeName(task.assignee)}
+          </span>
           <span className="text-right px-2 font-semibold text-sm content-center">
             {dateFormatter(task.dueDate)}
           </span>

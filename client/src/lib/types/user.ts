@@ -3,6 +3,7 @@ export interface User {
   firstName: string
   lastName: string
   color: UserColor
+  email: string
 }
 
 export interface CrewMember extends User {

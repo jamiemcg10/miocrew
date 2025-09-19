@@ -1,4 +1,14 @@
-import { CrewMember } from './user'
+import { CrewMember, UserColor } from './user'
+
+interface Debtor {
+  id: string
+  owes: number
+  paid: boolean
+  firstName: string
+  lastName: string
+  color: UserColor
+  email: string
+}
 
 export interface Expense {
   id: string
@@ -7,7 +17,7 @@ export interface Expense {
   paidBy: CrewMember
   total: number
   split: 'Even' | 'Custom'
-  owe: Record<string, { owes: number; paid: boolean }>
+  owe: Record<string, Debtor>
   settled: boolean
   due: 'immediate' | 'end'
   date: Date

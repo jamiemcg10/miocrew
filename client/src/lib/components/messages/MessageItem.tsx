@@ -7,14 +7,14 @@ import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import type { BaseMessage } from '@/lib/types'
 import Tooltip from '@mui/material/Tooltip'
 
-interface MessageProps {
+interface MessageItemProps {
   message: BaseMessage
   onClick: () => void
   checked: Record<string, boolean>
   setChecked: Dispatch<SetStateAction<Record<string, boolean>>>
 }
 
-export default function Message({ message, onClick, checked, setChecked }: MessageProps) {
+export default function MessageItem({ message, onClick, checked, setChecked }: MessageItemProps) {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setChecked({
       ...checked,

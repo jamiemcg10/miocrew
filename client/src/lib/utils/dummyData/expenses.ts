@@ -1,17 +1,25 @@
 import { Expense } from '@/lib/types'
+import { users } from './users'
 
 export const expenses = [
   {
     id: 'exp1',
     tripId: '1',
-    paidBy: { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' },
+    paidBy: {
+      id: '1',
+      firstName: 'Jane',
+      lastName: 'Fonda',
+      color: 'purple',
+      type: 'Captain' as const,
+      email: 'jane.fonda@sagaftra.com'
+    },
     name: 'AirBnB',
     total: 3129.85,
     split: 'Even' as const,
     owe: {
-      '1': { owes: 1043.28, paid: true },
-      '2': { owes: 1043.28, paid: false },
-      '3': { owes: 1043.29, paid: false }
+      '1': { owes: 1043.28, paid: true, ...users['1'] },
+      '2': { owes: 1043.28, paid: false, ...users['2'] },
+      '3': { owes: 1043.29, paid: false, ...users['3'] }
     },
     settled: false,
     due: 'immediate' as const,
@@ -25,14 +33,15 @@ export const expenses = [
       firstName: 'Meryll',
       lastName: 'Streep',
       color: 'orangered',
-      type: 'Crew'
+      type: 'Crew' as const,
+      email: 'meryll.streep@sagaftra.com'
     },
     name: 'Early brunch',
     total: 198.95,
     split: 'Custom' as const,
     owe: {
-      '1': { owes: 101, paid: false },
-      '2': { owes: 97.95, paid: true }
+      '1': { owes: 101, paid: false, ...users['1'] },
+      '2': { owes: 97.95, paid: true, ...users['2'] }
     },
     settled: false,
     due: 'end' as const,
@@ -47,15 +56,16 @@ export const expenses = [
       firstName: 'Meryll',
       lastName: 'Streep',
       color: 'orangered',
-      type: 'Crew'
+      type: 'Crew' as const,
+      email: 'meryll.streep@sagaftra.com'
     },
     name: 'Bike tour',
     total: 66,
     split: 'Even' as const,
     owe: {
-      '1': { owes: 22, paid: false },
-      '2': { owes: 22, paid: true },
-      '3': { owes: 22, paid: false }
+      '1': { owes: 22, paid: false, ...users['1'] },
+      '2': { owes: 22, paid: true, ...users['2'] },
+      '3': { owes: 22, paid: false, ...users['3'] }
     },
     settled: false,
     due: 'end' as const,
@@ -64,15 +74,22 @@ export const expenses = [
   {
     id: 'exp4',
     tripId: '3',
-    paidBy: { id: '7', firstName: 'Johnny', lastName: 'Walker', color: 'green', type: 'Admin' },
+    paidBy: {
+      id: '7',
+      firstName: 'Johnny',
+      lastName: 'Walker',
+      color: 'green',
+      type: 'Admin' as const,
+      email: 'johnny.walker@distillersunion.com'
+    },
     name: 'Hotel',
     total: 3129.85,
     split: 'Custom' as const,
     owe: {
-      '4': { owes: 1251.94, paid: false },
-      '7': { owes: 625.97, paid: true },
-      '8': { owes: 625.97, paid: false },
-      '9': { owes: 625.97, paid: false }
+      '4': { owes: 1251.94, paid: false, ...users['4'] },
+      '7': { owes: 625.97, paid: true, ...users['7'] },
+      '8': { owes: 625.97, paid: false, ...users['8'] },
+      '9': { owes: 625.97, paid: false, ...users['9'] }
     },
     settled: false,
     due: 'immediate' as const,
@@ -81,20 +98,27 @@ export const expenses = [
   {
     id: 'exp5',
     tripId: '3',
-    paidBy: { id: '4', firstName: 'Dustin', lastName: 'Streep', color: 'teal', type: 'Captain' },
+    paidBy: {
+      id: '4',
+      firstName: 'Dustin',
+      lastName: 'Streep',
+      color: 'teal',
+      type: 'Captain' as const,
+      email: 'dustin.streep@yahoo.com'
+    },
     name: 'Tickets',
     total: 225,
     split: 'Custom' as const,
     owe: {
-      '4': { owes: 120, paid: true },
-      '7': { owes: 35, paid: false },
-      '8': { owes: 35, paid: false },
-      '9': { owes: 35, paid: false }
+      '4': { owes: 120, paid: true, ...users['4'] },
+      '7': { owes: 35, paid: false, ...users['7'] },
+      '8': { owes: 35, paid: false, ...users['8'] },
+      '9': { owes: 35, paid: false, ...users['9'] }
     },
     settled: false,
     due: 'end' as const,
     date: new Date('October 5, 2025'),
-    notes: 'They comped my muffin because it took so long.'
+    notes: 'Family tickets grouped together'
   },
   {
     id: 'exp6',
@@ -104,15 +128,16 @@ export const expenses = [
       firstName: 'Meryll',
       lastName: 'Streep',
       color: 'orangered',
-      type: 'Crew'
+      type: 'Crew' as const,
+      email: 'meryll.streep@sagaftra.com'
     },
     name: 'JetBlue flights',
     total: 2032,
     split: 'Even' as const,
     owe: {
-      '1': { owes: 677.33, paid: true },
-      '2': { owes: 677.33, paid: true },
-      '3': { owes: 677.34, paid: true }
+      '1': { owes: 677.33, paid: true, ...users['1'] },
+      '2': { owes: 677.33, paid: true, ...users['2'] },
+      '3': { owes: 677.34, paid: true, ...users['3'] }
     },
     settled: true,
     due: 'immediate' as const,
@@ -121,13 +146,20 @@ export const expenses = [
   {
     id: 'exp7',
     tripId: '1',
-    paidBy: { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' },
+    paidBy: {
+      id: '1',
+      firstName: 'Jane',
+      lastName: 'Fonda',
+      color: 'purple',
+      type: 'Captain' as const,
+      email: 'jane.fonda@sagaftra.com'
+    },
     name: 'Airport coffee',
     total: 10,
     split: 'Even' as const,
     owe: {
-      '1': { owes: 5, paid: true },
-      '3': { owes: 5, paid: false }
+      '1': { owes: 5, paid: true, ...users['1'] },
+      '3': { owes: 5, paid: false, ...users['3'] }
     },
     settled: false,
     due: 'end' as const,
@@ -136,14 +168,21 @@ export const expenses = [
   {
     id: 'exp8',
     tripId: '1',
-    paidBy: { id: '1', firstName: 'Jane', lastName: 'Fonda', color: 'purple', type: 'Captain' },
+    paidBy: {
+      id: '1',
+      firstName: 'Jane',
+      lastName: 'Fonda',
+      color: 'purple',
+      type: 'Captain' as const,
+      email: 'jane.fonda@sagaftra.com'
+    },
     name: 'Wine crate from Madonna Vineyards',
     total: 225,
     split: 'Even' as const,
     owe: {
-      '1': { owes: 75, paid: true },
-      '2': { owes: 75, paid: true },
-      '3': { owes: 75, paid: false }
+      '1': { owes: 75, paid: true, ...users['1'] },
+      '2': { owes: 75, paid: true, ...users['2'] },
+      '3': { owes: 75, paid: false, ...users['3'] }
     },
     settled: false,
     due: 'end' as const,
@@ -157,15 +196,16 @@ export const expenses = [
       firstName: 'Meryll',
       lastName: 'Streep',
       color: 'orangered',
-      type: 'Crew'
+      type: 'Crew' as const,
+      email: 'meryll.streep@sagaftra.com'
     },
     name: 'Uber to Sonoma',
     total: 85.25,
     split: 'Custom' as const,
     owe: {
-      '1': { owes: 25, paid: false },
-      '2': { owes: 35.25, paid: true },
-      '3': { owes: 25, paid: false }
+      '1': { owes: 25, paid: false, ...users['1'] },
+      '2': { owes: 35.25, paid: true, ...users['2'] },
+      '3': { owes: 25, paid: false, ...users['3'] }
     },
     settled: false,
     due: 'end' as const,
@@ -179,15 +219,16 @@ export const expenses = [
       firstName: 'Jamie Lee',
       lastName: 'Curtis',
       color: 'turquoise',
-      type: 'Crew'
+      type: 'Crew' as const,
+      email: 'jamie.lee.curtis@sagaftra.com'
     },
     name: 'Late night pizza',
     total: 45,
     split: 'Even' as const,
     owe: {
-      '1': { owes: 15, paid: false },
-      '2': { owes: 15, paid: false },
-      '3': { owes: 15, paid: true }
+      '1': { owes: 15, paid: false, ...users['1'] },
+      '2': { owes: 15, paid: false, ...users['2'] },
+      '3': { owes: 15, paid: true, ...users['3'] }
     },
     settled: false,
     due: 'end' as const,
@@ -202,15 +243,16 @@ export const expenses = [
       firstName: 'Meryll',
       lastName: 'Streep',
       color: 'orangered',
-      type: 'Crew'
+      type: 'Crew' as const,
+      email: 'meryll.streep@sagaftra.com'
     },
     name: 'Uber to airport',
     total: 166,
     split: 'Even' as const,
     owe: {
-      '1': { owes: 55, paid: false },
-      '2': { owes: 55, paid: true },
-      '3': { owes: 56, paid: false }
+      '1': { owes: 55, paid: false, ...users['1'] },
+      '2': { owes: 55, paid: true, ...users['2'] },
+      '3': { owes: 56, paid: false, ...users['3'] }
     },
     settled: false,
     due: 'end' as const,
