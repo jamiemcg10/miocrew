@@ -16,7 +16,7 @@ export default function TripTable({ trips, title }: TripTableProps) {
       <div className="text-xl font-bold my-4">{title}</div>
       {trips.length ? (
         trips
-          .sort((a, b) => (a.startDate > b.startDate ? 1 : -1))
+          .sort((a, b) => (a.startDate > b.startDate ? 1 : -1)) // TODO: use trip sort here
           .map((trip) => {
             return (
               <Link href={`trip/${trip.id}`} key={trip.id}>
