@@ -79,7 +79,7 @@ def flatten_debtor(debtor):
 
 def flatten_expense(expense): 
     return {
-        "paidBy": {"id": expense.paid_by, "firstName": expense.paid_by_user.first_name, "lastName": expense.paid_by_user.last_name, "color": expense.paid_by_user.color},
+        "paidBy": {"id": expense.paid_by.id, "firstName": expense.paid_by.first_name, "lastName": expense.paid_by.last_name, "color": expense.paid_by.color},
         "id": expense.id,
         "split": expense.split,
         "due": expense.due,
