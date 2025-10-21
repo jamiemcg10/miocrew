@@ -15,7 +15,7 @@ export const expenses = [
     },
     name: 'AirBnB',
     total: 3129.85,
-    split: 'Even' as const,
+    split: 'Evenly' as const,
     owe: {
       '1': { owes: 1043.28, paid: true, ...users['1'] },
       '2': { owes: 1043.28, paid: false, ...users['2'] },
@@ -23,7 +23,7 @@ export const expenses = [
     },
     settled: false,
     due: 'immediate' as const,
-    date: new Date('January 23, 2026')
+    date: 'January 23, 2026'
   },
   {
     id: 'exp2',
@@ -45,7 +45,7 @@ export const expenses = [
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('August 3, 2026'),
+    date: 'August 3, 2026',
     notes: 'They comped my muffin because it took so long.'
   },
   {
@@ -61,7 +61,7 @@ export const expenses = [
     },
     name: 'Bike tour',
     total: 66,
-    split: 'Even' as const,
+    split: 'Evenly' as const,
     owe: {
       '1': { owes: 22, paid: false, ...users['1'] },
       '2': { owes: 22, paid: true, ...users['2'] },
@@ -69,7 +69,7 @@ export const expenses = [
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('August 4, 2026')
+    date: 'August 4, 2026'
   },
   {
     id: 'exp4',
@@ -93,7 +93,7 @@ export const expenses = [
     },
     settled: false,
     due: 'immediate' as const,
-    date: new Date('October 5, 2025')
+    date: 'October 5, 2025'
   },
   {
     id: 'exp5',
@@ -117,7 +117,7 @@ export const expenses = [
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('October 5, 2025'),
+    date: 'October 5, 2025',
     notes: 'Family tickets grouped together'
   },
   {
@@ -133,7 +133,7 @@ export const expenses = [
     },
     name: 'JetBlue flights',
     total: 2032,
-    split: 'Even' as const,
+    split: 'Evenly' as const,
     owe: {
       '1': { owes: 677.33, paid: true, ...users['1'] },
       '2': { owes: 677.33, paid: true, ...users['2'] },
@@ -141,7 +141,7 @@ export const expenses = [
     },
     settled: true,
     due: 'immediate' as const,
-    date: new Date('June 4, 2026')
+    date: 'June 4, 2026'
   },
   {
     id: 'exp7',
@@ -156,14 +156,14 @@ export const expenses = [
     },
     name: 'Airport coffee',
     total: 10,
-    split: 'Even' as const,
+    split: 'Evenly' as const,
     owe: {
       '1': { owes: 5, paid: true, ...users['1'] },
       '3': { owes: 5, paid: false, ...users['3'] }
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('August 4, 2026')
+    date: 'August 4, 2026'
   },
   {
     id: 'exp8',
@@ -178,7 +178,7 @@ export const expenses = [
     },
     name: 'Wine crate from Madonna Vineyards',
     total: 225,
-    split: 'Even' as const,
+    split: 'Evenly' as const,
     owe: {
       '1': { owes: 75, paid: true, ...users['1'] },
       '2': { owes: 75, paid: true, ...users['2'] },
@@ -186,7 +186,7 @@ export const expenses = [
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('August 4, 2026')
+    date: 'August 4, 2026'
   },
   {
     id: 'exp9',
@@ -209,7 +209,7 @@ export const expenses = [
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('August 8, 2026')
+    date: 'August 8, 2026'
   },
   {
     id: 'exp10',
@@ -224,7 +224,7 @@ export const expenses = [
     },
     name: 'Late night pizza',
     total: 45,
-    split: 'Even' as const,
+    split: 'Evenly' as const,
     owe: {
       '1': { owes: 15, paid: false, ...users['1'] },
       '2': { owes: 15, paid: false, ...users['2'] },
@@ -232,7 +232,7 @@ export const expenses = [
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('August 10, 2026'),
+    date: 'August 10, 2026',
     notes: '1 lg pepperoni & jalapeno, 1 lg gyro'
   },
   {
@@ -248,7 +248,7 @@ export const expenses = [
     },
     name: 'Uber to airport',
     total: 166,
-    split: 'Even' as const,
+    split: 'Evenly' as const,
     owe: {
       '1': { owes: 55, paid: false, ...users['1'] },
       '2': { owes: 55, paid: true, ...users['2'] },
@@ -256,6 +256,6 @@ export const expenses = [
     },
     settled: false,
     due: 'end' as const,
-    date: new Date('August 12, 2026')
+    date: 'August 12, 2026'
   }
 ] as Expense[]
