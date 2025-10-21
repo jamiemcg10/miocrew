@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, TypedDict, List
 from pydantic import BaseModel
 
 class IdeasBase(BaseModel):
@@ -31,3 +31,30 @@ class ActivitiesBase(BaseModel):
     model_config = {
         "from_attributes": True 
     }
+
+class ExpensesBase(BaseModel):
+    id: Optional[str] = None
+    trip_id: str
+    name: str
+    paid_by_id: str
+    total: float
+    split: str
+    settled: bool
+    due: str
+    date: str
+    notes: str
+
+    model_config = {
+        "from_attributes": True
+    }
+
+class ExpensesOweBase(BaseModel):
+    id: Optional[str] = None
+    expense_id: Optional[str] = None
+    user_id: str
+    owes: float
+    paid: bool
+
+class FullExpense(TypedDict):
+    expense: ExpensesBase
+    debtors: List[ExpensesOweBase]
