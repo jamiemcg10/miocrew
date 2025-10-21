@@ -7,6 +7,9 @@ import CrewAvatar from '../CrewAvatar'
 import clsx from 'clsx'
 import BoltIcon from '@mui/icons-material/Bolt'
 import Tooltip from '@mui/material/Tooltip'
+import IconButton from '@mui/material/IconButton'
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+import EditRoundedIcon from '@mui/icons-material/EditRounded'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
@@ -21,6 +24,16 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
   return (
     <Popup open={!!activeExpense} onClose={onClose}>
       <>
+        {user?.id == activeExpense.paidBy.id ? (
+          <div className="absolute bottom-8 right-8">
+            <IconButton size="small">
+              <EditRoundedIcon fontSize="small" />
+            </IconButton>
+            <IconButton size="small" color="error">
+              <DeleteRoundedIcon fontSize="small" />
+            </IconButton>
+          </div>
+        ) : null}
         <div className="flex text-2xl items-center space-x-2 font-bold">
           {activeExpense.due === 'immediate' ? (
             <Tooltip
