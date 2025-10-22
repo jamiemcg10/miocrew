@@ -77,19 +77,19 @@ async def create_expense(user_id: str, trip_id: str, expense: FullExpense, db: S
 #     return {"status": "updated", "id": expense.id}
 
 
-# @router.delete("/user/{user_id}/trip/{trip_id}/expense/{expense_id}/delete")
-# async def delete_expense(user_id: str, trip_id: str, expense_id: str, db: Session = Depends(get_user_db)):
-#     if not is_valid_user(user_id, trip_id, db):
-#         return {"status": "invalid request"}
+@router.delete("/user/{user_id}/trip/{trip_id}/expense/{expense_id}/delete")
+async def delete_expense(user_id: str, trip_id: str, expense_id: str, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
 
-#     # delete
-#     expense_delete_stmt = delete(Expenses).where(Expenses.id == expense_id)
-#     expense_owe_delete_stmt = delete(Expenses_Owe).where(Expenses_Owe.expense_id == expense_id)
+    # delete
+    expense_delete_stmt = delete(Expenses).where(Expenses.id == expense_id)
+    expense_owe_delete_stmt = delete(Expenses_Owe).where(Expenses_Owe.expense_id == expense_id)
 
-#     db.execute(expense_delete_stmt)
-#     db.execute(expense_owe_delete_stmt)
-#     db.flush()
+    db.execute(expense_delete_stmt)
+    db.execute(expense_owe_delete_stmt)
+    db.flush()
 
-#     return {"status": "deleted", "id": expense_id}
+    return {"status": "deleted", "id": expense_id}
 
 

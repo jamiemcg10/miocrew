@@ -10,6 +10,8 @@ import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
+import { deleteExpense } from '@/db'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
@@ -17,7 +19,22 @@ interface ExpenseViewProps {
 }
 
 export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps) {
+  async function onDelete() {
+    if (!user || !trip || !activeExpense) return
+
+    deleteExpense({
+      userId: user.id,
+      tripId: trip.id,
+      expenseId: activeExpense.id
+    })
+      .catch((e) => console.error(`Error deleting expense`, e))
+      .finally(() => {
+        onClose()
+      })
+  }
+
   const user = useContext(UserContext)
+  const trip = useContext(TripContext)
 
   if (!activeExpense || !user) return
 
@@ -29,7 +46,7 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
             <IconButton size="small">
               <EditRoundedIcon fontSize="small" />
             </IconButton>
-            <IconButton size="small" color="error">
+            <IconButton size="small" color="error" onClick={onDelete}>
               <DeleteRoundedIcon fontSize="small" />
             </IconButton>
           </div>
