@@ -25,7 +25,7 @@ export default function TaskPage() {
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
 
-  const [addDialogOpen, setAddDialogOpen] = useState(false)
+  const [addDialogOpen, setAddDialogOpen] = useState<boolean | Expense>(false)
 
   const storedExpenses = LocalStorage.get<Expense[]>(`${trip?.id}:expenses`)
   const [expenses, setExpenses] = useState<Expense[]>(storedExpenses || [])
@@ -39,7 +39,7 @@ export default function TaskPage() {
   return (
     <>
       <Expenses expenses={expenses} setOpenAddDialog={setAddDialogOpen} />
-      <AddExpenseDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
+      <AddExpenseDialog open={!!addDialogOpen} setOpen={setAddDialogOpen} />
     </>
   )
 }

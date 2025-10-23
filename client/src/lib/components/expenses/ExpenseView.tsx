@@ -15,10 +15,11 @@ import { TripContext } from '@/lib/utils/contexts/TripContext'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
+  onEdit: () => void
   onClose: () => void
 }
 
-export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps) {
+export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseViewProps) {
   async function onDelete() {
     if (!user || !trip || !activeExpense) return
 
@@ -43,7 +44,7 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
       <>
         {user?.id == activeExpense.paidBy.id ? (
           <div className="absolute bottom-8 right-8">
-            <IconButton size="small">
+            <IconButton size="small" onClick={onEdit}>
               <EditRoundedIcon fontSize="small" />
             </IconButton>
             <IconButton size="small" color="error" onClick={onDelete}>

@@ -15,7 +15,7 @@ import ExpenseItem from './ExpenseItem'
 
 interface ExpensesProps {
   expenses: Expense[]
-  setOpenAddDialog: Dispatch<SetStateAction<boolean>>
+  setOpenAddDialog: Dispatch<SetStateAction<boolean | Expense>>
 }
 
 export default function Expenses({ expenses, setOpenAddDialog }: ExpensesProps) {
@@ -150,7 +150,16 @@ export default function Expenses({ expenses, setOpenAddDialog }: ExpensesProps) 
         </div>
         <Reimbursements expenses={expenses} />
       </div>
-      <ExpenseView activeExpense={activeExpense} onClose={() => setActiveExpense(null)} />
+      <ExpenseView
+        activeExpense={activeExpense}
+        onClose={() => setActiveExpense(null)}
+        onEdit={() => {
+          if (!activeExpense) return
+
+          setActiveExpense(null)
+          setOpenAddDialog(activeExpense)
+        }}
+      />
     </>
   )
 }

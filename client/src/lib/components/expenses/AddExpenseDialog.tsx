@@ -17,16 +17,21 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import clsx from 'clsx'
 import { DatePicker } from '@heroui/date-picker'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
-import axios from 'axios'
+import { addExpense, ExpensePayload } from '@/db'
+import { Expense } from '@/lib/types'
 
 interface AddExpenseDialogProps {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+  open: boolean | Expense
+  setOpen: Dispatch<SetStateAction<boolean | Expense>>
 }
 
 export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
+
+  function isExpense(open: boolean | Expense): open is Expense {
+    return typeof open !== 'boolean'
+  }
 
   function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
     setTypeValue((e.target as HTMLInputElement).value)
@@ -36,7 +41,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
     setImmediately(e.target.checked)
   }
 
-  function getExpensesPayload() {
+  function getExpensePayload() {
     const payload = {
       trip_id: trip?.id,
       name: nameRef.current?.value,
@@ -47,12 +52,16 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
       due: immediately ? 'immediate' : 'end',
       date: dateRef.current?.value,
       notes: notesRef.current?.value
+    } as ExpensePayload
+
+    if (isExpense(open)) {
+      payload.id = open.id
     }
 
     return payload
   }
 
-  function getExpensesOwePayload() {
+  function getDebtorsPayload() {
     if (typeValue === 'Evenly') {
       const involvedCrew = attendeesWithRefs.filter((a) => a.checked)
       return involvedCrew.map((a) => {
@@ -75,7 +84,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
     }
   }
 
-  function saveExpense() {
+  async function saveExpense() {
     if (!nameRef.current?.value) {
       setNameInvalid(true)
     }
@@ -94,18 +103,17 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
       return
     }
 
-    const expensesPayload = getExpensesPayload()
-    const expensesOwePayload = getExpensesOwePayload()
+    if (!user || !trip) return
 
-    const requestUrl = `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/expenses/create`
+    const expensesPayload = getExpensePayload()
+    const debtorsPayload = getDebtorsPayload()
 
-    axios({
-      method: 'post',
-      url: requestUrl,
-      data: { expense: expensesPayload, debtors: expensesOwePayload },
-      withCredentials: true
+    addExpense({
+      userId: user.id,
+      tripId: trip.id,
+      data: { expense: expensesPayload, debtors: debtorsPayload }
     })
-      .catch((e) => console.error(`Error adding expense`, e))
+      .catch((e) => console.error(`Error ${isExpense(open) ? 'editing' : 'adding'} expense`, e))
       .finally(() => {
         setOpen(false)
       })
@@ -135,7 +143,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   })
 
   return (
-    <Dialog open={open} setOpen={setOpen}>
+    <Dialog open={!!open} setOpen={setOpen}>
       <DialogTitle sx={{ fontWeight: 700 }}>Add expense</DialogTitle>
       <div className="flex flex-col m-10 mt-4">
         <TextField

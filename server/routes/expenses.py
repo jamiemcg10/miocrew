@@ -27,7 +27,7 @@ async def get_expenses(user_id: str, trip_id: str, db: Session = Depends(get_use
 
     return {"expenses": expenses}
 
-@router.post("/user/{user_id}/trip/{trip_id}/expenses/create")
+@router.post("/user/{user_id}/trip/{trip_id}/expense/create")
 async def create_expense(user_id: str, trip_id: str, expense: FullExpense, db: Session = Depends(get_user_db)):
     def add_ids(debtor):
         print(id)
@@ -57,24 +57,24 @@ async def create_expense(user_id: str, trip_id: str, expense: FullExpense, db: S
 
     return {"status": "created", "id": id}
 
-# @router.patch("/user/{user_id}/trip/{trip_id}/expense/update")
-# async def update_expense(user_id: str, trip_id: str, expense: FullExpense, db: Session = Depends(get_user_db)):
-#     if not is_valid_user(user_id, trip_id, db):
-#         return {"status": "invalid request"}
+@router.patch("/user/{user_id}/trip/{trip_id}/expense/update")
+async def update_expense(user_id: str, trip_id: str, expense: FullExpense, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
 
-#     updated_expense = expense["expense"]
-#     debtors = list(expense['debtors'])
+    updated_expense = expense["expense"]
+    debtors = list(expense['debtors'])
 
-#     # write
-#     expense_update_stmt = update(Expenses).where(Expenses.id == updated_expense.id).values(updated_expense.dict())
-#     expense_owe_update_stmt = insert(Expenses_Owe).values(debtors)
+    # write
+    expense_update_stmt = update(Expenses).where(Expenses.id == updated_expense.id).values(updated_expense.dict())
+    expense_owe_update_stmt = insert(Expenses_Owe).values(debtors)
 
-#     db.execute(expense_update_stmt)
-#     db.execute(expense_owe_update_stmt)
+    db.execute(expense_update_stmt)
+    db.execute(expense_owe_update_stmt)
 
-#     db.flush()
+    db.flush()
 
-#     return {"status": "updated", "id": expense.id}
+    return {"status": "updated", "id": expense.id}
 
 
 @router.delete("/user/{user_id}/trip/{trip_id}/expense/{expense_id}/delete")
