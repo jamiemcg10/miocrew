@@ -13,9 +13,9 @@ interface BaseTask {
 
 export interface PollTaskOption {
   label: string
-  id: string
-  taskId: string
-  votes: number
+  id?: string
+  taskId?: string
+  votes?: number
 }
 
 export interface PollTask extends BaseTask {
