@@ -22,7 +22,7 @@ class Users(Base):
     avatar: Mapped[str] = mapped_column(String(30))
     email: Mapped[str] = mapped_column(String(75))
     attendees: Mapped[List["Attendees"]] = relationship(back_populates="user")
-    user: Mapped["Expenses_Owe"] = relationship(back_populates="debtor")
+    user: Mapped["Debtors"] = relationship(back_populates="debtor")
     user: Mapped["Expenses"] = relationship(back_populates="paid_by")  
     assigned_tasks: Mapped[List["Tasks"]] = relationship("Tasks", foreign_keys="Tasks.assignee_id", back_populates="assignee")
     created_tasks: Mapped[List["Tasks"]] = relationship("Tasks", foreign_keys="Tasks.creator_id", back_populates="creator")
@@ -95,13 +95,13 @@ class Expenses(Base):
     total: Mapped[int] = mapped_column(Integer) 
     split: Mapped[str] = mapped_column(String(6)) 
     settled: Mapped[bool] = mapped_column(Integer)
-    owe: Mapped[List[any]] = relationship("Expenses_Owe", back_populates="expense")
+    owe: Mapped[List[any]] = relationship("Debtors", back_populates="expense")
     due: Mapped[str] = mapped_column(String(9)) 
     date: Mapped[str] = mapped_column(String(20)) 
     notes: Mapped[Optional[str]] = mapped_column(String)
 
-class Expenses_Owe(Base): # go back to singular
-    __tablename__ = "expenses_owe"
+class Debtors(Base): # go back to singular
+    __tablename__ = "debtors"
 
     id: Mapped[str] = mapped_column(primary_key=True)
     expense_id: Mapped[str] = mapped_column(String, ForeignKey("expenses.id"))

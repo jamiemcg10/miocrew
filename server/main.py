@@ -1,10 +1,11 @@
 from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.models import Trips, Tasks, Message_Recipients, Attendees, Expenses, Expenses_Owe, Users
+from models.models import Trips, Tasks, Message_Recipients, Attendees, Users, Expenses, Debtors
 import routes.ideas as ideas
 import routes.activities as activities
 import routes.expenses as expenses
+import routes.tasks as tasks
 from utils.flatten import flatten_trip, flatten_message, flatten_expense, flatten_task, flatten_user
 from utils.get_user_db import user_dbs, make_scratch_session, get_user_db
 
@@ -28,6 +29,7 @@ app.add_middleware(
 app.include_router(ideas.router)
 app.include_router(activities.router)
 app.include_router(expenses.router)
+app.include_router(tasks.router)
 
 @app.middleware("http")
 async def get_session(request: Request, call_next):
@@ -113,7 +115,7 @@ async def action_items(user_id: str, db: Session = Depends(get_user_db)):
     expenses = []
     tasks = []
 
-    exp_stmt = select(Expenses, Expenses_Owe).options(selectinload(Expenses.owe)).join(Expenses_Owe).where(Expenses_Owe.user_id == user_id)
+    exp_stmt = select(Expenses, Debtors).options(selectinload(Expenses.owe)).join(Debtors).where(Debtors.user_id == user_id)
 
     for expense in db.scalars(exp_stmt):
         flattened_expense = flatten_expense(expense)
@@ -125,14 +127,3 @@ async def action_items(user_id: str, db: Session = Depends(get_user_db)):
         tasks.append(flatten_task(task))
 
     return {"expenses": expenses, "tasks": tasks}
-
-@app.get("/user/{user_id}/trip/{trip_id}/tasks")
-async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
-    tasks = []
-
-    stmt = select(Tasks).options(selectinload(Tasks.options)).select_from(Tasks).join(Attendees, Tasks.trip_id == Attendees.trip_id).where(Tasks.trip_id == trip_id).where(Attendees.attendee_id == user_id)
-
-    for task in db.scalars(stmt):
-        tasks.append(flatten_task(task))
-
-    return {"tasks": tasks}
