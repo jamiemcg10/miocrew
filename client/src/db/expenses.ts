@@ -13,14 +13,14 @@ interface deleteExpenseArgs {
   expenseId: string
 }
 
-export async function addExpense(args: addExpenseArgs) {
+export function addExpense(args: addExpenseArgs) {
   const { userId, tripId, data } = args
 
   const isUpdate = !!data.expense.id
 
-  const requestUrl = isUpdate
-    ? `${process.env.SERVER_BASE_URL}/user/${userId}/trip/${tripId}/${'expense/update'}`
-    : `${process.env.SERVER_BASE_URL}/user/${userId}/trip/${tripId}/expense/create`
+  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/expense/${
+    isUpdate ? 'update' : 'create'
+  }`
 
   return axios({
     method: isUpdate ? 'patch' : 'post',
@@ -30,10 +30,10 @@ export async function addExpense(args: addExpenseArgs) {
   })
 }
 
-export async function deleteExpense(args: deleteExpenseArgs) {
+export function deleteExpense(args: deleteExpenseArgs) {
   const { userId, tripId, expenseId } = args
 
-  const requestUrl = `${process.env.SERVER_BASE_URL}/user/${userId}/trip/${tripId}/expense/${expenseId}/delete`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/expense/${expenseId}/delete`
 
   return axios.delete(requestUrl, {
     withCredentials: true

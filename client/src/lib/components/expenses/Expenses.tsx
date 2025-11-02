@@ -15,10 +15,10 @@ import ExpenseItem from './ExpenseItem'
 
 interface ExpensesProps {
   expenses: Expense[]
-  setOpenAddDialog: Dispatch<SetStateAction<boolean | Expense>>
+  setAddDialogOpen: Dispatch<SetStateAction<boolean | Expense>>
 }
 
-export default function Expenses({ expenses, setOpenAddDialog }: ExpensesProps) {
+export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
   const attendees = trip?.attendees
@@ -57,7 +57,7 @@ export default function Expenses({ expenses, setOpenAddDialog }: ExpensesProps) 
   }
 
   function onClickAddButton() {
-    setOpenAddDialog(true)
+    setAddDialogOpen(true)
   }
 
   const [filteredExpenses, setFilteredExpenses] = useState(expenses)
@@ -156,8 +156,8 @@ export default function Expenses({ expenses, setOpenAddDialog }: ExpensesProps) 
         onEdit={() => {
           if (!activeExpense) return
 
+          setAddDialogOpen(activeExpense)
           setActiveExpense(null)
-          setOpenAddDialog(activeExpense)
         }}
       />
     </>

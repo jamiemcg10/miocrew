@@ -14,7 +14,7 @@ export default function BalanceText({ expense, userId }: BalanceTextProps) {
   const paid = userId && userOwes?.paid
 
   const amountLent = Object.values(owe).reduce((p, owes) => {
-    p += !owes.paid ? owes.owes : 0
+    p += !owes.paid && owes.userId !== paidBy.id ? owes.owes : 0
     return p
   }, 0)
 

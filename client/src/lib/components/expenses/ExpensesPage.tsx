@@ -38,8 +38,8 @@ export default function TaskPage() {
 
   return (
     <>
-      <Expenses expenses={expenses} setOpenAddDialog={setAddDialogOpen} />
-      <AddExpenseDialog open={!!addDialogOpen} setOpen={setAddDialogOpen} />
+      <Expenses expenses={expenses} setAddDialogOpen={setAddDialogOpen} />
+      <AddExpenseDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
     </>
   )
 }
