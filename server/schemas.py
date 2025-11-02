@@ -48,13 +48,36 @@ class ExpensesBase(BaseModel):
         "from_attributes": True
     }
 
-class ExpensesOweBase(BaseModel):
+class DebtorsBase(BaseModel):
     id: Optional[str] = None
     expense_id: Optional[str] = None
     user_id: str
     owes: float
     paid: bool
 
-class FullExpense(TypedDict):
+class FullExpense(TypedDict): # TODO: make Base
     expense: ExpensesBase
-    debtors: List[ExpensesOweBase]
+    debtors: List[DebtorsBase]
+
+class TaskBase(BaseModel):
+    id: Optional[str] = None
+    trip_id: str
+    name: str
+    description: Optional[str] = None
+    type: str
+    due_date: str
+    multiple: bool
+    assignee_id: str
+    creator_id: str
+    completed: bool
+    notes: Optional[str] = None
+
+class PollTaskOptionBase(BaseModel):
+    id: Optional[str] = None
+    task_id: Optional[str] = None
+    label: str
+    votes: int
+
+class FullTaskBase(TypedDict):
+    task: TaskBase
+    poll_options: Optional[PollTaskOptionBase] = None
