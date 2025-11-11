@@ -34,7 +34,7 @@ async def get_expenses(user_id: str, trip_id: str, db: Session = Depends(get_use
 @router.post("/user/{user_id}/trip/{trip_id}/expense/create")
 async def create_expense(user_id: str, trip_id: str, expense: FullExpense, db: Session = Depends(get_user_db)):    
     if not is_valid_user(user_id, trip_id, db):
-        return {"status": "invalid request"}
+        return {"status": "Invalid request"}
     
     expense_id = uuid.uuid4().hex[:8]
 
