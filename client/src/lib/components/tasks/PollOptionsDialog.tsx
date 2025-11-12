@@ -1,31 +1,50 @@
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import { PollTaskOption } from '@/lib/types'
+import { Dispatch, SetStateAction } from 'react'
 
-export default function DialogPollOptions() {
+interface PollOptionsDialogProps {
+  question: string
+  setQuestion: Dispatch<SetStateAction<string>>
+  options: PollTaskOption[]
+  setOptions: Dispatch<SetStateAction<PollTaskOption[]>>
+}
+
+export default function PollOptionsDialog({
+  question,
+  setQuestion,
+  options,
+  setOptions
+}: PollOptionsDialogProps) {
   function addOption() {
-    setOptions([...options, ''])
+    setOptions([...options, { label: '' }])
   }
-
-  const [options, setOptions] = useState<string[]>(['', ''])
 
   return (
     <>
-      <TextField label="Poll Question" size="small" sx={{ mb: 2 }} />
+      <TextField
+        label="Poll Question"
+        size="small"
+        sx={{ mb: 2 }}
+        value={question}
+        onChange={(e) => {
+          setQuestion(e.target.value)
+        }}
+      />
       <div className="flex flex-col space-y-2">
         {options.map((opt, i) => {
           return (
             <div className="flex items-center" key={i}>
               <TextField
                 label={`Option ${i + 1}`}
-                value={opt}
+                value={opt.label}
                 size="small"
                 sx={{ mr: 4 }}
                 onChange={(e) => {
-                  options[i] = e.target.value
+                  options[i].label = e.target.value
                   setOptions([...options])
                 }}
               />

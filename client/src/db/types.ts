@@ -1,3 +1,5 @@
+import { PollTaskOption } from '@/lib/types'
+
 export interface ExpensePayload {
   id?: string
   trip_id?: string
@@ -15,4 +17,19 @@ export interface DebtorPayload {
   user_id: string
   owes: number
   paid: boolean
+}
+
+export interface TaskPayload {
+  id?: string
+  trip_id?: string
+  name?: string
+  description?: string
+  type: string
+  assignee_id: string
+  due_date?: string
+  notes?: string
+  completed: boolean
+  creator_id: string
+  question?: string
+  multiple?: boolean
 }

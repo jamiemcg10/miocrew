@@ -59,6 +59,12 @@ class FullExpense(TypedDict): # TODO: make Base
     expense: ExpensesBase
     debtors: List[DebtorsBase]
 
+class PollTaskOptionBase(BaseModel):
+    id: Optional[str] = None
+    task_id: Optional[str] = None
+    label: str
+    votes: int
+
 class TaskBase(BaseModel):
     id: Optional[str] = None
     trip_id: str
@@ -66,18 +72,13 @@ class TaskBase(BaseModel):
     description: Optional[str] = None
     type: str
     due_date: str
-    multiple: bool
     assignee_id: str
     creator_id: str
     completed: bool
     notes: Optional[str] = None
-
-class PollTaskOptionBase(BaseModel):
-    id: Optional[str] = None
-    task_id: Optional[str] = None
-    label: str
-    votes: int
+    question: Optional[str] = None
+    multiple: Optional[bool] = None
 
 class FullTaskBase(TypedDict):
     task: TaskBase
-    poll_options: Optional[PollTaskOptionBase] = None
+    poll_options: Optional[List[PollTaskOptionBase]] = None
