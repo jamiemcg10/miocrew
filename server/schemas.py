@@ -76,7 +76,6 @@ class TaskBase(BaseModel):
     creator_id: str
     completed: bool
     notes: Optional[str] = None
-    question: Optional[str] = None
     multiple: Optional[bool] = None
 
 class FullTaskBase(TypedDict):

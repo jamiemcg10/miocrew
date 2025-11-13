@@ -30,6 +30,7 @@ export default function PollOptionsDialog({
         size="small"
         sx={{ mb: 2 }}
         value={question}
+        required
         onChange={(e) => {
           setQuestion(e.target.value)
         }}

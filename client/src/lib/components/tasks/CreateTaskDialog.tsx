@@ -43,14 +43,13 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
   function getTaskPayload() {
     return {
       name: nameRef?.current?.value,
-      description: descriptionRef?.current?.value,
+      description: type === 'poll' ? pollQuestion : descriptionRef?.current?.value,
       type: type,
       due_date: dateRef?.current?.value,
-      assignee_id: type === 'poll' ? 'everyone' : assignee,
+      assignee_id: type === 'poll' ? 'Everyone' : assignee,
       completed: false,
       trip_id: trip?.id,
       creator_id: user!.id,
-      question: type === 'poll' ? pollQuestion : undefined,
       multiple: type === 'poll' ? false : undefined
     }
   }
@@ -102,13 +101,6 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
             <MenuItem value="poll">Poll</MenuItem>
           </Select>
         </FormControl>
-        <TextField
-          label="Description"
-          multiline
-          rows={3}
-          sx={{ mb: 2 }}
-          inputRef={descriptionRef}
-        />
         {type === 'poll' ? (
           <PollOptionsDialog
             question={pollQuestion}
@@ -117,24 +109,33 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
             setOptions={setPollOptions}
           />
         ) : type === 'general' ? (
-          <FormControl>
-            <InputLabel>Assignee</InputLabel>
-            <Select
-              label="Assignee"
-              value={assignee}
+          <>
+            <TextField
+              label="Description"
+              multiline
+              rows={3}
               sx={{ mb: 2 }}
-              onChange={(e) => {
-                setAssignee(e.target.value)
-              }}>
-              {Object.values(trip?.attendees || {}).map((a: User) => {
-                return (
-                  <MenuItem value={a.id} key={a.id}>
-                    {a.firstName} {a.lastName}
-                  </MenuItem>
-                )
-              })}
-            </Select>
-          </FormControl>
+              inputRef={descriptionRef}
+            />
+            <FormControl>
+              <InputLabel>Assignee</InputLabel>
+              <Select
+                label="Assignee"
+                value={assignee}
+                sx={{ mb: 2 }}
+                onChange={(e) => {
+                  setAssignee(e.target.value)
+                }}>
+                {Object.values(trip?.attendees || {}).map((a: User) => {
+                  return (
+                    <MenuItem value={a.id} key={a.id}>
+                      {a.firstName} {a.lastName}
+                    </MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>
+          </>
         ) : null}
         <DatePicker
           className="w-3/5 mb-2"

@@ -18,7 +18,7 @@ router = APIRouter(tags=["tasks"])
 
 def add_ids(option, task_id):
     option_dict = option.dict(exclude_unset=True)
-    return {**option_dict, "task_id": task_id, id: uuid.uuid4().hex[:4]}
+    return {**option_dict, "task_id": task_id, "id": uuid.uuid4().hex[:4]}
 
 @router.get("/user/{user_id}/trip/{trip_id}/tasks")
 async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
@@ -33,7 +33,6 @@ async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
 
 @router.post("/user/{user_id}/trip/{trip_id}/task/create")
 async def create_task(user_id: str, trip_id: str, task: FullTaskBase, db: Session = Depends(get_user_db)):
-    print("------->", task)
     if not is_valid_user(user_id, trip_id, db):
         return { "status": "Invalid request"}
     
@@ -42,16 +41,12 @@ async def create_task(user_id: str, trip_id: str, task: FullTaskBase, db: Sessio
     task_dict = task['task'].dict(exclude_unset=True)
     task_with_id = { **task_dict, "id": task_id}
 
-    print("LOGS")
-    print(task_dict)
-
     task_insert_stmt = insert(Tasks).values(**task_with_id)
 
     db.execute(task_insert_stmt)
 
     if task['poll_options']:
-        print("There are poll options")
-
+    
         poll_options = list(map(lambda x: add_ids(x, task_id), task['poll_options']))
 
         options_insert_stmt = insert(Poll_Task_Options).values(poll_options)

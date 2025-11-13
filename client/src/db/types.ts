@@ -30,6 +30,5 @@ export interface TaskPayload {
   notes?: string
   completed: boolean
   creator_id: string
-  question?: string
   multiple?: boolean
 }
