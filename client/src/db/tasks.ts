@@ -2,10 +2,17 @@ import axios from 'axios'
 import { TaskPayload } from './types'
 import { PollTaskOption } from '@/lib/types'
 
-interface AddTaskArgs {
+interface BaseTaskArgs {
   userId: string
   tripId: string
+}
+
+interface CreateTaskArgs extends BaseTaskArgs {
   data: { task: TaskPayload; poll_options: PollTaskOption[] | null }
+}
+
+interface UpdateTaskArgs extends BaseTaskArgs {
+  data: { task: Partial<TaskPayload>; poll_options?: PollTaskOption[] }
 }
 
 // interface deleteExpenseArgs {
@@ -14,19 +21,28 @@ interface AddTaskArgs {
 //   expenseId: string
 // }
 
-export function addTask(args: AddTaskArgs) {
+export function createTask(args: CreateTaskArgs) {
   const { userId, tripId, data } = args
 
-  const isUpdate = !!data.task.id
-
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/task/${
-    isUpdate ? 'update' : 'create'
-  }`
+  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/task/create`
 
   return axios({
-    method: isUpdate ? 'patch' : 'post',
+    method: 'post',
     url: requestUrl,
     data,
+    withCredentials: true
+  })
+}
+
+export function updateTask(args: UpdateTaskArgs) {
+  const { userId, tripId, data } = args
+
+  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/task/update`
+
+  return axios({
+    method: 'patch',
+    url: requestUrl,
+    data: { ...data, poll_options: data.poll_options || null },
     withCredentials: true
   })
 }

@@ -46,7 +46,7 @@ export default function TaskView({ activeTask, onClose }: TaskViewProps) {
         {activeTask?.type === 'poll' ? (
           <PollTaskView activeTask={activeTask} />
         ) : (
-          <GeneralTaskView activeTask={activeTask} />
+          <GeneralTaskView activeTask={activeTask} closeView={onClose} />
         )}
       </>
     </Popup>

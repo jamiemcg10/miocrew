@@ -13,7 +13,7 @@ import { PollTaskOption, User } from '@/lib/types'
 import { DatePicker } from '@heroui/date-picker'
 import { today, getLocalTimeZone } from '@internationalized/date'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
-import { addTask } from '@/db/tasks'
+import { createTask } from '@/db/tasks'
 
 interface CreateTaskDialogProps {
   open: boolean
@@ -71,7 +71,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
 
     console.log({ taskPayload, pollTaskPayload })
 
-    addTask({
+    createTask({
       userId: user?.id,
       tripId: trip?.id,
       data: {

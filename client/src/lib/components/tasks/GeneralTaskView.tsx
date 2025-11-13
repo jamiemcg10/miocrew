@@ -3,16 +3,49 @@ import { dateFormatter } from '@/lib/utils/dateFormatter'
 import TextField from '@mui/material/TextField'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Button from '@mui/material/Button'
-import { useRef } from 'react'
+import { useContext, useState } from 'react'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { updateTask } from '@/db/tasks'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 
 interface GeneralTaskViewProps {
   activeTask: GeneralTask | null
+  closeView: () => void
 }
 
-export default function GeneralTaskView({ activeTask }: GeneralTaskViewProps) {
-  const notesRef = useRef(null)
-
+export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskViewProps) {
   if (!activeTask) return
+
+  function getPayload() {
+    return {
+      task: {
+        id: activeTask?.id,
+        notes,
+        completed: true
+      }
+    }
+  }
+
+  function markAsComplete() {
+    if (!user || !trip) return
+
+    updateTask({
+      userId: user?.id,
+      tripId: trip?.id,
+      data: getPayload()
+    })
+      .catch((e) => {
+        console.log(`Error marking task as complete`, e)
+      })
+      .finally(() => closeView())
+  }
+
+  const [notes, setNotes] = useState(activeTask.notes || '')
+
+  const user = useContext(UserContext)
+  const trip = useContext(TripContext)
+
+  const editDisabled = activeTask.completed || activeTask.assigneeId !== user?.id
 
   const assignee = activeTask.assignee
 
@@ -25,19 +58,22 @@ export default function GeneralTaskView({ activeTask }: GeneralTaskViewProps) {
         <div>Due {dateFormatter(activeTask.dueDate)}</div>
       </div>
       <div className="mb-8">{activeTask.description}</div>
-      {/* TODO: Only let assignee edit notes */}
       <TextField
         label="Notes"
-        defaultValue={activeTask.notes}
+        value={notes}
         multiline
         rows={4}
-        ref={notesRef}
+        onChange={(e) => {
+          setNotes(e.target.value)
+        }}
         sx={{ width: '100%' }}
-        disabled={activeTask.completed}
+        disabled={editDisabled}
       />
       <Button
         startIcon={<CheckBoxRoundedIcon fontSize="small" />}
         variant="contained"
+        disabled={editDisabled}
+        onClick={markAsComplete}
         sx={{ position: 'absolute', left: '3rem', bottom: '3rem' }}>
         Mark as complete
       </Button>

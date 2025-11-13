@@ -78,6 +78,24 @@ class TaskBase(BaseModel):
     notes: Optional[str] = None
     multiple: Optional[bool] = None
 
+class TaskUpdate(BaseModel):
+    id: str
+    trip_id: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    type: Optional[str] = None
+    due_date: Optional[str] = None
+    assignee_id: Optional[str] = None
+    creator_id: Optional[str] = None
+    completed: Optional[bool] = None
+    notes: Optional[str] = None
+    multiple: Optional[bool] = None
+
+
 class FullTaskBase(TypedDict):
     task: TaskBase
+    poll_options: Optional[List[PollTaskOptionBase]] = None
+
+class FullTaskUpdate(TypedDict):
+    task: TaskUpdate
     poll_options: Optional[List[PollTaskOptionBase]] = None

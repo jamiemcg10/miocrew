@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from models.models import Tasks, Attendees, Poll_Task_Options
 
-from schemas import FullTaskBase
+from schemas import FullTaskBase, FullTaskUpdate
 from utils.is_valid_user import is_valid_user
 
 from sqlalchemy import select, insert, delete, update
@@ -55,3 +55,21 @@ async def create_task(user_id: str, trip_id: str, task: FullTaskBase, db: Sessio
     db.flush()
 
     return {"status": "created", "id": task_id}
+
+@router.patch("/user/{user_id}/trip/{trip_id}/task/update")
+async def update_task(user_id: str, trip_id: str, task: FullTaskUpdate, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+
+    updated_task = task["task"]
+
+    print(updated_task)
+
+    # write
+    task_update_stmt = update(Tasks).where(Tasks.id == updated_task.id).values(updated_task.dict(exclude_unset=True))
+
+    db.execute(task_update_stmt)
+
+    db.flush()
+
+    return {"status": "updated", "id": updated_task.id}
