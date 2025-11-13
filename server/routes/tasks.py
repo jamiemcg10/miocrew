@@ -73,3 +73,19 @@ async def update_task(user_id: str, trip_id: str, task: FullTaskUpdate, db: Sess
     db.flush()
 
     return {"status": "updated", "id": updated_task.id}
+
+
+@router.delete("/user/{user_id}/trip/{trip_id}/task/{task_id}/delete")
+async def delete_task(user_id: str, trip_id: str, task_id: str, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+
+    # delete
+    task_delete_stmt = delete(Tasks).where(Tasks.id == task_id)
+    poll_options_delete_stmt = delete(Poll_Task_Options).where(Poll_Task_Options.task_id == task_id)
+
+    db.execute(task_delete_stmt)
+    db.execute(poll_options_delete_stmt)
+    db.flush()
+
+    return {"status": "deleted", "id": task_id}

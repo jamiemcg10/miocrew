@@ -15,11 +15,16 @@ interface UpdateTaskArgs extends BaseTaskArgs {
   data: { task: Partial<TaskPayload>; poll_options?: PollTaskOption[] }
 }
 
-// interface deleteExpenseArgs {
-//   userId: string
-//   tripId: string
-//   expenseId: string
-// }
+interface deleteTripArgs extends BaseTaskArgs {
+  taskId: string
+}
+
+export function getTasks(args: BaseTaskArgs) {
+  const { tripId, userId } = args
+  return axios.get(`http://localhost:8000/user/${userId}/trip/${tripId}/tasks`, {
+    withCredentials: true
+  })
+}
 
 export function createTask(args: CreateTaskArgs) {
   const { userId, tripId, data } = args
@@ -47,12 +52,12 @@ export function updateTask(args: UpdateTaskArgs) {
   })
 }
 
-// export function deleteExpense(args: deleteExpenseArgs) {
-//   const { userId, tripId, expenseId } = args
+export function deleteTask(args: deleteTripArgs) {
+  const { userId, tripId, taskId } = args
 
-//   const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/expense/${expenseId}/delete`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/task/${taskId}/delete`
 
-//   return axios.delete(requestUrl, {
-//     withCredentials: true
-//   })
-// }
+  return axios.delete(requestUrl, {
+    withCredentials: true
+  })
+}

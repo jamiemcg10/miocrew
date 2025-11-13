@@ -6,7 +6,8 @@ interface BaseTask {
   name: string
   description: string // poll question or general task description
   dueDate: string
-  creator: string
+  creatorId: string
+  creator: CrewMember
   completed: boolean
   notes?: string
 }

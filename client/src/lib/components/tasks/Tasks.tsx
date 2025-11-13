@@ -11,30 +11,15 @@ import { Task, User } from '@/lib/types'
 import TaskView from './TaskView'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import CrewAvatar from '../CrewAvatar'
-import axios from 'axios'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
+import { getTasks } from '@/db/tasks'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean>>
 }
 
 export default function Tasks({ setOpenCreateDialog }: TasksProps) {
-  async function getTasks() {
-    axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/tasks`, {
-        withCredentials: true
-      })
-      .then((response) => {
-        if (response.data.tasks) {
-          setTasks(response.data.tasks)
-          setFilteredTasks(response.data.tasks)
-          LocalStorage.set(`${trip?.id}:tasks`, response.data.tasks)
-        }
-      })
-      .catch((e) => console.error('Error fetching tasks', e))
-  }
-
   function handleBasicFilterClick(value: string) {
     const updatedFilters = filters.includes(value)
       ? filters.filter((f) => f !== value)
@@ -80,7 +65,17 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
 
   useEffect(() => {
-    getTasks()
+    if (!user || !trip) return
+
+    getTasks({ userId: user.id, tripId: trip.id })
+      .then((response) => {
+        if (response.data.tasks) {
+          setTasks(response.data.tasks)
+          setFilteredTasks(response.data.tasks)
+          LocalStorage.set(`${trip?.id}:tasks`, response.data.tasks)
+        }
+      })
+      .catch((e) => console.error('Error fetching tasks', e))
   }, [])
 
   return (
@@ -140,7 +135,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           <div>There are no tasks or no tasks that match the current filters.</div>
         )}
       </div>
-      <TaskView activeTask={activeTask} onClose={() => setActiveTask(null)} />
+      <TaskView activeTask={activeTask} onEdit={() => {}} onClose={() => setActiveTask(null)} />
     </>
   )
 }
