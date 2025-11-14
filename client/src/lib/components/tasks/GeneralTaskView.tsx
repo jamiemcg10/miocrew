@@ -45,7 +45,9 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
 
-  const editDisabled = activeTask.completed || activeTask.assigneeId !== user?.id
+  const editDisabled =
+    activeTask.completed ||
+    (activeTask.assigneeId !== user?.id && activeTask.creatorId !== user?.id)
 
   const assignee = activeTask.assignee
 
@@ -55,7 +57,7 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
         <div>
           Assigned to {assignee.firstName} {assignee.lastName}
         </div>
-        <div>Due {dateFormatter(activeTask.dueDate)}</div>
+        {activeTask.dueDate && <div>Due {dateFormatter(activeTask.dueDate)}</div>}
       </div>
       <div className="mb-8">{activeTask.description}</div>
       <TextField
@@ -69,14 +71,15 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
         sx={{ width: '100%' }}
         disabled={editDisabled}
       />
-      <Button
-        startIcon={<CheckBoxRoundedIcon fontSize="small" />}
-        variant="contained"
-        disabled={editDisabled}
-        onClick={markAsComplete}
-        sx={{ position: 'absolute', left: '3rem', bottom: '3rem' }}>
-        Mark as complete
-      </Button>
+      {!editDisabled && (
+        <Button
+          startIcon={<CheckBoxRoundedIcon fontSize="small" />}
+          variant="contained"
+          onClick={markAsComplete}
+          sx={{ position: 'absolute', left: '3rem', bottom: '3rem' }}>
+          Mark as complete
+        </Button>
+      )}
     </>
   )
 }
