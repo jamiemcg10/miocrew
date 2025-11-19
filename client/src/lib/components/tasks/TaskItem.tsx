@@ -52,9 +52,11 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {
           <span className="italic text-sm content-center">
             {isPollTask(task) ? 'Everyone' : getAssigneeName(task.assignee)}
           </span>
-          <span className="text-right px-2 font-semibold text-sm content-center">
-            {dateFormatter(task.dueDate)}
-          </span>
+          {task.dueDate && (
+            <span className="text-right px-2 font-semibold text-sm content-center">
+              {dateFormatter(task.dueDate)}
+            </span>
+          )}
         </div>
       </div>
     </TableRow>
