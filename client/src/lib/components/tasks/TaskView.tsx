@@ -21,7 +21,6 @@ interface TaskViewProps {
 }
 
 export default function TaskView({ activeTask, onEdit, onClose }: TaskViewProps) {
-  console.log({ activeTask })
   function onDelete() {
     if (!user || !trip || !activeTask) return
 
