@@ -33,3 +33,7 @@ export interface GeneralTask extends BaseTask {
 }
 
 export type Task = PollTask | GeneralTask
+
+export function isTask(open: boolean | Task): open is Task {
+  return typeof open !== 'boolean'
+}
