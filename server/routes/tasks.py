@@ -27,6 +27,7 @@ async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
     stmt = select(Tasks).options(selectinload(Tasks.options)).select_from(Tasks).join(Attendees, Tasks.trip_id == Attendees.trip_id).where(Tasks.trip_id == trip_id).where(Attendees.attendee_id == user_id)
 
     for task in db.scalars(stmt):
+        print(task)
         tasks.append(flatten_task(task))
 
     return {"tasks": tasks}
@@ -38,7 +39,10 @@ async def create_task(user_id: str, trip_id: str, task: FullTaskBase, db: Sessio
     
     task_id = uuid.uuid4().hex[:8]
 
+    print(task['task'])
+
     task_dict = task['task'].dict(exclude_unset=True)
+    print(task_dict)
     task_with_id = { **task_dict, "id": task_id}
 
     task_insert_stmt = insert(Tasks).values(**task_with_id)
@@ -46,7 +50,6 @@ async def create_task(user_id: str, trip_id: str, task: FullTaskBase, db: Sessio
     db.execute(task_insert_stmt)
 
     if task['poll_options']:
-    
         poll_options = list(map(lambda x: add_ids(x, task_id), task['poll_options']))
 
         options_insert_stmt = insert(Poll_Task_Options).values(poll_options)
@@ -63,12 +66,19 @@ async def update_task(user_id: str, trip_id: str, task: FullTaskUpdate, db: Sess
 
     updated_task = task["task"]
 
-    print(updated_task)
-
     # write
     task_update_stmt = update(Tasks).where(Tasks.id == updated_task.id).values(updated_task.dict(exclude_unset=True))
+    options_delete_stmt = delete(Poll_Task_Options).where(Poll_Task_Options.task_id == updated_task.id)
 
     db.execute(task_update_stmt)
+    db.execute(options_delete_stmt)
+
+    if task['poll_options']:
+        poll_options = list(map(lambda x: add_ids(x, updated_task.id), task['poll_options']))
+
+        options_insert_stmt = insert(Poll_Task_Options).values(poll_options)
+        db.execute(options_insert_stmt)
+
 
     db.flush()
 

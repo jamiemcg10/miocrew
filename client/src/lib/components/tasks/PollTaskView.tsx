@@ -36,9 +36,9 @@ function UncompletedPoll({ activeTask }: SpecializedPollTaskViewProps) {
   return (
     <form className="flex flex-col mt-8">
       <FormControl>
-        <FormLabel>{activeTask?.description}</FormLabel>
+        <FormLabel>{activeTask?.pollQuestion}</FormLabel>
         <FormGroup>
-          {activeTask?.options.map((option, i) => {
+          {activeTask?.pollOptions.map((option, i) => {
             return (
               <FormControlLabel
                 label={option.label}
@@ -62,8 +62,8 @@ function CompletedPoll({ activeTask }: SpecializedPollTaskViewProps) {
   return (
     <>
       <div className="italic">Results</div>
-      <div className="my-4 sm:my-2 text-lg">{activeTask.description}</div>
-      <PieChart results={activeTask.options} />
+      <div className="my-4 sm:my-2 text-lg">{activeTask.pollQuestion}</div>
+      <PieChart results={activeTask.pollOptions} />
     </>
   )
 }

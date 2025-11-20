@@ -4,7 +4,6 @@ interface BaseTask {
   id: string
   tripId: string
   name: string
-  description: string // poll question or general task description
   dueDate: string
   creatorId: string
   creator: CrewMember
@@ -22,18 +21,25 @@ export interface PollTaskOption {
 export interface PollTask extends BaseTask {
   type: 'poll'
   multiple: boolean
-  options: PollTaskOption[]
+  pollQuestion: string
+  pollOptions: PollTaskOption[]
   assigneeId: 'Everyone'
 }
 
 export interface GeneralTask extends BaseTask {
   type: 'general'
+  description: string
   assigneeId: string
   assignee: CrewMember
 }
 
 export type Task = PollTask | GeneralTask
 
-export function isTask(open: boolean | Task): open is Task {
-  return typeof open !== 'boolean'
+export function isTask(open: string | boolean | undefined | Task | any[]): open is Task {
+  return (
+    typeof open !== 'boolean' &&
+    typeof open !== 'string' &&
+    typeof open !== 'undefined' &&
+    Object.hasOwn(open, 'name')
+  )
 }

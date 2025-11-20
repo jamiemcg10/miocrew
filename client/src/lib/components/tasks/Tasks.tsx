@@ -16,7 +16,7 @@ import { LocalStorage } from '@/lib/utils/LocalStorage'
 import { getTasks } from '@/db/tasks'
 
 interface TasksProps {
-  setOpenCreateDialog: Dispatch<SetStateAction<boolean>>
+  setOpenCreateDialog: Dispatch<SetStateAction<boolean | Task>>
 }
 
 export default function Tasks({ setOpenCreateDialog }: TasksProps) {
@@ -50,6 +50,12 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
       )
 
     setFilteredTasks(!updatedFilters.length && !updatedCrewFilter?.length ? tasks : _filteredTasks)
+  }
+
+  function onEditTask() {
+    if (!activeTask) return
+    setOpenCreateDialog(activeTask)
+    setActiveTask(null)
   }
 
   const user = useContext(UserContext)
@@ -135,7 +141,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           <div>There are no tasks or no tasks that match the current filters.</div>
         )}
       </div>
-      <TaskView activeTask={activeTask} onEdit={() => {}} onClose={() => setActiveTask(null)} />
+      <TaskView activeTask={activeTask} onEdit={onEditTask} onClose={() => setActiveTask(null)} />
     </>
   )
 }

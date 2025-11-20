@@ -113,7 +113,8 @@ def flatten_task(task):
         "multiple": bool(task.multiple),
         "name": task.name,
         "notes": task.notes,
-        "options": [flatten_poll_task_option(option) for option in task.options],
+        "pollQuestion": task.poll_question,
+        "pollOptions": [flatten_poll_task_option(option) for option in task.options],
         "tripId": task.trip_id,
         "type": task.type
     }

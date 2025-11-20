@@ -126,6 +126,7 @@ class Tasks(Base):
     creator: Mapped["Users"] = relationship("Users", foreign_keys=[creator_id], back_populates="created_tasks", lazy="joined")
     completed: Mapped[int] = mapped_column(Integer)
     notes: Mapped[str] = mapped_column(String)
+    poll_question: Mapped[str] = mapped_column(String)
     options: Mapped[List[str]] = relationship("Poll_Task_Options", back_populates="task")
 
 class Poll_Task_Options(Base):

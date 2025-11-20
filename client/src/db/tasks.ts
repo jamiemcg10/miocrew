@@ -12,7 +12,7 @@ interface CreateTaskArgs extends BaseTaskArgs {
 }
 
 interface UpdateTaskArgs extends BaseTaskArgs {
-  data: { task: Partial<TaskPayload>; poll_options?: PollTaskOption[] }
+  data: { task: Partial<TaskPayload>; poll_options?: PollTaskOption[] | null }
 }
 
 interface deleteTripArgs extends BaseTaskArgs {

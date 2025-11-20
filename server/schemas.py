@@ -71,12 +71,13 @@ class TaskBase(BaseModel):
     name: str
     description: Optional[str] = None
     type: str
-    due_date: str
+    due_date: Optional[str] = None
     assignee_id: str
     creator_id: str
     completed: bool
     notes: Optional[str] = None
     multiple: Optional[bool] = None
+    poll_question: Optional[str] = None
 
 class TaskUpdate(BaseModel):
     id: str
@@ -90,6 +91,7 @@ class TaskUpdate(BaseModel):
     completed: Optional[bool] = None
     notes: Optional[str] = None
     multiple: Optional[bool] = None
+    poll_question: Optional[str] = None
 
 
 class FullTaskBase(TypedDict):

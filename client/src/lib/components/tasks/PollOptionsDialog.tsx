@@ -4,23 +4,22 @@ import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import { PollTaskOption } from '@/lib/types'
-import { Dispatch, SetStateAction } from 'react'
 
 interface PollOptionsDialogProps {
   question: string
-  setQuestion: Dispatch<SetStateAction<string>>
   options: PollTaskOption[]
-  setOptions: Dispatch<SetStateAction<PollTaskOption[]>>
+  onChangeQuestion: (v: string) => void
+  onChangeOptions: (v: PollTaskOption[]) => void
 }
 
 export default function PollOptionsDialog({
   question,
-  setQuestion,
   options,
-  setOptions
+  onChangeQuestion,
+  onChangeOptions
 }: PollOptionsDialogProps) {
   function addOption() {
-    setOptions([...options, { label: '' }])
+    onChangeOptions([...options, { label: '' }])
   }
 
   return (
@@ -32,7 +31,7 @@ export default function PollOptionsDialog({
         value={question}
         required
         onChange={(e) => {
-          setQuestion(e.target.value)
+          onChangeQuestion(e.target.value)
         }}
       />
       <div className="flex flex-col space-y-2">
@@ -46,7 +45,7 @@ export default function PollOptionsDialog({
                 sx={{ mr: 4 }}
                 onChange={(e) => {
                   options[i].label = e.target.value
-                  setOptions([...options])
+                  onChangeOptions([...options])
                 }}
               />
               <IconButton
@@ -55,7 +54,7 @@ export default function PollOptionsDialog({
                   const newOptions = options.filter((_, j) => {
                     return j !== i
                   })
-                  setOptions(newOptions)
+                  onChangeOptions(newOptions)
                 }}>
                 <CloseRoundedIcon fontSize="small" />
               </IconButton>

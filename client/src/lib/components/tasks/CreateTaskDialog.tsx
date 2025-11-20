@@ -5,126 +5,145 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useReducer, useState } from 'react'
 import PollOptionsDialog from './PollOptionsDialog'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import { PollTaskOption, User } from '@/lib/types'
+import { isTask, PollTaskOption, Task, User } from '@/lib/types'
 import { DatePicker } from '@heroui/date-picker'
-import { today, getLocalTimeZone } from '@internationalized/date'
+import { today, getLocalTimeZone, CalendarDate, parseDate } from '@internationalized/date'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
-import { createTask } from '@/db/tasks'
+import { createTask, updateTask } from '@/db/tasks'
+import { TaskPayload } from '@/db'
+import { taskReducer, initialTaskState } from './utils/taskReducer'
 
 interface CreateTaskDialogProps {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+  open: boolean | Task
+  setOpen: Dispatch<SetStateAction<boolean | Task>>
 }
 
-type TaskType = 'general' | 'poll'
-
 export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
-  const [type, setType] = useState<'general' | 'poll' | ''>('')
-  const [assignee, setAssignee] = useState<string>('')
-  const [pollQuestion, setPollQuestion] = useState('')
-  const [pollOptions, setPollOptions] = useState<PollTaskOption[]>([
-    { label: '', votes: 0 },
-    { label: '', votes: 0 }
-  ])
+  const [state, dispatch] = useReducer(taskReducer, initialTaskState)
 
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
 
-  const nameRef = useRef<HTMLInputElement | null>(null)
-  const descriptionRef = useRef<HTMLInputElement | null>(null)
-  const dateRef = useRef<HTMLInputElement | null>(null)
-
-  const [dateInvalid, setDateInvalid] = useState(false)
-
   function getTaskPayload() {
-    return {
-      name: nameRef?.current?.value,
-      description: type === 'poll' ? pollQuestion : descriptionRef?.current?.value,
-      type: type,
-      due_date: dateRef?.current?.value,
-      assignee_id: type === 'poll' ? 'Everyone' : assignee,
+    const payload = {
+      name: state.name.value,
+      description: state.description.value,
+      type: state.type.value,
+      due_date: state.dueDate.value,
+      assignee_id: state.type.value === 'poll' ? 'Everyone' : state.assigneeId.value,
       completed: false,
       trip_id: trip?.id,
       creator_id: user!.id,
-      multiple: type === 'poll' ? false : undefined
+      multiple: state.type.value === 'poll' ? false : undefined,
+      poll_question: state.pollQuestion.value
+    } as TaskPayload
+
+    if (isTask(open)) {
+      payload.id = open.id
     }
+
+    return payload
+  }
+
+  function getPollOptionsPayload() {
+    return state.type.value === 'poll'
+      ? state.pollOptions.value.map((opt) => {
+          return {
+            ...opt,
+            votes: 0
+          }
+        })
+      : null
   }
 
   function saveTask() {
     if (!trip || !user) return
 
-    const taskPayload = getTaskPayload()
-
-    const pollTaskPayload =
-      type === 'poll'
-        ? pollOptions.map((opt) => {
-            return {
-              ...opt,
-              votes: 0
-            }
-          })
-        : null
-
-    console.log({ taskPayload, pollTaskPayload })
-
-    createTask({
-      userId: user?.id,
-      tripId: trip?.id,
+    const taskArgs = {
+      userId: user.id,
+      tripId: trip.id,
       data: {
-        task: taskPayload,
-        poll_options: pollTaskPayload
+        task: getTaskPayload(),
+        poll_options: getPollOptionsPayload()
       }
-    })
-      .catch((e) => console.error(`Error adding task`, e))
-      .finally(() => setOpen(false))
+    }
+
+    if (isTask(open)) {
+      updateTask(taskArgs)
+        .catch((e) => console.error(`Error updating task`, e))
+        .finally(() => setOpen(false))
+    } else {
+      createTask(taskArgs)
+        .catch((e) => console.error(`Error creating task`, e))
+        .finally(() => setOpen(false))
+    }
   }
 
+  useEffect(() => {
+    dispatch({ type: 'set-task', value: isTask(open) ? open : undefined })
+  }, [open])
+
   return (
-    <Dialog open={open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Create new task</DialogTitle>
+    <Dialog open={!!open} setOpen={setOpen}>
+      <DialogTitle sx={{ fontWeight: 700 }}>
+        {isTask(open) ? 'Edit' : 'Create new'} task
+      </DialogTitle>
       <form className="flex flex-col m-10">
-        <TextField label="Task Name" required sx={{ mb: 2 }} inputRef={nameRef} />
+        <TextField
+          label="Task Name"
+          required
+          sx={{ mb: 2 }}
+          value={state.name.value}
+          error={!state.name.valid}
+          onChange={(e) => {
+            dispatch({ type: 'name', value: e.target.value })
+          }}
+        />
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel>Task Type</InputLabel>
           <Select
             label="Task Type"
             required
-            value={type}
+            value={state.type.value}
             onChange={(e) => {
-              setType(e.target.value as TaskType)
+              dispatch({ type: 'type', value: e.target.value })
             }}>
             <MenuItem value="general">General</MenuItem>
             <MenuItem value="poll">Poll</MenuItem>
           </Select>
         </FormControl>
-        {type === 'poll' ? (
+        {state.type.value === 'poll' ? (
           <PollOptionsDialog
-            question={pollQuestion}
-            setQuestion={setPollQuestion}
-            options={pollOptions}
-            setOptions={setPollOptions}
+            question={state.pollQuestion.value}
+            options={state.pollOptions.value}
+            onChangeOptions={(value: PollTaskOption[]) => dispatch({ type: 'pollOptions', value })}
+            onChangeQuestion={(value: string) => dispatch({ type: 'pollQuestion', value })}
           />
-        ) : type === 'general' ? (
+        ) : (
           <>
             <TextField
               label="Description"
               multiline
               rows={3}
               sx={{ mb: 2 }}
-              inputRef={descriptionRef}
+              value={state.description.value}
+              onChange={(e) => {
+                dispatch({ type: 'description', value: e.target.value })
+              }}
             />
-            <FormControl>
+            <FormControl required>
               <InputLabel>Assignee</InputLabel>
               <Select
                 label="Assignee"
-                value={assignee}
+                value={state.assigneeId.value}
                 sx={{ mb: 2 }}
+                error={!state.assigneeId.valid}
                 onChange={(e) => {
-                  setAssignee(e.target.value)
+                  dispatch({ type: 'assigneeId', value: e.target.value })
                 }}>
                 {Object.values(trip?.attendees || {}).map((a: User) => {
                   return (
@@ -136,15 +155,13 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
               </Select>
             </FormControl>
           </>
-        ) : null}
+        )}
         <DatePicker
           className="w-3/5 mb-2"
           label="Due Date"
           variant="bordered"
           size="sm"
-          inputRef={dateRef}
-          isRequired
-          isInvalid={dateInvalid}
+          value={state.dueDate.value ? (parseDate(state.dueDate.value) as CalendarDate) : undefined}
           isDateUnavailable={(date) => {
             return date < today(getLocalTimeZone())
           }}
@@ -153,17 +170,18 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
             inputWrapper: 'group-data-[invalid=true]:focus-within:border-danger',
             segment: 'data-[invalid=true]:data-[editable=true]:data-[placeholder=true]:text-danger'
           }}
-          errorMessage={(value) => {
-            if (value.isInvalid) {
-              return 'Please select a due date.'
-            }
-          }}
-          onChange={() => {
-            setDateInvalid(false)
+          onChange={(e) => {
+            if (!e) return
+
+            dispatch({ type: 'dueDate', value: e.toString() })
           }}
         />
-        <Button variant="contained" sx={{ fontWeight: 700, mt: 5 }} onClick={saveTask}>
-          Create Task
+        <Button
+          variant="contained"
+          sx={{ fontWeight: 700, mt: 5 }}
+          disabled={!state.name || (!state.assigneeId.value && state.type.value === 'general')}
+          onClick={saveTask}>
+          Save Task
         </Button>
       </form>
     </Dialog>
