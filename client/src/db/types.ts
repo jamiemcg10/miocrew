@@ -1,5 +1,3 @@
-import { PollTaskOption } from '@/lib/types'
-
 export interface ExpensePayload {
   id?: string
   trip_id?: string

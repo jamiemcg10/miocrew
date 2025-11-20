@@ -48,7 +48,8 @@ export default function ContextMenu({
         onClose={onClose}>
         <MenuItem
           dense
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             onEdit()
             onClose()
           }}>

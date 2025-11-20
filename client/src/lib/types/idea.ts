@@ -19,3 +19,7 @@ export interface Idea {
   creatorId: string
   creator: Creator
 }
+
+export function isIdea(open?: string | boolean | Idea): open is Idea {
+  return typeof open !== 'boolean' && typeof open !== 'string' && typeof open !== 'undefined'
+}
