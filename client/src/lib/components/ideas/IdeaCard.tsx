@@ -5,9 +5,9 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import { useState, Dispatch, SetStateAction, useContext } from 'react'
 import ContextMenu from '../layout/ContextMenu'
-import axios from 'axios'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
+import { deleteIdea } from '@/db'
 
 interface IdeaCardProps {
   idea: Idea
@@ -21,10 +21,9 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardPr
   }
 
   function onDeleteIdea() {
-    axios
-      .delete(`http://localhost:8000/user/${user?.id}/trip/${trip?.id}/idea/${idea.id}/delete`, {
-        withCredentials: true
-      })
+    if (!user || !trip) return
+
+    deleteIdea({ tripId: trip.id, userId: user.id, ideaId: idea.id })
       .catch((e) => console.error('Error deleting idea', e))
       .finally(() => setMenuOpen(false))
   }

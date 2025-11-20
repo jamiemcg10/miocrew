@@ -17,11 +17,11 @@ import Radio from '@mui/material/Radio'
 import InputAdornment from '@mui/material/InputAdornment'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import axios from 'axios'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { assignAppColor } from '@/lib/utils/colors/assignColor'
 import { Idea } from '@/lib/types'
+import { createIdea, updateIdea } from '@/db'
 
 interface AddIdeaDialogProps {
   open: boolean | Idea
@@ -74,6 +74,8 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
   }
 
   function saveIdea() {
+    if (!user || !trip) return
+
     if (!nameRef.current?.value) return
 
     // if cost, must have costType
@@ -87,24 +89,21 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
       return
     }
 
-    const payload = getPayload()
+    const taskArgs = {
+      userId: user.id,
+      tripId: trip?.id,
+      data: getPayload()
+    }
 
-    const requestUrl = isIdea(open)
-      ? `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/idea/update`
-      : `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/ideas/create`
-
-    axios({
-      method: isIdea(open) ? 'patch' : 'post',
-      url: requestUrl,
-      data: payload,
-      withCredentials: true
-    })
-      .catch((e) => {
-        console.error(`Error ${isIdea(open) ? 'editing' : 'adding'} idea`, e)
-      })
-      .finally(() => {
-        setOpen(false)
-      })
+    if (isIdea(open)) {
+      updateIdea(taskArgs)
+        .catch((e) => console.error(`Error updating task`, e))
+        .finally(() => setOpen(false))
+    } else {
+      createIdea(taskArgs)
+        .catch((e) => console.error(`Error creating task`, e))
+        .finally(() => setOpen(false))
+    }
   }
 
   const user = useContext(UserContext)
