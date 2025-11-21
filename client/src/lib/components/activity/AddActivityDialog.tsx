@@ -8,7 +8,7 @@ import { TimeInput } from '@heroui/date-input'
 import { assignActivityColor } from '@/lib/utils/colors/assignColor'
 import { Activity, isActivity } from '@/lib/types'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import axios from 'axios'
+import { createActivity, updateActivity } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CalendarDate, parseDate, parseTime, Time } from '@internationalized/date'
 import {
@@ -44,25 +44,27 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
 
   function saveActivity() {
     // TODO: Make sure end time and date is after start time and date
+    if (!user || !trip) return
 
-    const payload = getPayload()
+    const args = { userId: user.id, tripId: trip?.id, data: getPayload() }
 
-    const requestUrl = isActivity(open)
-      ? `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/activity/update`
-      : `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/activities/create`
-
-    axios({
-      method: isActivity(open) ? 'patch' : 'post',
-      url: requestUrl,
-      data: payload,
-      withCredentials: true
-    })
-      .catch((e) => {
-        console.error(`Error ${isActivity(open) ? 'editing' : 'adding'} activity`, e)
-      })
-      .finally(() => {
-        setOpen(false)
-      })
+    if (isActivity(open)) {
+      updateActivity(args)
+        .catch((e) => {
+          console.error(`Error updating activity`, e)
+        })
+        .finally(() => {
+          setOpen(false)
+        })
+    } else {
+      createActivity(args)
+        .catch((e) => {
+          console.error(`Error creating activity`, e)
+        })
+        .finally(() => {
+          setOpen(false)
+        })
+    }
   }
 
   const trip = useContext(TripContext)
@@ -171,4 +173,3 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
     </Dialog>
   )
 }
-//177

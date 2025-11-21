@@ -7,6 +7,7 @@ import axios from 'axios'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { ScheduleContext } from '@/lib/utils/contexts/ScheduleContext'
+import { deleteActivity } from '@/db'
 
 interface ActivityProps {
   activity: Activity
@@ -19,13 +20,9 @@ export default function Activity({ activity, setActiveActivity }: ActivityProps)
   }
 
   function onDeleteActivity() {
-    axios
-      .delete(
-        `http://localhost:8000/user/${user?.id}/trip/${trip?.id}/activity/${activity.id}/delete`,
-        {
-          withCredentials: true
-        }
-      )
+    if (!user || !trip) return
+
+    deleteActivity({ userId: user.id, tripId: trip.id, activityId: activity.id })
       .catch((e) => console.error('Error deleting idea', e))
       .finally(() => setMenuOpen(false))
   }
@@ -47,6 +44,8 @@ export default function Activity({ activity, setActiveActivity }: ActivityProps)
     : 0
 
   const activityHeight = height * HEIGHT_PER_HOUR + MIN_HEIGHT
+
+  if (!user || !trip) return
 
   return (
     <div
