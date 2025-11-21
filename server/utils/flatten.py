@@ -125,6 +125,7 @@ def flatten_activity(activity):
         "tripId": activity.trip_id,
         "name": activity.name,
         "description": activity.description,
+        "location": activity.location,
         "startTime": activity.start_time,
         "endTime": activity.end_time,
         "color": activity.color

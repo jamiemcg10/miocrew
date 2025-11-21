@@ -1,16 +1,20 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useRef } from 'react'
+import { Dispatch, SetStateAction, useContext, useReducer, useEffect } from 'react'
 import Dialog from '../Dialog'
 import { DatePicker } from '@heroui/date-picker'
 import { TimeInput } from '@heroui/date-input'
 import { assignActivityColor } from '@/lib/utils/colors/assignColor'
-import { Activity } from '@/lib/types'
+import { Activity, isActivity } from '@/lib/types'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import axios from 'axios'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CalendarDate, parseDate, parseTime, Time } from '@internationalized/date'
+import {
+  activityReducer,
+  initialActivityState
+} from '@/lib/components/activity/utils/activityReducer'
 
 interface AddActivityDialogProps {
   open: boolean | Activity
@@ -18,20 +22,15 @@ interface AddActivityDialogProps {
 }
 
 export default function AddActivityDialog({ open, setOpen }: AddActivityDialogProps) {
-  function isActivity(open: boolean | Activity): open is Activity {
-    return typeof open !== 'boolean'
-  }
-
   function getPayload() {
     const payload = {
       trip_id: trip?.id,
-      name: nameRef.current?.value,
-      description: descriptionRef.current?.value,
-      location: locationRef.current?.value,
-      start_time: `${startDateRef?.current?.value}T${startTimeRef?.current?.value || ''}`,
-      end_time: endDateRef?.current?.value
-        ? `${endDateRef?.current?.value}` +
-          (endTimeRef?.current?.value ? `T${endTimeRef?.current?.value}` : '')
+      name: state.name.value,
+      description: state.description.value,
+      location: state.location.value,
+      start_time: `${state.startDate.value}T${state.startTime.value || ''}`,
+      end_time: state.endDate.value
+        ? `${state.endDate.value}` + (state.endTime.value ? `T${state.endTime.value}` : '')
         : null,
       color: isActivity(open) ? open.color : assignActivityColor()
     } as Partial<Activity>
@@ -44,10 +43,6 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
   }
 
   function saveActivity() {
-    if (!nameRef.current?.value || !startDateRef?.current?.value || !startTimeRef?.current?.value) {
-      return
-    }
-
     // TODO: Make sure end time and date is after start time and date
 
     const payload = getPayload()
@@ -70,37 +65,14 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
       })
   }
 
-  function getDefaultValue(prop: keyof Activity | 'startDate' | 'endDate' | 'endTime') {
-    if (!isActivity(open)) return undefined
-    // TODO: end date is start date if not specified, end must be after start
-
-    if (prop === 'startDate') {
-      const [date, _time] = open['startTime'].split('T')
-      return date ? parseDate(date) : undefined
-    } else if (prop === 'startTime') {
-      const [_date, time] = open['startTime'].split('T')
-      return time ? parseTime(time) : undefined
-    } else if (prop === 'endDate') {
-      const [date, _time] = (open['endTime'] || '').split('T')
-      return date ? parseDate(date) : undefined
-    } else if (prop === 'endTime') {
-      const [_date, time] = (open['endTime'] || '').split('T')
-      return time ? parseTime(time) : undefined
-    }
-
-    return open[prop] ? open[prop] : undefined
-  }
-
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
 
-  const nameRef = useRef<HTMLInputElement | null>(null)
-  const descriptionRef = useRef<HTMLInputElement | null>(null)
-  const locationRef = useRef<HTMLInputElement | null>(null)
-  const startDateRef = useRef<HTMLInputElement | null>(null)
-  const startTimeRef = useRef<HTMLInputElement | null>(null)
-  const endDateRef = useRef<HTMLInputElement | null>(null)
-  const endTimeRef = useRef<HTMLInputElement | null>(null)
+  const [state, dispatch] = useReducer(activityReducer, initialActivityState)
+
+  useEffect(() => {
+    dispatch({ type: 'set-activity', value: isActivity(open) ? open : undefined })
+  }, [open])
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
@@ -109,22 +81,22 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
         <TextField
           label="Activity Name"
           required
-          inputRef={nameRef}
-          defaultValue={getDefaultValue('name')}
+          value={state.name.value}
+          onChange={(e) => dispatch({ type: 'name', value: e.target.value })}
           sx={{ mb: 2 }}
         />
         <TextField
           label="Activity Description"
           multiline
           rows={3}
-          inputRef={descriptionRef}
-          defaultValue={getDefaultValue('description')}
+          value={state.description.value}
+          onChange={(e) => dispatch({ type: 'description', value: e.target.value })}
           sx={{ mb: 2 }}
         />
         <TextField
           label="Location"
-          inputRef={locationRef}
-          defaultValue={getDefaultValue('location')}
+          value={state.location.value}
+          onChange={(e) => dispatch({ type: 'location', value: e.target.value })}
           sx={{ mb: 2 }}
         />
         <div className="flex mb-2">
@@ -134,16 +106,32 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
             variant="bordered"
             size="sm"
             isRequired
-            inputRef={startDateRef}
-            defaultValue={getDefaultValue('startDate') as CalendarDate}
+            value={
+              state.startDate.value ? (parseDate(state.startDate.value) as CalendarDate) : null
+            }
+            onChange={(e) => {
+              if (!e) return
+
+              dispatch({ type: 'startDate', value: e.toString() })
+            }}
+            classNames={{
+              label: 'group-data-[required=true]:after:text-inherit'
+            }}
           />
           <TimeInput
             className="w-2/5 ml-2"
             label="Start time"
             variant="bordered"
             isRequired
-            inputRef={startTimeRef}
-            defaultValue={getDefaultValue('startTime') as Time}
+            value={state.startTime.value ? (parseTime(state.startTime.value) as Time) : null}
+            onChange={(e) => {
+              if (!e) return
+
+              dispatch({ type: 'startTime', value: e.toString() })
+            }}
+            classNames={{
+              label: 'group-data-[required=true]:after:text-inherit'
+            }}
           />
         </div>
         <div className="flex">
@@ -152,21 +140,30 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
             label="End date"
             variant="bordered"
             size="sm"
-            inputRef={endDateRef}
-            defaultValue={getDefaultValue('endDate') as CalendarDate}
+            value={state.endDate.value ? (parseDate(state.endDate.value) as CalendarDate) : null}
+            onChange={(e) => {
+              if (!e) return
+
+              dispatch({ type: 'endDate', value: e.toString() })
+            }}
           />
           <TimeInput
             className="w-2/5 ml-2"
             label="End time"
             variant="bordered"
-            inputRef={endTimeRef}
-            defaultValue={getDefaultValue('endTime') as Time}
+            value={state.endTime.value ? (parseTime(state.endTime.value) as Time) : null}
+            onChange={(e) => {
+              if (!e) return
+
+              dispatch({ type: 'endTime', value: e.toString() })
+            }}
           />
         </div>
         <Button
           variant="contained"
           type="submit"
           sx={{ fontWeight: 700, mt: 5 }}
+          disabled={!state.name.value || !state.startDate.value || !state.startTime.value}
           onClick={saveActivity}>
           Save Activity
         </Button>
@@ -174,3 +171,4 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
     </Dialog>
   )
 }
+//177
