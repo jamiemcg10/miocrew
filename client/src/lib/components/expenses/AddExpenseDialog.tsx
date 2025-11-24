@@ -8,7 +8,8 @@ import {
   useState,
   ChangeEvent,
   useRef,
-  useEffect
+  useEffect,
+  useReducer
 } from 'react'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
@@ -28,6 +29,7 @@ import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { addExpense, ExpensePayload } from '@/db'
 import { Expense, isExpense } from '@/lib/types'
 import { CalendarDate, parseDate } from '@internationalized/date'
+import { expenseReducer, initialExpenseState } from './utils/expenseReducer'
 
 interface AddExpenseDialogProps {
   open: boolean | Expense
@@ -39,41 +41,30 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   const user = useContext(UserContext)
 
   function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
-    setTypeValue((e.target as HTMLInputElement).value as Expense['split'])
+    dispatch({ type: 'type', value: e.target.value })
   }
 
-  function onChangeImmediate(e: ChangeEvent<HTMLInputElement>) {
-    setImmediately(e.target.checked)
-  }
-
-  function getDefaultValue(prop: keyof Expense) {
-    if (!isExpense(open)) return undefined
-
-    if (prop === 'date') {
-      const [date, _time] = open['date'].split('T')
-      return date ? parseDate(date) : undefined
-    }
-
-    return open[prop]
+  function onChangeImmediately(e: ChangeEvent<HTMLInputElement>) {
+    dispatch({ type: 'immediately', value: e.target.checked })
   }
 
   function getExpensePayload() {
     const payload = {
       trip_id: trip?.id,
-      name: nameRef.current?.value,
+      name: state.name.value,
       paid_by_id: user?.id,
       total:
-        typeValue === 'Evenly'
-          ? total
+        state.type.value === 'Evenly'
+          ? state.total.value
           : attendeesWithRefs.reduce((acc, c) => {
               acc += c.amount
               return acc
             }, 0),
-      split: typeValue,
+      split: state.type.value,
       settled: false,
-      due: immediately ? 'immediate' : 'end',
-      date: dateRef.current?.value,
-      notes: notesRef.current?.value
+      due: state.immediately.value ? 'immediate' : 'end',
+      date: state.date.value,
+      notes: state.notes.value
     } as ExpensePayload
 
     if (isExpense(open)) {
@@ -84,12 +75,12 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   }
 
   function getDebtorsPayload() {
-    if (typeValue === 'Evenly') {
+    if (state.type.value === 'Evenly') {
       const involvedCrew = attendeesWithRefs.filter((a) => a.checked)
       return involvedCrew.map((a) => {
         return {
           user_id: a.id,
-          owes: total / involvedCrew.length,
+          owes: state.total.value / involvedCrew.length,
           paid: user?.id === a.id
         }
       })
@@ -105,27 +96,17 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   }
 
   async function saveExpense() {
-    if (!nameRef.current?.value) {
-      setNameInvalid(true)
-    }
-
-    if (!dateRef.current?.value) {
-      setDateInvalid(true)
-    }
-
-    if (typeValue === 'Evenly' && total <= 0) {
-      setTotalInvalid(true)
-    }
-
-    if (!nameRef.current?.value || !dateRef.current?.value) return
+    // if (state.type.value === 'Evenly' && total <= 0) {
+    //   setTotalInvalid(true)
+    // }
 
     // TODO: also return if no costs assigned
-    if (
-      (typeValue === 'Evenly' && total <= 0) ||
-      (typeValue === 'Custom' && !attendeesWithRefs.some((a) => a.amount > 0))
-    ) {
-      return
-    }
+    // if (
+    //   (state.type.value === 'Evenly' && !state.total.valid) ||
+    //   (state.type.value === 'Custom' && !attendeesWithRefs.some((a) => a.amount > 0))
+    // ) {
+    //   return
+    // }
 
     if (!user || !trip) return
 
@@ -143,19 +124,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
       })
   }
 
-  const [nameInvalid, setNameInvalid] = useState(false)
-  const [dateInvalid, setDateInvalid] = useState(false)
-  const [totalInvalid, setTotalInvalid] = useState(false)
-
-  const [typeValue, setTypeValue] = useState((isExpense(open) && open['split']) || 'Evenly')
-  const [immediately, setImmediately] = useState(
-    (isExpense(open) && open['due'] === 'immediate') || false
-  )
-  const [total, setTotal] = useState(isExpense(open) ? open.total : 0)
-
-  const nameRef = useRef<HTMLInputElement | null>(null)
-  const notesRef = useRef<HTMLInputElement | null>(null)
-  const dateRef = useRef<HTMLInputElement | null>(null)
+  const [state, dispatch] = useReducer(expenseReducer, initialExpenseState)
 
   const attendeesWithRefs = Object.values(trip?.attendees || {}).map((a) => {
     const aOpen = isExpense(open) ? open['owe'][a.id] : undefined
@@ -173,7 +142,9 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   })
 
   useEffect(() => {
-    setTotal(isExpense(open) ? open.total : 0)
+    if (!trip || !user) return
+
+    dispatch({ type: 'set-expense', value: isExpense(open) ? open : undefined })
   }, [open])
 
   return (
@@ -185,13 +156,10 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
           required
           sx={{ mb: 2 }}
           size="small"
-          defaultValue={getDefaultValue('name')}
-          inputRef={nameRef}
-          error={nameInvalid}
+          value={state.name.value}
+          error={!state.name.valid}
           onChange={(e) => {
-            if (nameInvalid && e.target.value) {
-              setNameInvalid(false)
-            }
+            dispatch({ type: 'name', value: e.target.value })
           }}
         />
         <TextField
@@ -200,18 +168,24 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
           rows={1}
           sx={{ mb: 2 }}
           size="small"
-          defaultValue={getDefaultValue('notes')}
-          inputRef={notesRef}
+          value={state.notes.value}
+          onChange={(e) => {
+            dispatch({ type: 'notes', value: e.target.value })
+          }}
         />
         <DatePicker
           className="w-3/5 mb-2"
           label="Date"
           variant="bordered"
           size="sm"
-          inputRef={dateRef}
+          value={state.date.value ? (parseDate(state.date.value) as CalendarDate) : null}
           isRequired
-          isInvalid={dateInvalid}
-          defaultValue={getDefaultValue('date') as CalendarDate}
+          isInvalid={!state.date.valid}
+          onChange={(e) => {
+            if (!e) return
+
+            dispatch({ type: 'date', value: e.toString() })
+          }}
           classNames={{
             label: 'group-data-[required=true]:after:text-inherit',
             inputWrapper: 'group-data-[invalid=true]:focus-within:border-danger',
@@ -222,16 +196,13 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
               return 'Please enter a valid date.'
             }
           }}
-          onChange={() => {
-            setDateInvalid(false)
-          }}
         />
         <FormControl>
           <FormLabel id="expense-split-type-label">Split expense</FormLabel>
           <RadioGroup
             row
             aria-labelledby="expense-split-type-label"
-            value={typeValue}
+            value={state.type.value}
             onChange={handleTypeChange}
             defaultValue="Evenly"
             name="radio-buttons-group">
@@ -246,14 +217,10 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
                 currency: 'USD'
               }}
               defaultValue={isExpense(open) ? open.total : undefined}
-              isDisabled={typeValue === 'Custom'}
-              isInvalid={totalInvalid}
+              isDisabled={state.type.value === 'Custom'}
+              isInvalid={!state.total.valid}
               onValueChange={(v) => {
-                if (totalInvalid) {
-                  setTotalInvalid(false)
-                }
-
-                setTotal(v)
+                dispatch({ type: 'total', value: v })
               }}
               classNames={{
                 base: clsx('w-20 place-self-center -ml-3 mr-4'),
@@ -271,7 +238,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
                   <td
                     className={clsx(
                       'w-4 transform-opacity',
-                      typeValue === 'Custom' ? 'opacity-0' : 'opacity-100'
+                      state.type.value === 'Custom' ? 'opacity-0' : 'opacity-100'
                     )}>
                     <Checkbox
                       size="small"
@@ -292,7 +259,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
                   <td
                     className={clsx(
                       'transform-opacity',
-                      typeValue === 'Evenly' ? 'opacity-0' : 'opacity-100'
+                      state.type.value === 'Evenly' ? 'opacity-0' : 'opacity-100'
                     )}>
                     <NumberInput
                       aria-label={`${a.firstName}-share`}
@@ -321,12 +288,13 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
               <span>Request immediately</span>
             </div>
           }
-          control={<Checkbox checked={immediately} onChange={onChangeImmediate} />}
+          control={<Checkbox checked={state.immediately.value} onChange={onChangeImmediately} />}
         />
         <Button
           variant="contained"
           startIcon={<AttachMoneyIcon />}
           onClick={saveExpense}
+          disabled={!state.name.value || !state.date.value || !state.total.value}
           sx={{ fontWeight: 700, mt: 5 }}>
           Save Expense
         </Button>
@@ -334,3 +302,4 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
     </Dialog>
   )
 }
+// 337

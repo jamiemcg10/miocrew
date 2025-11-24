@@ -26,6 +26,11 @@ export interface Expense {
   notes?: string
 }
 
-export function isExpense(open: boolean | Expense): open is Expense {
-  return typeof open !== 'boolean'
+export function isExpense(open?: string | number | boolean | Expense): open is Expense {
+  return (
+    typeof open !== 'boolean' &&
+    typeof open !== 'string' &&
+    typeof open !== 'number' &&
+    typeof open !== 'undefined'
+  )
 }
