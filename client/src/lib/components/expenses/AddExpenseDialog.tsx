@@ -7,7 +7,6 @@ import {
   useContext,
   useState,
   ChangeEvent,
-  useRef,
   useEffect,
   useReducer
 } from 'react'
@@ -96,18 +95,6 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   }
 
   async function saveExpense() {
-    // if (state.type.value === 'Evenly' && total <= 0) {
-    //   setTotalInvalid(true)
-    // }
-
-    // TODO: also return if no costs assigned
-    // if (
-    //   (state.type.value === 'Evenly' && !state.total.valid) ||
-    //   (state.type.value === 'Custom' && !attendeesWithRefs.some((a) => a.amount > 0))
-    // ) {
-    //   return
-    // }
-
     if (!user || !trip) return
 
     const expensesPayload = getExpensePayload()
@@ -218,7 +205,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
               }}
               defaultValue={isExpense(open) ? open.total : undefined}
               isDisabled={state.type.value === 'Custom'}
-              isInvalid={!state.total.valid}
+              isInvalid={state.type.value === 'Evenly' && !state.total.valid}
               onValueChange={(v) => {
                 dispatch({ type: 'total', value: v })
               }}
@@ -294,7 +281,12 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
           variant="contained"
           startIcon={<AttachMoneyIcon />}
           onClick={saveExpense}
-          disabled={!state.name.value || !state.date.value || !state.total.value}
+          disabled={
+            !state.name.value ||
+            !state.date.value ||
+            (state.type.value === 'Evenly' && !state.total.valid) ||
+            (state.type.value === 'Custom' && !attendeesWithRefs.some((a) => a.amount > 0))
+          }
           sx={{ fontWeight: 700, mt: 5 }}>
           Save Expense
         </Button>
