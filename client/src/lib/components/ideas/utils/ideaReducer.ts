@@ -8,7 +8,7 @@ interface IdeaState {
   name: Field<string>
   description: Field<string>
   url: Field<string>
-  cost: Field<string>
+  cost: Field<number | undefined>
   costType: Field<'each' | 'total' | ''>
 }
 
@@ -16,7 +16,7 @@ export const initialIdeaState = {
   name: getInitialValue(''),
   description: getInitialValue(''),
   url: getInitialValue(''),
-  cost: getInitialValue(''),
+  cost: getInitialValue(),
   costType: getInitialValue('')
 } as IdeaState
 
@@ -30,7 +30,10 @@ function getInitialValue(value?: string) {
   }
 }
 
-export function ideaReducer(state: IdeaState, action: { type: string; value?: string | Idea }) {
+export function ideaReducer(
+  state: IdeaState,
+  action: { type: string | number; value?: number | string | Idea }
+) {
   if (action.type === 'set-idea') {
     if (isIdea(action.value)) {
       const value = action.value
@@ -60,10 +63,7 @@ export function ideaReducer(state: IdeaState, action: { type: string; value?: st
     ...state,
     [action.type]: {
       value: action.value,
-      valid:
-        action.type === 'cost' && typeof action.value === 'string'
-          ? /^\d+(\.\d{1,2})?$/.test(action.value) || !action.value
-          : !!action.value // might benefit from debouncing
+      valid: !!action.value
     }
   }
 }

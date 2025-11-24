@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useEffect, useState, useReducer } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useReducer } from 'react'
 import Dialog from '../Dialog'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -15,6 +15,7 @@ import { assignAppColor } from '@/lib/utils/colors/assignColor'
 import { Idea, isIdea } from '@/lib/types'
 import { createIdea, updateIdea } from '@/db'
 import { ideaReducer, initialIdeaState } from './utils/ideaReducer'
+import { NumberInput } from '@heroui/number-input'
 
 interface AddIdeaDialogProps {
   open: boolean | Idea
@@ -29,7 +30,7 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
       open.name === state.name.value &&
       open.description === state.description.value &&
       open.url === state.url.value &&
-      open.cost == +state.cost.value &&
+      open.cost == state.cost.value &&
       open.costType === state.costType.value
     ) {
       return true
@@ -117,19 +118,22 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
           value={state.url.value}
           onChange={(e) => dispatch({ type: 'url', value: e.target.value })}
         />
-        <div className="inline-flex">
-          <TextField
+        <div className="inline-flex items-center">
+          <NumberInput
             label="Cost"
-            size="small"
+            size="sm"
+            hideStepper
+            variant="bordered"
             value={state.cost.value}
-            error={!state.cost.valid}
-            onChange={(e) => {
-              dispatch({ type: 'cost', value: e.target.value })
+            startContent={<InputAdornment position="start">$</InputAdornment>}
+            minValue={0}
+            classNames={{ base: 'w-25 mr-2' }}
+            formatOptions={{
+              maximumFractionDigits: 2
             }}
-            slotProps={{
-              input: { startAdornment: <InputAdornment position="start">$</InputAdornment> }
+            onValueChange={(value) => {
+              dispatch({ type: 'cost', value })
             }}
-            sx={{ width: 100, mr: 2 }}
           />
           <FormControl error={!state.costType.valid}>
             <RadioGroup
