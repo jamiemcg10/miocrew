@@ -6,7 +6,7 @@ import Dialog from '../Dialog'
 import Autocomplete from '@mui/material/Autocomplete'
 import { User } from '@/lib/types'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import { getUsers } from '@/lib/utils/getUser'
+import { getUsers } from '@/db/users'
 
 interface AddCrewDialogProps {
   open: boolean

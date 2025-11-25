@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField'
 import { DatePicker } from '@heroui/date-picker'
 import Autocomplete from '@mui/material/Autocomplete'
 import { useEffect, useState } from 'react'
-import { getUsers } from '@/lib/utils/getUser'
+import { getUsers } from '@/db/users'
 import { User } from '@/lib/types'
 
 const fieldStyles = { width: '100%' }

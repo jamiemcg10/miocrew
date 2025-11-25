@@ -7,7 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { useContext, useEffect, useState, useReducer } from 'react'
 import { Trip, User, RecipientOption } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
-import { getUsers } from '@/lib/utils/getUser'
+import { getUsers } from '@/db/users'
 import { getTrips } from '@/db'
 import { messageReducer, initialMessageState } from './utils/messageReducer'
 
@@ -21,10 +21,6 @@ const textFieldSx = {
 }
 
 export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
-  function getUsersResponseFn(users: User[]) {
-    setUsers(users)
-  }
-
   function getOptionLabel(option: RecipientOption) {
     return option.name
   }
@@ -48,7 +44,13 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
       })
       .catch((e) => console.error('Error fetching trips', e))
 
-    getUsers(getUsersResponseFn) // investigate this
+    getUsers()
+      .then((response) => {
+        if (response.data.users) {
+          setUsers(response.data.users)
+        }
+      })
+      .catch((e) => console.error('Error fetching users', e))
   }, [user])
 
   useEffect(() => {
