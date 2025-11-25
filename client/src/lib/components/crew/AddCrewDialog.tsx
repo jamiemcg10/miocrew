@@ -19,13 +19,15 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
   const [userEmails, setUserEmails] = useState<string[]>([])
 
   useEffect(() => {
-    getUsers().then((response) => {
-      const userEmails = Object.values(response.data.users as User[])
-        .filter((u) => !trip?.attendees[u.id])
-        .map((u: User) => u.email)
+    getUsers()
+      .then((response) => {
+        const userEmails = Object.values(response.data.users as User[])
+          .filter((u) => !trip?.attendees[u.id])
+          .map((u: User) => u.email)
 
-      setUserEmails(userEmails)
-    })
+        setUserEmails(userEmails)
+      })
+      .catch((e) => console.error('Error fetching users', e))
   }, [])
 
   return (
