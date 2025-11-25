@@ -14,19 +14,18 @@ interface AddCrewDialogProps {
 }
 
 export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
-  function getUsersResponseFn(users: User[]) {
-    const userEmails = Object.values(users as User[])
-      .filter((u) => !trip?.attendees[u.id])
-      .map((u: User) => u.email)
-    setUserEmails(userEmails)
-  }
-
   const trip = useContext(TripContext)
 
   const [userEmails, setUserEmails] = useState<string[]>([])
 
   useEffect(() => {
-    getUsers(getUsersResponseFn)
+    getUsers().then((response) => {
+      const userEmails = Object.values(response.data.users as User[])
+        .filter((u) => !trip?.attendees[u.id])
+        .map((u: User) => u.email)
+
+      setUserEmails(userEmails)
+    })
   }, [])
 
   return (
