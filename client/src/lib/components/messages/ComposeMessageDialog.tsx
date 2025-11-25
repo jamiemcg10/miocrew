@@ -4,21 +4,16 @@ import TextField from '@mui/material/TextField'
 import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import Autocomplete from '@mui/material/Autocomplete'
-import axios from 'axios'
-import { useContext, useEffect, useState } from 'react'
-import { Trip, User } from '@/lib/types'
+import { useContext, useEffect, useState, useReducer } from 'react'
+import { Trip, User, RecipientOption } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { getUsers } from '@/lib/utils/getUser'
+import { getTrips } from '@/db'
+import { messageReducer, initialMessageState } from './utils/messageReducer'
 
 interface ComposeMessageDialogProps {
   open: boolean
   onClose: () => void
-}
-
-interface RecipientOption {
-  email: string
-  id: string
-  type: string
 }
 
 const textFieldSx = {
@@ -30,27 +25,8 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
     setUsers(users)
   }
 
-  async function getTrips() {
-    axios
-      .get(`http://localhost:8000/user/${user!.id}/trips`, { withCredentials: true })
-      .then((response) => {
-        if (response.data.trips) {
-          setTrips(response.data.trips)
-        }
-      })
-      .catch((e) => console.error('Error fetching trips', e))
-  }
-
-  function getOptionLabel(
-    option:
-      | string
-      | {
-          email: string
-          id: string
-          type: string
-        }
-  ) {
-    return typeof option === 'string' ? option : option.email
+  function getOptionLabel(option: RecipientOption) {
+    return option.name
   }
 
   const user = useContext(UserContext)
@@ -59,23 +35,41 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
   const [trips, setTrips] = useState<Trip[]>([])
   const [combinedRecipientOptions, setCombinedRecipientOptions] = useState<RecipientOption[]>([])
 
+  const [state, dispatch] = useReducer(messageReducer, initialMessageState)
+
   useEffect(() => {
-    if (user) {
-      getUsers(getUsersResponseFn)
-      getTrips()
-    }
+    if (!user) return
+
+    getTrips({ userId: user.id })
+      .then((response) => {
+        if (response.data.trips) {
+          setTrips(response.data.trips)
+        }
+      })
+      .catch((e) => console.error('Error fetching trips', e))
+
+    getUsers(getUsersResponseFn) // investigate this
   }, [user])
 
   useEffect(() => {
     const tripOptions = trips.map((t) => {
-      return { email: t.name, id: t.id, type: 'trip' }
+      return { name: t.name, id: t.id, type: 'trip' }
     })
 
     const userOptions = Object.values(users).map((u) => {
-      return { email: u.email, id: u.id, type: 'user' }
+      return { name: `${u.firstName} ${u.lastName}`, id: u.id, type: 'user' }
     })
     setCombinedRecipientOptions([...tripOptions, ...userOptions])
   }, [users, trips])
+
+  function saveMessage() {
+    console.log({ state })
+    dispatch({ type: 'reset-message' })
+  }
+
+  function setRecipients(_e: any, value: (string | RecipientOption)[]) {
+    dispatch({ type: 'recipients', value })
+  }
 
   if (!user) return
 
@@ -85,23 +79,24 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
         <div className="font-bold text-2xl flex items-center">
           <EditRoundedIcon sx={{ mr: 1 }} /> Compose
         </div>
-        <TextField label="Subject" required sx={textFieldSx} />
+        <TextField
+          label="Subject"
+          required
+          sx={textFieldSx}
+          value={state.subject}
+          onChange={(e) => dispatch({ type: 'subject', value: e.target.value })}
+        />
         <Autocomplete
           id="add-recipients"
           options={combinedRecipientOptions}
           getOptionLabel={getOptionLabel}
           multiple
-          freeSolo
+          value={state.recipients}
+          onChange={setRecipients}
           filterOptions={(options, params) => {
             const filtered = options.filter((option) =>
-              option.email?.toLowerCase().includes(params.inputValue.toLowerCase())
+              option.name?.toLowerCase().includes(params.inputValue.toLowerCase())
             )
-            if (
-              params.inputValue !== '' &&
-              !options.some((opt) => opt.email === params.inputValue)
-            ) {
-              filtered.push({ id: '', email: params.inputValue, type: 'user' })
-            }
             return filtered
           }}
           renderInput={(params) => <TextField {...params} label="To" required sx={textFieldSx} />}
@@ -111,12 +106,15 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
           multiline
           label="Message"
           required
+          value={state.message}
+          onChange={(e) => dispatch({ type: 'message', value: e.target.value })}
           sx={{ ...textFieldSx, height: '100%' }}
           slotProps={{ input: { sx: { height: '100%', placeItems: 'self-start' } } }}
         />
         <Button
           variant="contained"
           startIcon={<SendRoundedIcon />}
+          onClick={saveMessage}
           sx={{ ml: 'auto', mt: 'auto', fontWeight: 700 }}>
           Send
         </Button>

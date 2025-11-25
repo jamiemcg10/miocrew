@@ -10,3 +10,9 @@ export interface BaseMessage {
   sender: User
   recipientId: string
 }
+
+export interface RecipientOption {
+  name: string
+  id: string
+  type: string
+}

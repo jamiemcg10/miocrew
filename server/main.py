@@ -71,7 +71,7 @@ async def users(db: Session = Depends(get_user_db)):
     stmt = select(Users)
 
     for user in db.scalars(stmt):
-        users.append(user)
+        users.append(flatten_user(user))
 
     return {"users": users}
 
