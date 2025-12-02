@@ -14,13 +14,13 @@ from utils.get_user_db import get_user_db
 router = APIRouter(tags=["messages"])
 
 def add_ids(recipient, msg_id):
-    return {"recipient": recipient, "message_id": msg_id, "id": uuid.uuid4().hex[:4], "read": False}
+    return {"recipient_id": recipient, "message_id": msg_id, "id": uuid.uuid4().hex[:4], "read": False}
 
 @router.get("/user/{user_id}/messages/")
 async def get_messages(user_id: str, db: Session = Depends(get_user_db)):
     messages = []
 
-    stmt = select(Message_Recipients).where(Message_Recipients.recipient == user_id)
+    stmt = select(Message_Recipients).where(Message_Recipients.recipient_id == user_id)
 
     for msg in db.scalars(stmt):
         flattened_msg = flatten_message(msg)
@@ -38,22 +38,14 @@ async def create_message(user_id: str, message: MessageBase, db: Session = Depen
     user_recipients = [x.id for x in message.recipients if x.type == 'user'] 
     trip_recipients =  [x.id for x in message.recipients if x.type == 'trip'] 
 
-    print('trip_recipients', trip_recipients)
-
     trip_attendee_stmt = select(Attendees.attendee_id).where(Attendees.trip_id.in_(trip_recipients))
     trip_attendees = db.execute(trip_attendee_stmt).all()
 
     unpacked_attendees = list(map(lambda x: x[0], trip_attendees))
-    print('unpacked_attendees', unpacked_attendees)
 
     all_recipients = list(set(unpacked_attendees + user_recipients))
-    print('all_recipients', all_recipients)
-    # TODO: change recipient to recipient_id
-
 
     mapped_recipients = list(map(lambda x: add_ids(x, msg_id), all_recipients))
-
-    print('mapped_recipients', mapped_recipients)
 
     # write
     message_insert_stmt = insert(Messages).values(**msg_with_id)

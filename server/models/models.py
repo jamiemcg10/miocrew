@@ -65,7 +65,7 @@ class Message_Recipients(Base):
 
     id: Mapped[str] = mapped_column(primary_key=True)
     message_id: Mapped[str] = mapped_column(String, ForeignKey("messages.id"))
-    recipient: Mapped[str] = mapped_column(String)
+    recipient_id: Mapped[str] = mapped_column(String)
     read: Mapped[int] = mapped_column(Integer)
     message: Mapped["Messages"] = relationship(back_populates="message_recipients")
 

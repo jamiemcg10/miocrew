@@ -36,7 +36,7 @@ def flatten_trip(trip):
 def flatten_message(message):
     print(message)
     return {
-        "recipientId": message.recipient,
+        "recipientId": message.recipient_id,
         "read": bool(message.read),
         "senderId": message.message.sender_id,
         "id": message.message.id,
