@@ -1,6 +1,26 @@
 from typing import Optional, TypedDict, List
 from pydantic import BaseModel
 
+class RecipientBase(BaseModel):
+    name: str
+    id: str
+    type: str
+
+    model_config = {
+        "from_attributes": True
+    }
+
+class MessageBase(BaseModel):
+    id: Optional[str] = None
+    recipients: List[RecipientBase]
+    subject: str
+    body: str
+    sender_id: Optional[str] = None
+
+    model_config = {
+        "from_attributes": True
+    }
+
 class IdeasBase(BaseModel):
     id: Optional[str] = None
     trip_id: str

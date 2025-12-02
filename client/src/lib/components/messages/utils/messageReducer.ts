@@ -3,13 +3,13 @@ import { RecipientOption } from '@/lib/types'
 interface MessageState {
   recipients: RecipientOption[]
   subject: string
-  message: string
+  body: string
 }
 
 export const initialMessageState = {
   recipients: [],
   subject: '',
-  message: ''
+  body: ''
 }
 
 export function messageReducer(

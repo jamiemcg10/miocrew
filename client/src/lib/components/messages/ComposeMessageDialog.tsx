@@ -8,7 +8,7 @@ import { useContext, useEffect, useState, useReducer } from 'react'
 import { Trip, User, RecipientOption } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { getUsers } from '@/db/users'
-import { getTrips } from '@/db'
+import { getTrips, createMessage } from '@/db'
 import { messageReducer, initialMessageState } from './utils/messageReducer'
 
 interface ComposeMessageDialogProps {
@@ -65,8 +65,12 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
   }, [users, trips])
 
   function saveMessage() {
-    console.log({ state })
+    if (!user) return
+
+    createMessage({ userId: user.id, data: state }).then().catch()
     dispatch({ type: 'reset-message' })
+
+    onClose()
   }
 
   function setRecipients(_e: any, value: (string | RecipientOption)[]) {
@@ -108,8 +112,8 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
           multiline
           label="Message"
           required
-          value={state.message}
-          onChange={(e) => dispatch({ type: 'message', value: e.target.value })}
+          value={state.body}
+          onChange={(e) => dispatch({ type: 'body', value: e.target.value })}
           sx={{ ...textFieldSx, height: '100%' }}
           slotProps={{ input: { sx: { height: '100%', placeItems: 'self-start' } } }}
         />
