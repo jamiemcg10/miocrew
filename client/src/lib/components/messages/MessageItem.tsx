@@ -12,8 +12,8 @@ interface MessageItemProps {
   onClick: () => void
   onDelete: () => void
   onToggleRead: () => void
-  checked: Record<string, boolean>
-  setChecked: Dispatch<SetStateAction<Record<string, boolean>>>
+  checked: BaseMessage[]
+  setChecked: Dispatch<SetStateAction<BaseMessage[]>>
 }
 
 export default function MessageItem({
@@ -25,11 +25,12 @@ export default function MessageItem({
   setChecked
 }: MessageItemProps) {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    setChecked({
-      ...checked,
-      [event.target.name]: event.target.checked
-    })
+    event.target.checked
+      ? setChecked([...checked, message])
+      : setChecked(checked.filter((m) => m.id !== message.id))
   }
+
+  const isChecked = !!checked.filter((m) => m.id === message.id).length
 
   return (
     <div
@@ -38,7 +39,7 @@ export default function MessageItem({
       <Checkbox
         size="small"
         name={message.id}
-        checked={checked[message.id]}
+        checked={isChecked}
         onChange={handleChange}
         onClick={(e) => {
           e.stopPropagation()

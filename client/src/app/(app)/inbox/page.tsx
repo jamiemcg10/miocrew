@@ -12,7 +12,13 @@ import ComposeMessageDialog from '@/lib/components/messages/ComposeMessageDialog
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import MessageItem from '@/lib/components/messages/MessageItem'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
-import { deleteMessage, getMessages, toggleMessageReadStatus } from '@/db'
+import {
+  bulkDeleteMessage,
+  bulkToggleMessageReadStatus,
+  deleteMessage,
+  getMessages,
+  toggleMessageReadStatus
+} from '@/db'
 
 export default function InboxPage() {
   const user = useContext(UserContext)
@@ -30,15 +36,31 @@ export default function InboxPage() {
     )
   }
 
-  const checkedMessages = messages.reduce((acc, c) => {
-    return {
-      ...acc,
-      [c.id]: false
-    }
-  }, {} as Record<string, boolean>)
+  function batchDelete() {
+    if (!user) return
+
+    bulkDeleteMessage({ userId: user.id, messageIds: checked.map((m) => m.id) }).catch((e) =>
+      console.error('Error deleting messages', e)
+    )
+
+    setChecked([])
+  }
+
+  function batchToggleStatus(status: 'read' | 'unread') {
+    if (!user) return
+
+    bulkToggleMessageReadStatus({
+      userId: user.id,
+      messageIds: checked.map((m) => m.id),
+      status
+    }).catch((e) => console.error('Error toggling status', e))
+
+    setChecked([])
+  }
+
+  const checkedMessages: BaseMessage[] = []
 
   const [checked, setChecked] = useState(checkedMessages)
-  const hasChecked = Object.values(checked).find((v) => v === true)
 
   // TODO: Make this a component
   useEffect(() => {
@@ -46,18 +68,12 @@ export default function InboxPage() {
 
     getMessages({ userId: user.id })
       .then((response) => {
+        console.log(response.data.messages)
         setMessages(response.data.messages)
         LocalStorage.set('messages', response.data.messages)
       })
       .catch((e) => console.error('Error fetching messages', e))
   }, [user])
-
-  function batchToggleStatus() {
-    if (!user) return
-    // if one unread, make all read,
-    // if all unread, make all read,
-    // if mix, don't show option
-  }
 
   return (
     <>
@@ -68,15 +84,23 @@ export default function InboxPage() {
         </div>
         <div className="py-4 flex flex-wrap-reverse justify-end">
           <div
-            className={(hasChecked ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'}>
-            {/* Start here: make these buttons work */}
-            <Button size="small" startIcon={<DraftsOutlinedIcon />} sx={{ textTransform: 'none' }}>
-              Mark read
-            </Button>
-            {Object.values(checked) && (
+            className={
+              (!!checked.length ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'
+            }>
+            {checked.every((m) => !m.read) && (
+              <Button
+                size="small"
+                startIcon={<DraftsOutlinedIcon />}
+                onClick={() => batchToggleStatus('read')}
+                sx={{ textTransform: 'none' }}>
+                Mark read
+              </Button>
+            )}
+            {checked.every((m) => m.read) && (
               <Button
                 size="small"
                 startIcon={<MarkunreadOutlinedIcon />}
+                onClick={() => batchToggleStatus('unread')}
                 sx={{ textTransform: 'none' }}>
                 Mark unread
               </Button>
@@ -84,6 +108,7 @@ export default function InboxPage() {
             <Button
               size="small"
               startIcon={<DeleteRoundedIcon />}
+              onClick={() => batchDelete()}
               sx={{ textTransform: 'none' }}
               color="error">
               Delete

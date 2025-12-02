@@ -1,3 +1,4 @@
+from typing import List
 import uuid
 from fastapi import Depends, APIRouter
 
@@ -65,7 +66,15 @@ async def change_read_status(user_id: str, message_id: str, status: StatusUpdate
     db.flush()
 
     return {"status": "deleted", "id": message_id}
-    
+
+@router.patch("/user/{user_id}/message/bulk/change_read_status/{status}")
+async def change_bulk_read_status(user_id: str, status: str, message_ids: List[str], db: Session = Depends(get_user_db)):   
+    status_update_stmt = update(Message_Recipients).where(Message_Recipients.message_id.in_(message_ids)).where(Message_Recipients.recipient_id == user_id).values({"read": True if status == 'read' else False})
+
+    db.execute(status_update_stmt)
+    db.flush()
+
+    return {"status": "marked {status}", "ids": message_ids}
 
 @router.delete("/user/{user_id}/message/{message_id}/delete")
 async def delete_message(user_id: str, message_id: str, db: Session = Depends(get_user_db)):
@@ -77,4 +86,12 @@ async def delete_message(user_id: str, message_id: str, db: Session = Depends(ge
 
     return {"status": "deleted", "id": message_id}
 
+@router.delete("/user/{user_id}/message/delete") # bulk delete url designed to avoid conflict with single delete url
+async def bulk_delete_messages(user_id: str, message_ids: List[str], db: Session = Depends(get_user_db)):   
+    recipient_delete_stmt = delete(Message_Recipients).where(Message_Recipients.message_id.in_(message_ids)).where(Message_Recipients.recipient_id == user_id)
 
+    db.execute(recipient_delete_stmt)
+    db.flush()
+
+    return {"status": "deleted", "ids": message_ids}
+    
