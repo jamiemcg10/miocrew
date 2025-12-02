@@ -1,14 +1,27 @@
 import { BaseMessage } from '@/lib/types'
 import Popup from '../Popup'
 import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
+import IconButton from '@mui/material/IconButton'
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined'
+import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
 
 interface MessageViewProps {
   message: BaseMessage | null
   open: boolean
   onClose: () => void
+  onDelete: () => void
+  onToggleRead: () => void
 }
 
-export default function MessageView({ message, open, onClose }: MessageViewProps) {
+export default function MessageView({
+  message,
+  open,
+  onClose,
+  onDelete,
+  onToggleRead
+}: MessageViewProps) {
   return (
     <Popup open={open} onClose={onClose}>
       <div className="h-full flex flex-col">
@@ -17,9 +30,39 @@ export default function MessageView({ message, open, onClose }: MessageViewProps
           {message?.sender.firstName} {message?.sender.lastName}
         </div>
         <div className="mt-8">{message?.body}</div>
-        <Button variant="contained" sx={{ ml: 'auto', mt: 'auto', fontWeight: 700 }}>
-          Reply
-        </Button>
+
+        <div className="flex mt-auto">
+          <div>
+            <Tooltip title={message?.read ? 'Mark unread' : 'Mark read'}>
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onToggleRead()
+                }}>
+                {message?.read ? (
+                  <MarkunreadOutlinedIcon fontSize="small" />
+                ) : (
+                  <DraftsOutlinedIcon fontSize="small" />
+                )}
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton
+                size="small"
+                color="error"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onDelete()
+                }}>
+                <DeleteRoundedIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <Button variant="contained" sx={{ ml: 'auto', fontWeight: 700 }}>
+            Reply
+          </Button>
+        </div>
       </div>
     </Popup>
   )

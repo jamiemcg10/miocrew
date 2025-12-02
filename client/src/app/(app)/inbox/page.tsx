@@ -12,7 +12,7 @@ import ComposeMessageDialog from '@/lib/components/messages/ComposeMessageDialog
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import MessageItem from '@/lib/components/messages/MessageItem'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
-import { getMessages } from '@/db'
+import { deleteMessage, getMessages, toggleMessageReadStatus } from '@/db'
 
 export default function InboxPage() {
   const user = useContext(UserContext)
@@ -21,6 +21,14 @@ export default function InboxPage() {
   const [messages, setMessages] = useState<BaseMessage[]>(storedMessages || [])
   const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
   const [composing, setComposing] = useState(false)
+
+  function onDeleteMessage(messageId: string) {
+    if (!user) return
+
+    deleteMessage({ userId: user.id, messageId }).catch((e) =>
+      console.error('Error deleting message', e)
+    )
+  }
 
   const checkedMessages = messages.reduce((acc, c) => {
     return {
@@ -44,6 +52,13 @@ export default function InboxPage() {
       .catch((e) => console.error('Error fetching messages', e))
   }, [user])
 
+  function batchToggleStatus() {
+    if (!user) return
+    // if one unread, make all read,
+    // if all unread, make all read,
+    // if mix, don't show option
+  }
+
   return (
     <>
       <div className="p-8">
@@ -54,15 +69,18 @@ export default function InboxPage() {
         <div className="py-4 flex flex-wrap-reverse justify-end">
           <div
             className={(hasChecked ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'}>
+            {/* Start here: make these buttons work */}
             <Button size="small" startIcon={<DraftsOutlinedIcon />} sx={{ textTransform: 'none' }}>
               Mark read
             </Button>
-            <Button
-              size="small"
-              startIcon={<MarkunreadOutlinedIcon />}
-              sx={{ textTransform: 'none' }}>
-              Mark unread
-            </Button>
+            {Object.values(checked) && (
+              <Button
+                size="small"
+                startIcon={<MarkunreadOutlinedIcon />}
+                sx={{ textTransform: 'none' }}>
+                Mark unread
+              </Button>
+            )}
             <Button
               size="small"
               startIcon={<DeleteRoundedIcon />}
@@ -89,6 +107,12 @@ export default function InboxPage() {
               setChecked={setChecked}
               key={i}
               onClick={() => setActiveMessage(m)}
+              onDelete={() => onDeleteMessage(m.id)}
+              onToggleRead={() => {
+                if (!user) return
+
+                toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: !m.read })
+              }}
             />
           )
         })}
@@ -98,6 +122,22 @@ export default function InboxPage() {
         message={activeMessage}
         open={!!activeMessage}
         onClose={() => setActiveMessage(null)}
+        onDelete={() => {
+          if (!activeMessage) return
+
+          onDeleteMessage(activeMessage.id)
+          setActiveMessage(null)
+        }}
+        onToggleRead={() => {
+          if (!user || !activeMessage) return
+
+          toggleMessageReadStatus({
+            userId: user.id,
+            messageId: activeMessage.id,
+            status: !activeMessage.read
+          })
+          setActiveMessage(null)
+        }}
       />
       <ComposeMessageDialog open={composing} onClose={() => setComposing(false)} />
     </>

@@ -10,11 +10,20 @@ import Tooltip from '@mui/material/Tooltip'
 interface MessageItemProps {
   message: BaseMessage
   onClick: () => void
+  onDelete: () => void
+  onToggleRead: () => void
   checked: Record<string, boolean>
   setChecked: Dispatch<SetStateAction<Record<string, boolean>>>
 }
 
-export default function MessageItem({ message, onClick, checked, setChecked }: MessageItemProps) {
+export default function MessageItem({
+  message,
+  onClick,
+  onDelete,
+  onToggleRead,
+  checked,
+  setChecked
+}: MessageItemProps) {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setChecked({
       ...checked,
@@ -41,7 +50,12 @@ export default function MessageItem({ message, onClick, checked, setChecked }: M
       </div>
       <div className="ml-auto mr-2 shrink-0 transition-opacity opacity-100 sm:opacity-0 sm:group-hover:opacity-100">
         <Tooltip title={message.read ? 'Mark unread' : 'Mark read'}>
-          <IconButton size="small">
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleRead()
+            }}>
             {message.read ? (
               <MarkunreadOutlinedIcon fontSize="small" />
             ) : (
@@ -50,7 +64,13 @@ export default function MessageItem({ message, onClick, checked, setChecked }: M
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton size="small" color="error">
+          <IconButton
+            size="small"
+            color="error"
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete()
+            }}>
             <DeleteRoundedIcon fontSize="small" />
           </IconButton>
         </Tooltip>

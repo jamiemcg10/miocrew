@@ -2,10 +2,9 @@ import uuid
 from fastapi import Depends, APIRouter
 
 from models.models import Message_Recipients, Messages, Attendees
-from schemas import MessageBase
-from utils.is_valid_user import is_valid_user
+from schemas import MessageBase, StatusUpdateBase
 
-from sqlalchemy import select, insert, delete
+from sqlalchemy import select, insert, delete, update
 from sqlalchemy.orm import Session
 
 from utils.flatten import flatten_message
@@ -58,19 +57,24 @@ async def create_message(user_id: str, message: MessageBase, db: Session = Depen
 
     return {"status": "sent", "id": msg_id}
 
-@router.delete("/user/{user_id}/trip/{trip_id}/expense/{expense_id}/delete")
-async def delete_expense(user_id: str, trip_id: str, expense_id: str, db: Session = Depends(get_user_db)):
-    if not is_valid_user(user_id, trip_id, db):
-        return {"status": "invalid request"}
+@router.patch("/user/{user_id}/message/{message_id}/change_read_status")
+async def change_read_status(user_id: str, message_id: str, status: StatusUpdateBase, db: Session = Depends(get_user_db)):   
+    status_update_stmt = update(Message_Recipients).where(Message_Recipients.message_id == message_id).where(Message_Recipients.recipient_id == user_id).values({"read": status.read_status})
 
-    # delete
-    expense_delete_stmt = delete(Expenses).where(Expenses.id == expense_id)
-    debtors_delete_stmt = delete(Debtors).where(Debtors.expense_id == expense_id)
-
-    db.execute(expense_delete_stmt)
-    db.execute(debtors_delete_stmt)
+    db.execute(status_update_stmt)
     db.flush()
 
-    return {"status": "deleted", "id": expense_id}
+    return {"status": "deleted", "id": message_id}
+    
+
+@router.delete("/user/{user_id}/message/{message_id}/delete")
+async def delete_message(user_id: str, message_id: str, db: Session = Depends(get_user_db)):
+    # delete
+    recipient_delete_stmt = delete(Message_Recipients).where(Message_Recipients.recipient_id == user_id).where(Message_Recipients.message_id == message_id)
+
+    db.execute(recipient_delete_stmt)
+    db.flush()
+
+    return {"status": "deleted", "id": message_id}
 
 

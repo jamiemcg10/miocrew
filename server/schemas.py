@@ -21,6 +21,9 @@ class MessageBase(BaseModel):
         "from_attributes": True
     }
 
+class StatusUpdateBase(BaseModel):
+    read_status: bool
+
 class IdeasBase(BaseModel):
     id: Optional[str] = None
     trip_id: str
