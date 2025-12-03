@@ -7,6 +7,7 @@ import routes.activities as activities
 import routes.expenses as expenses
 import routes.tasks as tasks
 import routes.messages as messages
+import routes.trip as trip
 from utils.flatten import flatten_trip, flatten_expense, flatten_task, flatten_user
 from utils.get_user_db import user_dbs, make_scratch_session, get_user_db
 
@@ -32,6 +33,7 @@ app.include_router(activities.router)
 app.include_router(expenses.router)
 app.include_router(tasks.router)
 app.include_router(messages.router)
+app.include_router(trip.router)
 
 @app.middleware("http")
 async def get_session(request: Request, call_next):
@@ -76,14 +78,6 @@ async def users(db: Session = Depends(get_user_db)):
         users.append(flatten_user(user))
 
     return {"users": users}
-
-@app.get("/user/{user_id}/trip/{trip_id}/")
-async def trip(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
-    stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)
-
-    trip = db.scalar(stmt)
-
-    return { "trip": flatten_trip(trip) }
 
 @app.get("/user/{user_id}/trips/")
 async def trips(user_id: str, db: Session = Depends(get_user_db)):
