@@ -8,6 +8,8 @@ import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { CrewMember } from '@/lib/types'
 import CrewMemberItem from './CrewMemberItem'
+import { removeCrew } from '@/db'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 
 interface CrewProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
@@ -15,20 +17,26 @@ interface CrewProps {
 
 export default function Crew({ setOpenAddDialog }: CrewProps) {
   const trip = useContext(TripContext)
+  const user = useContext(UserContext)
 
   function handleCloseMenu() {
     setAnchorEl(null)
-    setActiveCrewMemberType(undefined)
+    setActiveCrewMember(undefined)
   }
 
   function onClickAddButton() {
     setOpenAddDialog(true)
   }
 
+  function removeCrewMember() {
+    if (!user || !trip || !activeCrewMember) return
+
+    removeCrew({ userId: user.id, tripId: trip.id, attendeeId: activeCrewMember?.id })
+    handleCloseMenu()
+  }
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-  const [activeCrewMemberType, setActiveCrewMemberType] = useState<CrewMember['type'] | undefined>(
-    undefined
-  )
+  const [activeCrewMember, setActiveCrewMember] = useState<CrewMember | undefined>(undefined)
 
   return (
     <>
@@ -57,7 +65,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
                       key={a.id}
                       member={a}
                       setAnchorEl={setAnchorEl}
-                      setActiveCrewMemberType={setActiveCrewMemberType}
+                      setActiveCrewMember={setActiveCrewMember}
                     />
                   )
                 })}
@@ -70,7 +78,8 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
       <CrewMenu
         anchorEl={anchorEl}
         onClose={handleCloseMenu}
-        activeCrewMemberType={activeCrewMemberType}
+        onClickRemove={removeCrewMember}
+        activeCrewMember={activeCrewMember}
       />
     </>
   )

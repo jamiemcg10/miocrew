@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import Depends, APIRouter
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, delete
 from sqlalchemy.orm import Session, selectinload
 
 from models.models import Trips, Attendees
@@ -39,3 +39,15 @@ async def add_crew(user_id: str, trip_id: str, new_crew: List[str], db: Session 
     db.flush()
     
     return {"status": "crew added"}
+
+@router.delete("/user/{user_id}/trip/{trip_id}/crew/remove/{attendee_id}")
+async def remove_crew(user_id: str, trip_id: str, attendee_id: str, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+
+    delete_crew_stmt = delete(Attendees).where(Attendees.trip_id == trip_id).where(Attendees.attendee_id == attendee_id)
+
+    db.execute(delete_crew_stmt)
+    db.flush()
+    
+    return {"status": "crew removed"}

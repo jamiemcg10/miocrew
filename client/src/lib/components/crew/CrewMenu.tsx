@@ -5,9 +5,15 @@ import MenuItem from '@mui/material/MenuItem'
 interface CrewMenuProps {
   onClose: () => void
   anchorEl: HTMLButtonElement | null
-  activeCrewMemberType?: CrewMember['type']
+  activeCrewMember?: CrewMember
+  onClickRemove: () => void
 }
-export default function CrewMenu({ anchorEl, onClose, activeCrewMemberType }: CrewMenuProps) {
+export default function CrewMenu({
+  anchorEl,
+  onClose,
+  onClickRemove,
+  activeCrewMember
+}: CrewMenuProps) {
   return (
     <Menu
       open={!!anchorEl}
@@ -21,12 +27,12 @@ export default function CrewMenu({ anchorEl, onClose, activeCrewMemberType }: Cr
         horizontal: 'right'
       }}
       onClose={onClose}>
-      {activeCrewMemberType !== 'Admin' ? (
+      {activeCrewMember?.type !== 'Admin' ? (
         <MenuItem>Make admin</MenuItem>
       ) : (
         <MenuItem>Remove admin</MenuItem>
       )}
-      <MenuItem>Remove from trip</MenuItem>
+      <MenuItem onClick={onClickRemove}>Remove from trip</MenuItem>
     </Menu>
   )
 }

@@ -9,16 +9,16 @@ import { getInitials } from '@/lib/utils/getInitials'
 interface CrewMemberItemProps {
   member: CrewMember
   setAnchorEl: Dispatch<SetStateAction<HTMLButtonElement | null>>
-  setActiveCrewMemberType: Dispatch<SetStateAction<CrewMember['type'] | undefined>>
+  setActiveCrewMember: Dispatch<SetStateAction<CrewMember | undefined>>
 }
 
 export default function CrewMemberItem({
   member,
   setAnchorEl,
-  setActiveCrewMemberType
+  setActiveCrewMember
 }: CrewMemberItemProps) {
   return (
-    <div className="flex justify-start basis-full sm:basis-1/2">
+    <div className="flex justify-start basis-full sm:basis-1/2 h-full">
       <div className="ml-4 basis-2/3 flex items-center space-x-2 sm:space-x-4">
         <User
           avatarProps={{
@@ -38,7 +38,7 @@ export default function CrewMemberItem({
         <IconButton
           onClick={(e) => {
             setAnchorEl(e.currentTarget)
-            setActiveCrewMemberType(member.type)
+            setActiveCrewMember(member)
           }}>
           <MoreHorizIcon />
         </IconButton>
