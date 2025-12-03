@@ -8,7 +8,7 @@ import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { CrewMember } from '@/lib/types'
 import CrewMemberItem from './CrewMemberItem'
-import { removeCrew } from '@/db'
+import { removeCrew, toggleCrewType } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 
 interface CrewProps {
@@ -31,7 +31,22 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
   function removeCrewMember() {
     if (!user || !trip || !activeCrewMember) return
 
-    removeCrew({ userId: user.id, tripId: trip.id, attendeeId: activeCrewMember?.id })
+    removeCrew({ userId: user.id, tripId: trip.id, attendeeId: activeCrewMember.id }).catch((e) =>
+      console.error('Error removing crew', e)
+    )
+    handleCloseMenu()
+  }
+
+  function toggleCrew() {
+    if (!user || !trip || !activeCrewMember) return
+
+    toggleCrewType({
+      userId: user.id,
+      tripId: trip.id,
+      attendeeId: activeCrewMember.id,
+      newType: activeCrewMember.type === 'Admin' ? 'Crew' : 'Admin'
+    }).catch((e) => console.error('Error toggling crew type', e))
+
     handleCloseMenu()
   }
 
@@ -79,6 +94,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
         anchorEl={anchorEl}
         onClose={handleCloseMenu}
         onClickRemove={removeCrewMember}
+        onChangeStatus={toggleCrew}
         activeCrewMember={activeCrewMember}
       />
     </>

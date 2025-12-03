@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import Depends, APIRouter
-from sqlalchemy import select, insert, delete
+from sqlalchemy import select, insert, delete, update
 from sqlalchemy.orm import Session, selectinload
 
 from models.models import Trips, Attendees
@@ -51,3 +51,15 @@ async def remove_crew(user_id: str, trip_id: str, attendee_id: str, db: Session 
     db.flush()
     
     return {"status": "crew removed"}
+
+@router.patch("/user/{user_id}/trip/{trip_id}/crew/toggle/{type}/{attendee_id}")
+async def toggle_crew_type(user_id: str, trip_id: str, type: str, attendee_id: str, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+    
+    toggle_crew_stmt = update(Attendees).where(Attendees.trip_id == trip_id).where(Attendees.attendee_id == attendee_id).values({"type": type})
+
+    db.execute(toggle_crew_stmt)
+    db.flush()
+
+    return {"status": "crew status updated"}

@@ -1,17 +1,25 @@
+import { CrewMember } from '@/lib/types'
 import axios from 'axios'
 
 interface BaseProps {
   userId: string
 }
 
-interface AddCrewProps extends BaseProps {
+interface BaseCrewProps extends BaseProps {
   tripId: string
+}
+
+interface AddCrewProps extends BaseCrewProps {
   ids: string[]
 }
 
-interface DeleteCrewProps extends BaseProps {
-  tripId: string
+interface DeleteCrewProps extends BaseCrewProps {
   attendeeId: string
+}
+
+interface ToggleCrewTypeProps extends BaseCrewProps {
+  attendeeId: string
+  newType: CrewMember['type']
 }
 
 export function getTrips({ userId }: BaseProps) {
@@ -34,6 +42,16 @@ export function removeCrew({ userId, tripId, attendeeId }: DeleteCrewProps) {
 
   return axios({
     method: 'delete',
+    url: requestUrl,
+    withCredentials: true
+  })
+}
+
+export function toggleCrewType({ userId, tripId, attendeeId, newType }: ToggleCrewTypeProps) {
+  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/crew/toggle/${newType}/${attendeeId}`
+
+  return axios({
+    method: 'patch',
     url: requestUrl,
     withCredentials: true
   })

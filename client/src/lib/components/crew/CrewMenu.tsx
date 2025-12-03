@@ -7,11 +7,13 @@ interface CrewMenuProps {
   anchorEl: HTMLButtonElement | null
   activeCrewMember?: CrewMember
   onClickRemove: () => void
+  onChangeStatus: () => void
 }
 export default function CrewMenu({
   anchorEl,
   onClose,
   onClickRemove,
+  onChangeStatus,
   activeCrewMember
 }: CrewMenuProps) {
   return (
@@ -27,11 +29,9 @@ export default function CrewMenu({
         horizontal: 'right'
       }}
       onClose={onClose}>
-      {activeCrewMember?.type !== 'Admin' ? (
-        <MenuItem>Make admin</MenuItem>
-      ) : (
-        <MenuItem>Remove admin</MenuItem>
-      )}
+      <MenuItem onClick={onChangeStatus}>
+        {activeCrewMember?.type !== 'Admin' ? 'Make ' : 'Remove '} admin
+      </MenuItem>
       <MenuItem onClick={onClickRemove}>Remove from trip</MenuItem>
     </Menu>
   )
