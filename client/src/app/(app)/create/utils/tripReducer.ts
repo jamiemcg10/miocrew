@@ -31,7 +31,6 @@ function getInitialValue(value?: string | User[]) {
 }
 
 export function tripReducer(state: TripState, action: { type: string; value: string | User[] }) {
-  console.log({ action })
   return {
     ...state,
     [action.type]: {

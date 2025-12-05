@@ -1,6 +1,14 @@
 from typing import Optional, TypedDict, List
 from pydantic import BaseModel
 
+class TripBase(BaseModel):
+    name: str
+    location: str
+    description: str
+    start_date: str
+    end_date: Optional[str] = None
+    ids: List[str]
+
 class RecipientBase(BaseModel):
     name: str
     id: str

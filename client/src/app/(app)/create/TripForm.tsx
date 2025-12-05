@@ -10,6 +10,10 @@ import { User } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { initialTripState, tripReducer } from './utils/tripReducer'
 import { CalendarDate, getLocalTimeZone, parseDate, today } from '@internationalized/date'
+import { createTrip, CreateTripProps } from '@/db'
+import { useRouter } from 'next/navigation'
+import Alert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 
 const fieldStyles = { width: '100%' }
 
@@ -19,14 +23,40 @@ export default function TripForm() {
 
   const [users, setUsers] = useState<User[]>([])
 
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+
+  const router = useRouter()
+
   function getCrewOptionLabel(option: User | string) {
     return typeof option === 'string' ? option : `${option.firstName} ${option.lastName}`
   }
 
-  function saveTrip() {
-    if (!tripState.name.valid || !tripState.crewMembers.valid) return
+  function getPayload() {
+    return {
+      name: tripState.name.value,
+      location: tripState.location.value,
+      description: tripState.description.value,
+      start_date: tripState.startDate.value,
+      end_date: tripState.endDate.value ? tripState.endDate.value : null,
+      ids: tripState.crewMembers.value.map((u) => u.id)
+    } as CreateTripProps['data']
+  }
 
-    console.log({ tripState })
+  function saveTrip() {
+    if (!user) return
+    setSaving(true)
+
+    // TODO: invite emails
+    createTrip({
+      userId: user.id,
+      data: getPayload()
+    })
+      .then(() => {
+        setSaved(true)
+        router.push('/dashboard')
+      })
+      .catch((e) => console.error('Error creating trip', e))
   }
 
   useEffect(() => {
@@ -50,6 +80,7 @@ export default function TripForm() {
           onChange={(e) => dispatch({ type: 'name', value: e.target.value })}
           error={!tripState.name.valid}
           sx={fieldStyles}
+          disabled={saving}
           required
         />
       </div>
@@ -61,6 +92,7 @@ export default function TripForm() {
           error={!tripState.location.valid}
           onChange={(e) => dispatch({ type: 'location', value: e.target.value })}
           sx={fieldStyles}
+          disabled={saving}
           required
         />
       </div>
@@ -72,6 +104,7 @@ export default function TripForm() {
           size="sm"
           isRequired
           isInvalid={!tripState.startDate.valid}
+          isDisabled={saving}
           value={
             tripState.startDate.value
               ? (parseDate(tripState.startDate.value) as CalendarDate)
@@ -99,6 +132,7 @@ export default function TripForm() {
           variant="bordered"
           size="sm"
           isInvalid={!tripState.endDate.valid}
+          isDisabled={saving}
           value={
             tripState.endDate.value ? (parseDate(tripState.endDate.value) as CalendarDate) : null
           }
@@ -127,6 +161,7 @@ export default function TripForm() {
           error={!tripState.description.valid}
           onChange={(e) => dispatch({ type: 'description', value: e.target.value })}
           required
+          disabled={saving}
           sx={fieldStyles}
         />
       </div>
@@ -176,6 +211,7 @@ export default function TripForm() {
               minRows={2}
               maxRows={3}
               required
+              disabled={saving}
               error={!tripState.crewMembers.valid}
               sx={fieldStyles}
             />
@@ -184,6 +220,7 @@ export default function TripForm() {
       </div>
       <Button
         variant="contained"
+        disabled={Object.values(tripState).some((v) => !v.valid) || saving}
         onClick={saveTrip}
         sx={{
           marginTop: '3rem',
@@ -198,6 +235,13 @@ export default function TripForm() {
         }}>
         Create trip
       </Button>
+      <Snackbar
+        open={saved}
+        message="Trip created!"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        slotProps={{
+          content: { sx: { bgcolor: 'background.paper', color: 'primary.main', fontWeight: 600 } }
+        }}></Snackbar>
     </>
   )
 }

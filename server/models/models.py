@@ -37,6 +37,8 @@ class Trips(Base):
     id: Mapped[str] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
     attendees: Mapped[List["Attendees"]] = relationship()
+    location: Mapped[str] = mapped_column(String(256))
+    description: Mapped[str] = mapped_column(String(512))
     start_date: Mapped[str] = mapped_column(String(20))
     end_date: Mapped[Optional[str]] = mapped_column(String(20))
 

@@ -5,6 +5,17 @@ interface BaseProps {
   userId: string
 }
 
+export interface CreateTripProps extends BaseProps {
+  data: {
+    name: string
+    location: string
+    description: string
+    start_date: string
+    end_date?: string
+    ids: string[]
+  }
+}
+
 interface BaseCrewProps extends BaseProps {
   tripId: string
 }
@@ -24,6 +35,17 @@ interface ToggleCrewTypeProps extends BaseCrewProps {
 
 export function getTrips({ userId }: BaseProps) {
   return axios.get(`http://localhost:8000/user/${userId}/trips`, { withCredentials: true })
+}
+
+export function createTrip({ userId, data }: CreateTripProps) {
+  const requestUrl = `http://localhost:8000/user/${userId}/trip/create`
+
+  return axios({
+    method: 'post',
+    url: requestUrl,
+    data,
+    withCredentials: true
+  })
 }
 
 export function addCrew({ userId, tripId, ids }: AddCrewProps) {
