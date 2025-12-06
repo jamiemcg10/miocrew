@@ -4,23 +4,9 @@ import { useContext, useEffect, useState } from 'react'
 import TaskView from '@/lib/components/tasks/TaskView'
 import ExpenseView from '@/lib/components/expenses/ExpenseView'
 import ActionItem from './ActionItem'
-import axios from 'axios'
+import { getActionItems } from '@/db'
 
 export default function ActionItems() {
-  async function getItems() {
-    axios
-      .get(`http://localhost:8000/user/${user!.id}/action_items`, { withCredentials: true })
-      .then((response) => {
-        if (response.data.expenses) {
-          setExpenses(response.data.expenses)
-        }
-        if (response.data.tasks) {
-          setTasks(response.data.tasks)
-        }
-      })
-      .catch((e) => console.error('Error fetching action items', e))
-  }
-
   function formatActionItems() {
     setActionItems([
       ...tasks.filter((t) => {
@@ -47,10 +33,19 @@ export default function ActionItems() {
     setActiveExpense(null)
   }
 
-  if (!user) return
-
   useEffect(() => {
-    getItems()
+    if (!user) return
+
+    getActionItems({ userId: user.id })
+      .then((response) => {
+        if (response.data.expenses) {
+          setExpenses(response.data.expenses)
+        }
+        if (response.data.tasks) {
+          setTasks(response.data.tasks)
+        }
+      })
+      .catch((e) => console.error('Error fetching action items', e))
   }, [])
 
   useEffect(formatActionItems, [expenses, tasks])

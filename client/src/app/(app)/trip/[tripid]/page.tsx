@@ -10,37 +10,13 @@ import { useParams } from 'next/navigation'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import IdeasPage from '@/lib/components/ideas/IdeasPage'
 import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
-import axios from 'axios'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CrewMember, Trip } from '@/lib/types'
+import { getTrip } from '@/db'
 
 export default function TripPage() {
   const user = useContext(UserContext)
   const [trip, setTrip] = useState<Trip | null>(null)
-
-  function getTrip() {
-    if (!user) return
-
-    axios
-      .get(`http://localhost:8000/user/${user.id}/trip/${tripid}`, { withCredentials: true })
-      .then((response) => {
-        const attendees = response.data.trip.attendees.reduce(
-          (acc: Record<string, CrewMember>, c: CrewMember) => {
-            return {
-              ...acc,
-              [c.id]: c
-            }
-          },
-          {}
-        )
-        if (response.data.trip) {
-          setTrip({ ...response.data.trip, attendees })
-        } else {
-          notFound()
-        }
-      })
-      .catch((e) => console.error('Error getching trip', e))
-  }
 
   const { tripid } = useParams<{ tripid: string }>()
 
@@ -62,7 +38,28 @@ export default function TripPage() {
     }
   }
 
-  useEffect(getTrip, [user])
+  useEffect(() => {
+    if (!user) return
+
+    getTrip({ userId: user.id, tripId: tripid })
+      .then((response) => {
+        const attendees = response.data.trip.attendees.reduce(
+          (acc: Record<string, CrewMember>, c: CrewMember) => {
+            return {
+              ...acc,
+              [c.id]: c
+            }
+          },
+          {}
+        )
+        if (response.data.trip) {
+          setTrip({ ...response.data.trip, attendees })
+        } else {
+          notFound()
+        }
+      })
+      .catch((e) => console.error('Error getching trip', e))
+  }, [user])
 
   if (!trip) return
   // put more stuff in context?

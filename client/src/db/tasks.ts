@@ -21,15 +21,18 @@ interface deleteTripArgs extends BaseTaskArgs {
 
 export function getTasks(args: BaseTaskArgs) {
   const { tripId, userId } = args
-  return axios.get(`http://localhost:8000/user/${userId}/trip/${tripId}/tasks`, {
-    withCredentials: true
-  })
+  return axios.get(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/tasks`,
+    {
+      withCredentials: true
+    }
+  )
 }
 
 export function createTask(args: CreateTaskArgs) {
   const { userId, tripId, data } = args
 
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/task/create`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/task/create`
 
   return axios({
     method: 'post',
@@ -42,7 +45,7 @@ export function createTask(args: CreateTaskArgs) {
 export function updateTask(args: UpdateTaskArgs) {
   const { userId, tripId, data } = args
 
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/task/update`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/task/update`
 
   return axios({
     method: 'patch',

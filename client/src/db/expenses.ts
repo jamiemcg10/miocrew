@@ -1,16 +1,23 @@
 import axios from 'axios'
 import { DebtorPayload, ExpensePayload } from './types'
 
-interface addExpenseArgs {
+interface BaseExpenseArgs {
   userId: string
   tripId: string
+}
+
+interface addExpenseArgs extends BaseExpenseArgs {
   data: { expense: ExpensePayload; debtors: DebtorPayload[] }
 }
 
-interface deleteExpenseArgs {
-  userId: string
-  tripId: string
+interface deleteExpenseArgs extends BaseExpenseArgs {
   expenseId: string
+}
+
+export function getExpenses({ userId, tripId }: BaseExpenseArgs) {
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/expenses/`
+
+  return axios.get(requestUrl, { withCredentials: true })
 }
 
 export function addExpense(args: addExpenseArgs) {
@@ -18,9 +25,9 @@ export function addExpense(args: addExpenseArgs) {
 
   const isUpdate = !!data.expense.id
 
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/expense/${
-    isUpdate ? 'update' : 'create'
-  }`
+  const requestUrl = `${
+    process.env.NEXT_PUBLIC_SERVER_BASE_URL
+  }/user/${userId}/trip/${tripId}/expense/${isUpdate ? 'update' : 'create'}`
 
   return axios({
     method: isUpdate ? 'patch' : 'post',

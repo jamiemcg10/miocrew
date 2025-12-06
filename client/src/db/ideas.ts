@@ -19,9 +19,12 @@ interface DeleteIdeaArgs extends BaseIdeaArgs {
 export function getIdeas(args: BaseIdeaArgs) {
   const { userId, tripId } = args
 
-  return axios.get(`http://localhost:8000/user/${userId}/trip/${tripId}/ideas/`, {
-    withCredentials: true
-  })
+  return axios.get(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/ideas/`,
+    {
+      withCredentials: true
+    }
+  )
 }
 
 export function createIdea(args: CreateIdeaArgs) {
@@ -29,7 +32,7 @@ export function createIdea(args: CreateIdeaArgs) {
 
   return axios({
     method: 'post',
-    url: `http://localhost:8000/user/${userId}/trip/${tripId}/ideas/create`,
+    url: `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/ideas/create`,
     data,
     withCredentials: true
   })
@@ -40,7 +43,7 @@ export function updateIdea(args: UpdateIdeaArgs) {
 
   return axios({
     method: 'patch',
-    url: `http://localhost:8000/user/${userId}/trip/${tripId}/idea/update`,
+    url: `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/idea/update`,
     data,
     withCredentials: true
   })

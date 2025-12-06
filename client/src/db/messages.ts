@@ -28,17 +28,19 @@ interface BulkDeleteMessageProps extends BaseMessagesProps {
 }
 
 export function getMessages({ userId }: BaseMessagesProps) {
-  return axios.get(`http://localhost:8000/user/${userId}/messages`, { withCredentials: true })
+  return axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/messages`, {
+    withCredentials: true
+  })
 }
 
 export function createMessage({ userId, data }: CreateMessageProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/message/create`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/message/create`
 
   return axios({ method: 'post', url: requestUrl, data, withCredentials: true })
 }
 
 export function toggleMessageReadStatus({ userId, messageId, status }: UpdateMessageProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/message/${messageId}/change_read_status`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/message/${messageId}/change_read_status`
 
   return axios({
     method: 'patch',
@@ -53,7 +55,7 @@ export function bulkToggleMessageReadStatus({
   messageIds,
   status
 }: BulkUpdateMessageProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/message/bulk/change_read_status/${status}`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/message/bulk/change_read_status/${status}`
 
   return axios({
     method: 'patch',
@@ -64,13 +66,13 @@ export function bulkToggleMessageReadStatus({
 }
 
 export function deleteMessage({ userId, messageId }: DeleteMessageProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/message/${messageId}/delete`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/message/${messageId}/delete`
 
   return axios({ method: 'delete', url: requestUrl, withCredentials: true })
 }
 
 export function bulkDeleteMessage({ userId, messageIds }: BulkDeleteMessageProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/message/delete`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/message/delete`
 
   return axios({ method: 'delete', url: requestUrl, data: messageIds, withCredentials: true })
 }

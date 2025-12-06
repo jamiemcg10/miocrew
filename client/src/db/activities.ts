@@ -17,13 +17,16 @@ interface DeleteActivityArgs extends BaseActivityArgs {
 }
 
 export function getActivities({ userId, tripId }: BaseActivityArgs) {
-  return axios.get(`http://localhost:8000/user/${userId}/trip/${tripId}/activities`, {
-    withCredentials: true
-  })
+  return axios.get(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/activities`,
+    {
+      withCredentials: true
+    }
+  )
 }
 
 export function createActivity({ userId, tripId, data }: CreateActivityArgs) {
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/activities/create`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/activities/create`
 
   return axios({
     method: 'post',
@@ -34,7 +37,7 @@ export function createActivity({ userId, tripId, data }: CreateActivityArgs) {
 }
 
 export function updateActivity({ userId, tripId, data }: UpdateActivityArgs) {
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/activity/update`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/activity/update`
 
   return axios({
     method: 'patch',
@@ -46,7 +49,7 @@ export function updateActivity({ userId, tripId, data }: UpdateActivityArgs) {
 
 export function deleteActivity({ userId, tripId, activityId }: DeleteActivityArgs) {
   return axios.delete(
-    `http://localhost:8000/user/${userId}/trip/${tripId}/activity/${activityId}/delete`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/activity/${activityId}/delete`,
     {
       withCredentials: true
     }

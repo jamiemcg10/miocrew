@@ -1,27 +1,13 @@
 import { useState, useEffect, useContext } from 'react'
 import Expenses from './Expenses'
 import AddExpenseDialog from './AddExpenseDialog'
-import axios from 'axios'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { Expense } from '@/lib/types'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
+import { getExpenses } from '@/db'
 
 export default function TaskPage() {
-  function getExpenses() {
-    axios
-      .get(`http://localhost:8000/user/${user!.id}/trip/${trip!.id}/expenses/`, {
-        withCredentials: true
-      })
-      .then((response) => {
-        if (response.data.expenses) {
-          setExpenses(response.data.expenses)
-          LocalStorage.set(`${trip?.id}:expenses`, response.data.expenses)
-        }
-      })
-      .catch((e) => console.error('Error fetching expenses', e))
-  }
-
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
 
@@ -31,7 +17,16 @@ export default function TaskPage() {
   const [expenses, setExpenses] = useState<Expense[]>(storedExpenses || [])
 
   useEffect(() => {
-    getExpenses()
+    if (!user || !trip) return
+
+    getExpenses({ userId: user.id, tripId: trip.id })
+      .then((response) => {
+        if (response.data.expenses) {
+          setExpenses(response.data.expenses)
+          LocalStorage.set(`${trip?.id}:expenses`, response.data.expenses)
+        }
+      })
+      .catch((e) => console.error('Error fetching expenses', e))
   }, [])
 
   if (!user || !trip) return

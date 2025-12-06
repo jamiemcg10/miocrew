@@ -16,9 +16,11 @@ export interface CreateTripProps extends BaseProps {
   }
 }
 
-interface BaseCrewProps extends BaseProps {
+interface BaseTripProps extends BaseProps {
   tripId: string
 }
+
+type BaseCrewProps = BaseTripProps
 
 interface AddCrewProps extends BaseCrewProps {
   ids: string[]
@@ -34,11 +36,19 @@ interface ToggleCrewTypeProps extends BaseCrewProps {
 }
 
 export function getTrips({ userId }: BaseProps) {
-  return axios.get(`http://localhost:8000/user/${userId}/trips`, { withCredentials: true })
+  return axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trips`, {
+    withCredentials: true
+  })
+}
+
+export function getTrip({ userId, tripId }: BaseTripProps) {
+  return axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}`, {
+    withCredentials: true
+  })
 }
 
 export function createTrip({ userId, data }: CreateTripProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/create`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/create`
 
   return axios({
     method: 'post',
@@ -49,7 +59,7 @@ export function createTrip({ userId, data }: CreateTripProps) {
 }
 
 export function addCrew({ userId, tripId, ids }: AddCrewProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/crew/add`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/crew/add`
 
   return axios({
     method: 'post',
@@ -60,7 +70,7 @@ export function addCrew({ userId, tripId, ids }: AddCrewProps) {
 }
 
 export function removeCrew({ userId, tripId, attendeeId }: DeleteCrewProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/crew/remove/${attendeeId}`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/crew/remove/${attendeeId}`
 
   return axios({
     method: 'delete',
@@ -70,7 +80,7 @@ export function removeCrew({ userId, tripId, attendeeId }: DeleteCrewProps) {
 }
 
 export function toggleCrewType({ userId, tripId, attendeeId, newType }: ToggleCrewTypeProps) {
-  const requestUrl = `http://localhost:8000/user/${userId}/trip/${tripId}/crew/toggle/${newType}/${attendeeId}`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/crew/toggle/${newType}/${attendeeId}`
 
   return axios({
     method: 'patch',
