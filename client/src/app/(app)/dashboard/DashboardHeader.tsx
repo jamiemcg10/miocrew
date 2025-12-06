@@ -1,8 +1,9 @@
+'use cache'
 import { trips as upcomingTrips } from '@/lib/utils/dummyData'
 import { tripSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
 
-export default function DashboardHeader() {
+export default async function DashboardHeader() {
   const nextTrip = upcomingTrips.sort(tripSort)[0]
 
   const today = dayjs(new Date())
