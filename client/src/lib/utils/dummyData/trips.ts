@@ -60,6 +60,6 @@ export const trips = [
       '8': { id: '8', firstName: 'Jim', lastName: 'Beam', color: 'red', type: 'Crew' },
       '9': { id: '9', firstName: 'Jack', lastName: 'Daniels', olor: 'black', type: 'Crew' }
     },
-    startDate: new Date('October 4, 2025')
+    startDate: new Date('March 4, 2026')
   }
 ] as Trip[]

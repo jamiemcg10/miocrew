@@ -1,3 +1,5 @@
+'use cache'
+
 import Link from 'next/link'
 import { Trip } from '../types'
 import { dateFormatter } from '../utils/dateFormatter'
@@ -10,7 +12,7 @@ interface TripTableProps {
   title: string
 }
 
-export default function TripTable({ trips, title }: TripTableProps) {
+export default async function TripTable({ trips, title }: TripTableProps) {
   return (
     <div>
       <div className="text-xl font-bold my-4">{title}</div>
