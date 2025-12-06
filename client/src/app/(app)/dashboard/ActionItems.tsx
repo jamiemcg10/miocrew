@@ -5,6 +5,8 @@ import TaskView from '@/lib/components/tasks/TaskView'
 import ExpenseView from '@/lib/components/expenses/ExpenseView'
 import ActionItem from './ActionItem'
 import { getActionItems } from '@/db'
+import CreateTaskDialog from '@/lib/components/tasks/CreateTaskDialog'
+import AddExpenseDialog from '@/lib/components/expenses/AddExpenseDialog'
 
 export default function ActionItems() {
   function formatActionItems() {
@@ -24,6 +26,9 @@ export default function ActionItems() {
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [tasks, setTasks] = useState<Task[]>([])
   const [actionItems, setActionItems] = useState<(Expense | Task)[]>([])
+
+  const [addExpenseDialogOpen, setAddExpenseDialogOpen] = useState<boolean | Expense>(false)
+  const [createTaskDialogOpen, setCreateTaskDialogOpen] = useState<boolean | Task>(false)
 
   function onCloseTaskView() {
     setActiveTask(null)
@@ -50,6 +55,8 @@ export default function ActionItems() {
 
   useEffect(formatActionItems, [expenses, tasks])
 
+  if (!user) return
+
   return (
     <>
       <div className="text-xl font-bold my-4">Action items</div>
@@ -70,8 +77,28 @@ export default function ActionItems() {
       ) : (
         <div>You have no action items right now</div>
       )}
-      <TaskView activeTask={activeTask} onClose={onCloseTaskView} />
-      <ExpenseView activeExpense={activeExpense} onClose={onCloseExpenseView} />
+      <TaskView
+        activeTask={activeTask}
+        onClose={onCloseTaskView}
+        onEdit={() => {
+          if (!activeTask) return
+          setCreateTaskDialogOpen(activeTask)
+          setActiveTask(null)
+        }}
+      />
+      <ExpenseView
+        activeExpense={activeExpense}
+        onClose={onCloseExpenseView}
+        onEdit={() => {
+          if (!activeExpense) return
+
+          setAddExpenseDialogOpen(activeExpense)
+          setActiveExpense(null)
+        }}
+      />
+
+      <CreateTaskDialog open={createTaskDialogOpen} setOpen={setCreateTaskDialogOpen} />
+      <AddExpenseDialog open={addExpenseDialogOpen} setOpen={setAddExpenseDialogOpen} />
     </>
   )
 }
