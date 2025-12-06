@@ -31,8 +31,6 @@ async def trip(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
 
 @router.post("/user/{user_id}/trip/create")
 async def create_trip(user_id: str, trip: TripBase, db: Session = Depends(get_user_db)):
-    print("trip", trip) 
-
     id = uuid.uuid4().hex[:8]
 
     trip_values = { "id": id, 
@@ -44,9 +42,6 @@ async def create_trip(user_id: str, trip: TripBase, db: Session = Depends(get_us
     
     mapped_new_crew = list(map(lambda x: map_id_to_attendee(x, id, "Crew"), trip.ids)) 
     mapped_new_crew.append(map_id_to_attendee(user_id, id, "Owner"))
-    
-    print("trip_values", trip_values)
-    print("mapped_new_crew", mapped_new_crew)
  
     trip_stmt = insert(Trips).values(trip_values)
     add_crew_stmt = insert(Attendees).values(mapped_new_crew)
