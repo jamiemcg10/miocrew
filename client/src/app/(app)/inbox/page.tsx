@@ -68,7 +68,6 @@ export default function InboxPage() {
 
     getMessages({ userId: user.id })
       .then((response) => {
-        console.log(response.data.messages)
         setMessages(response.data.messages)
         LocalStorage.set('messages', response.data.messages)
       })

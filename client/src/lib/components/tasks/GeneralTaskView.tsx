@@ -35,7 +35,7 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
       data: getPayload()
     })
       .catch((e) => {
-        console.log(`Error marking task as complete`, e)
+        console.error(`Error marking task as complete`, e)
       })
       .finally(() => closeView())
   }
