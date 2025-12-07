@@ -19,6 +19,11 @@ function isTask(item: Task | Expense): item is Task {
   return item.hasOwnProperty('type')
 }
 
+const boltIconSx = {
+  color: 'goldenrod',
+  '.dark &': { color: 'yellow' }
+}
+
 export default function ActionItem({
   item,
   userId,
@@ -49,12 +54,7 @@ export default function ActionItem({
           <div className="text-lg font-semibold inline-flex gap-2 basis-2/3">
             <MonetizationOnRoundedIcon />
             {item.name}
-            <BoltIcon
-              sx={{
-                color: 'goldenrod',
-                '.dark &': { color: 'yellow' }
-              }}
-            />
+            <BoltIcon sx={boltIconSx} />
           </div>
           <div className="flex items-center font-semibold h-[3.125rem] flex-wrap">
             <BalanceText expense={item} userId={userId} />

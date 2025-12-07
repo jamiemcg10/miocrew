@@ -14,6 +14,8 @@ interface MessageProps {
   setChecked: Dispatch<SetStateAction<Record<string, boolean>>>
 }
 
+const checkboxSx = { '& .MuiSvgIcon-root': { fontSize: 16 } }
+
 export default function Message({ message, onClick, checked, setChecked }: MessageProps) {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setChecked({
@@ -34,7 +36,7 @@ export default function Message({ message, onClick, checked, setChecked }: Messa
         onClick={(e) => {
           e.stopPropagation()
         }}
-        sx={{ '& .MuiSvgIcon-root': { fontSize: 16 } }}
+        sx={checkboxSx}
       />
       <div className={(!message.read ? 'font-extrabold' : 'opacity-90') + ' text-lg line-clamp-2'}>
         {message.subject}

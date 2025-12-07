@@ -4,6 +4,10 @@ import TextField from '@mui/material/TextField'
 import { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import { mb2Sx } from '@/lib/styles/sx'
+
+const optTextFieldSx = { mr: 4 }
+const addOptionBtnSx = { my: 2, width: 'fit-content' }
 
 export default function DialogPollOptions() {
   function addOption() {
@@ -14,7 +18,7 @@ export default function DialogPollOptions() {
 
   return (
     <>
-      <TextField label="Poll Question" size="small" sx={{ mb: 2 }} />
+      <TextField label="Poll Question" size="small" sx={mb2Sx} />
       <div className="flex flex-col space-y-2">
         {options.map((opt, i) => {
           return (
@@ -23,7 +27,7 @@ export default function DialogPollOptions() {
                 label={`Option ${i + 1}`}
                 value={opt}
                 size="small"
-                sx={{ mr: 4 }}
+                sx={optTextFieldSx}
                 onChange={(e) => {
                   options[i] = e.target.value
                   setOptions([...options])
@@ -43,10 +47,7 @@ export default function DialogPollOptions() {
           )
         })}
       </div>
-      <Button
-        startIcon={<AddRoundedIcon />}
-        sx={{ my: 2, width: 'fit-content' }}
-        onClick={addOption}>
+      <Button startIcon={<AddRoundedIcon />} sx={addOptionBtnSx} onClick={addOption}>
         Add Option
       </Button>
     </>

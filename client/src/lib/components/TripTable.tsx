@@ -1,4 +1,4 @@
-'use cache'
+'use client'
 
 import Link from 'next/link'
 import { Trip } from '../types'
@@ -12,7 +12,7 @@ interface TripTableProps {
   title: string
 }
 
-export default async function TripTable({ trips, title }: TripTableProps) {
+export default function TripTable({ trips, title }: TripTableProps) {
   return (
     <div>
       <div className="text-xl font-bold my-4">{title}</div>

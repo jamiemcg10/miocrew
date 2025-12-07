@@ -18,6 +18,15 @@ interface TasksProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
 }
 
+const addExpenseBtnSx = {
+  mb: '24px',
+  alignSelf: 'end',
+  width: 'initial',
+  fontWeight: 600
+}
+
+const chipSx = { pl: '8px' }
+
 export default function Expenses({ setOpenAddDialog }: TasksProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
@@ -73,12 +82,7 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
       <Button
         variant="contained"
         startIcon={<AttachMoneyIcon />}
-        sx={{
-          mb: '24px',
-          alignSelf: 'end',
-          width: 'initial',
-          fontWeight: 600
-        }}
+        sx={addExpenseBtnSx}
         onClick={onClickAddButton}>
         Add Expense
       </Button>
@@ -105,7 +109,7 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                   avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
                   key={i}
                   variant={crewFilter === a.id ? 'filled' : 'outlined'}
-                  sx={{ pl: '8px' }}
+                  sx={chipSx}
                   onClick={() => handleCrewFilterClick(a.id)}
                 />
               )

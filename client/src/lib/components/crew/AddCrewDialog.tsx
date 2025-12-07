@@ -11,10 +11,21 @@ interface AddCrewDialogProps {
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
+const dialogTitleSx = { fontWeight: 700 }
+const autocompleteSx = {
+  '.MuiInputBase-root': { alignItems: 'flex-start' }
+}
+const textFieldSx = {
+  width: '100%',
+  placeItems: 'flex-start',
+  alignItems: 'flex-start!important'
+}
+const addCrewBtnSx = { fontWeight: 700, mt: 5 }
+
 export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
   return (
     <Dialog open={open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Add Crew Members</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>Add Crew Members</DialogTitle>
       <form className="flex flex-col m-10 mt-5">
         <div>
           <Autocomplete
@@ -23,9 +34,7 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
             getOptionLabel={(option) => (typeof option === 'string' ? option : option.email)}
             multiple
             freeSolo
-            sx={{
-              '.MuiInputBase-root': { alignItems: 'flex-start' }
-            }}
+            sx={autocompleteSx}
             filterOptions={(options, params) => {
               const filtered = options.filter((option) =>
                 option.email.toLowerCase().includes(params.inputValue.toLowerCase())
@@ -46,16 +55,12 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
                 multiline
                 minRows={8}
                 maxRows={10}
-                sx={{
-                  width: '100%',
-                  placeItems: 'flex-start',
-                  alignItems: 'flex-start!important'
-                }}
+                sx={textFieldSx}
               />
             )}
           />
         </div>
-        <Button variant="contained" sx={{ fontWeight: 700, mt: 5 }}>
+        <Button variant="contained" sx={addCrewBtnSx}>
           Add Crew Members
         </Button>
       </form>

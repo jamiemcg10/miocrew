@@ -15,6 +15,11 @@ const textFieldSx = {
   my: 1
 }
 
+const sendBtnSx = { ml: 'auto', mt: 'auto', fontWeight: 700 }
+const msgFieldSx = { ...textFieldSx, height: '100%' }
+const editIconSx = { mr: 1 }
+const msgSlotProps = { input: { sx: { height: '100%', placeItems: 'self-start' } } }
+
 export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
   function getOptionLabel(
     option:
@@ -37,7 +42,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
     <Popup open={open} onClose={onClose}>
       <div className="h-full flex flex-col space-y-4">
         <div className="font-bold text-2xl flex items-center">
-          <EditRoundedIcon sx={{ mr: 1 }} /> Compose
+          <EditRoundedIcon sx={editIconSx} /> Compose
         </div>
         <TextField label="Subject" required sx={textFieldSx} />
         <Autocomplete
@@ -61,17 +66,8 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
           renderInput={(params) => <TextField {...params} label="To" required sx={textFieldSx} />}
         />
 
-        <TextField
-          multiline
-          label="Message"
-          required
-          sx={{ ...textFieldSx, height: '100%' }}
-          slotProps={{ input: { sx: { height: '100%', placeItems: 'self-start' } } }}
-        />
-        <Button
-          variant="contained"
-          startIcon={<SendRoundedIcon />}
-          sx={{ ml: 'auto', mt: 'auto', fontWeight: 700 }}>
+        <TextField multiline label="Message" required sx={msgFieldSx} slotProps={msgSlotProps} />
+        <Button variant="contained" startIcon={<SendRoundedIcon />} sx={sendBtnSx}>
           Send
         </Button>
       </div>

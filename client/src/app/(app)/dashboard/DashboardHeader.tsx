@@ -1,15 +1,14 @@
-'use cache'
 import { trips as upcomingTrips } from '@/lib/utils/dummyData'
 import { tripSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
 
-export default async function DashboardHeader() {
-  const nextTrip = upcomingTrips.sort(tripSort)[0]
+const nextTrip = upcomingTrips.sort(tripSort)[0]
 
-  const today = dayjs(new Date())
-  const nextTripStart = dayjs(nextTrip.startDate).diff(today, 'day')
-  const nextTripStartMonths = dayjs(nextTrip.startDate).diff(today, 'month')
+const today = dayjs(new Date())
+const nextTripStart = dayjs(nextTrip.startDate).diff(today, 'day')
+const nextTripStartMonths = dayjs(nextTrip.startDate).diff(today, 'month')
 
+export default function DashboardHeader() {
   return (
     <div className="flex justify-around px-4 py-4 items-center bg-[#cee2f5] dark:bg-white/20 font-semibold">
       <div>

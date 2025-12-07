@@ -16,11 +16,15 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import clsx from 'clsx'
 import { DatePicker } from '@heroui/date-picker'
+import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 
 interface AddExpenseDialogProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
+
+const boltIconSx = { ml: -1, mr: -0.5, color: 'goldenrod', '.dark &': { color: 'yellow' } }
+const addExpenseBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProps) {
   const trip = useContext(TripContext)
@@ -33,10 +37,10 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
 
   return (
     <Dialog open={open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Add expense</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>Add expense</DialogTitle>
       <form className="flex flex-col m-10 mt-4">
-        <TextField label="Name" required sx={{ mb: 2 }} size="small" />
-        <TextField label="Description" multiline rows={1} sx={{ mb: 2 }} size="small" />
+        <TextField label="Name" required sx={mb2Sx} size="small" />
+        <TextField label="Description" multiline rows={1} sx={mb2Sx} size="small" />
         <DatePicker className="w-3/5 mb-2" label="Date" variant="bordered" size="sm" />
         <FormControl>
           <FormLabel id="expense-split-type-label">Split expense</FormLabel>
@@ -113,15 +117,12 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
         <FormControlLabel
           label={
             <div>
-              <BoltIcon
-                sx={{ ml: -1, mr: -0.5, color: 'goldenrod', '.dark &': { color: 'yellow' } }}
-              />{' '}
-              <span>Request immediately</span>
+              <BoltIcon sx={boltIconSx} /> <span>Request immediately</span>
             </div>
           }
           control={<Checkbox />}
         />
-        <Button variant="contained" startIcon={<AttachMoneyIcon />} sx={{ fontWeight: 700, mt: 5 }}>
+        <Button variant="contained" startIcon={<AttachMoneyIcon />} sx={addExpenseBtnSx}>
           Add Expense
         </Button>
       </form>

@@ -7,6 +7,15 @@ import { useContext, useRef } from 'react'
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
 import Tooltip from '@mui/material/Tooltip'
 
+const addPhotoBtnSx = {
+  position: 'absolute',
+  right: 0,
+  bottom: 0,
+  transform: 'translate(-25%, 40%)'
+}
+
+const addPhotoIconSx = { fontSize: '16px' }
+
 export default function SettingsPage() {
   function onClickUpload() {
     inputRef.current?.click()
@@ -30,15 +39,8 @@ export default function SettingsPage() {
               slotProps={{
                 popper: { modifiers: [{ name: 'offset', options: { offset: [12, -14] } }] }
               }}>
-              <IconButton
-                sx={{
-                  position: 'absolute',
-                  right: 0,
-                  bottom: 0,
-                  transform: 'translate(-25%, 40%)'
-                }}
-                onClick={onClickUpload}>
-                <AddAPhotoIcon sx={{ fontSize: '16px' }} />
+              <IconButton sx={addPhotoBtnSx} onClick={onClickUpload}>
+                <AddAPhotoIcon sx={addPhotoIconSx} />
               </IconButton>
             </Tooltip>
           </div>

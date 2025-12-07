@@ -7,6 +7,17 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { dummyEmails } from '@/lib/utils/dummyData'
 
 const fieldStyles = { width: '100%' }
+const createTripButtonSx = {
+  marginTop: '3rem',
+  padding: '12px',
+  fontWeight: 600,
+  width: '100%',
+  alignSelf: 'end',
+  '@media (min-width: 640px)': {
+    marginTop: '2rem',
+    width: 'auto'
+  }
+}
 
 export default function TripForm() {
   return (
@@ -57,19 +68,7 @@ export default function TripForm() {
           )}
         />
       </div>
-      <Button
-        variant="contained"
-        sx={{
-          marginTop: '3rem',
-          padding: '12px',
-          fontWeight: 600,
-          width: '100%',
-          alignSelf: 'end',
-          '@media (min-width: 640px)': {
-            marginTop: '2rem',
-            width: 'auto'
-          }
-        }}>
+      <Button variant="contained" sx={createTripButtonSx}>
         Create trip
       </Button>
     </>
