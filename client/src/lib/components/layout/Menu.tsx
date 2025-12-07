@@ -35,13 +35,17 @@ const drawerSx = {
 export default function Menu({ open, handleClose, matches }: MenuProps) {
   const user = useContext(UserContext)
 
+  function closeMenu() {
+    handleClose()
+  }
+
   return (
     <Drawer
       sx={drawerSx}
       variant={matches ? 'permanent' : 'temporary'}
       anchor="left"
       open={matches || open}
-      onClose={handleClose}>
+      onClose={closeMenu}>
       <Box sx={fullHeightSx}>
         <List sx={fullHeightSx}>
           <ListItem key={'Greeting'} sx={greetingListItemSx}>
