@@ -9,6 +9,9 @@ interface GeneralTaskViewProps {
   activeTask: GeneralTask | null
 }
 
+const completeBtnSx = { position: 'absolute', left: '3rem', bottom: '3rem' }
+const fullWidthSx = { width: '100%' }
+
 export default function GeneralTaskView({ activeTask }: GeneralTaskViewProps) {
   const notesRef = useRef(null)
 
@@ -29,13 +32,13 @@ export default function GeneralTaskView({ activeTask }: GeneralTaskViewProps) {
         multiline
         rows={4}
         ref={notesRef}
-        sx={{ width: '100%' }}
+        sx={fullWidthSx}
         disabled={activeTask?.completed}
       />
       <Button
         startIcon={<CheckBoxRoundedIcon fontSize="small" />}
         variant="contained"
-        sx={{ position: 'absolute', left: '3rem', bottom: '3rem' }}>
+        sx={completeBtnSx}>
         Mark as complete
       </Button>
     </>

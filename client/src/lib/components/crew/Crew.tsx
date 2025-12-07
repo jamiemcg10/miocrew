@@ -13,6 +13,13 @@ interface CrewProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
 }
 
+const addCrewBtnSx = {
+  mb: '12px',
+  alignSelf: 'end',
+  width: 'initial',
+  fontWeight: 600
+}
+
 export default function Crew({ setOpenAddDialog }: CrewProps) {
   const trip = useContext(TripContext)
 
@@ -35,12 +42,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
       <Button
         variant="contained"
         startIcon={<PersonAddRoundedIcon />}
-        sx={{
-          mb: '12px',
-          alignSelf: 'end',
-          width: 'initial',
-          fontWeight: 600
-        }}
+        sx={addCrewBtnSx}
         onClick={onClickAddButton}>
         Add crew
       </Button>

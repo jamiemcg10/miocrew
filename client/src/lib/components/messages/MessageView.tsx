@@ -8,6 +8,8 @@ interface MessageViewProps {
   onClose: () => void
 }
 
+const replyBtnSx = { ml: 'auto', mt: 'auto', fontWeight: 700 }
+
 export default function MessageView({ message, open, onClose }: MessageViewProps) {
   return (
     <Popup open={open} onClose={onClose}>
@@ -15,7 +17,7 @@ export default function MessageView({ message, open, onClose }: MessageViewProps
         <div className="font-bold text-2xl">{message?.subject}</div>
         <div className="italic text-sm">{message?.sender}</div>
         <div className="mt-8">{message?.body}</div>
-        <Button variant="contained" sx={{ ml: 'auto', mt: 'auto', fontWeight: 700 }}>
+        <Button variant="contained" sx={replyBtnSx}>
           Reply
         </Button>
       </div>

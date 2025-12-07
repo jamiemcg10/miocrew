@@ -11,6 +11,9 @@ import Message from '@/lib/components/messages/Message'
 import type { BaseMessage } from '@/lib/types'
 import MessageView from '@/lib/components/messages/MessageView'
 import ComposeMessageDialog from '@/lib/components/messages/ComposeMessageDialog'
+import { noTextTransformSx } from '@/lib/styles/sx'
+
+const composeBtnSx = { fontWeight: 700, ml: 4, mb: 2 }
 
 export default function InboxPage() {
   const checkedMessages = messages.reduce((acc, c) => {
@@ -36,19 +39,16 @@ export default function InboxPage() {
         <div className="py-4 flex flex-wrap-reverse justify-end">
           <div
             className={(hasChecked ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'}>
-            <Button size="small" startIcon={<DraftsOutlinedIcon />} sx={{ textTransform: 'none' }}>
+            <Button size="small" startIcon={<DraftsOutlinedIcon />} sx={noTextTransformSx}>
               Mark read
             </Button>
-            <Button
-              size="small"
-              startIcon={<MarkunreadOutlinedIcon />}
-              sx={{ textTransform: 'none' }}>
+            <Button size="small" startIcon={<MarkunreadOutlinedIcon />} sx={noTextTransformSx}>
               Mark unread
             </Button>
             <Button
               size="small"
               startIcon={<DeleteRoundedIcon />}
-              sx={{ textTransform: 'none' }}
+              sx={noTextTransformSx}
               color="error">
               Delete
             </Button>
@@ -57,7 +57,7 @@ export default function InboxPage() {
           <Button
             variant="contained"
             startIcon={<EditRoundedIcon />}
-            sx={{ fontWeight: 700, ml: 4, mb: 2 }}
+            sx={composeBtnSx}
             onClick={() => setComposing(true)}>
             Compose
           </Button>

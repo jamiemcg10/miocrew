@@ -22,25 +22,29 @@ interface MenuProps {
   matches: boolean
 }
 
+const fullHeightSx = { height: '100%' }
+const greetingListItemSx = { pb: '1rem' }
+const drawerSx = {
+  width: '250px',
+  flexShrink: 0,
+  '& .MuiDrawer-paper': {
+    width: 'inherit'
+  }
+}
+
 export default function Menu({ open, handleClose, matches }: MenuProps) {
   const user = useContext(UserContext)
 
   return (
     <Drawer
-      sx={{
-        width: '250px',
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: 'inherit'
-        }
-      }}
+      sx={drawerSx}
       variant={matches ? 'permanent' : 'temporary'}
       anchor="left"
       open={matches || open}
       onClose={handleClose}>
-      <Box sx={{ height: '100%' }}>
-        <List sx={{ height: '100%' }}>
-          <ListItem key={'Greeting'} sx={{ pb: '1rem' }}>
+      <Box sx={fullHeightSx}>
+        <List sx={fullHeightSx}>
+          <ListItem key={'Greeting'} sx={greetingListItemSx}>
             <ListItemIcon>{user ? <CrewAvatar user={user} /> : null}</ListItemIcon>
             <ListItemText
               primary={`Hi ${user?.firstName}!`}

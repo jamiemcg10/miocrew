@@ -22,18 +22,22 @@ const Transition = forwardRef(function Transition(
   return <Zoom ref={ref} {...props} />
 })
 
+const dialogSx = {
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0,
+  position: 'absolute'
+}
+
+const closeBtnSx = { position: 'absolute', right: 8, top: 8 }
+
 export default function Popup({ open, onClose, backgroundColor, children }: PopupProps) {
   return (
     <Dialog
       slots={{ transition: Transition }}
       open={open}
-      sx={{
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        position: 'absolute'
-      }}
+      sx={dialogSx}
       slotProps={{
         paper: {
           sx: {
@@ -48,7 +52,7 @@ export default function Popup({ open, onClose, backgroundColor, children }: Popu
         }
       }}
       onClose={onClose}>
-      <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={onClose}>
+      <IconButton sx={closeBtnSx} onClick={onClose}>
         <CloseRoundedIcon />
       </IconButton>
       <div className="m-8 sm:m-12 h-full">{children}</div>

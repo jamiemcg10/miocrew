@@ -12,6 +12,13 @@ interface TaskViewProps {
   onClose: () => void
 }
 
+const iconSx = {
+  mr: 1,
+  '@media (min-width:640px)': {
+    mr: 2
+  }
+}
+
 export default function TaskView({ activeTask, onClose }: TaskViewProps) {
   return (
     <Popup open={!!activeTask} onClose={onClose}>
@@ -23,23 +30,9 @@ export default function TaskView({ activeTask, onClose }: TaskViewProps) {
             <CheckBoxOutlineBlankRoundedIcon fontSize="small" />
           )}
           {activeTask?.type === 'general' ? (
-            <EventRoundedIcon
-              sx={{
-                mr: 1,
-                '@media (min-width:640px)': {
-                  mr: 2
-                }
-              }}
-            />
+            <EventRoundedIcon sx={iconSx} />
           ) : (
-            <PieChartRoundedIcon
-              sx={{
-                mr: 1,
-                '@media (min-width:640px)': {
-                  mr: 2
-                }
-              }}
-            />
+            <PieChartRoundedIcon sx={iconSx} />
           )}
           {activeTask?.name}
         </div>

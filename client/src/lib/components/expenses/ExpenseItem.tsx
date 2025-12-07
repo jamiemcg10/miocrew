@@ -12,6 +12,11 @@ interface ExpenseItemProps {
   setActiveExpense: Dispatch<SetStateAction<Expense | null>>
 }
 
+const boltIconSx = {
+  color: 'goldenrod',
+  '.dark &': { color: 'yellow' }
+}
+
 export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemProps) {
   function onClick() {
     setActiveExpense(expense)
@@ -28,14 +33,7 @@ export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemPr
         <div className="flex items-center grow">
           <div className="pr-2 grow">
             {expense.name}
-            {expense.due === 'immediate' ? (
-              <BoltIcon
-                sx={{
-                  color: 'goldenrod',
-                  '.dark &': { color: 'yellow' }
-                }}
-              />
-            ) : null}
+            {expense.due === 'immediate' ? <BoltIcon sx={boltIconSx} /> : null}
           </div>
           <div className="flex items-center w-1/3 shrink-0 justify-end sm:justify-start">
             <CrewAvatar user={expense.paidBy} size="xs" />

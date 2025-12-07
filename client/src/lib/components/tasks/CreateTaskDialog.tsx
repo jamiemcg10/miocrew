@@ -10,6 +10,7 @@ import DialogPollOptions from './DialogPollOptions'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/TripContext'
 import { User } from '@/lib/types'
+import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 
 interface CreateTaskDialogProps {
   open: boolean
@@ -18,6 +19,8 @@ interface CreateTaskDialogProps {
 
 type TaskType = 'General' | 'Poll'
 
+const createTaskBtnSx = { fontWeight: 700, mt: 5 }
+
 export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
   const [type, setType] = useState<'General' | 'Poll' | ''>('')
   const [assignee, setAssignee] = useState<string>('')
@@ -25,10 +28,10 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
 
   return (
     <Dialog open={open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Create new task</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>Create new task</DialogTitle>
       <form className="flex flex-col m-10">
-        <TextField label="Task Name" required sx={{ mb: 2 }} />
-        <FormControl fullWidth sx={{ mb: 2 }}>
+        <TextField label="Task Name" required sx={mb2Sx} />
+        <FormControl fullWidth sx={mb2Sx}>
           <InputLabel>Task Type</InputLabel>
           <Select
             label="Task Type"
@@ -41,7 +44,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
             <MenuItem value="Poll">Poll</MenuItem>
           </Select>
         </FormControl>
-        <TextField label="Description" multiline rows={3} sx={{ mb: 2 }} />
+        <TextField label="Description" multiline rows={3} sx={mb2Sx} />
         {type === 'Poll' ? (
           <DialogPollOptions />
         ) : type === 'General' ? (
@@ -63,7 +66,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
             </Select>
           </FormControl>
         ) : null}
-        <Button variant="contained" sx={{ fontWeight: 700, mt: 5 }}>
+        <Button variant="contained" sx={createTaskBtnSx}>
           Create Task
         </Button>
       </form>
