@@ -9,7 +9,7 @@ export const pastTrips = [
       '2': { id: '2', firstName: 'Meryll', lastName: 'Streep', color: 'orangered', type: 'Crew' },
       '3': { id: '3', firstName: 'Jamie Lee', lastName: 'Curtis', color: 'turquoise', type: 'Crew' }
     },
-    sartDate: new Date('October 5, 2023'),
+    startDate: new Date('October 5, 2023'),
     endDate: new Date('October 12, 2023')
   },
   {

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import TabNav from './TabNav'
 import SchedulePage from '@/lib/components/event/SchedulePage'
 import CrewPage from '@/lib/components/crew/CrewPage'
-import { trips } from '@/lib/utils/dummyData'
+import { pastTrips, trips } from '@/lib/utils/dummyData'
 import TaskPage from '@/lib/components/tasks/TaskPage'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
@@ -15,7 +15,8 @@ import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
 export default function TripPage() {
   const { tripid } = useParams<{ tripid: string }>()
 
-  const trip = trips.find((trip) => trip.id === tripid)
+  const trip =
+    trips.find((trip) => trip.id === tripid) || pastTrips.find((trip) => trip.id === tripid)
   if (!trip) {
     notFound()
   }
