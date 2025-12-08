@@ -16,6 +16,8 @@ interface MessageItemProps {
   setChecked: Dispatch<SetStateAction<BaseMessage[]>>
 }
 
+const checkboxSx = { '& .MuiSvgIcon-root': { fontSize: 16 } }
+
 export default function MessageItem({
   message,
   onClick,
@@ -44,7 +46,7 @@ export default function MessageItem({
         onClick={(e) => {
           e.stopPropagation()
         }}
-        sx={{ '& .MuiSvgIcon-root': { fontSize: 16 } }}
+        sx={checkboxSx}
       />
       <div className={(!message.read ? 'font-extrabold' : 'opacity-90') + ' text-lg line-clamp-2'}>
         {message.subject}

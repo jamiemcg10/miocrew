@@ -17,6 +17,7 @@ interface SpecializedPollTaskViewProps {
 }
 
 // NOTE: Need to track who has completed poll to determine the view
+const submitBtnSx = { mt: 4, fontWeight: 700, width: 'fit-content' }
 
 export default function PollTaskView({ activeTask }: PollTaskViewProps) {
   if (!activeTask) return
@@ -51,7 +52,7 @@ function UncompletedPoll({ activeTask }: SpecializedPollTaskViewProps) {
           })}
         </FormGroup>
       </FormControl>
-      <Button variant="contained" sx={{ mt: 4, fontWeight: 700, width: 'fit-content' }}>
+      <Button variant="contained" sx={submitBtnSx}>
         Submit
       </Button>
     </form>

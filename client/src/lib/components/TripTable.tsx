@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Trip } from '../types'
 import { dateFormatter } from '../utils/dateFormatter'

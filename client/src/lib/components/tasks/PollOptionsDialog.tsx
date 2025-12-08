@@ -4,6 +4,10 @@ import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import { PollTaskOption } from '@/lib/types'
+import { mb2Sx } from '@/lib/styles/sx'
+
+const optTextFieldSx = { mr: 4 }
+const addOptionBtnSx = { my: 2, width: 'fit-content' }
 
 interface PollOptionsDialogProps {
   question: string
@@ -27,7 +31,7 @@ export default function PollOptionsDialog({
       <TextField
         label="Poll Question"
         size="small"
-        sx={{ mb: 2 }}
+        sx={mb2Sx}
         value={question}
         required
         onChange={(e) => {
@@ -42,7 +46,7 @@ export default function PollOptionsDialog({
                 label={`Option ${i + 1}`}
                 value={opt.label}
                 size="small"
-                sx={{ mr: 4 }}
+                sx={optTextFieldSx}
                 onChange={(e) => {
                   options[i].label = e.target.value
                   onChangeOptions([...options])
@@ -62,10 +66,7 @@ export default function PollOptionsDialog({
           )
         })}
       </div>
-      <Button
-        startIcon={<AddRoundedIcon />}
-        sx={{ my: 2, width: 'fit-content' }}
-        onClick={addOption}>
+      <Button startIcon={<AddRoundedIcon />} sx={addOptionBtnSx} onClick={addOption}>
         Add Option
       </Button>
     </>

@@ -10,6 +10,9 @@ interface ActiveIdeaProps {
   setActiveIdea: Dispatch<SetStateAction<Idea | null>>
 }
 
+const linkIconSx = { rotate: '135deg' }
+const emojiIconSx = { fontSize: 216 }
+
 export default function ActiveIdea({ activeIdea, setActiveIdea }: ActiveIdeaProps) {
   function onClose() {
     setActiveIdea(null)
@@ -24,7 +27,7 @@ export default function ActiveIdea({ activeIdea, setActiveIdea }: ActiveIdeaProp
       <div className="flex items-center space-x-1">
         <div className="font-bold text-2xl">{activeIdea.name}</div>
         {activeIdea.url ? (
-          <IconButton sx={{ rotate: '135deg' }} href={activeIdea.url} target="_blank">
+          <IconButton sx={linkIconSx} href={activeIdea.url} target="_blank">
             <LinkRoundedIcon />
           </IconButton>
         ) : null}
@@ -40,7 +43,7 @@ export default function ActiveIdea({ activeIdea, setActiveIdea }: ActiveIdeaProp
         {activeIdea.img ? (
           <img className="h-full rouded-sm" src={activeIdea.img} alt={activeIdea.name} />
         ) : (
-          <EmojiObjectsRoundedIcon sx={{ fontSize: 216 }} />
+          <EmojiObjectsRoundedIcon sx={emojiIconSx} />
         )}
       </div>
 

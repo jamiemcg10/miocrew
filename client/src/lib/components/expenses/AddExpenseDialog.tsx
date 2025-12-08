@@ -29,11 +29,15 @@ import { addExpense, ExpensePayload } from '@/db'
 import { Expense, isExpense } from '@/lib/types'
 import { CalendarDate, parseDate } from '@internationalized/date'
 import { expenseReducer, initialExpenseState } from './utils/expenseReducer'
+import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 
 interface AddExpenseDialogProps {
   open: boolean | Expense
   setOpen: Dispatch<SetStateAction<boolean | Expense>>
 }
+
+const boltIconSx = { ml: -1, mr: -0.5, color: 'goldenrod', '.dark &': { color: 'yellow' } }
+const addExpenseBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProps) {
   const trip = useContext(TripContext)
@@ -136,12 +140,12 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>{isExpense(open) ? 'Edit' : 'Add'} expense</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isExpense(open) ? 'Edit' : 'Add'} expense</DialogTitle>
       <div className="flex flex-col m-10 mt-4">
         <TextField
           label="Name"
           required
-          sx={{ mb: 2 }}
+          sx={mb2Sx}
           size="small"
           value={state.name.value}
           error={!state.name.valid}
@@ -153,7 +157,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
           label="Notes"
           multiline
           rows={1}
-          sx={{ mb: 2 }}
+          sx={mb2Sx}
           size="small"
           value={state.notes.value}
           onChange={(e) => {
@@ -269,10 +273,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
         <FormControlLabel
           label={
             <div>
-              <BoltIcon
-                sx={{ ml: -1, mr: -0.5, color: 'goldenrod', '.dark &': { color: 'yellow' } }}
-              />{' '}
-              <span>Request immediately</span>
+              <BoltIcon sx={boltIconSx} /> <span>Request immediately</span>
             </div>
           }
           control={<Checkbox checked={state.immediately.value} onChange={onChangeImmediately} />}
@@ -287,7 +288,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
             (state.type.value === 'Evenly' && !state.total.valid) ||
             (state.type.value === 'Custom' && !attendeesWithRefs.some((a) => a.amount > 0))
           }
-          sx={{ fontWeight: 700, mt: 5 }}>
+          sx={addExpenseBtnSx}>
           Save Expense
         </Button>
       </div>

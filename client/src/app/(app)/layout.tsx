@@ -25,12 +25,9 @@ export default function AppLayout({
     setMounted(true)
   }
 
-  const cachedToggleMenu = useCallback(
-    function (open?: boolean) {
-      setOpen(open || false)
-    },
-    [setOpen]
-  )
+  function toggleMenu(open?: boolean) {
+    setOpen(open || false)
+  }
 
   const [user, setUser] = useState<User | null>(null)
 
@@ -62,9 +59,9 @@ export default function AppLayout({
     <UserContext value={user}>
       <div className="absolute h-full w-full">
         <div className="flex h-full">
-          <Menu open={open} handleClose={cachedToggleMenu} matches={matches} />
+          <Menu open={open} handleClose={toggleMenu} matches={matches} />
           <div className="w-full flex flex-col overflow-hidden">
-            <TopBar toggleMenu={cachedToggleMenu} matches={matches} />
+            <TopBar toggleMenu={toggleMenu} matches={matches} />
             {children}
           </div>
         </div>

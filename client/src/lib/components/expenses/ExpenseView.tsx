@@ -17,6 +17,11 @@ interface ExpenseViewProps {
   onClose: () => void
 }
 
+const boltIconSx = { color: 'goldenrod', '.dark &': { color: 'yellow' }, ml: '-12px' }
+const tooltipSlotProps = {
+  popper: { modifiers: [{ name: 'offset', options: { offset: [12, -14] } }] }
+}
+
 export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseViewProps) {
   async function onDelete() {
     if (!user || !trip || !activeExpense) return
@@ -47,15 +52,8 @@ export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseV
         ) : null}
         <div className="flex text-2xl items-center space-x-2 font-bold">
           {activeExpense.due === 'immediate' ? (
-            <Tooltip
-              title="Pay now"
-              slotProps={{
-                popper: { modifiers: [{ name: 'offset', options: { offset: [12, -14] } }] }
-              }}>
-              <BoltIcon
-                fontSize="large"
-                sx={{ color: 'goldenrod', '.dark &': { color: 'yellow' }, ml: '-12px' }}
-              />
+            <Tooltip title="Pay now" slotProps={tooltipSlotProps}>
+              <BoltIcon fontSize="large" sx={boltIconSx} />
             </Tooltip>
           ) : null}
           {activeExpense.name}

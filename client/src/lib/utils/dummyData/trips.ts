@@ -4,6 +4,8 @@ export const trips = [
   {
     id: '1',
     name: 'Wine Moms Take on Napa',
+    location: 'Napa, CA',
+    description: '',
     attendees: {
       '1': {
         id: '1',
@@ -30,12 +32,14 @@ export const trips = [
         email: 'jamie.lee.curtis@sagaftra.com'
       }
     },
-    startDate: new Date('August 5, 2026'),
-    endDate: new Date('August 12, 2026')
+    startDate: 'August 5, 2026',
+    endDate: 'August 12, 2026'
   },
   {
     id: '2',
     name: 'Streep Family Vacation',
+    location: 'Los Angeles, CA',
+    description: '',
     attendees: {
       '2': {
         id: '2',
@@ -70,12 +74,14 @@ export const trips = [
         email: 'astro.streep@yahoo.com'
       }
     },
-    startDate: new Date('December 24, 2026'),
-    endDate: new Date('January 2, 2027')
+    startDate: 'December 24, 2026',
+    endDate: 'January 2, 2027'
   },
   {
     id: '3',
     name: 'Monster Jam',
+    location: 'Manchester, NH',
+    description: '',
     attendees: {
       '2': {
         id: '2',
@@ -134,11 +140,13 @@ export const trips = [
         email: 'jack.daniels@distillersunion.com'
       }
     },
-    startDate: new Date('October 4, 2025')
+    startDate: 'March 4, 2026'
   },
   {
     id: 'p1',
     name: 'Wine Moms Took on Napa',
+    location: 'Napa, CA',
+    description: '',
     attendees: {
       '1': {
         id: '1',
@@ -165,12 +173,14 @@ export const trips = [
         email: 'jamie.lee.curtis@sagaftra.com'
       }
     },
-    startDate: new Date('October 5, 2023'),
-    endDate: new Date('October 12, 2023')
+    startDate: 'October 5, 2023',
+    endDate: 'October 12, 2023'
   },
   {
     id: 'p2',
     name: "Last Year's Streep Family Vacation",
+    location: 'Atlanta, GA',
+    description: '',
     attendees: {
       '2': {
         id: '2',
@@ -205,12 +215,14 @@ export const trips = [
         email: 'astro.streep@yahoo.com'
       }
     },
-    startDate: new Date('December 24, 2024'),
-    endDate: new Date('January 2, 2025')
+    startDate: 'December 24, 2024',
+    endDate: 'January 2, 2025'
   },
   {
     id: 'p3',
     name: 'Monster Jam 2019',
+    location: 'Concord, NH',
+    description: '',
     attendees: {
       '2': {
         id: '2',
@@ -269,6 +281,6 @@ export const trips = [
         email: 'jack.daniels@distillersunion.com'
       }
     },
-    startDate: new Date('October 12, 2019')
+    startDate: 'October 12, 2019'
   }
 ] as Trip[]

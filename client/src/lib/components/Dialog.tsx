@@ -13,6 +13,11 @@ interface DialogProps {
   children: ReactNode
 }
 
+const closeBtnSx = { position: 'absolute', right: 8, top: 8 }
+const dialogSlotProps = {
+  paper: { sx: { '@media (min-width: 560px)': { width: '50%' } } }
+}
+
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,11 +41,9 @@ export default function Dialog({ open, setOpen, children }: DialogProps) {
       open={open}
       fullScreen={fullScreen}
       slots={{ transition: Transition }}
-      slotProps={{
-        paper: { sx: { '@media (min-width: 560px)': { width: '50%' } } }
-      }}
+      slotProps={dialogSlotProps}
       onClose={onClose}>
-      <IconButton sx={{ position: 'absolute', right: 8, top: 8 }} onClick={onClose}>
+      <IconButton sx={closeBtnSx} onClick={onClose}>
         <CloseRoundedIcon />
       </IconButton>
       {children}

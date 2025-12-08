@@ -12,6 +12,13 @@ interface IdeasProps {
   setOpenAddDialog: Dispatch<SetStateAction<Idea | boolean>>
 }
 
+const addIdeaBtnSx = {
+  mb: '12px',
+  alignSelf: 'end',
+  width: 'initial',
+  fontWeight: 600
+}
+
 export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
   function onClickAddButton() {
     setOpenAddDialog(true)
@@ -24,12 +31,7 @@ export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
       <Button
         variant="contained"
         startIcon={<EmojiObjectsRoundedIcon />}
-        sx={{
-          mb: '12px',
-          alignSelf: 'end',
-          width: 'initial',
-          fontWeight: 600
-        }}
+        sx={addIdeaBtnSx}
         onClick={onClickAddButton}>
         Add idea
       </Button>

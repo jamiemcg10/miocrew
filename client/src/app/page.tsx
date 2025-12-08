@@ -1,6 +1,8 @@
 import Button from '@mui/material/Button'
 import Image from 'next/image'
 
+const startBtnSx = { width: '100%', mt: 8 }
+
 export default function Home() {
   return (
     <div className="p-4 text-center flex flex-col py-18 not-sm:py-36 items-center">
@@ -17,7 +19,7 @@ export default function Home() {
       </div>
       <div>Get your plans out of the group chat</div>
       <div className="w-full sm:w-1/2">
-        <Button variant="contained" href="/dashboard" sx={{ width: '100%', mt: 8 }}>
+        <Button variant="contained" href="/dashboard" sx={startBtnSx}>
           Get started!
         </Button>
       </div>

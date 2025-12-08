@@ -16,11 +16,17 @@ import { Idea, isIdea } from '@/lib/types'
 import { createIdea, updateIdea } from '@/db'
 import { ideaReducer, initialIdeaState } from './utils/ideaReducer'
 import { NumberInput } from '@heroui/number-input'
+import { dialogTitleSx } from '@/lib/styles/sx'
 
 interface AddIdeaDialogProps {
   open: boolean | Idea
   setOpen: Dispatch<SetStateAction<boolean | Idea>>
 }
+
+const linkInputSx = { my: 2 }
+const descInputSx = { mt: 2 }
+const addIdeaBtnSx = { fontWeight: 700, mt: 5 }
+const costTypeHelperSx = { position: 'absolute', ml: 0, bottom: '-8px' }
 
 export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
   function valuesAreUnchanged() {
@@ -102,7 +108,7 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>{isIdea(open) ? 'Edit' : 'Add'} Idea</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isIdea(open) ? 'Edit' : 'Add'} Idea</DialogTitle>
       <div className="flex flex-col m-10 mt-5">
         <TextField
           label="Name"
@@ -113,7 +119,7 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
         />
         <TextField
           label="Link"
-          sx={{ my: 2 }}
+          sx={linkInputSx}
           size="small"
           value={state.url.value}
           onChange={(e) => dispatch({ type: 'url', value: e.target.value })}
@@ -143,7 +149,7 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
               <FormControlLabel label="Each" value="each" control={<Radio size="small" />} />
               <FormControlLabel label="Total" value="total" control={<Radio size="small" />} />
             </RadioGroup>
-            <FormHelperText sx={{ position: 'absolute', ml: 0, bottom: '-8px' }}>
+            <FormHelperText sx={costTypeHelperSx}>
               {!state.costType.valid && 'Must select type of cost'}
             </FormHelperText>
           </FormControl>
@@ -154,11 +160,11 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
           onChange={(e) => dispatch({ type: 'description', value: e.target.value })}
           multiline
           rows={3}
-          sx={{ mt: 2 }}
+          sx={descInputSx}
         />
         <Button
           variant="contained"
-          sx={{ fontWeight: 700, mt: 5 }}
+          sx={addIdeaBtnSx}
           type="submit"
           disabled={!state.name.value}
           onClick={saveIdea}>

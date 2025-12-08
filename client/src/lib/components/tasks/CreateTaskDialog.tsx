@@ -16,11 +16,14 @@ import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { createTask, updateTask } from '@/db/tasks'
 import { TaskPayload } from '@/db'
 import { taskReducer, initialTaskState } from './utils/taskReducer'
+import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 
 interface CreateTaskDialogProps {
   open: boolean | Task
   setOpen: Dispatch<SetStateAction<boolean | Task>>
 }
+
+const createTaskBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
   const [state, dispatch] = useReducer(taskReducer, initialTaskState)
@@ -89,21 +92,19 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>
-        {isTask(open) ? 'Edit' : 'Create new'} task
-      </DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isTask(open) ? 'Edit' : 'Create new'} task</DialogTitle>
       <form className="flex flex-col m-10">
         <TextField
           label="Task Name"
           required
-          sx={{ mb: 2 }}
+          sx={mb2Sx}
           value={state.name.value}
           error={!state.name.valid}
           onChange={(e) => {
             dispatch({ type: 'name', value: e.target.value })
           }}
         />
-        <FormControl fullWidth sx={{ mb: 2 }}>
+        <FormControl fullWidth sx={mb2Sx}>
           <InputLabel>Task Type</InputLabel>
           <Select
             label="Task Type"
@@ -129,7 +130,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
               label="Description"
               multiline
               rows={3}
-              sx={{ mb: 2 }}
+              sx={mb2Sx}
               value={state.description.value}
               onChange={(e) => {
                 dispatch({ type: 'description', value: e.target.value })
@@ -140,7 +141,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
               <Select
                 label="Assignee"
                 value={state.assigneeId.value}
-                sx={{ mb: 2 }}
+                sx={mb2Sx}
                 error={!state.assigneeId.valid}
                 onChange={(e) => {
                   dispatch({ type: 'assigneeId', value: e.target.value })
@@ -178,7 +179,7 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
         />
         <Button
           variant="contained"
-          sx={{ fontWeight: 700, mt: 5 }}
+          sx={createTaskBtnSx}
           disabled={!state.name || (!state.assigneeId.value && state.type.value === 'general')}
           onClick={saveTask}>
           Save Task

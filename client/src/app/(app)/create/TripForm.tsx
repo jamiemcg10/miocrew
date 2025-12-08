@@ -12,10 +12,20 @@ import { initialTripState, tripReducer } from './utils/tripReducer'
 import { CalendarDate, getLocalTimeZone, parseDate, today } from '@internationalized/date'
 import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
-import Alert from '@mui/material/Alert'
 import Snackbar from '@mui/material/Snackbar'
 
 const fieldStyles = { width: '100%' }
+const createTripBtnSx = {
+  marginTop: '3rem',
+  padding: '12px',
+  fontWeight: 600,
+  width: '100%',
+  alignSelf: 'end',
+  '@media (min-width: 640px)': {
+    marginTop: '2rem',
+    width: 'auto'
+  }
+}
 
 export default function TripForm() {
   const user = useContext(UserContext)
@@ -222,17 +232,7 @@ export default function TripForm() {
         variant="contained"
         disabled={Object.values(tripState).some((v) => !v.valid) || saving}
         onClick={saveTrip}
-        sx={{
-          marginTop: '3rem',
-          padding: '12px',
-          fontWeight: 600,
-          width: '100%',
-          alignSelf: 'end',
-          '@media (min-width: 640px)': {
-            marginTop: '2rem',
-            width: 'auto'
-          }
-        }}>
+        sx={createTripBtnSx}>
         Create trip
       </Button>
       <Snackbar

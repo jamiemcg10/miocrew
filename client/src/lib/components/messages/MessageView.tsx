@@ -15,6 +15,8 @@ interface MessageViewProps {
   onToggleRead: () => void
 }
 
+const replyBtnSx = { ml: 'auto', mt: 'auto', fontWeight: 700 }
+
 export default function MessageView({
   message,
   open,
@@ -59,7 +61,7 @@ export default function MessageView({
               </IconButton>
             </Tooltip>
           </div>
-          <Button variant="contained" sx={{ ml: 'auto', fontWeight: 700 }}>
+          <Button variant="contained" sx={replyBtnSx}>
             Reply
           </Button>
         </div>

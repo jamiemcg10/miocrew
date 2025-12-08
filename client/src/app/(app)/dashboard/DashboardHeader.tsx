@@ -6,12 +6,13 @@ interface DashboardHeaderProps {
   upcomingTrips: Trip[]
 }
 
+const today = dayjs(new Date())
+
 export default function DashboardHeader({ upcomingTrips }: DashboardHeaderProps) {
   const nextTrip = upcomingTrips
     .filter((trip) => new Date(trip.startDate) >= new Date())
     .sort(tripSort)[0]
 
-  const today = dayjs(new Date())
   const nextTripStart = dayjs(nextTrip?.startDate).diff(today, 'day')
   const nextTripStartMonths = dayjs(nextTrip?.startDate).diff(today, 'month')
 

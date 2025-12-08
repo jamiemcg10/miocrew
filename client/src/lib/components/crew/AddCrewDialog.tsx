@@ -21,6 +21,17 @@ interface CrewSelectOption {
   id: string
 }
 
+const dialogTitleSx = { fontWeight: 700 }
+const autocompleteSx = {
+  '.MuiInputBase-root': { alignItems: 'flex-start' }
+}
+const textFieldSx = {
+  width: '100%',
+  placeItems: 'flex-start',
+  alignItems: 'flex-start!important'
+}
+const addCrewBtnSx = { fontWeight: 700, mt: 5 }
+
 export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
@@ -76,7 +87,7 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
 
   return (
     <Dialog open={open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Add Crew Members</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>Add Crew Members</DialogTitle>
       <form className="flex flex-col m-10 mt-5">
         <div>
           <Autocomplete
@@ -88,9 +99,7 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
             multiple
             freeSolo
             clearText="Clear"
-            sx={{
-              '.MuiInputBase-root': { alignItems: 'flex-start' }
-            }}
+            sx={autocompleteSx}
             filterOptions={(users, params) => {
               const filtered = users.filter(
                 (user) =>
@@ -112,16 +121,12 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
                 multiline
                 minRows={8}
                 maxRows={10}
-                sx={{
-                  width: '100%',
-                  placeItems: 'flex-start',
-                  alignItems: 'flex-start!important'
-                }}
+                sx={textFieldSx}
               />
             )}
           />
         </div>
-        <Button variant="contained" onClick={saveCrew} sx={{ fontWeight: 700, mt: 5 }}>
+        <Button variant="contained" onClick={saveCrew} sx={addCrewBtnSx}>
           Add Crew Members
         </Button>
       </form>

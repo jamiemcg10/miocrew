@@ -10,6 +10,8 @@ interface DashboardProps {
   upcomingTrips: Trip[]
 }
 
+const buttonSx = { margin: '16px 0 16px 0', alignSelf: 'end', width: 'initial', fontWeight: 600 }
+
 export default function Dashboard({ upcomingTrips }: DashboardProps) {
   return (
     <div className="flex flex-col px-4">
@@ -18,12 +20,7 @@ export default function Dashboard({ upcomingTrips }: DashboardProps) {
         color="secondary"
         variant="contained"
         startIcon={<AddRoundedIcon />}
-        sx={{
-          margin: '16px 0 16px 0',
-          alignSelf: 'end',
-          width: 'initial',
-          fontWeight: 600
-        }}>
+        sx={buttonSx}>
         Create trip
       </Button>
       <TripTable trips={upcomingTrips} title="Upcoming trips" />

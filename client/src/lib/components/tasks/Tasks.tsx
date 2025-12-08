@@ -19,6 +19,15 @@ interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean | Task>>
 }
 
+const createTaskBtnSx = {
+  mb: '24px',
+  alignSelf: 'end',
+  width: 'initial',
+  fontWeight: 600
+}
+
+const chipSx = { pl: '8px' }
+
 export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   function handleBasicFilterClick(value: string) {
     const updatedFilters = filters.includes(value)
@@ -89,12 +98,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
       <Button
         variant="contained"
         startIcon={<AddTaskRoundedIcon />}
-        sx={{
-          mb: '24px',
-          alignSelf: 'end',
-          width: 'initial',
-          fontWeight: 600
-        }}
+        sx={createTaskBtnSx}
         onClick={() => setOpenCreateDialog(true)}>
         Create task
       </Button>
@@ -124,7 +128,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
               avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
               key={i}
               variant={crewFilter === a.id ? 'filled' : 'outlined'}
-              sx={{ pl: '8px' }}
+              sx={chipSx}
               onClick={() => handleCrewFilterClick(a.id)}
             />
           )

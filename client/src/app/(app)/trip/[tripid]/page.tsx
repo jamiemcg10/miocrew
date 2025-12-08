@@ -66,9 +66,9 @@ export default function TripPage() {
   return (
     <div className="relative overflow-hidden flex flex-col grow">
       <div
-        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 line-clamp-1 text-(--dk-blue) dark:!text-(--lt-blue) border-b-4 !border-b-(--dk-blue) dark:!border-b-(--lt-blue)"
+        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 text-(--dk-blue) dark:!text-(--lt-blue) border-b-4 !border-b-(--dk-blue) dark:!border-b-(--lt-blue)"
         style={{ borderStyle: 'double' }}>
-        {trip.name}
+        <div className="line-clamp-1">{trip.name}</div>
       </div>
       <TabNav page={page} setPage={setPage} />
       <div className="py-8 px-8 sm:px-16 sm:py-4 flex flex-col overflow-y-hidden font-bold space-y-4 grow">

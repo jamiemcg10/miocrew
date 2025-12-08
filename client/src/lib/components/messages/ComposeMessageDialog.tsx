@@ -20,6 +20,11 @@ const textFieldSx = {
   my: 1
 }
 
+const sendBtnSx = { ml: 'auto', mt: 'auto', fontWeight: 700 }
+const msgFieldSx = { ...textFieldSx, height: '100%' }
+const editIconSx = { mr: 1 }
+const msgSlotProps = { input: { sx: { height: '100%', placeItems: 'self-start' } } }
+
 export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
   function getOptionLabel(option: RecipientOption) {
     return option.name
@@ -83,7 +88,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
     <Popup open={open} onClose={onClose}>
       <div className="h-full flex flex-col space-y-4">
         <div className="font-bold text-2xl flex items-center">
-          <EditRoundedIcon sx={{ mr: 1 }} /> Compose
+          <EditRoundedIcon sx={editIconSx} /> Compose
         </div>
         <TextField
           label="Subject"
@@ -114,16 +119,14 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
           required
           value={state.body}
           onChange={(e) => dispatch({ type: 'body', value: e.target.value })}
-          sx={{ ...textFieldSx, height: '100%' }}
-          slotProps={{ input: { sx: { height: '100%', placeItems: 'self-start' } } }}
+          sx={msgFieldSx}
+          slotProps={msgSlotProps}
         />
         <Button
           variant="contained"
           startIcon={<SendRoundedIcon />}
           onClick={saveMessage}
-          sx={{ ml: 'auto', mt: 'auto', fontWeight: 700 }}>
-          Send
-        </Button>
+          sx={sendBtnSx}></Button>
       </div>
     </Popup>
   )

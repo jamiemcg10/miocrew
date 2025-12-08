@@ -13,6 +13,9 @@ interface GeneralTaskViewProps {
   closeView: () => void
 }
 
+const completeBtnSx = { position: 'absolute', left: '3rem', bottom: '3rem' }
+const fullWidthSx = { width: '100%' }
+
 export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskViewProps) {
   if (!activeTask) return
 
@@ -68,7 +71,7 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
         onChange={(e) => {
           setNotes(e.target.value)
         }}
-        sx={{ width: '100%' }}
+        sx={fullWidthSx}
         disabled={editDisabled}
       />
       {!editDisabled && (
@@ -76,7 +79,7 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
           startIcon={<CheckBoxRoundedIcon fontSize="small" />}
           variant="contained"
           onClick={markAsComplete}
-          sx={{ position: 'absolute', left: '3rem', bottom: '3rem' }}>
+          sx={completeBtnSx}>
           Mark as complete
         </Button>
       )}

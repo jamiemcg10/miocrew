@@ -15,11 +15,14 @@ import {
   activityReducer,
   initialActivityState
 } from '@/lib/components/activity/utils/activityReducer'
+import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 
 interface AddActivityDialogProps {
   open: boolean | Activity
   setOpen: Dispatch<SetStateAction<boolean | Activity>>
 }
+
+const saveActivityBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function AddActivityDialog({ open, setOpen }: AddActivityDialogProps) {
   function getPayload() {
@@ -78,14 +81,14 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={{ fontWeight: 700 }}>Add Activity</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>Add Activity</DialogTitle>
       <div className="flex flex-col m-10">
         <TextField
           label="Activity Name"
           required
           value={state.name.value}
           onChange={(e) => dispatch({ type: 'name', value: e.target.value })}
-          sx={{ mb: 2 }}
+          sx={mb2Sx}
         />
         <TextField
           label="Activity Description"
@@ -93,13 +96,13 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
           rows={3}
           value={state.description.value}
           onChange={(e) => dispatch({ type: 'description', value: e.target.value })}
-          sx={{ mb: 2 }}
+          sx={mb2Sx}
         />
         <TextField
           label="Location"
           value={state.location.value}
           onChange={(e) => dispatch({ type: 'location', value: e.target.value })}
-          sx={{ mb: 2 }}
+          sx={mb2Sx}
         />
         <div className="flex mb-2">
           <DatePicker
@@ -164,7 +167,7 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
         <Button
           variant="contained"
           type="submit"
-          sx={{ fontWeight: 700, mt: 5 }}
+          sx={saveActivityBtnSx}
           disabled={!state.name.value || !state.startDate.value || !state.startTime.value}
           onClick={saveActivity}>
           Save Activity

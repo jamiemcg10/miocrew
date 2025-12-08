@@ -15,6 +15,8 @@ interface IdeaCardProps {
   onEditIdea: () => void
 }
 
+const emojiIconSx = { fontSize: 68 }
+
 export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardProps) {
   function onClick() {
     setActiveIdea(idea)
@@ -43,7 +45,7 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardPr
           {idea.img ? (
             <img className="h-full" src={idea.img} alt={idea.name} />
           ) : (
-            <EmojiObjectsRoundedIcon sx={{ fontSize: 68 }} />
+            <EmojiObjectsRoundedIcon sx={emojiIconSx} />
           )}
         </div>
         <div className="flex flex-col justify-between grow">

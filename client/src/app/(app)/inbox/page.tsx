@@ -19,6 +19,9 @@ import {
   getMessages,
   toggleMessageReadStatus
 } from '@/db'
+import { noTextTransformSx } from '@/lib/styles/sx'
+
+const composeBtnSx = { fontWeight: 700, ml: 4, mb: 2 }
 
 export default function InboxPage() {
   const user = useContext(UserContext)
@@ -91,7 +94,7 @@ export default function InboxPage() {
                 size="small"
                 startIcon={<DraftsOutlinedIcon />}
                 onClick={() => batchToggleStatus('read')}
-                sx={{ textTransform: 'none' }}>
+                sx={noTextTransformSx}>
                 Mark read
               </Button>
             )}
@@ -100,7 +103,7 @@ export default function InboxPage() {
                 size="small"
                 startIcon={<MarkunreadOutlinedIcon />}
                 onClick={() => batchToggleStatus('unread')}
-                sx={{ textTransform: 'none' }}>
+                sx={noTextTransformSx}>
                 Mark unread
               </Button>
             )}
@@ -108,7 +111,7 @@ export default function InboxPage() {
               size="small"
               startIcon={<DeleteRoundedIcon />}
               onClick={() => batchDelete()}
-              sx={{ textTransform: 'none' }}
+              sx={noTextTransformSx}
               color="error">
               Delete
             </Button>
@@ -117,7 +120,7 @@ export default function InboxPage() {
           <Button
             variant="contained"
             startIcon={<EditRoundedIcon />}
-            sx={{ fontWeight: 700, ml: 4, mb: 2 }}
+            sx={composeBtnSx}
             onClick={() => setComposing(true)}>
             Compose
           </Button>

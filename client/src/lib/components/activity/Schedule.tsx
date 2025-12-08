@@ -14,6 +14,8 @@ interface ScheduleProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean | Activity>>
 }
 
+const addActivityBtnSx = { width: 'initial', fontWeight: 600 }
+
 export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
   function setOpenAddDialogTrue() {
     setOpenAddDialog(true)
@@ -66,7 +68,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
           <Button
             variant="contained"
             startIcon={<AddRoundedIcon />}
-            sx={{ width: 'initial', fontWeight: 600 }}
+            sx={addActivityBtnSx}
             onClick={setOpenAddDialogTrue}>
             Add activity
           </Button>
