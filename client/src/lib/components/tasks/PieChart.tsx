@@ -6,13 +6,13 @@ interface PieChartProps {
 }
 
 export default function PieChart({ results }: PieChartProps) {
-  const totalResponses = results.reduce((acc, c) => acc + c.votes, 0)
+  const totalResponses = results.reduce((acc, c) => acc + (c.votes || 0), 0)
   const maxFreq = Math.max(...(results.map((r) => r.votes) as number[]))
 
   const mappedResults = results.map((result) => {
     return {
       ...result,
-      pct: result.votes / totalResponses
+      pct: (result.votes || 0) / totalResponses
     }
   })
 
@@ -40,7 +40,7 @@ export default function PieChart({ results }: PieChartProps) {
                 style={{ backgroundColor: appColors[19 - i] }}></div>
               <div
                 className={result.votes === maxFreq ? 'font-bold' : 'font-light'}
-                title={`${(result.votes / totalResponses) * 100}%`}>
+                title={`${((result.votes || 0) / totalResponses) * 100}%`}>
                 {result.label} - {Math.round(result.pct * 100)}%
               </div>
             </div>
