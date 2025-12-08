@@ -29,7 +29,7 @@ export default function InboxPage() {
   const storedMessages = LocalStorage.get<BaseMessage[]>('messages')
   const [messages, setMessages] = useState<BaseMessage[]>(storedMessages || [])
   const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
-  const [composing, setComposing] = useState(false)
+  const [composing, setComposing] = useState<boolean | BaseMessage>(false)
 
   function onDeleteMessage(messageId: string) {
     if (!user) return
@@ -149,6 +149,12 @@ export default function InboxPage() {
         message={activeMessage}
         open={!!activeMessage}
         onClose={() => setActiveMessage(null)}
+        onReply={() => {
+          if (!activeMessage) return
+
+          setComposing(activeMessage)
+          setActiveMessage(null)
+        }}
         onDelete={() => {
           if (!activeMessage) return
 

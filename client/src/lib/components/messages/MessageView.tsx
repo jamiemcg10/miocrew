@@ -12,6 +12,7 @@ interface MessageViewProps {
   open: boolean
   onClose: () => void
   onDelete: () => void
+  onReply: () => void
   onToggleRead: () => void
 }
 
@@ -22,6 +23,7 @@ export default function MessageView({
   open,
   onClose,
   onDelete,
+  onReply,
   onToggleRead
 }: MessageViewProps) {
   return (
@@ -61,7 +63,7 @@ export default function MessageView({
               </IconButton>
             </Tooltip>
           </div>
-          <Button variant="contained" sx={replyBtnSx}>
+          <Button variant="contained" sx={replyBtnSx} onClick={onReply}>
             Reply
           </Button>
         </div>

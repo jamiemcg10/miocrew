@@ -5,14 +5,14 @@ import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import Autocomplete from '@mui/material/Autocomplete'
 import { useContext, useEffect, useState, useReducer } from 'react'
-import { Trip, User, RecipientOption } from '@/lib/types'
+import { Trip, User, RecipientOption, BaseMessage, isMessage } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { getUsers } from '@/db/users'
 import { getTrips, createMessage } from '@/db'
 import { messageReducer, initialMessageState } from './utils/messageReducer'
 
 interface ComposeMessageDialogProps {
-  open: boolean
+  open: boolean | BaseMessage
   onClose: () => void
 }
 
@@ -67,12 +67,18 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
       return { name: `${u.firstName} ${u.lastName}`, id: u.id, type: 'user' }
     })
     setCombinedRecipientOptions([...tripOptions, ...userOptions])
-  }, [users, trips])
+
+    if (isMessage(open)) {
+      dispatch({ type: 'set-reply', value: open })
+    }
+  }, [users, trips, open])
 
   function saveMessage() {
     if (!user) return
 
-    createMessage({ userId: user.id, data: state }).then().catch()
+    createMessage({ userId: user.id, data: state })
+      .then()
+      .catch((e) => console.error('Error sending message', e))
     dispatch({ type: 'reset-message' })
 
     onClose()
@@ -85,7 +91,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
   if (!user) return
 
   return (
-    <Popup open={open} onClose={onClose}>
+    <Popup open={!!open} onClose={onClose}>
       <div className="h-full flex flex-col space-y-4">
         <div className="font-bold text-2xl flex items-center">
           <EditRoundedIcon sx={editIconSx} /> Compose
@@ -126,7 +132,9 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
           variant="contained"
           startIcon={<SendRoundedIcon />}
           onClick={saveMessage}
-          sx={sendBtnSx}></Button>
+          sx={sendBtnSx}>
+          Send
+        </Button>
       </div>
     </Popup>
   )

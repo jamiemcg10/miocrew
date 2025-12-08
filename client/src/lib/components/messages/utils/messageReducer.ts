@@ -1,4 +1,4 @@
-import { RecipientOption } from '@/lib/types'
+import { BaseMessage, isMessage, RecipientOption } from '@/lib/types'
 
 interface MessageState {
   recipients: RecipientOption[]
@@ -14,10 +14,24 @@ export const initialMessageState = {
 
 export function messageReducer(
   state: MessageState,
-  action: { type: string; value?: string | (string | RecipientOption)[] }
+  action: { type: string; value?: string | (string | RecipientOption)[] | BaseMessage }
 ) {
   if (action.type === 'reset-message') {
     return initialMessageState
+  }
+
+  if (action.type === 'set-reply' && isMessage(action.value)) {
+    return {
+      ...state,
+      subject: `Re: ${action.value.subject}`,
+      recipients: [
+        {
+          name: `${action.value.sender.firstName} ${action.value.sender.lastName}`,
+          id: action.value.senderId,
+          type: 'user'
+        }
+      ]
+    }
   }
 
   return {

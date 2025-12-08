@@ -16,3 +16,12 @@ export interface RecipientOption {
   id: string
   type: string
 }
+
+export function isMessage(v?: boolean | string | BaseMessage | any[]): v is BaseMessage {
+  return (
+    typeof v !== 'boolean' &&
+    typeof v !== 'string' &&
+    v !== undefined &&
+    Object.hasOwn(v, 'subject')
+  )
+}
