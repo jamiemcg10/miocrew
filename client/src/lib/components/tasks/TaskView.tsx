@@ -68,7 +68,7 @@ export default function TaskView({ activeTask, onEdit, onClose }: TaskViewProps)
           {activeTask?.name}
         </div>
         {activeTask?.type === 'poll' ? (
-          <PollTaskView activeTask={activeTask} />
+          <PollTaskView activeTask={activeTask} closeView={onClose} />
         ) : (
           <GeneralTaskView activeTask={activeTask} closeView={onClose} />
         )}

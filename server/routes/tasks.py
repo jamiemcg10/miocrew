@@ -1,4 +1,5 @@
 
+from typing import List
 import uuid
 from fastapi import APIRouter, Depends
 
@@ -79,6 +80,19 @@ async def update_task(user_id: str, trip_id: str, task: FullTaskUpdate, db: Sess
     db.flush()
 
     return {"status": "updated", "id": updated_task.id}
+
+@router.patch("/user/{user_id}/trip/{trip_id}/poll/poll_options/update")
+async def update_poll_options(user_id: str, trip_id: str, options: List[str], db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+
+    update_stmt = update(Poll_Task_Options).where(Poll_Task_Options.id.in_(options)).values(votes=Poll_Task_Options.votes + 1)
+
+    db.execute(update_stmt)
+
+    db.flush()
+
+    return {"status": "votes updated", "ids": options}
 
 
 @router.delete("/user/{user_id}/trip/{trip_id}/task/{task_id}/delete")

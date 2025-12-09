@@ -15,6 +15,10 @@ interface UpdateTaskArgs extends BaseTaskArgs {
   data: { task: Partial<TaskPayload>; poll_options?: PollTaskOption[] | null }
 }
 
+interface UpdatePollVoteArgs extends BaseTaskArgs {
+  ids: string[]
+}
+
 interface deleteTripArgs extends BaseTaskArgs {
   taskId: string
 }
@@ -51,6 +55,19 @@ export function updateTask(args: UpdateTaskArgs) {
     method: 'patch',
     url: requestUrl,
     data: { ...data, poll_options: data.poll_options || null },
+    withCredentials: true
+  })
+}
+
+export function updatePollVote(args: UpdatePollVoteArgs) {
+  const { userId, tripId, ids } = args
+
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/poll/poll_options/update`
+
+  return axios({
+    method: 'patch',
+    url: requestUrl,
+    data: ids,
     withCredentials: true
   })
 }
