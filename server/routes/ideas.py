@@ -1,6 +1,6 @@
 from fastapi import Depends, APIRouter
 
-from models.models import Trips, Attendees, Ideas
+from models.models import Trips, Attendees, Ideas, Idea_Likes
 from schemas import IdeasBase
 from utils.is_valid_user import is_valid_user
 from utils.flatten import flatten_idea
@@ -27,6 +27,19 @@ async def ideas(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
         ideas.append(flattened_idea)
 
     return {"ideas": ideas}
+
+@router.get("/user/{user_id}/trip/{trip_id}/ideas/likes")
+async def idea_likes(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
+    stmt = select(Idea_Likes).join(Ideas, Idea_Likes.idea_id == Ideas.id).where(Idea_Likes.attendee_id == user_id).where(Ideas.trip_id == trip_id)
+
+    results = db.execute(stmt).scalars().all()
+
+    idea_likes = [x.idea_id for x in results]
+
+    for result in results:
+        print("result", result.__dict__)
+
+    return {"idea_likes": idea_likes}
 
 @router.post("/user/{user_id}/trip/{trip_id}/ideas/create")
 async def create_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session = Depends(get_user_db)):

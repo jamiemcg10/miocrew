@@ -1,13 +1,6 @@
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
-from sqlalchemy import String
-from sqlalchemy import Integer
-from sqlalchemy import Float
-from typing import Optional
-from typing import List
+from sqlalchemy.orm import DeclarativeBase, Mapped, relationship, column_property, mapped_column
+from sqlalchemy import ForeignKey, String, Integer, Float, select, func
+from typing import Optional, List
 
 class Base(DeclarativeBase):
     pass
@@ -71,6 +64,14 @@ class Message_Recipients(Base):
     read: Mapped[int] = mapped_column(Integer)
     message: Mapped["Messages"] = relationship(back_populates="message_recipients")
 
+class Idea_Likes(Base):
+    __tablename__ = "idea_likes"
+
+    id: Mapped[str] = mapped_column(primary_key=True)
+    idea_id: Mapped[str] = mapped_column(String)
+    attendee_id: Mapped[str] = mapped_column(String)
+    like: Mapped[bool] = mapped_column(Integer)
+
 class Ideas(Base):
     __tablename__ = 'ideas'
 
@@ -79,7 +80,8 @@ class Ideas(Base):
     name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String)
     color: Mapped[str] = mapped_column(String)
-    likes: Mapped[int] = mapped_column(Integer)
+    likes = column_property(select(func.count(Idea_Likes.like)).where(Idea_Likes.idea_id == id).correlate_except(Idea_Likes)
+        .scalar_subquery())
     creator_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
     url: Mapped[Optional[str]] = mapped_column(String)
     img: Mapped[Optional[str]] = mapped_column(String)

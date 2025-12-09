@@ -1,11 +1,14 @@
 import '../../styles/VerticalScroll.css'
 
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import IdeaCard from './IdeaCard'
 import ActiveIdea from './ActiveIdea'
 import { Idea } from '@/lib/types'
+import { getIdeaLikes } from '@/db'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 
 interface IdeasProps {
   ideas: Idea[]
@@ -24,7 +27,21 @@ export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
     setOpenAddDialog(true)
   }
 
+  const user = useContext(UserContext)
+  const trip = useContext(TripContext)
+
   const [activeIdea, setActiveIdea] = useState<Idea | null>(null)
+  const [favorites, setFavorites] = useState<string[]>([])
+
+  useEffect(() => {
+    if (!user || !trip) return
+
+    getIdeaLikes({ userId: user.id, tripId: trip.id })
+      .then((res) => {
+        setFavorites(res.data.idea_likes)
+      })
+      .catch((e) => console.error('Error getting likes', e))
+  }, [])
 
   return (
     <>
@@ -44,6 +61,7 @@ export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
                 <IdeaCard
                   idea={idea}
                   key={idea.id}
+                  favorite={favorites.includes(idea.id)}
                   setActiveIdea={setActiveIdea}
                   onEditIdea={() => {
                     setOpenAddDialog(idea)

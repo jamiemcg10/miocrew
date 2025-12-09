@@ -13,11 +13,12 @@ interface IdeaCardProps {
   idea: Idea
   setActiveIdea: Dispatch<SetStateAction<Idea | null>>
   onEditIdea: () => void
+  favorite: boolean
 }
 
 const emojiIconSx = { fontSize: 68 }
 
-export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardProps) {
+export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: IdeaCardProps) {
   function onClick() {
     setActiveIdea(idea)
   }
@@ -60,9 +61,10 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea }: IdeaCardPr
               onDelete={onDeleteIdea}
               onEdit={onEditIdea}
             />
-            <div className="">
+            <div>
               <span className="font-light text-sm -mr-[7px]">{idea.likes ? idea.likes : null}</span>
               <Checkbox
+                checked={favorite}
                 onClick={(e) => e.stopPropagation()}
                 icon={<FavoriteBorderRoundedIcon fontSize="small" />}
                 checkedIcon={<FavoriteRoundedIcon fontSize="small" />}

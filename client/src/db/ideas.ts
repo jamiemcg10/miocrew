@@ -27,6 +27,16 @@ export function getIdeas(args: BaseIdeaArgs) {
   )
 }
 
+export function getIdeaLikes(args: BaseIdeaArgs) {
+  const { userId, tripId } = args
+
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/ideas/likes`
+
+  return axios.get(requestUrl, {
+    withCredentials: true
+  })
+}
+
 export function createIdea(args: CreateIdeaArgs) {
   const { userId, tripId, data } = args
 
