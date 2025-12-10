@@ -49,6 +49,12 @@ class IdeasBase(BaseModel):
         "from_attributes": True 
     }
 
+class IdeaLikesBase(BaseModel):
+    id: Optional[str] = None 
+    attendee_id: str
+    idea_id: str
+    like: bool
+
 class ActivitiesBase(BaseModel):
     id: Optional[str] = None
     trip_id: str

@@ -7,7 +7,7 @@ import { useState, Dispatch, SetStateAction, useContext } from 'react'
 import ContextMenu from '../layout/ContextMenu'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import { deleteIdea } from '@/db'
+import { deleteIdea, updateIdeaLike } from '@/db'
 
 interface IdeaCardProps {
   idea: Idea
@@ -31,7 +31,18 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: 
       .finally(() => setMenuOpen(false))
   }
 
+  function onFavoriteIdea() {
+    if (!user || !trip) return
+
+    updateIdeaLike({ userId: user.id, tripId: trip.id, ideaId: idea.id, like: !like })
+      .then(() => {
+        setLike(!like) // Might not need this with websockets
+      })
+      .catch((e) => console.error(`Error liking idea`, e))
+  }
+
   const [menuOpen, setMenuOpen] = useState(false)
+  const [like, setLike] = useState(favorite)
 
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
@@ -64,8 +75,11 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: 
             <div>
               <span className="font-light text-sm -mr-[7px]">{idea.likes ? idea.likes : null}</span>
               <Checkbox
-                checked={favorite}
-                onClick={(e) => e.stopPropagation()}
+                checked={like}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onFavoriteIdea()
+                }}
                 icon={<FavoriteBorderRoundedIcon fontSize="small" />}
                 checkedIcon={<FavoriteRoundedIcon fontSize="small" />}
               />

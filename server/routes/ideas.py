@@ -1,13 +1,14 @@
 from fastapi import Depends, APIRouter
 
 from models.models import Trips, Attendees, Ideas, Idea_Likes
-from schemas import IdeasBase
+from schemas import IdeasBase, IdeaLikesBase
 from utils.is_valid_user import is_valid_user
 from utils.flatten import flatten_idea
 from utils.get_user_db import get_user_db
 
 from sqlalchemy import select, insert, delete, update
 from sqlalchemy.orm import Session
+from sqlalchemy.dialects.sqlite import insert as upsert
 
 import uuid
 
@@ -34,10 +35,7 @@ async def idea_likes(user_id: str, trip_id: str, db: Session = Depends(get_user_
 
     results = db.execute(stmt).scalars().all()
 
-    idea_likes = [x.idea_id for x in results]
-
-    for result in results:
-        print("result", result.__dict__)
+    idea_likes = [x.idea_id for x in results if x.like == 1]
 
     return {"idea_likes": idea_likes}
 
@@ -60,7 +58,6 @@ async def create_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session =
 
 @router.patch("/user/{user_id}/trip/{trip_id}/idea/update")
 async def update_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session = Depends(get_user_db)):
-    
     if not is_valid_user(user_id, trip_id, db):
         return {"status": "invalid request"}
 
@@ -70,6 +67,16 @@ async def update_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session =
     db.flush()
 
     return {"status": "updated", "id": idea.id}
+
+@router.patch("/user/{user_id}/trip/{trip_id}/idea/toggle_like")
+async def toggle_like(user_id: str, trip_id: str, like: IdeaLikesBase, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+    
+    upsert_stmt = upsert(Idea_Likes).values({**like.dict(), "id": uuid.uuid4().hex[:8]}).on_conflict_do_update(index_elements=["attendee_id", "idea_id"], set_={"like": 1 if like.like == True else 0})
+
+    db.execute(upsert_stmt)
+    db.flush()
 
 @router.delete("/user/{user_id}/trip/{trip_id}/idea/{idea_id}/delete")
 async def delete_idea(user_id: str, trip_id: str, idea_id: str, db: Session = Depends(get_user_db)):

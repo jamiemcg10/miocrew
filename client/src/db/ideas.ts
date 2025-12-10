@@ -12,6 +12,11 @@ interface CreateIdeaArgs extends BaseIdeaArgs {
 
 type UpdateIdeaArgs = CreateIdeaArgs
 
+interface UpdateIdeaLikeArgs extends BaseIdeaArgs {
+  ideaId: string
+  like: boolean
+}
+
 interface DeleteIdeaArgs extends BaseIdeaArgs {
   ideaId: string
 }
@@ -55,6 +60,19 @@ export function updateIdea(args: UpdateIdeaArgs) {
     method: 'patch',
     url: `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/idea/update`,
     data,
+    withCredentials: true
+  })
+}
+
+export function updateIdeaLike(args: UpdateIdeaLikeArgs) {
+  const { userId, tripId, ideaId, like } = args
+
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/idea/toggle_like`
+
+  return axios({
+    method: 'patch',
+    url: requestUrl,
+    data: { like, idea_id: ideaId, attendee_id: userId, trip_id: tripId },
     withCredentials: true
   })
 }

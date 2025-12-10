@@ -57,7 +57,7 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
       img: null, // TODO: get image from url
       cost: state.cost.value ? +state.cost.value : null,
       cost_type: state.costType.value || null
-    } as Partial<Idea>
+    } as Partial<Idea> // TODO: this type is incorrect
 
     if (isIdea(open)) {
       payload.id = open.id

@@ -80,7 +80,7 @@ class Ideas(Base):
     name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String)
     color: Mapped[str] = mapped_column(String)
-    likes = column_property(select(func.count(Idea_Likes.like)).where(Idea_Likes.idea_id == id).correlate_except(Idea_Likes)
+    likes = column_property(select(func.count(Idea_Likes.like)).where(Idea_Likes.idea_id == id).where(Idea_Likes.like == 1).correlate_except(Idea_Likes)
         .scalar_subquery())
     creator_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
     url: Mapped[Optional[str]] = mapped_column(String)
