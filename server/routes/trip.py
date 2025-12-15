@@ -20,6 +20,20 @@ def map_id_to_attendee(id: str, trip_id: str, type: Literal["Crew", "Admin", "Ow
             "attendee_id": id, 
             "type": type }
 
+@router.get("/user/{user_id}/trips/")
+async def trips(user_id: str, db: Session = Depends(get_user_db)):
+    # need table to attach trips to users - done, make sure it works
+    stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id)
+    trips = []
+
+
+    for trip in db.scalars(stmt):
+        flattened_trip = flatten_trip(trip)
+
+        trips.append(flattened_trip)
+
+    return {'trips': trips}
+
 @router.get("/user/{user_id}/trip/{trip_id}/")
 async def trip(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
     stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id).where(Trips.id == trip_id)

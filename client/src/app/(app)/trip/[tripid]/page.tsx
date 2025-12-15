@@ -13,6 +13,7 @@ import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CrewMember, Trip } from '@/lib/types'
 import { getTrip } from '@/db'
+import { openWebSocket } from '@/db/websocket'
 
 export default function TripPage() {
   const user = useContext(UserContext)
@@ -54,6 +55,7 @@ export default function TripPage() {
         )
         if (response.data.trip) {
           setTrip({ ...response.data.trip, attendees })
+          openWebSocket(tripid)
         } else {
           notFound()
         }

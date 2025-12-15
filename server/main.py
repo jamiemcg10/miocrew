@@ -1,15 +1,16 @@
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request, Depends, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.models import Trips, Tasks, Attendees, Users, Expenses, Debtors
+from models.models import Tasks, Users, Expenses, Debtors
 import routes.ideas as ideas
 import routes.activities as activities
 import routes.expenses as expenses
 import routes.tasks as tasks
 import routes.messages as messages
 import routes.trip as trip
-from utils.flatten import flatten_trip, flatten_expense, flatten_task, flatten_user
+from utils.flatten import flatten_expense, flatten_task, flatten_user
 from utils.get_user_db import user_dbs, make_scratch_session, get_user_db
+from websocket.connection_manager import ConnectionManager
 
 from sqlalchemy import select, or_
 from sqlalchemy.orm import Session
@@ -18,6 +19,7 @@ from sqlalchemy.orm import selectinload
 import uuid
 
 app = FastAPI()
+manager = ConnectionManager()
 
 # Allow React dev server to talk to FastAPI
 app.add_middleware(
@@ -59,6 +61,22 @@ async def get_session(request: Request, call_next):
 async def ping():
     return { "data": "pong"}
 
+
+@app.websocket("/ws/{trip_id}")
+async def websocket_endpoint(websocket: WebSocket, trip_id: int):
+    await manager.connect(websocket)
+    print(f"{trip_id} connected!")
+    await manager.broadcast("you're connected!")
+
+    try:
+        while True:
+            # TODO: look for a better empty try block
+            data = await websocket.receive_text()
+            print(data)
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+    
+
 @app.get("/user/{user_id}/")
 async def trip(user_id: str, db: Session = Depends(get_user_db)):
     stmt = select(Users).where(Users.id == user_id)
@@ -78,20 +96,6 @@ async def users(db: Session = Depends(get_user_db)):
         users.append(flatten_user(user))
 
     return {"users": users}
-
-@app.get("/user/{user_id}/trips/")
-async def trips(user_id: str, db: Session = Depends(get_user_db)):
-    # need table to attach trips to users - done, make sure it works
-    stmt = select(Trips).options(selectinload(Trips.attendees)).join(Attendees).where(Attendees.attendee_id == user_id)
-    trips = []
-
-
-    for trip in db.scalars(stmt):
-        flattened_trip = flatten_trip(trip)
-
-        trips.append(flattened_trip)
-
-    return {'trips': trips}
 
 @app.get("/user/{user_id}/action_items")
 async def action_items(user_id: str, db: Session = Depends(get_user_db)):
