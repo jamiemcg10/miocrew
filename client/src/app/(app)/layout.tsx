@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from '@mui/material/styles'
-import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Menu from '@/lib/components/layout/Menu'
 import TopBar from '@/lib/components/layout/TopBar'
