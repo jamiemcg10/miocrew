@@ -11,6 +11,7 @@ from sqlalchemy.orm import selectinload
 
 from utils.flatten import flatten_expense
 from utils.get_user_db import get_user_db
+from websocket.connection_manager import manager
 
 router = APIRouter(tags=["expenses"])
 
@@ -51,6 +52,8 @@ async def create_expense(user_id: str, trip_id: str, expense: FullExpense, db: S
     db.execute(debtors_insert_stmt)
 
     db.flush()
+
+    await manager.broadcast(trip_id, "expenses")
 
     return {"status": "created", "id": expense_id}
 

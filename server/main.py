@@ -10,7 +10,7 @@ import routes.messages as messages
 import routes.trip as trip
 from utils.flatten import flatten_expense, flatten_task, flatten_user
 from utils.get_user_db import user_dbs, make_scratch_session, get_user_db
-from websocket.connection_manager import ConnectionManager
+from websocket.connection_manager import manager
 
 from sqlalchemy import select, or_
 from sqlalchemy.orm import Session
@@ -19,7 +19,7 @@ from sqlalchemy.orm import selectinload
 import uuid
 
 app = FastAPI()
-manager = ConnectionManager()
+
 
 # Allow React dev server to talk to FastAPI
 app.add_middleware(
@@ -63,10 +63,12 @@ async def ping():
 
 
 @app.websocket("/ws/{trip_id}")
-async def websocket_endpoint(websocket: WebSocket, trip_id: int):
-    await manager.connect(websocket)
+async def websocket_endpoint(websocket: WebSocket, trip_id: str):
+    # await manager.connect(websocket)
+    await manager.connect(websocket, trip_id)
+
     print(f"{trip_id} connected!")
-    await manager.broadcast("you're connected!")
+    await manager.broadcast(trip_id, "connected!")
 
     try:
         while True:
@@ -74,7 +76,7 @@ async def websocket_endpoint(websocket: WebSocket, trip_id: int):
             data = await websocket.receive_text()
             print(data)
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        manager.disconnect(websocket, trip_id)
     
 
 @app.get("/user/{user_id}/")

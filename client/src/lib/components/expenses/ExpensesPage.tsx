@@ -6,6 +6,7 @@ import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { Expense } from '@/lib/types'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 import { getExpenses } from '@/db'
+import { addMessageListener } from '@/db/websocket'
 
 export default function TaskPage() {
   const user = useContext(UserContext)
@@ -16,7 +17,7 @@ export default function TaskPage() {
   const storedExpenses = LocalStorage.get<Expense[]>(`${trip?.id}:expenses`)
   const [expenses, setExpenses] = useState<Expense[]>(storedExpenses || [])
 
-  useEffect(() => {
+  function fetchExpenses() {
     if (!user || !trip) return
 
     getExpenses({ userId: user.id, tripId: trip.id })
@@ -27,9 +28,15 @@ export default function TaskPage() {
         }
       })
       .catch((e) => console.error('Error fetching expenses', e))
-  }, [])
+  }
 
   if (!user || !trip) return
+
+  useEffect(() => {
+    fetchExpenses()
+
+    addMessageListener('expenses', fetchExpenses)
+  }, [])
 
   return (
     <>
