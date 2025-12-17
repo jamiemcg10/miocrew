@@ -15,6 +15,8 @@ from sqlalchemy.orm import selectinload
 from utils.flatten import flatten_task
 from utils.get_user_db import get_user_db
 
+from websocket.connection_manager import manager
+
 router = APIRouter(tags=["tasks"])
 
 def add_ids(option, task_id):
@@ -54,6 +56,8 @@ async def create_task(user_id: str, trip_id: str, task: FullTaskBase, db: Sessio
 
     db.flush()
 
+    await manager.broadcast(trip_id, "tasks")
+
     return {"status": "created", "id": task_id}
 
 @router.patch("/user/{user_id}/trip/{trip_id}/task/update")
@@ -79,6 +83,8 @@ async def update_task(user_id: str, trip_id: str, task: FullTaskUpdate, db: Sess
 
     db.flush()
 
+    await manager.broadcast(trip_id, "tasks")
+
     return {"status": "updated", "id": updated_task.id}
 
 @router.patch("/user/{user_id}/trip/{trip_id}/poll/poll_options/update")
@@ -91,6 +97,8 @@ async def update_poll_options(user_id: str, trip_id: str, options: List[str], db
     db.execute(update_stmt)
 
     db.flush()
+
+    await manager.broadcast(trip_id, "tasks")
 
     return {"status": "votes updated", "ids": options}
 
@@ -107,5 +115,7 @@ async def delete_task(user_id: str, trip_id: str, task_id: str, db: Session = De
     db.execute(task_delete_stmt)
     db.execute(poll_options_delete_stmt)
     db.flush()
+
+    await manager.broadcast(trip_id, "tasks")
 
     return {"status": "deleted", "id": task_id}

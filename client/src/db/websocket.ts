@@ -4,6 +4,7 @@ export let ws = new EventTarget()
 const callbackFns: Record<string, Function> = {
   trip: () => {},
   activities: () => {},
+  tasks: () => {},
   ideas: () => {},
   expenses: () => {}
 }
@@ -12,16 +13,18 @@ export function openWebSocket(tripId: string) {
   websocket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_BASE_URL}/ws/${tripId}`)
 
   websocket.addEventListener('error', (e) => console.error('Websocket error', e))
-  websocket.addEventListener('message', (message) => {
-    console.log({ message })
+  websocket.addEventListener('message', ({ data }) => {
+    console.log({ data })
 
-    if (message.data === 'trip') {
+    if (data === 'trip') {
       callbackFns.trip()
-    } else if (message.data === 'activities') {
+    } else if (data === 'activities') {
       callbackFns.activities()
-    } else if (message.data === 'ideas') {
+    } else if (data === 'tasks') {
+      callbackFns.tasks()
+    } else if (data === 'ideas') {
       callbackFns.ideas()
-    } else if (message.data === 'expenses') {
+    } else if (data === 'expenses') {
       callbackFns.expenses()
     }
   })
