@@ -11,12 +11,8 @@ export default function DashboardPage() {
   const user = useContext(UserContext)
   const [upcomingTrips, setUpcomingTrips] = useState([])
 
-  if (!user) return
-
-  useEffect(() => {
-    if (!user) return
-
-    getTrips({ userId: user.id })
+  function fetchTrips() {
+    getTrips({ userId: user!.id })
       .then((response) => {
         const _upcomingTrips = response.data.trips.filter((trip: Trip) => {
           const startDate = new Date(trip.startDate)
@@ -25,6 +21,18 @@ export default function DashboardPage() {
         setUpcomingTrips(_upcomingTrips)
       })
       .catch((e) => console.error('Error fetching upcoming trips', e))
+  }
+
+  if (!user) return
+
+  useEffect(() => {
+    if (!user) return
+
+    fetchTrips()
+
+    const tripFetchInterval = setInterval(fetchTrips, 30000)
+
+    return clearInterval(tripFetchInterval)
   }, [])
 
   return (

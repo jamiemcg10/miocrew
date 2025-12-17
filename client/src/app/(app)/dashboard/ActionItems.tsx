@@ -19,6 +19,20 @@ export default function ActionItems() {
       })
     ])
   }
+
+  function fetchActionItems() {
+    getActionItems({ userId: user!.id })
+      .then((response) => {
+        if (response.data.expenses) {
+          setExpenses(response.data.expenses)
+        }
+        if (response.data.tasks) {
+          setTasks(response.data.tasks)
+        }
+      })
+      .catch((e) => console.error('Error fetching action items', e))
+  }
+
   const user = useContext(UserContext)
 
   const [activeTask, setActiveTask] = useState<Task | null>(null)
@@ -41,16 +55,11 @@ export default function ActionItems() {
   useEffect(() => {
     if (!user) return
 
-    getActionItems({ userId: user.id })
-      .then((response) => {
-        if (response.data.expenses) {
-          setExpenses(response.data.expenses)
-        }
-        if (response.data.tasks) {
-          setTasks(response.data.tasks)
-        }
-      })
-      .catch((e) => console.error('Error fetching action items', e))
+    fetchActionItems()
+
+    const actionItemsRefreshInterval = setInterval(fetchActionItems, 30000)
+
+    return clearInterval(actionItemsRefreshInterval)
   }, [])
 
   useEffect(formatActionItems, [expenses, tasks])

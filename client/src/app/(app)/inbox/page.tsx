@@ -81,7 +81,7 @@ export default function InboxPage() {
 
     fetchMessages()
 
-    const refreshInterval = setInterval(fetchMessages, 60000)
+    const refreshInterval = setInterval(fetchMessages, 30000)
 
     return clearInterval(refreshInterval)
   }, [user])
