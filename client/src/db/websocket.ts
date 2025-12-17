@@ -1,5 +1,4 @@
 export let websocket: WebSocket
-export let ws = new EventTarget()
 
 const callbackFns: Record<string, Function> = {
   trip: () => {},
@@ -10,7 +9,7 @@ const callbackFns: Record<string, Function> = {
 }
 
 export function openWebSocket(tripId: string) {
-  websocket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_BASE_URL}/ws/${tripId}`)
+  websocket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_BASE_URL}/ws/trip/${tripId}`)
 
   websocket.addEventListener('error', (e) => console.error('Websocket error', e))
   websocket.addEventListener('message', ({ data }) => {

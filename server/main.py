@@ -62,13 +62,12 @@ async def ping():
     return { "data": "pong"}
 
 
-@app.websocket("/ws/{trip_id}")
+@app.websocket("/ws/trip/{trip_id}")
 async def websocket_endpoint(websocket: WebSocket, trip_id: str):
-    # await manager.connect(websocket)
-    await manager.connect(websocket, trip_id)
+    await manager.connect_to_trip(websocket, trip_id)
 
     print(f"{trip_id} connected!")
-    await manager.broadcast(trip_id, "connected!")
+    await manager.broadcast(trip_id, "trip connected!")
 
     try:
         while True:
@@ -76,8 +75,8 @@ async def websocket_endpoint(websocket: WebSocket, trip_id: str):
             data = await websocket.receive_text()
             print(data)
     except WebSocketDisconnect:
-        manager.disconnect(websocket, trip_id)
-    
+        manager.trip_disconnect(websocket, trip_id)
+
 
 @app.get("/user/{user_id}/")
 async def trip(user_id: str, db: Session = Depends(get_user_db)):

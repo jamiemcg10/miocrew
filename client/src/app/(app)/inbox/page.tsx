@@ -31,6 +31,16 @@ export default function InboxPage() {
   const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
   const [composing, setComposing] = useState<boolean | BaseMessage>(false)
 
+  function fetchMessages() {
+    console.log('getem')
+    getMessages({ userId: user!.id })
+      .then((response) => {
+        setMessages(response.data.messages)
+        LocalStorage.set('messages', response.data.messages)
+      })
+      .catch((e) => console.error('Error fetching messages', e))
+  }
+
   function onDeleteMessage(messageId: string) {
     if (!user) return
 
@@ -69,12 +79,11 @@ export default function InboxPage() {
   useEffect(() => {
     if (!user) return
 
-    getMessages({ userId: user.id })
-      .then((response) => {
-        setMessages(response.data.messages)
-        LocalStorage.set('messages', response.data.messages)
-      })
-      .catch((e) => console.error('Error fetching messages', e))
+    fetchMessages()
+
+    const refreshInterval = setInterval(fetchMessages, 60000)
+
+    return clearInterval(refreshInterval)
   }, [user])
 
   return (
