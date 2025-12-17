@@ -14,6 +14,7 @@ import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CrewMember, Trip } from '@/lib/types'
 import { getTrip } from '@/db'
 import { openWebSocket } from '@/db/websocket'
+import TripWrapper from './Trip'
 
 export default function TripPage() {
   const user = useContext(UserContext)
@@ -74,7 +75,9 @@ export default function TripPage() {
       </div>
       <TabNav page={page} setPage={setPage} />
       <div className="py-8 px-8 sm:px-16 sm:py-4 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
-        <TripContext value={trip}>{renderPage()}</TripContext>
+        <TripContext value={trip}>
+          <TripWrapper tripId={trip.id}>{renderPage()}</TripWrapper>
+        </TripContext>
       </div>
     </div>
   )
