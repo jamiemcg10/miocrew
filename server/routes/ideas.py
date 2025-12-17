@@ -10,6 +10,8 @@ from sqlalchemy import select, insert, delete, update
 from sqlalchemy.orm import Session
 from sqlalchemy.dialects.sqlite import insert as upsert
 
+from websocket.connection_manager import manager
+
 import uuid
 
 router = APIRouter(tags=["ideas"])
@@ -54,6 +56,8 @@ async def create_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session =
     db.execute(insert_stmt)
     db.flush()
 
+    await manager.broadcast(trip_id, "ideas")
+
     return {"status": "created", "id": id}
 
 @router.patch("/user/{user_id}/trip/{trip_id}/idea/update")
@@ -66,6 +70,8 @@ async def update_idea(user_id: str, trip_id: str, idea: IdeasBase, db: Session =
     db.execute(update_stmt)
     db.flush()
 
+    await manager.broadcast(trip_id, "ideas")
+
     return {"status": "updated", "id": idea.id}
 
 @router.patch("/user/{user_id}/trip/{trip_id}/idea/toggle_like")
@@ -77,6 +83,10 @@ async def toggle_like(user_id: str, trip_id: str, like: IdeaLikesBase, db: Sessi
 
     db.execute(upsert_stmt)
     db.flush()
+    
+    await manager.broadcast(trip_id, "ideas")
+
+    return { "status": "like toggled"}
 
 @router.delete("/user/{user_id}/trip/{trip_id}/idea/{idea_id}/delete")
 async def delete_idea(user_id: str, trip_id: str, idea_id: str, db: Session = Depends(get_user_db)):
@@ -87,5 +97,7 @@ async def delete_idea(user_id: str, trip_id: str, idea_id: str, db: Session = De
     delete_stmt = delete(Ideas).where(Ideas.id == idea_id)
     db.execute(delete_stmt)
     db.flush()
+
+    await manager.broadcast(trip_id, "ideas")
 
     return {"status": "deleted", "id": idea_id}

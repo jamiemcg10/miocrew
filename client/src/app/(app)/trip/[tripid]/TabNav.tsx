@@ -30,7 +30,7 @@ export default function TabNav({ page, setPage }: TabNavProps) {
       }}>
       <Tab title="Schedule" key="schedule" />
       <Tab title="Tasks" key="tasks" />
-      <Tab title="Planning" key="planning" />
+      <Tab title="Ideas" key="ideas" />
       <Tab title="Expenses" key="expenses" />
       <Tab title="Crew" key="crew" />
     </Tabs>

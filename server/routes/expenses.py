@@ -76,6 +76,8 @@ async def update_expense(user_id: str, trip_id: str, expense: FullExpense, db: S
 
     db.flush()
 
+    await manager.broadcast(trip_id, "expenses")
+    
     return {"status": "updated", "id": updated_expense.id}
 
 
@@ -92,6 +94,8 @@ async def delete_expense(user_id: str, trip_id: str, expense_id: str, db: Sessio
     db.execute(debtors_delete_stmt)
     db.flush()
 
+    await manager.broadcast(trip_id, "expenses")
+    
     return {"status": "deleted", "id": expense_id}
 
 

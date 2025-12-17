@@ -51,7 +51,6 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
       name: state.name.value,
       description: state.description.value,
       color: isIdea(open) ? open.color : assignAppColor(),
-      likes: isIdea(open) ? open.likes : 0,
       creator_id: user?.id,
       url: state.url.value,
       img: null, // TODO: get image from url

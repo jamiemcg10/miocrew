@@ -31,7 +31,7 @@ export default function TripPage() {
         return <SchedulePage />
       case 'tasks':
         return <TaskPage />
-      case 'planning':
+      case 'ideas':
         return <IdeasPage />
       case 'expenses':
         return <ExpensesPage />

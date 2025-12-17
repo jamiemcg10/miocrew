@@ -2,7 +2,8 @@ export let websocket: WebSocket
 export let ws = new EventTarget()
 
 const callbackFns: Record<string, Function> = {
-  expenses: () => {}
+  expenses: () => {},
+  ideas: () => {}
 }
 
 export function openWebSocket(tripId: string) {
@@ -11,8 +12,11 @@ export function openWebSocket(tripId: string) {
   websocket.addEventListener('error', (e) => console.error('Websocket error', e))
   websocket.addEventListener('message', (message) => {
     console.log({ message })
-    if (message.data === `expenses`) {
+
+    if (message.data === 'expenses') {
       callbackFns.expenses()
+    } else if (message.data === 'ideas') {
+      callbackFns.ideas()
     }
   })
 }

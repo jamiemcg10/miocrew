@@ -9,9 +9,9 @@ import { Idea } from '@/lib/types'
 import { getIdeaLikes } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
+import { IdeasContext } from '@/app/(app)/trip/[tripid]/Trip'
 
 interface IdeasProps {
-  ideas: Idea[]
   setOpenAddDialog: Dispatch<SetStateAction<Idea | boolean>>
 }
 
@@ -22,13 +22,14 @@ const addIdeaBtnSx = {
   fontWeight: 600
 }
 
-export default function Ideas({ ideas, setOpenAddDialog }: IdeasProps) {
+export default function Ideas({ setOpenAddDialog }: IdeasProps) {
   function onClickAddButton() {
     setOpenAddDialog(true)
   }
 
   const user = useContext(UserContext)
   const trip = useContext(TripContext)
+  const ideas = useContext(IdeasContext)
 
   const [activeIdea, setActiveIdea] = useState<Idea | null>(null)
   const [favorites, setFavorites] = useState<string[]>([])

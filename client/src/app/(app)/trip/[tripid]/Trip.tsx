@@ -1,7 +1,7 @@
 import { Expense, Idea } from '@/lib/types'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { getExpenses } from '@/db'
+import { getExpenses, getIdeas } from '@/db'
 import { addMessageListener } from '@/db/websocket'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
@@ -11,7 +11,8 @@ interface TripProps {
   children: ReactNode
 }
 
-// START: try to move all db and ws logic here
+// Rry to move all db and ws logic here so the functions dont have to
+// rerun every time tabs are switched
 
 export const IdeasContext = createContext<Idea[]>([])
 export const ExpensesContext = createContext<Expense[]>([])
@@ -21,32 +22,46 @@ export default function TripWrapper({ tripId, children }: TripProps) {
   const trip = useContext(TripContext)
 
   const storedIdeas = LocalStorage.get<Idea[]>(`${tripId}:ideas`)
-  const storedExpenses = LocalStorage.get<Expense[]>(`${trip?.id}:expenses`)
+  const storedExpenses = LocalStorage.get<Expense[]>(`${tripId}:expenses`)
 
+  const [ideas, setIdeas] = useState<Idea[]>(storedIdeas || [])
   const [expenses, setExpenses] = useState<Expense[]>(storedExpenses || [])
 
-  function fetchExpenses() {
-    if (!user || !trip) return
+  function fetchIdeas() {
+    getIdeas({ userId: user!.id, tripId: tripId })
+      .then((response) => {
+        if (response.data.ideas?.length) {
+          setIdeas(response.data.ideas)
+          LocalStorage.set(`${trip!.id}:ideas`, response.data.ideas)
+        }
+      })
+      .catch((e) => console.error('Error fetching ideas', e))
+  }
 
-    getExpenses({ userId: user.id, tripId: trip.id })
+  function fetchExpenses() {
+    getExpenses({ userId: user!.id, tripId: tripId })
       .then((response) => {
         if (response.data.expenses) {
           setExpenses(response.data.expenses)
-          LocalStorage.set(`${trip?.id}:expenses`, response.data.expenses)
+          LocalStorage.set(`${trip!.id}:expenses`, response.data.expenses)
         }
       })
       .catch((e) => console.error('Error fetching expenses', e))
   }
 
   useEffect(() => {
+    if (!user) return
+
+    fetchIdeas()
     fetchExpenses()
 
     addMessageListener('expenses', fetchExpenses)
+    addMessageListener('ideas', fetchIdeas)
   }, [])
 
   return (
     <>
-      <IdeasContext value={storedIdeas || []}>
+      <IdeasContext value={ideas}>
         <ExpensesContext value={expenses}>{children}</ExpensesContext>
       </IdeasContext>
     </>

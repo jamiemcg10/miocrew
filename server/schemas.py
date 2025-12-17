@@ -42,7 +42,6 @@ class IdeasBase(BaseModel):
     img: Optional[str]
     description: Optional[str]
     color: str
-    likes: int
     creator_id: str
 
     model_config = {
