@@ -13,7 +13,7 @@ import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CrewMember, Trip } from '@/lib/types'
 import { getTrip } from '@/db'
-import { openWebSocket } from '@/db/websocket'
+import { addMessageListener, openWebSocket, websocket } from '@/db/websocket'
 import TripWrapper from './TripWrapper'
 
 export default function TripPage() {
@@ -24,6 +24,28 @@ export default function TripPage() {
 
   const initialPage = localStorage.getItem('tab') || 'schedule'
   const [page, setPage] = useState(initialPage)
+
+  function fetchTrip() {
+    getTrip({ userId: user!.id, tripId: tripid })
+      .then((response) => {
+        const attendees = response.data.trip.attendees.reduce(
+          (acc: Record<string, CrewMember>, c: CrewMember) => {
+            return {
+              ...acc,
+              [c.id]: c
+            }
+          },
+          {}
+        )
+        if (response.data.trip) {
+          setTrip({ ...response.data.trip, attendees })
+          !websocket && openWebSocket(tripid)
+        } else {
+          notFound()
+        }
+      })
+      .catch((e) => console.error('Error getching trip', e))
+  }
 
   function renderPage() {
     switch (page) {
@@ -43,29 +65,12 @@ export default function TripPage() {
   useEffect(() => {
     if (!user) return
 
-    getTrip({ userId: user.id, tripId: tripid })
-      .then((response) => {
-        const attendees = response.data.trip.attendees.reduce(
-          (acc: Record<string, CrewMember>, c: CrewMember) => {
-            return {
-              ...acc,
-              [c.id]: c
-            }
-          },
-          {}
-        )
-        if (response.data.trip) {
-          setTrip({ ...response.data.trip, attendees })
-          openWebSocket(tripid)
-        } else {
-          notFound()
-        }
-      })
-      .catch((e) => console.error('Error getching trip', e))
+    fetchTrip()
+    addMessageListener('trip', fetchTrip)
   }, [user])
 
   if (!trip) return
-  // put more stuff in context?
+
   return (
     <div className="relative overflow-hidden flex flex-col grow">
       <div

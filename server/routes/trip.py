@@ -10,6 +10,8 @@ from utils.get_user_db import get_user_db
 from utils.is_valid_user import is_valid_user
 from utils.flatten import flatten_trip
 
+from websocket.connection_manager import manager
+
 import uuid
 
 router = APIRouter(tags=["trip"])
@@ -65,6 +67,8 @@ async def create_trip(user_id: str, trip: TripBase, db: Session = Depends(get_us
    
     db.flush()
 
+    # TODO: find a way to make trip list update when trip added for all users
+
     return {"status": "trip created"}
 
 @router.post("/user/{user_id}/trip/{trip_id}/crew/add")
@@ -78,6 +82,8 @@ async def add_crew(user_id: str, trip_id: str, new_crew: List[str], db: Session 
 
     db.execute(add_crew_stmt)
     db.flush()
+
+    await manager.broadcast(trip_id, 'trip')
     
     return {"status": "crew added"}
 
@@ -90,7 +96,9 @@ async def remove_crew(user_id: str, trip_id: str, attendee_id: str, db: Session 
 
     db.execute(delete_crew_stmt)
     db.flush()
-    
+
+    await manager.broadcast(trip_id, 'trip')
+
     return {"status": "crew removed"}
 
 @router.patch("/user/{user_id}/trip/{trip_id}/crew/toggle/{type}/{attendee_id}")
@@ -102,5 +110,7 @@ async def toggle_crew_type(user_id: str, trip_id: str, type: str, attendee_id: s
 
     db.execute(toggle_crew_stmt)
     db.flush()
+
+    await manager.broadcast(trip_id, 'trip')
 
     return {"status": "crew status updated"}
