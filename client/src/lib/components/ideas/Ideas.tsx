@@ -9,7 +9,7 @@ import { Idea } from '@/lib/types'
 import { getIdeaLikes } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import { IdeasContext } from '@/app/(app)/trip/[tripid]/Trip'
+import { IdeasContext } from '@/app/(app)/trip/[tripid]/TripWrapper'
 
 interface IdeasProps {
   setOpenAddDialog: Dispatch<SetStateAction<Idea | boolean>>
@@ -37,6 +37,7 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
   useEffect(() => {
     if (!user || !trip) return
 
+    // TODO: move this to TripWrapper
     getIdeaLikes({ userId: user.id, tripId: trip.id })
       .then((res) => {
         setFavorites(res.data.idea_likes)

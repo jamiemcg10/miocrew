@@ -11,6 +11,8 @@ from sqlalchemy.orm import Session
 from utils.flatten import flatten_activity
 from utils.get_user_db import get_user_db
 
+from websocket.connection_manager import manager
+
 router = APIRouter(tags=["activities"])
 
 @router.get("/user/{user_id}/trip/{trip_id}/activities")
@@ -39,6 +41,8 @@ async def create_activity(user_id: str, trip_id: str, activity: ActivitiesBase, 
     db.execute(insert_stmt)
     db.flush()
 
+    await manager.broadcast(trip_id, 'activities')
+
     return {"status": "created", "id": id}
 
 @router.patch("/user/{user_id}/trip/{trip_id}/activity/update")
@@ -52,6 +56,8 @@ async def update_activity(user_id: str, trip_id: str, activity: ActivitiesBase, 
     db.execute(update_stmt)
     db.flush()
 
+    await manager.broadcast(trip_id, 'activities')
+
     return {"status": "updated", "id": activity.id}
 
 @router.delete("/user/{user_id}/trip/{trip_id}/activity/{activity_id}/delete")
@@ -63,6 +69,8 @@ async def delete_activity(user_id: str, trip_id: str, activity_id: str, db: Sess
     delete_stmt = delete(Activities).where(Activities.id == activity_id)
     db.execute(delete_stmt)
     db.flush()
+
+    await manager.broadcast(trip_id, 'activities')
 
     return {"status": "deleted", "id": activity_id}
 

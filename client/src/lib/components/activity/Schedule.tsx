@@ -7,8 +7,7 @@ import ScheduleDay from './ScheduleDay'
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
-import { LocalStorage } from '@/lib/utils/LocalStorage'
-import { getActivities } from '@/db/activities'
+import { ActivitiesContext } from '@/app/(app)/trip/[tripid]/TripWrapper'
 
 interface ScheduleProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean | Activity>>
@@ -23,9 +22,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
 
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
-
-  const storedActivities = LocalStorage.get<Activity[]>(`${trip?.id}:activities`)
-  const [activities, setActivities] = useState<Activity[]>(storedActivities || [])
+  const activities = useContext(ActivitiesContext)
 
   const tripStart = dayjs(trip?.startDate)
   const tripEnd = dayjs(trip?.endDate || tripStart)
@@ -48,18 +45,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
     days[activityDate]?.activities.push(activity)
   })
 
-  if (!trip || !user) return
-
-  useEffect(() => {
-    getActivities({ userId: user.id, tripId: trip.id })
-      .then((response) => {
-        if (response.data.activities) {
-          setActivities(response.data.activities)
-          LocalStorage.set(`${trip.id}:activities`, response.data.activities)
-        }
-      })
-      .catch((e) => console.error('Error fetching scheduled activities', e))
-  }, [])
+  if (!user) return
 
   return (
     <>

@@ -14,7 +14,7 @@ import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CrewMember, Trip } from '@/lib/types'
 import { getTrip } from '@/db'
 import { openWebSocket } from '@/db/websocket'
-import TripWrapper from './Trip'
+import TripWrapper from './TripWrapper'
 
 export default function TripPage() {
   const user = useContext(UserContext)
