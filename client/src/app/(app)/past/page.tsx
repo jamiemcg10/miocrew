@@ -24,7 +24,7 @@ export default function PastTripsPage() {
       .catch((e) => console.error('Error fetching past trips', e))
   }
 
-  const storedPastTrips = LocalStorage.get('past-trips')
+  const storedPastTrips = LocalStorage.get<Trip[]>('past-trips')
 
   const [pastTrips, setPastTrips] = useState(storedPastTrips || [])
 
