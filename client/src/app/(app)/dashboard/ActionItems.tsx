@@ -7,6 +7,7 @@ import ActionItem from './ActionItem'
 import { getActionItems } from '@/db'
 import CreateTaskDialog from '@/lib/components/tasks/CreateTaskDialog'
 import AddExpenseDialog from '@/lib/components/expenses/AddExpenseDialog'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 export default function ActionItems() {
   function formatActionItems() {
@@ -25,9 +26,11 @@ export default function ActionItems() {
       .then((response) => {
         if (response.data.expenses) {
           setExpenses(response.data.expenses)
+          LocalStorage.set('action-items:expenses', response.data.expenses)
         }
         if (response.data.tasks) {
           setTasks(response.data.tasks)
+          LocalStorage.set('action-items:tasks', response.data.tasks)
         }
       })
       .catch((e) => console.error('Error fetching action items', e))
@@ -35,10 +38,13 @@ export default function ActionItems() {
 
   const user = useContext(UserContext)
 
+  const storedActionItemsTasks = LocalStorage.get<Task[]>('action-items:tasks')
+  const storedActionItemsExpenses = LocalStorage.get<Expense[]>('action-items:expenses')
+
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
-  const [expenses, setExpenses] = useState<Expense[]>([])
-  const [tasks, setTasks] = useState<Task[]>([])
+  const [expenses, setExpenses] = useState<Expense[]>(storedActionItemsExpenses || [])
+  const [tasks, setTasks] = useState<Task[]>(storedActionItemsTasks || [])
   const [actionItems, setActionItems] = useState<(Expense | Task)[]>([])
 
   const [addExpenseDialogOpen, setAddExpenseDialogOpen] = useState<boolean | Expense>(false)
@@ -52,6 +58,8 @@ export default function ActionItems() {
     setActiveExpense(null)
   }
 
+  useEffect(formatActionItems, [expenses, tasks])
+
   useEffect(() => {
     if (!user) return
 
@@ -61,8 +69,6 @@ export default function ActionItems() {
 
     return clearInterval(actionItemsRefreshInterval)
   }, [])
-
-  useEffect(formatActionItems, [expenses, tasks])
 
   if (!user) return
 

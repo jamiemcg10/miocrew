@@ -6,10 +6,14 @@ import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { Trip } from '@/lib/types'
 import { getTrips } from '@/db'
+import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 export default function DashboardPage() {
   const user = useContext(UserContext)
-  const [upcomingTrips, setUpcomingTrips] = useState([])
+
+  const storedTrips = LocalStorage.get<Trip[]>('upcoming-trips')
+
+  const [upcomingTrips, setUpcomingTrips] = useState<Trip[]>(storedTrips || [])
 
   function fetchTrips() {
     getTrips({ userId: user!.id })
@@ -19,6 +23,7 @@ export default function DashboardPage() {
           return startDate >= new Date()
         })
         setUpcomingTrips(_upcomingTrips)
+        LocalStorage.set('upcoming-trips', _upcomingTrips)
       })
       .catch((e) => console.error('Error fetching upcoming trips', e))
   }
