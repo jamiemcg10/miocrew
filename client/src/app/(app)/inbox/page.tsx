@@ -141,7 +141,20 @@ export default function InboxPage() {
               checked={checked}
               setChecked={setChecked}
               key={i}
-              onClick={() => setActiveMessage(m)}
+              onClick={() => {
+                if (!user) return
+
+                setActiveMessage(m)
+
+                if (!m.read) {
+                  const statusUpdate = messages.map((m, _i) =>
+                    i !== _i ? m : { ...m, read: true }
+                  )
+                  setMessages(statusUpdate)
+                  toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: true })
+                  LocalStorage.set('messages', statusUpdate)
+                }
+              }}
               onDelete={() => onDeleteMessage(m.id)}
               onToggleRead={() => {
                 if (!user) return
