@@ -19,14 +19,14 @@ import { taskReducer, initialTaskState } from './utils/taskReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
-interface CreateTaskDialogProps {
+interface TaskDialogProps {
   open: boolean | Task
   setOpen: Dispatch<SetStateAction<boolean | Task>>
 }
 
 const createTaskBtnSx = { fontWeight: 700, mt: 5 }
 
-export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
+export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
   const [state, dispatch] = useReducer(taskReducer, initialTaskState)
   const valid = !!(state.name.value && (state.assigneeId.value || state.type.value === 'poll'))
 

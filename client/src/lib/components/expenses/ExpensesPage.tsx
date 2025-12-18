@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import Expenses from './Expenses'
-import AddExpenseDialog from './AddExpenseDialog'
+import ExpenseDialog from './ExpenseDialog'
 import { Expense } from '@/lib/types'
 import { ExpensesContext } from '@/app/(app)/trip/[tripid]/TripWrapper'
 
@@ -11,7 +11,7 @@ export default function TaskPage() {
   return (
     <>
       <Expenses expenses={expenses} setAddDialogOpen={setAddDialogOpen} />
-      <AddExpenseDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
+      <ExpenseDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
     </>
   )
 }

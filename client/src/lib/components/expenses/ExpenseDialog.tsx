@@ -33,7 +33,7 @@ import { expenseReducer, initialExpenseState } from './utils/expenseReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
-interface AddExpenseDialogProps {
+interface ExpenseDialogProps {
   open: boolean | Expense
   setOpen: Dispatch<SetStateAction<boolean | Expense>>
 }
@@ -41,7 +41,7 @@ interface AddExpenseDialogProps {
 const boltIconSx = { ml: -1, mr: -0.5, color: 'goldenrod', '.dark &': { color: 'yellow' } }
 const addExpenseBtnSx = { fontWeight: 700, mt: 5 }
 
-export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProps) {
+export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
 

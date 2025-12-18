@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import TabNav from './TabNav'
 import SchedulePage from '@/lib/components/activity/SchedulePage'
 import CrewPage from '@/lib/components/crew/CrewPage'
-import TaskPage from '@/lib/components/tasks/TaskPage'
+import TasksPage from '@/lib/components/tasks/TasksPage'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
@@ -53,7 +53,7 @@ export default function TripPage() {
       case 'schedule':
         return <SchedulePage />
       case 'tasks':
-        return <TaskPage />
+        return <TasksPage />
       case 'ideas':
         return <IdeasPage />
       case 'expenses':

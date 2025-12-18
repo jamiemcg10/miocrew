@@ -12,7 +12,7 @@ import { addCrew } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
-interface AddCrewDialogProps {
+interface CrewDialogProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -33,7 +33,7 @@ const textFieldSx = {
 }
 const addCrewBtnSx = { fontWeight: 700, mt: 5 }
 
-export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
+export default function CrewDialog({ open, setOpen }: CrewDialogProps) {
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
 

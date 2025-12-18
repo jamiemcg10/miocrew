@@ -1,6 +1,6 @@
 import Ideas from '@/lib/components/ideas/Ideas'
 import { useState } from 'react'
-import AddIdeaDialog from './AddIdeaDialog'
+import IdeaDialog from './IdeaDialog'
 import { Idea } from '@/lib/types'
 
 export default function IdeasPage() {
@@ -9,7 +9,7 @@ export default function IdeasPage() {
   return (
     <>
       <Ideas setOpenAddDialog={setAddDialogOpen} />
-      <AddIdeaDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
+      <IdeaDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
     </>
   )
 }

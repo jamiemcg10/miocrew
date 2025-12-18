@@ -1,6 +1,6 @@
 import Schedule from '@/lib/components/activity/Schedule'
 import { useState } from 'react'
-import AddActivityDialog from './AddActivityDialog'
+import ActivityDialog from './ActivityDialog'
 import { Activity } from '@/lib/types'
 import { ScheduleContext } from '@/lib/utils/contexts/ScheduleContext'
 
@@ -13,7 +13,7 @@ export default function TaskPage() {
   return (
     <ScheduleContext value={{ onEdit: onEditActivity }}>
       <Schedule setOpenAddDialog={setAddDialogOpen} />
-      <AddActivityDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
+      <ActivityDialog open={addDialogOpen} setOpen={setAddDialogOpen} />
     </ScheduleContext>
   )
 }

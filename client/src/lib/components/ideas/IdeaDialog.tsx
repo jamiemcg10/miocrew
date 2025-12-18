@@ -19,7 +19,7 @@ import { NumberInput } from '@heroui/number-input'
 import { dialogTitleSx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
-interface AddIdeaDialogProps {
+interface IdeaDialogProps {
   open: boolean | Idea
   setOpen: Dispatch<SetStateAction<boolean | Idea>>
 }
@@ -29,7 +29,7 @@ const descInputSx = { mt: 2 }
 const addIdeaBtnSx = { fontWeight: 700, mt: 5 }
 const costTypeHelperSx = { position: 'absolute', ml: 0, bottom: '-8px' }
 
-export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
+export default function IdeaDialog({ open, setOpen }: IdeaDialogProps) {
   function valuesAreUnchanged() {
     // TODO: create this function for other pages
     if (

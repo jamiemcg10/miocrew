@@ -18,14 +18,14 @@ import {
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
-interface AddActivityDialogProps {
+interface ActivityDialogProps {
   open: boolean | Activity
   setOpen: Dispatch<SetStateAction<boolean | Activity>>
 }
 
 const saveActivityBtnSx = { fontWeight: 700, mt: 5 }
 
-export default function AddActivityDialog({ open, setOpen }: AddActivityDialogProps) {
+export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
   function getPayload() {
     const payload = {
       trip_id: trip?.id,

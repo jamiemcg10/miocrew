@@ -5,8 +5,8 @@ import TaskView from '@/lib/components/tasks/TaskView'
 import ExpenseView from '@/lib/components/expenses/ExpenseView'
 import ActionItem from './ActionItem'
 import { getActionItems } from '@/db'
-import CreateTaskDialog from '@/lib/components/tasks/CreateTaskDialog'
-import AddExpenseDialog from '@/lib/components/expenses/AddExpenseDialog'
+import TaskDialog from '@/lib/components/tasks/TaskDialog'
+import ExpenseDialog from '@/lib/components/expenses/ExpenseDialog'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 export default function ActionItems() {
@@ -112,8 +112,8 @@ export default function ActionItems() {
         }}
       />
 
-      <CreateTaskDialog open={createTaskDialogOpen} setOpen={setCreateTaskDialogOpen} />
-      <AddExpenseDialog open={addExpenseDialogOpen} setOpen={setAddExpenseDialogOpen} />
+      <TaskDialog open={createTaskDialogOpen} setOpen={setCreateTaskDialogOpen} />
+      <ExpenseDialog open={addExpenseDialogOpen} setOpen={setAddExpenseDialogOpen} />
     </>
   )
 }

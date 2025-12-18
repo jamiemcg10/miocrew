@@ -1,6 +1,6 @@
 import Tasks from '@/lib/components/tasks/Tasks'
 import { useState } from 'react'
-import CreateTaskDialog from './CreateTaskDialog'
+import TaskDialog from './TaskDialog'
 import { Task } from '@/lib/types'
 
 export default function TaskPage() {
@@ -9,7 +9,7 @@ export default function TaskPage() {
   return (
     <>
       <Tasks setOpenCreateDialog={setCreateDialogOpen} />
-      <CreateTaskDialog open={createDialogOpen} setOpen={setCreateDialogOpen} />
+      <TaskDialog open={createDialogOpen} setOpen={setCreateDialogOpen} />
     </>
   )
 }
