@@ -9,7 +9,7 @@ import { Trip, User, RecipientOption, BaseMessage, isMessage } from '@/lib/types
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { getUsers } from '@/db/users'
 import { getTrips, createMessage } from '@/db'
-import { messageReducer, initialMessageState } from './utils/messageReducer'
+import { messageReducer, initialMessageState } from '@/lib/utils/reducers/messageReducer'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface ComposeMessageDialogProps {

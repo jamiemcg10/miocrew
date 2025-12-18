@@ -15,7 +15,7 @@ import { today, getLocalTimeZone, CalendarDate, parseDate } from '@international
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { createTask, updateTask } from '@/db/tasks'
 import { TaskPayload } from '@/db'
-import { taskReducer, initialTaskState } from './utils/taskReducer'
+import { taskReducer, initialTaskState } from '@/lib/utils/reducers/taskReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 

@@ -29,7 +29,7 @@ import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { addExpense, ExpensePayload } from '@/db'
 import { Expense, isExpense } from '@/lib/types'
 import { CalendarDate, parseDate } from '@internationalized/date'
-import { expenseReducer, initialExpenseState } from './utils/expenseReducer'
+import { expenseReducer, initialExpenseState } from '@/lib/utils/reducers/expenseReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 

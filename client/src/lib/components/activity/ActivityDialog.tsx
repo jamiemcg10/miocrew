@@ -11,10 +11,7 @@ import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { createActivity, updateActivity } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CalendarDate, parseDate, parseTime, Time } from '@internationalized/date'
-import {
-  activityReducer,
-  initialActivityState
-} from '@/lib/components/activity/utils/activityReducer'
+import { activityReducer, initialActivityState } from '@/lib/utils/reducers/activityReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
