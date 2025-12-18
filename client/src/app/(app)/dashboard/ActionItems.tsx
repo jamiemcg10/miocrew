@@ -67,7 +67,7 @@ export default function ActionItems() {
 
     const actionItemsRefreshInterval = setInterval(fetchActionItems, 30000)
 
-    return clearInterval(actionItemsRefreshInterval)
+    return () => clearInterval(actionItemsRefreshInterval)
   }, [])
 
   if (!user) return

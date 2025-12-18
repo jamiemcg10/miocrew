@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useEffect, useReducer } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useReducer, useRef } from 'react'
 import Dialog from '../Dialog'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -17,6 +17,7 @@ import { createIdea, updateIdea } from '@/db'
 import { ideaReducer, initialIdeaState } from './utils/ideaReducer'
 import { NumberInput } from '@heroui/number-input'
 import { dialogTitleSx } from '@/lib/styles/sx'
+import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface AddIdeaDialogProps {
   open: boolean | Idea
@@ -100,6 +101,11 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
   const trip = useContext(TripContext)
 
   const [state, dispatch] = useReducer(ideaReducer, initialIdeaState)
+  const submitBtnRef = useRef<HTMLButtonElement>(null)
+
+  const valid = !!state.name.value
+
+  useSubmitOnEnter(() => submitBtnRef.current!.click(), valid)
 
   useEffect(() => {
     dispatch({ type: 'set-idea', value: isIdea(open) ? open : undefined })
@@ -107,11 +113,12 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={dialogTitleSx}>{isIdea(open) ? 'Edit' : 'Add'} Idea</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isIdea(open) ? 'Edit' : 'Add new'} Idea</DialogTitle>
       <div className="flex flex-col m-10 mt-5">
         <TextField
           label="Name"
           required
+          autoFocus={isIdea(open) ? false : true}
           value={state.name.value}
           error={!state.name.valid}
           onChange={(e) => dispatch({ type: 'name', value: e.target.value })}
@@ -163,9 +170,11 @@ export default function AddIdeaDialog({ open, setOpen }: AddIdeaDialogProps) {
         />
         <Button
           variant="contained"
+          ref={submitBtnRef}
           sx={addIdeaBtnSx}
+          id="submit-idea"
           type="submit"
-          disabled={!state.name.value}
+          disabled={!valid}
           onClick={saveIdea}>
           Save Idea
         </Button>

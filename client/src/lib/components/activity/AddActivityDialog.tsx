@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useReducer, useEffect } from 'react'
+import { Dispatch, SetStateAction, useContext, useReducer, useEffect, useRef } from 'react'
 import Dialog from '../Dialog'
 import { DatePicker } from '@heroui/date-picker'
 import { TimeInput } from '@heroui/date-input'
@@ -16,6 +16,7 @@ import {
   initialActivityState
 } from '@/lib/components/activity/utils/activityReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
+import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface AddActivityDialogProps {
   open: boolean | Activity
@@ -74,6 +75,11 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
   const user = useContext(UserContext)
 
   const [state, dispatch] = useReducer(activityReducer, initialActivityState)
+  const submitBtnRef = useRef<HTMLButtonElement>(null)
+
+  const valid = !!(state.name.value && state.startDate.value && state.startTime.value)
+
+  useSubmitOnEnter(() => submitBtnRef.current!.click(), valid)
 
   useEffect(() => {
     dispatch({ type: 'set-activity', value: isActivity(open) ? open : undefined })
@@ -81,11 +87,12 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={dialogTitleSx}>Add Activity</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isActivity(open) ? 'Edit' : 'Add new'}Activity</DialogTitle>
       <div className="flex flex-col m-10">
         <TextField
           label="Activity Name"
           required
+          autoFocus={isActivity(open) ? false : true}
           value={state.name.value}
           onChange={(e) => dispatch({ type: 'name', value: e.target.value })}
           sx={mb2Sx}
@@ -167,6 +174,7 @@ export default function AddActivityDialog({ open, setOpen }: AddActivityDialogPr
         <Button
           variant="contained"
           type="submit"
+          ref={submitBtnRef}
           sx={saveActivityBtnSx}
           disabled={!state.name.value || !state.startDate.value || !state.startTime.value}
           onClick={saveActivity}>

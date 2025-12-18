@@ -32,11 +32,12 @@ export default function TripPage() {
           (acc: Record<string, CrewMember>, c: CrewMember) => {
             return {
               ...acc,
-              [c.id]: c
+              [c.attendeeId]: c
             }
           },
           {}
         )
+
         if (response.data.trip) {
           setTrip({ ...response.data.trip, attendees })
           !websocket && openWebSocket(tripid)

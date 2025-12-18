@@ -37,6 +37,7 @@ export default function Popup({ open, onClose, backgroundColor, children }: Popu
     <Dialog
       slots={{ transition: Transition }}
       open={open}
+      disableRestoreFocus={true}
       sx={dialogSx}
       slotProps={{
         paper: {

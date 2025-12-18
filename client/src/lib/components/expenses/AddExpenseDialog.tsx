@@ -8,7 +8,8 @@ import {
   useState,
   ChangeEvent,
   useEffect,
-  useReducer
+  useReducer,
+  useRef
 } from 'react'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
@@ -30,6 +31,7 @@ import { Expense, isExpense } from '@/lib/types'
 import { CalendarDate, parseDate } from '@internationalized/date'
 import { expenseReducer, initialExpenseState } from './utils/expenseReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
+import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface AddExpenseDialogProps {
   open: boolean | Expense
@@ -116,6 +118,7 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
   }
 
   const [state, dispatch] = useReducer(expenseReducer, initialExpenseState)
+  const submitBtnRef = useRef<HTMLButtonElement>(null)
 
   const attendeesWithRefs = Object.values(trip?.attendees || {}).map((a) => {
     const aOpen = isExpense(open) ? open['owe'][a.id] : undefined
@@ -132,6 +135,15 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
     }
   })
 
+  const valid = !!(
+    state.name.value &&
+    state.date.value &&
+    ((state.type.value === 'Evenly' && state.total.valid) ||
+      (state.type.value === 'Custom' && attendeesWithRefs.some((a) => a.amount > 0)))
+  )
+
+  useSubmitOnEnter(() => submitBtnRef.current!.click(), valid)
+
   useEffect(() => {
     if (!trip || !user) return
 
@@ -140,11 +152,12 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={dialogTitleSx}>{isExpense(open) ? 'Edit' : 'Add'} expense</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isExpense(open) ? 'Edit' : 'Add new'} expense</DialogTitle>
       <div className="flex flex-col m-10 mt-4">
         <TextField
           label="Name"
           required
+          autoFocus={isExpense(open) ? false : true}
           sx={mb2Sx}
           size="small"
           value={state.name.value}
@@ -281,13 +294,9 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
         <Button
           variant="contained"
           startIcon={<AttachMoneyIcon />}
+          ref={submitBtnRef}
           onClick={saveExpense}
-          disabled={
-            !state.name.value ||
-            !state.date.value ||
-            (state.type.value === 'Evenly' && !state.total.valid) ||
-            (state.type.value === 'Custom' && !attendeesWithRefs.some((a) => a.amount > 0))
-          }
+          disabled={!valid}
           sx={addExpenseBtnSx}>
           Save Expense
         </Button>
@@ -295,4 +304,3 @@ export default function AddExpenseDialog({ open, setOpen }: AddExpenseDialogProp
     </Dialog>
   )
 }
-// 337

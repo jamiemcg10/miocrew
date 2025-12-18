@@ -37,7 +37,7 @@ export default function DashboardPage() {
 
     const tripFetchInterval = setInterval(fetchTrips, 30000)
 
-    return clearInterval(tripFetchInterval)
+    return () => clearInterval(tripFetchInterval)
   }, [])
 
   return (

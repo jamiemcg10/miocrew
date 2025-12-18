@@ -88,7 +88,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
         onClick={() => setOpenCreateDialog(true)}>
         Create task
       </Button>
-      <div className="flex flex-wrap mb-8 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
+      <div className="flex flex-wrap mb-2 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
         <Chip
           label="Active"
           icon={<CheckBoxOutlineBlankRoundedIcon />}
@@ -120,13 +120,16 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           )
         })}
       </div>
-      <div>
+      <div className="pr-0 sm:pr-4 overflow-y-scroll">
         {filteredTasks.length ? (
-          filteredTasks
-            .sort((a, b) => (a.dueDate > b.dueDate ? 1 : -1))
-            .map((task) => {
-              return <TaskItem task={task} key={task.id} onClick={() => setActiveTask(task)} />
-            })
+          <div className="w-full">
+            <div className="h-4 sticky -top-1 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent"></div>
+            {filteredTasks
+              .sort((a, b) => (a.dueDate > b.dueDate ? 1 : -1))
+              .map((task) => {
+                return <TaskItem task={task} key={task.id} onClick={() => setActiveTask(task)} />
+              })}
+          </div>
         ) : (
           <div>There are no tasks or no tasks that match the current filters.</div>
         )}

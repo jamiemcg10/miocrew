@@ -32,7 +32,6 @@ export default function InboxPage() {
   const [composing, setComposing] = useState<boolean | BaseMessage>(false)
 
   function fetchMessages() {
-    console.log('getem')
     getMessages({ userId: user!.id })
       .then((response) => {
         setMessages(response.data.messages)
@@ -83,7 +82,7 @@ export default function InboxPage() {
 
     const refreshInterval = setInterval(fetchMessages, 30000)
 
-    return clearInterval(refreshInterval)
+    return () => clearInterval(refreshInterval)
   }, [user])
 
   return (

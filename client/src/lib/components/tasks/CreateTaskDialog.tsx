@@ -5,11 +5,11 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useEffect, useReducer, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useReducer, useRef } from 'react'
 import PollOptionsDialog from './PollOptionsDialog'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import { isTask, PollTaskOption, Task, User } from '@/lib/types'
+import { CrewMember, isTask, PollTaskOption, Task } from '@/lib/types'
 import { DatePicker } from '@heroui/date-picker'
 import { today, getLocalTimeZone, CalendarDate, parseDate } from '@internationalized/date'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
@@ -17,6 +17,7 @@ import { createTask, updateTask } from '@/db/tasks'
 import { TaskPayload } from '@/db'
 import { taskReducer, initialTaskState } from './utils/taskReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
+import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface CreateTaskDialogProps {
   open: boolean | Task
@@ -27,6 +28,7 @@ const createTaskBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProps) {
   const [state, dispatch] = useReducer(taskReducer, initialTaskState)
+  const valid = !!(state.name.value && (state.assigneeId.value || state.type.value === 'poll'))
 
   const trip = useContext(TripContext)
   const user = useContext(UserContext)
@@ -86,17 +88,22 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
     }
   }
 
+  const submitBtnRef = useRef<HTMLButtonElement>(null)
+
+  useSubmitOnEnter(() => submitBtnRef.current!.click(), valid)
+
   useEffect(() => {
     dispatch({ type: 'set-task', value: isTask(open) ? open : undefined })
   }, [open])
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={dialogTitleSx}>{isTask(open) ? 'Edit' : 'Create new'} task</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isTask(open) ? 'Edit' : 'Add new'} task</DialogTitle>
       <form className="flex flex-col m-10">
         <TextField
           label="Task Name"
           required
+          autoFocus={isTask(open) ? false : true}
           sx={mb2Sx}
           value={state.name.value}
           error={!state.name.valid}
@@ -146,9 +153,9 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
                 onChange={(e) => {
                   dispatch({ type: 'assigneeId', value: e.target.value })
                 }}>
-                {Object.values(trip?.attendees || {}).map((a: User) => {
+                {Object.values(trip?.attendees || {}).map((a: CrewMember) => {
                   return (
-                    <MenuItem value={a.id} key={a.id}>
+                    <MenuItem value={a.attendeeId} key={a.attendeeId}>
                       {a.firstName} {a.lastName}
                     </MenuItem>
                   )
@@ -179,8 +186,9 @@ export default function CreateTaskDialog({ open, setOpen }: CreateTaskDialogProp
         />
         <Button
           variant="contained"
+          ref={submitBtnRef}
           sx={createTaskBtnSx}
-          disabled={!state.name || (!state.assigneeId.value && state.type.value === 'general')}
+          disabled={!valid}
           onClick={saveTask}>
           Save Task
         </Button>

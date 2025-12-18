@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react'
 import Dialog from '../Dialog'
 import Autocomplete, { AutocompleteChangeDetails } from '@mui/material/Autocomplete'
 import { User } from '@/lib/types'
@@ -10,6 +10,7 @@ import { getUsers } from '@/db/users'
 import { SyntheticEvent } from 'react'
 import { addCrew } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface AddCrewDialogProps {
   open: boolean
@@ -68,8 +69,13 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
       console.error('Error adding crew members', e)
     )
 
+    setInvitedCrew([])
     setOpen(false)
   }
+
+  const saveBtnRef = useRef<HTMLButtonElement>(null)
+
+  const valid = !!invitedCrew.length
 
   useEffect(() => {
     getUsers()
@@ -84,6 +90,8 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
       })
       .catch((e) => console.error('Error fetching users', e))
   }, [])
+
+  useSubmitOnEnter(() => saveBtnRef.current!.click(), valid)
 
   return (
     <Dialog open={open} setOpen={setOpen}>
@@ -116,6 +124,7 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                autoFocus
                 variant="outlined"
                 label="Crew"
                 multiline
@@ -126,7 +135,12 @@ export default function AddCrewDialog({ open, setOpen }: AddCrewDialogProps) {
             )}
           />
         </div>
-        <Button variant="contained" onClick={saveCrew} sx={addCrewBtnSx}>
+        <Button
+          variant="contained"
+          ref={saveBtnRef}
+          onClick={saveCrew}
+          disabled={!valid}
+          sx={addCrewBtnSx}>
           Add Crew Members
         </Button>
       </form>

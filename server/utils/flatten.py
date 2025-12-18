@@ -4,9 +4,9 @@ from utils.array_to_object import array_to_object
 def flatten_attendee(attendee):
     return {
         "id": attendee.id,
-        "attendee_id": attendee.attendee_id,
+        "attendeeId": attendee.attendee_id,
         "type": attendee.type,
-        "trip_id": attendee.trip_id,
+        "trip_id": attendee.trip_id, # TODO: update this
         "color": attendee.user.color,
         "email": attendee.user.email,
         "lastName": attendee.user.last_name,

@@ -4,12 +4,13 @@ import TextField from '@mui/material/TextField'
 import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import Autocomplete from '@mui/material/Autocomplete'
-import { useContext, useEffect, useState, useReducer } from 'react'
+import { useContext, useEffect, useState, useReducer, useRef } from 'react'
 import { Trip, User, RecipientOption, BaseMessage, isMessage } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { getUsers } from '@/db/users'
 import { getTrips, createMessage } from '@/db'
 import { messageReducer, initialMessageState } from './utils/messageReducer'
+import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface ComposeMessageDialogProps {
   open: boolean | BaseMessage
@@ -37,6 +38,9 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
   const [combinedRecipientOptions, setCombinedRecipientOptions] = useState<RecipientOption[]>([])
 
   const [state, dispatch] = useReducer(messageReducer, initialMessageState)
+  const sendBtnRef = useRef<HTMLButtonElement>(null)
+
+  const valid = !!(state.subject && state.body && !!state.recipients.length)
 
   useEffect(() => {
     if (!user) return
@@ -88,6 +92,8 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
     dispatch({ type: 'recipients', value })
   }
 
+  useSubmitOnEnter(() => sendBtnRef.current!.click(), valid)
+
   if (!user) return
 
   return (
@@ -99,6 +105,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
         <TextField
           label="Subject"
           required
+          autoFocus
           sx={textFieldSx}
           value={state.subject}
           onChange={(e) => dispatch({ type: 'subject', value: e.target.value })}
@@ -131,6 +138,8 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
         <Button
           variant="contained"
           startIcon={<SendRoundedIcon />}
+          ref={sendBtnRef}
+          disabled={!valid}
           onClick={saveMessage}
           sx={sendBtnSx}>
           Send
