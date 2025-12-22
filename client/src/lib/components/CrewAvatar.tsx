@@ -49,6 +49,9 @@ export default function CrewAvatar({ user, size, name, baseClasses }: CrewAvatar
   return (
     <Avatar
       name={getInitials(user) || name}
+      getInitials={() => {
+        return getInitials(user) || name || ''
+      }}
       isBordered
       classNames={{
         base: clsx(user && ringMap[user.color], getAvatarSize(size), 'shrink-0', baseClasses),
