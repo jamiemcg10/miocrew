@@ -19,7 +19,7 @@ export default function Home() {
       </div>
       <div>Get your plans out of the group chat</div>
       <div className="w-full sm:w-1/2">
-        <Button variant="contained" href="/dashboard" sx={startBtnSx}>
+        <Button variant="contained" href="/login" sx={startBtnSx}>
           Get started!
         </Button>
       </div>
