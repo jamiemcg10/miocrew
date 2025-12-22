@@ -13,8 +13,6 @@ export function openWebSocket(tripId: string) {
 
   websocket.addEventListener('error', (e) => console.error('Websocket error', e))
   websocket.addEventListener('message', ({ data }) => {
-    console.log({ data })
-
     if (data === 'trip') {
       callbackFns.trip()
     } else if (data === 'activities') {
