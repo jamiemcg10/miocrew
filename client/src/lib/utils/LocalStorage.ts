@@ -9,4 +9,8 @@ export class LocalStorage {
     const value = localStorage.getItem(key)
     return value ? JSON.parse(value) : null
   }
+
+  static clear() {
+    localStorage.clear()
+  }
 }
