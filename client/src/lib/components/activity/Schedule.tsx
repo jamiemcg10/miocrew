@@ -1,7 +1,7 @@
 import './Schedule.css'
 import Button from '@mui/material/Button'
 import dayjs from 'dayjs'
-import AddRoundedIcon from '@mui/icons-material/AddRounded'
+import EventRoundedIcon from '@mui/icons-material/EventRounded'
 import { Activity } from '@/lib/types'
 import ScheduleDay from './ScheduleDay'
 import { Dispatch, SetStateAction, useContext } from 'react'
@@ -53,7 +53,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
         <div className="flex w-full justify-end pr-4">
           <Button
             variant="contained"
-            startIcon={<AddRoundedIcon />}
+            startIcon={<EventRoundedIcon />}
             sx={addActivityBtnSx}
             onClick={setOpenAddDialogTrue}>
             Add activity
