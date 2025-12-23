@@ -3,7 +3,6 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import { Dispatch, SetStateAction, useContext, useReducer, useEffect, useRef } from 'react'
 import Dialog from '../Dialog'
-import { TimeInput } from '@heroui/date-input'
 import { assignActivityColor } from '@/lib/utils/colors/assignColor'
 import { Activity, isActivity } from '@/lib/types'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
@@ -14,6 +13,7 @@ import { activityReducer, initialActivityState } from '@/lib/utils/reducers/acti
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 import DateInput from '../DateInput'
+import TimeInput from '../TimeInput'
 
 interface ActivityDialogProps {
   open: boolean | Activity
