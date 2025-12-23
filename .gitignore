@@ -42,10 +42,6 @@ next-env.d.ts
 
 
 # server
-server/__pycache__/
-server/models/__pycache__/
-server/utils/__pycache__/
-server/routes/__pycache__
-server/websocket/__pycache__
+__pycache__/
 *storybook.log
 storybook-static

@@ -3,7 +3,6 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import { Dispatch, SetStateAction, useContext, useReducer, useEffect, useRef } from 'react'
 import Dialog from '../Dialog'
-import { DatePicker } from '@heroui/date-picker'
 import { TimeInput } from '@heroui/date-input'
 import { assignActivityColor } from '@/lib/utils/colors/assignColor'
 import { Activity, isActivity } from '@/lib/types'
@@ -14,6 +13,7 @@ import { CalendarDate, parseDate, parseTime, Time } from '@internationalized/dat
 import { activityReducer, initialActivityState } from '@/lib/utils/reducers/activityReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
+import DateInput from '../DateInput'
 
 interface ActivityDialogProps {
   open: boolean | Activity
@@ -109,7 +109,7 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
           sx={mb2Sx}
         />
         <div className="flex mb-2">
-          <DatePicker
+          <DateInput
             className="w-3/5"
             label="Start date"
             variant="bordered"
@@ -144,7 +144,7 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
           />
         </div>
         <div className="flex">
-          <DatePicker
+          <DateInput
             className="w-3/5"
             label="End date"
             variant="bordered"

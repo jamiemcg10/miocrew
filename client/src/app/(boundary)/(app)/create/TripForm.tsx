@@ -2,7 +2,6 @@ import '@/lib/styles/VerticalScroll.css'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import { DatePicker } from '@heroui/date-picker'
 import Autocomplete from '@mui/material/Autocomplete'
 import { useContext, useEffect, useReducer, useState } from 'react'
 import { getUsers } from '@/db/users'
@@ -13,6 +12,7 @@ import { CalendarDate, getLocalTimeZone, parseDate, today } from '@international
 import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/material/Snackbar'
+import DateInput from '@/lib/components/DateInput'
 
 const fieldStyles = { width: '100%' }
 const createTripBtnSx = {
@@ -107,7 +107,7 @@ export default function TripForm() {
         />
       </div>
       <div className="flex justify-between">
-        <DatePicker
+        <DateInput
           className="w-2/5"
           label="Start date"
           variant="bordered"
@@ -131,12 +131,9 @@ export default function TripForm() {
                   : ''
             })
           }}
-          classNames={{
-            label: 'group-data-[required=true]:after:text-inherit'
-          }}
         />
         <span className="self-center italic text-gray-500">to</span>
-        <DatePicker
+        <DateInput
           className="w-2/5"
           label="End date"
           variant="bordered"

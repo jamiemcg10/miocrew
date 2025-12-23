@@ -10,7 +10,6 @@ import PollOptionsDialog from './PollOptionsDialog'
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { CrewMember, isTask, PollTaskOption, Task } from '@/lib/types'
-import { DatePicker } from '@heroui/date-picker'
 import { today, getLocalTimeZone, CalendarDate, parseDate } from '@internationalized/date'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { createTask, updateTask } from '@/db/tasks'
@@ -18,6 +17,7 @@ import { TaskPayload } from '@/db'
 import { taskReducer, initialTaskState } from '@/lib/utils/reducers/taskReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
+import DateInput from '../DateInput'
 
 interface TaskDialogProps {
   open: boolean | Task
@@ -164,7 +164,7 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
             </FormControl>
           </>
         )}
-        <DatePicker
+        <DateInput
           className="w-3/5 mb-2"
           label="Due Date"
           variant="bordered"

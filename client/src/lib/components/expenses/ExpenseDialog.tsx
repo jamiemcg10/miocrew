@@ -24,7 +24,6 @@ import FormControl from '@mui/material/FormControl'
 import BoltIcon from '@mui/icons-material/Bolt'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import clsx from 'clsx'
-import { DatePicker } from '@heroui/date-picker'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { addExpense, ExpensePayload } from '@/db'
 import { Expense, isExpense } from '@/lib/types'
@@ -32,6 +31,7 @@ import { CalendarDate, parseDate } from '@internationalized/date'
 import { expenseReducer, initialExpenseState } from '@/lib/utils/reducers/expenseReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
+import DateInput from '../DateInput'
 
 interface ExpenseDialogProps {
   open: boolean | Expense
@@ -177,7 +177,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
             dispatch({ type: 'notes', value: e.target.value })
           }}
         />
-        <DatePicker
+        <DateInput
           className="w-3/5 mb-2"
           label="Date"
           variant="bordered"
