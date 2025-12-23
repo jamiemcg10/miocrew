@@ -13,10 +13,10 @@ export const appColors = [
   'orchid',
   'mediumpurple',
   'darkkhaki',
-  'peachpuff',
+  'dimgrey',
   'lightcoral',
   'aquamarine',
   'sandybrown',
   'palegreen',
-  'lavender'
+  'blueviolet'
 ] as const
