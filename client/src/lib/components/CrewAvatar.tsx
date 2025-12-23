@@ -17,7 +17,7 @@ export const ringMap: Record<UserColor, string> = {
   navy: 'ring-[navy]',
   green: 'ring-[green]',
   red: 'ring-[red]',
-  black: 'ring-[black]',
+  dimgrey: 'ring-[dimgrey]',
   purple: 'ring-[purple]',
   turquoise: 'ring-[turquoise]'
 }
