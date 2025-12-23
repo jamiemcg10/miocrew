@@ -2,11 +2,20 @@ import '@/lib/styles/VerticalScroll.css'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import { DatePicker } from '@heroui/date-picker'
 import Autocomplete from '@mui/material/Autocomplete'
 import { dummyEmails } from '@/lib/utils/dummyData'
+import DateInput from '@/lib/components/DateInput'
 
-const fieldStyles = { width: '100%' }
+const fieldStyles = {
+  width: '100%',
+  '.MuiInputBase-root.Mui-focused:hover fieldset': { borderColor: '#1976d2' },
+  '.MuiInputBase-root:hover fieldset': { borderColor: 'rgba(0,0,0,0.49)' },
+  '.dark & .MuiInputBase-root:hover fieldset': { borderColor: 'rgba(255,255,255,1)' },
+  '.dark & .MuiInputBase-root.Mui-focused:hover fieldset': {
+    borderColor: 'var(--lt-blue)'
+  }
+}
+
 const createTripButtonSx = {
   marginTop: '3rem',
   padding: '12px',
@@ -29,9 +38,9 @@ export default function TripForm() {
         <TextField variant="outlined" label="Trip location" sx={fieldStyles} />
       </div>
       <div className="flex justify-between">
-        <DatePicker className="w-2/5" label="Start date" variant="bordered" size="sm" />
+        <DateInput className="w-2/5" label="Start date" variant="bordered" size="sm" />
         <span className="self-center italic text-gray-500">to</span>
-        <DatePicker className="w-2/5" label="End date" variant="bordered" size="sm" />
+        <DateInput className="w-2/5" label="End date" variant="bordered" size="sm" />
       </div>
       <div>
         <TextField variant="outlined" label="Description" multiline rows={4} sx={fieldStyles} />
