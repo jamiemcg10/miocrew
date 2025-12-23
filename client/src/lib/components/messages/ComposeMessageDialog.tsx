@@ -31,7 +31,7 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
     return option.name
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   const [users, setUsers] = useState<User[]>([])
   const [trips, setTrips] = useState<Trip[]>([])

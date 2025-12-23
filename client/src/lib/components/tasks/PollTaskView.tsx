@@ -64,7 +64,7 @@ export default function PollTaskView({ activeTask, closeView }: PollTaskViewProp
 
 function UncompletedPoll({ activeTask, options, closeView }: UncompletedPollTaskViewProps) {
   const trip = useContext(TripContext)
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   function submitPoll() {
     if (!user || !trip) return

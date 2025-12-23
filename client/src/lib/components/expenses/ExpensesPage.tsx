@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import Expenses from './Expenses'
 import ExpenseDialog from './ExpenseDialog'
 import { Expense } from '@/lib/types'
-import { ExpensesContext } from '@/app/(app)/trip/[tripid]/TripWrapper'
+import { ExpensesContext } from '@/app/(boundary)/(app)/trip/[tripid]/TripWrapper'
 
 export default function TaskPage() {
   const expenses = useContext(ExpensesContext)

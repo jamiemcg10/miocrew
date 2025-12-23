@@ -11,16 +11,13 @@ interface TripProps {
   children: ReactNode
 }
 
-// Rry to move all db and ws logic here so the functions dont have to
-// rerun every time tabs are switched
-
 export const ActivitiesContext = createContext<Activity[]>([])
 export const TasksContext = createContext<Task[]>([])
 export const IdeasContext = createContext<Idea[]>([])
 export const ExpensesContext = createContext<Expense[]>([])
 
 export default function TripWrapper({ tripId, children }: TripProps) {
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
 
   const storedActivities = LocalStorage.get<Activity[]>(`${trip?.id}:activities`)

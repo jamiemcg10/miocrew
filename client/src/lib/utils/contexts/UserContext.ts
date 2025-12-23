@@ -1,4 +1,9 @@
 import { createContext } from 'react'
 import { User } from '../../types'
 
-export const UserContext = createContext<User | null>(null)
+interface UserContextType {
+  user: User | null
+  setUser: Function
+}
+
+export const UserContext = createContext<UserContextType>({ user: null, setUser: () => {} })

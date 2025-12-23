@@ -9,7 +9,7 @@ import { Idea } from '@/lib/types'
 import { getIdeaLikes } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import { IdeasContext } from '@/app/(app)/trip/[tripid]/TripWrapper'
+import { IdeasContext } from '@/app/(boundary)/(app)/trip/[tripid]/TripWrapper'
 
 interface IdeasProps {
   setOpenAddDialog: Dispatch<SetStateAction<Idea | boolean>>
@@ -27,7 +27,7 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
     setOpenAddDialog(true)
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
   const ideas = useContext(IdeasContext)
 

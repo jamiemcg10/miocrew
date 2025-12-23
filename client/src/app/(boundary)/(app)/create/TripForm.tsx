@@ -8,7 +8,7 @@ import { useContext, useEffect, useReducer, useState } from 'react'
 import { getUsers } from '@/db/users'
 import { User } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
-import { initialTripState, tripReducer } from './utils/tripReducer'
+import { initialTripState, tripReducer } from '@/lib/utils/reducers/tripReducer'
 import { CalendarDate, getLocalTimeZone, parseDate, today } from '@internationalized/date'
 import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
@@ -28,7 +28,7 @@ const createTripBtnSx = {
 }
 
 export default function TripForm() {
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const [tripState, dispatch] = useReducer(tripReducer, initialTripState)
 
   const [users, setUsers] = useState<User[]>([])

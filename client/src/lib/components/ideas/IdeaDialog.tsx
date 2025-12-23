@@ -97,7 +97,7 @@ export default function IdeaDialog({ open, setOpen }: IdeaDialogProps) {
     }
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
 
   const [state, dispatch] = useReducer(ideaReducer, initialIdeaState)

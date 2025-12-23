@@ -45,7 +45,7 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
 
   const [notes, setNotes] = useState(activeTask.notes || '')
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
 
   const editDisabled =

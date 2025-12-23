@@ -41,13 +41,13 @@ function formatReimbursements(reimbursements: Record<string, TotalOwed>, userId?
 }
 
 export default function Reimbursements({ expenses }: ReimbursementsProps) {
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   const reimbursements = calculateReimbursements(expenses)
   return (
     <div className="relative  @max-[890px]:h-1/4 @max-[890px]:grow">
       <div className="min-w-50 h-full mb-8 border border-transparent border-l-(--foreground) pl-4 overflow-y-scroll">
-        <div className="text-2xl mb-2 sticky top-0  bg-linear-to-b from-(--background) from-80% to-transparent">
+        <div className="text-2xl mb-2 -ml-1 sticky top-0  bg-linear-to-b from-(--background) from-80% to-transparent">
           Who owes what
         </div>
         <div>{formatReimbursements(reimbursements, user?.id)}</div>

@@ -69,7 +69,7 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
   }
 
   const trip = useContext(TripContext)
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   const [state, dispatch] = useReducer(activityReducer, initialActivityState)
   const submitBtnRef = useRef<HTMLButtonElement>(null)

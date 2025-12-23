@@ -21,7 +21,7 @@ export default function SettingsPage() {
     inputRef.current?.click()
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   if (!user) return

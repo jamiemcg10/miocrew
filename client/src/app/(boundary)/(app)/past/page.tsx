@@ -8,7 +8,7 @@ import { LocalStorage } from '@/lib/utils/LocalStorage'
 import { useContext, useState, useEffect } from 'react'
 
 export default function PastTripsPage() {
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   function fetchPastTrips() {
     getTrips({ userId: user!.id })

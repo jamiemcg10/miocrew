@@ -44,7 +44,7 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: 
   const [menuOpen, setMenuOpen] = useState(false)
   const [like, setLike] = useState(favorite)
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
 
   return (

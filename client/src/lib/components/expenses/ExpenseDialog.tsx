@@ -43,7 +43,7 @@ const addExpenseBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   const trip = useContext(TripContext)
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch({ type: 'type', value: e.target.value })

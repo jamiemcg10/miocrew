@@ -9,7 +9,7 @@ import { getTrips } from '@/db'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 
 export default function DashboardPage() {
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   const storedTrips = LocalStorage.get<Trip[]>('upcoming-trips')
 
@@ -28,17 +28,13 @@ export default function DashboardPage() {
       .catch((e) => console.error('Error fetching upcoming trips', e))
   }
 
-  if (!user) return
-
   useEffect(() => {
-    if (!user) return
-
     fetchTrips()
 
     const tripFetchInterval = setInterval(fetchTrips, 30000)
 
     return () => clearInterval(tripFetchInterval)
-  }, [])
+  }, [user])
 
   return (
     <>

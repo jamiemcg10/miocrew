@@ -11,7 +11,7 @@ import { Task, User } from '@/lib/types'
 import TaskView from './TaskView'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import CrewAvatar from '../CrewAvatar'
-import { TasksContext } from '@/app/(app)/trip/[tripid]/TripWrapper'
+import { TasksContext } from '@/app/(boundary)/(app)/trip/[tripid]/TripWrapper'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean | Task>>

@@ -33,9 +33,7 @@ const drawerSx = {
 }
 
 export default function Menu({ open, handleClose, matches }: MenuProps) {
-  const user = useContext(UserContext)
-
-  if (!user) return
+  const { user } = useContext(UserContext)
 
   function closeMenu() {
     handleClose()
@@ -107,7 +105,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
           <div className="absolute bottom-0 w-full">
             <Divider />
             <ListItem key={'Log out'} disablePadding>
-              <ListItemButton>
+              <ListItemButton href="/logout">
                 <ListItemIcon>
                   <LogoutRoundedIcon />
                 </ListItemIcon>

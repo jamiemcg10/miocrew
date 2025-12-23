@@ -14,7 +14,7 @@ const buttonSx = { margin: '16px 0 16px 0', alignSelf: 'end', width: 'initial', 
 
 export default function Dashboard({ upcomingTrips }: DashboardProps) {
   return (
-    <div className="flex flex-col px-4">
+    <div className="flex flex-col px-4 overflow-y-auto">
       <Button
         href="/create"
         color="secondary"

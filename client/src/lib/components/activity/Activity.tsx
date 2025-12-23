@@ -26,7 +26,7 @@ export default function Activity({ activity, setActiveActivity }: ActivityProps)
       .finally(() => setMenuOpen(false))
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
   const { onEdit } = useContext(ScheduleContext)
 

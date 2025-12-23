@@ -17,7 +17,7 @@ import { addMessageListener, openWebSocket, websocket } from '@/db/websocket'
 import TripWrapper from './TripWrapper'
 
 export default function TripPage() {
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const [trip, setTrip] = useState<Trip | null>(null)
 
   const { tripid } = useParams<{ tripid: string }>()

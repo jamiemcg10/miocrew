@@ -12,6 +12,6 @@ export const activityColors = [
   'indigo',
   'darkorange',
   'slategray',
-  'lightgray',
+  'darkolivegreen',
   'limegreen'
 ] as const

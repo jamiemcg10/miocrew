@@ -36,7 +36,7 @@ export default function ActionItems() {
       .catch((e) => console.error('Error fetching action items', e))
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   const storedActionItemsTasks = LocalStorage.get<Task[]>('action-items:tasks')
   const storedActionItemsExpenses = LocalStorage.get<Expense[]>('action-items:expenses')

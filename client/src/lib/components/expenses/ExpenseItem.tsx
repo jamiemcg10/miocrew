@@ -22,7 +22,7 @@ export default function ExpenseItem({ expense, setActiveExpense }: ExpenseItemPr
     setActiveExpense(expense)
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   if (!user) return
 

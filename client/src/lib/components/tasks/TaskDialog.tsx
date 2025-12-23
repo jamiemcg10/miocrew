@@ -31,7 +31,7 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
   const valid = !!(state.name.value && (state.assigneeId.value || state.type.value === 'poll'))
 
   const trip = useContext(TripContext)
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   function getTaskPayload() {
     const payload = {

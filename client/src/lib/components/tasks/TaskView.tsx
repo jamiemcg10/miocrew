@@ -38,7 +38,7 @@ export default function TaskView({ activeTask, onEdit, onClose }: TaskViewProps)
       .finally(onClose)
   }
 
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
 
   return (

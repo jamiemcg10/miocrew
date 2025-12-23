@@ -24,7 +24,7 @@ import { noTextTransformSx } from '@/lib/styles/sx'
 const composeBtnSx = { fontWeight: 700, ml: 4, mb: 2 }
 
 export default function InboxPage() {
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
   const storedMessages = LocalStorage.get<BaseMessage[]>('messages')
   const [messages, setMessages] = useState<BaseMessage[]>(storedMessages || [])
@@ -87,7 +87,7 @@ export default function InboxPage() {
 
   return (
     <>
-      <div className="p-8">
+      <div className="flex flex-col h-full p-8">
         <div className="text-3xl">
           <DraftsOutlinedIcon />
           <span className="ml-2">Inbox</span>
@@ -134,36 +134,38 @@ export default function InboxPage() {
           </Button>
         </div>
         <div className="text-xl mb-4">Messages</div>
-        {messages.map((m, i) => {
-          return (
-            <MessageItem
-              message={m}
-              checked={checked}
-              setChecked={setChecked}
-              key={i}
-              onClick={() => {
-                if (!user) return
+        <div className="overflow-y-auto">
+          {messages.map((m, i) => {
+            return (
+              <MessageItem
+                message={m}
+                checked={checked}
+                setChecked={setChecked}
+                key={i}
+                onClick={() => {
+                  if (!user) return
 
-                setActiveMessage(m)
+                  setActiveMessage(m)
 
-                if (!m.read) {
-                  const statusUpdate = messages.map((m, _i) =>
-                    i !== _i ? m : { ...m, read: true }
-                  )
-                  setMessages(statusUpdate)
-                  toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: true })
-                  LocalStorage.set('messages', statusUpdate)
-                }
-              }}
-              onDelete={() => onDeleteMessage(m.id)}
-              onToggleRead={() => {
-                if (!user) return
+                  if (!m.read) {
+                    const statusUpdate = messages.map((m, _i) =>
+                      i !== _i ? m : { ...m, read: true }
+                    )
+                    setMessages(statusUpdate)
+                    toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: true })
+                    LocalStorage.set('messages', statusUpdate)
+                  }
+                }}
+                onDelete={() => onDeleteMessage(m.id)}
+                onToggleRead={() => {
+                  if (!user) return
 
-                toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: !m.read })
-              }}
-            />
-          )
-        })}
+                  toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: !m.read })
+                }}
+              />
+            )
+          })}
+        </div>
       </div>
 
       <MessageView
