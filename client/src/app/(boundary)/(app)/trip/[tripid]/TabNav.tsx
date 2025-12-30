@@ -6,6 +6,15 @@ interface TabNavProps {
   setPage: Dispatch<SetStateAction<string>>
 }
 
+const tabClassNames = {
+  base: 'sm:mx-4 w-auto',
+  tab: 'max-sm:px-2 font-semibold',
+  tabList: 'bg-(--background) max-sm:gap-1 w-full',
+  cursor: 'bg-(--dk-blue) dark:bg-(--lt-blue) rounded-sm',
+  tabContent:
+    'group-data-[selected=true]:text-slate-100 dark:group-data-[selected=true]:text-slate-800'
+}
+
 export default function TabNav({ page, setPage }: TabNavProps) {
   function handlePageChange(key: Key) {
     localStorage.setItem('tab', `${key as string}`)
@@ -15,19 +24,12 @@ export default function TabNav({ page, setPage }: TabNavProps) {
   return (
     <Tabs
       aria-label="tab-nav"
+      size="md"
       fullWidth
-      size="lg"
       radius="none"
       selectedKey={page}
       onSelectionChange={handlePageChange}
-      classNames={{
-        base: 'sm:mx-4 w-auto',
-        tab: 'max-sm:px-2 font-semibold',
-        tabList: 'bg-(--background) max-sm:gap-1',
-        cursor: 'bg-(--dk-blue) dark:bg-(--lt-blue) rounded-sm',
-        tabContent:
-          'group-data-[selected=true]:text-slate-100 dark:group-data-[selected=true]:text-slate-800'
-      }}>
+      classNames={tabClassNames}>
       <Tab title="Schedule" key="schedule" />
       <Tab title="Tasks" key="tasks" />
       <Tab title="Ideas" key="ideas" />

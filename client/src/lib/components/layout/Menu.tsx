@@ -32,8 +32,12 @@ const drawerSx = {
   }
 }
 
+const greetingSlotProps = { primary: { fontWeight: 700 } }
+
 export default function Menu({ open, handleClose, matches }: MenuProps) {
   const { user } = useContext(UserContext)
+
+  const variant = matches ? 'permanent' : 'temporary'
 
   function closeMenu() {
     handleClose()
@@ -42,7 +46,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
   return (
     <Drawer
       sx={drawerSx}
-      variant={matches ? 'permanent' : 'temporary'}
+      variant={variant}
       anchor="left"
       open={matches || open}
       onClose={closeMenu}>
@@ -50,10 +54,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
         <List sx={fullHeightSx}>
           <ListItem key={'Greeting'} sx={greetingListItemSx}>
             <ListItemIcon>{user ? <CrewAvatar user={user} /> : null}</ListItemIcon>
-            <ListItemText
-              primary={`Hi ${user?.firstName}!`}
-              slotProps={{ primary: { fontWeight: 700 } }}
-            />
+            <ListItemText primary={`Hi ${user?.firstName}!`} slotProps={greetingSlotProps} />
           </ListItem>
           <Divider />
           <Divider />
@@ -75,7 +76,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
             </ListItemButton>
           </ListItem>
           <Divider />
-          <ListItem key={'Craete trip'} disablePadding>
+          <ListItem key={'Create trip'} disablePadding>
             <ListItemButton href="/create">
               <ListItemIcon>
                 <EditCalendarRoundedIcon />

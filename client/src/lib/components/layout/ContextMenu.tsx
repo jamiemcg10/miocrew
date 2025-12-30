@@ -5,7 +5,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import IconButton from '@mui/material/IconButton'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { Dispatch, SetStateAction, useRef } from 'react'
+import { Dispatch, SetStateAction, useRef, MouseEventHandler } from 'react'
+import { PopoverOrigin } from '@mui/material'
 
 interface ContextMenuProps {
   open: boolean
@@ -14,6 +15,18 @@ interface ContextMenuProps {
   onDelete: () => void
   onEdit: () => void
 }
+
+const origin: Record<'anchor' | 'transform', PopoverOrigin> = {
+  anchor: {
+    vertical: 'bottom',
+    horizontal: 'left'
+  },
+  transform: {
+    vertical: 'top',
+    horizontal: 'left'
+  }
+}
+
 export default function ContextMenu({
   open,
   setMenuOpen,
@@ -23,47 +36,39 @@ export default function ContextMenu({
 }: ContextMenuProps) {
   const menuRef = useRef(null)
 
+  const onToggle: MouseEventHandler = (e) => {
+    e.stopPropagation()
+    setMenuOpen(true)
+  }
+
+  const onClickEdit: MouseEventHandler = (e) => {
+    e.stopPropagation()
+    onEdit()
+    onClose()
+  }
+  const onClickDelete: MouseEventHandler = (e) => {
+    e.stopPropagation()
+    onDelete
+  }
+
   return (
     <>
-      <IconButton
-        onClick={(e) => {
-          e.stopPropagation()
-          setMenuOpen(true)
-        }}
-        ref={menuRef}
-        size="small">
+      <IconButton onClick={onToggle} ref={menuRef} size="small">
         <MoreHorizIcon fontSize="small" />
       </IconButton>
       <Menu
         open={open}
         anchorEl={menuRef?.current}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left'
-        }}
+        anchorOrigin={origin.anchor}
+        transformOrigin={origin.transform}
         onClose={onClose}>
-        <MenuItem
-          dense
-          onClick={(e) => {
-            e.stopPropagation()
-            onEdit()
-            onClose()
-          }}>
+        <MenuItem dense onClick={onClickEdit}>
           <ListItemIcon>
             <EditRoundedIcon fontSize="small" />
           </ListItemIcon>
           Edit
         </MenuItem>
-        <MenuItem
-          dense
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete()
-          }}>
+        <MenuItem dense onClick={onClickDelete}>
           <ListItemIcon>
             <DeleteRoundedIcon fontSize="small" />
           </ListItemIcon>
