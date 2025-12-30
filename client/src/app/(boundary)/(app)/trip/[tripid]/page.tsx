@@ -45,7 +45,7 @@ export default function TripPage() {
           notFound()
         }
       })
-      .catch((e) => console.error('Error getching trip', e))
+      .catch((e) => console.error('Error fetching trip', e))
   }
 
   function renderPage() {
