@@ -21,7 +21,7 @@ export default function TripTable({ trips, title }: TripTableProps) {
           .sort((a, b) => (a.startDate > b.startDate ? 1 : -1)) // TODO: use trip sort here
           .map((trip) => {
             return (
-              <Link href={`trip/${trip.id}`} key={trip.id}>
+              <Link href={`/trip/${trip.id}`} key={trip.id}>
                 <TableRow>
                   <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
                     <span className="px-2 inline-flex text-lg font-semibold">{trip.name}</span>
