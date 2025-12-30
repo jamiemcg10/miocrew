@@ -47,6 +47,5 @@ __pycache__/
 server/models/__pycache__/*
 server/utils/__pycache__/
 server/routes/__pycache__/
-server/websocket/__pycache__
-*storybook.log
-storybook-static
+server/websocket/__pycache__/
+server/venv/
