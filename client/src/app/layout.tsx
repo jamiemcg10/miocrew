@@ -4,6 +4,7 @@ import './globals.css'
 import Theme from '@/lib/components/layout/Theme'
 import { HeroUIProvider } from '@heroui/system'
 import { ReactNode } from 'react'
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <InitColorSchemeScript attribute="class" />
         <HeroUIProvider>
           <Theme>{children}</Theme>
         </HeroUIProvider>

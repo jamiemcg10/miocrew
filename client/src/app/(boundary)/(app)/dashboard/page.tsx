@@ -8,6 +8,12 @@ import { Trip } from '@/lib/types'
 import { getTrips } from '@/db'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 
+const today = new Date()
+
+function getDate(str: string) {
+  return new Date(str)
+}
+
 export default function DashboardPage() {
   const { user } = useContext(UserContext)
 
@@ -19,8 +25,8 @@ export default function DashboardPage() {
     getTrips({ userId: user!.id })
       .then((response) => {
         const _upcomingTrips = response.data.trips.filter((trip: Trip) => {
-          const startDate = new Date(trip.startDate)
-          return startDate >= new Date()
+          const startDate = getDate(trip.startDate)
+          return startDate >= today
         })
         setUpcomingTrips(_upcomingTrips)
         LocalStorage.set('upcoming-trips', _upcomingTrips)

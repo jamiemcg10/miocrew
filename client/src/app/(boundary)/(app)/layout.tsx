@@ -14,7 +14,7 @@ export default function AppLayout({
   children: ReactNode
 }>) {
   const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.up('sm'))
+  const matches = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true })
 
   const { user } = useContext(UserContext)
 
@@ -36,6 +36,7 @@ export default function AppLayout({
   useEffect(mount, [])
 
   if (!mounted) {
+    // keep this to avoid changing screen layout when size is computed
     return null
   }
 

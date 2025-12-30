@@ -1,20 +1,33 @@
 import { Trip } from '@/lib/types'
 import { tripSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
+import { Suspense } from 'react'
 
 interface DashboardHeaderProps {
   upcomingTrips: Trip[]
 }
 
-const today = dayjs(new Date())
+const today = new Date()
+
+function DayCountdown({ nextTrip }: { nextTrip: Trip }) {
+  const nextTripStart = dayjs(nextTrip?.startDate).diff(dayjs(today), 'day')
+  const nextTripStartMonths = dayjs(nextTrip?.startDate).diff(dayjs(today), 'month')
+
+  return nextTripStart <= 90 ? (
+    <span>
+      <span className="text-lg">{nextTripStart}</span> days
+    </span>
+  ) : (
+    <span>
+      <span className="text-lg">{nextTripStartMonths}</span> months
+    </span>
+  )
+}
 
 export default function DashboardHeader({ upcomingTrips }: DashboardHeaderProps) {
   const nextTrip = upcomingTrips
-    .filter((trip) => new Date(trip.startDate) >= new Date())
+    .filter((trip) => new Date(trip.startDate) >= today)
     .sort(tripSort)[0]
-
-  const nextTripStart = dayjs(nextTrip?.startDate).diff(today, 'day')
-  const nextTripStartMonths = dayjs(nextTrip?.startDate).diff(today, 'month')
 
   return (
     <div className="flex justify-around px-4 py-4 items-center bg-[#cee2f5] dark:bg-white/20 font-semibold">
@@ -23,15 +36,9 @@ export default function DashboardHeader({ upcomingTrips }: DashboardHeaderProps)
       </div>
       <div>
         Your next trip is in{' '}
-        {nextTripStart <= 90 ? (
-          <span>
-            <span className="text-lg">{nextTripStart}</span> days
-          </span>
-        ) : (
-          <span>
-            <span className="text-lg">{nextTripStartMonths}</span> months
-          </span>
-        )}
+        <Suspense>
+          <DayCountdown nextTrip={nextTrip} />
+        </Suspense>
         !
       </div>
     </div>
