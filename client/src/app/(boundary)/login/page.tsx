@@ -21,7 +21,7 @@ type Users = Record<string, User>
 export default function LoginPage() {
   const { user, setUser } = useContext(UserContext)
   const [users, setUsers] = useState<Users>({})
-  const [selectedUserId, setSelectedUserId] = useState<any>('')
+  const [selectedUserId, setSelectedUserId] = useState('')
 
   function login() {
     const user = users[selectedUserId]
@@ -65,7 +65,7 @@ export default function LoginPage() {
           value={selectedUserId}
           variant="filled"
           onChange={(u) => setSelectedUserId(u.target.value)}>
-          <MenuItem value={''}> </MenuItem>
+          <MenuItem value={''}>&nbsp;</MenuItem>
           {mappedUsers}
         </Select>
       </FormControl>
