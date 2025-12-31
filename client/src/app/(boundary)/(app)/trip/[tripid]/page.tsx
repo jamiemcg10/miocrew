@@ -2,21 +2,22 @@
 import '@/lib/styles/VerticalScroll.css'
 import '@/lib/styles/HorizontalScroll.css'
 
-import { useContext, useEffect, useState } from 'react'
+import { lazy, useContext, useEffect, useState } from 'react'
 import TabNav from './TabNav'
-import SchedulePage from '@/lib/components/activity/SchedulePage'
-import CrewPage from '@/lib/components/crew/CrewPage'
-import TasksPage from '@/lib/components/tasks/TasksPage'
 import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
-import IdeasPage from '@/lib/components/ideas/IdeasPage'
-import ExpensesPage from '@/lib/components/expenses/ExpensesPage'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { CrewMember, Trip } from '@/lib/types'
 import { getTrip } from '@/db'
 import { addMessageListener, openWebSocket, websocket } from '@/db/websocket'
 import TripWrapper from './TripWrapper'
+
+const IdeasPage = lazy(() => import('@/lib/components/ideas/IdeasPage'))
+const ExpensesPage = lazy(() => import('@/lib/components/expenses/ExpensesPage'))
+const SchedulePage = lazy(() => import('@/lib/components/activity/SchedulePage'))
+const CrewPage = lazy(() => import('@/lib/components/crew/CrewPage'))
+const TasksPage = lazy(() => import('@/lib/components/tasks/TasksPage'))
 
 export default function TripPage() {
   const { user } = useContext(UserContext)
