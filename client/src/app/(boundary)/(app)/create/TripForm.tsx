@@ -13,6 +13,7 @@ import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/material/Snackbar'
 import DateInput from '@/lib/components/DateInput'
+import CardTravelRoundedIcon from '@mui/icons-material/CardTravelRounded'
 
 const fieldStyles = { width: '100%' }
 const createTripBtnSx = {
@@ -228,6 +229,7 @@ export default function TripForm() {
       <Button
         variant="contained"
         disabled={Object.values(tripState).some((v) => !v.valid) || saving}
+        startIcon={<CardTravelRoundedIcon />}
         onClick={saveTrip}
         sx={createTripBtnSx}>
         Create trip
