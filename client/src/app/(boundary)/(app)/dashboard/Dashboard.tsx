@@ -2,7 +2,7 @@
 
 import TripTable from '@/lib/components/TripTable'
 import Button from '@mui/material/Button'
-import AddRoundedIcon from '@mui/icons-material/AddRounded'
+import CardTravelRoundedIcon from '@mui/icons-material/CardTravelRounded'
 import ActionItems from './ActionItems'
 import { Trip } from '@/lib/types'
 
@@ -17,9 +17,9 @@ export default function Dashboard({ upcomingTrips }: DashboardProps) {
     <div className="flex flex-col px-4 overflow-y-auto">
       <Button
         href="/create"
-        color="secondary"
+        color="info"
         variant="contained"
-        startIcon={<AddRoundedIcon />}
+        startIcon={<CardTravelRoundedIcon />}
         sx={buttonSx}>
         Create trip
       </Button>
