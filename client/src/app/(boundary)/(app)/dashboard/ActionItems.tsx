@@ -8,6 +8,7 @@ import { getActionItems } from '@/db'
 import TaskDialog from '@/lib/components/tasks/TaskDialog'
 import ExpenseDialog from '@/lib/components/expenses/ExpenseDialog'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
+import DashboardSectionHeader from './DashboardSectionHeader'
 
 export default function ActionItems() {
   function formatActionItems() {
@@ -74,7 +75,7 @@ export default function ActionItems() {
 
   return (
     <>
-      <div className="text-xl font-bold my-4">Action items</div>
+      <DashboardSectionHeader title="Action items" />
       {actionItems ? (
         <div>
           {actionItems.map((item) => {

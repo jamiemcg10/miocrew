@@ -21,6 +21,7 @@ function isTask(item: Task | Expense): item is Task {
 
 const boltIconSx = {
   color: 'goldenrod',
+  ml: -1,
   '.dark &': { color: 'yellow' }
 }
 
@@ -44,7 +45,7 @@ export default function ActionItem({
     <TableRow classes="px-2" onClick={onClick}>
       {isTask(item) && item.type ? (
         <>
-          <span className="pr-4 inline-flex items-center text-lg font-semibold gap-2 basis-2/3">
+          <span className="pr-4 inline-flex items-center gap-2 basis-2/3">
             {getImage(item.type)}
             {item.name}
           </span>
@@ -54,12 +55,12 @@ export default function ActionItem({
         </>
       ) : (
         <>
-          <div className="text-lg font-semibold inline-flex gap-2 basis-2/3">
+          <div className="text-sm inline-flex gap-2 basis-2/3">
             <MonetizationOnRoundedIcon />
-            {item.name}
+            <span className="self-center">{item.name}</span>
             <BoltIcon sx={boltIconSx} />
           </div>
-          <div className="flex items-center font-semibold h-[3.125rem] flex-wrap">
+          <div className="flex items-center font-semibold h-8 flex-wrap">
             <BalanceText expense={item} userId={userId} />
             <span className="ml-2">{' to '}</span>
             <div className="flex items-center w-1/5 shrink-0 grow justify-end ml-2">

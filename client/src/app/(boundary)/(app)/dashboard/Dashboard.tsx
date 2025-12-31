@@ -24,6 +24,7 @@ export default function Dashboard({ upcomingTrips }: DashboardProps) {
         Create trip
       </Button>
       <TripTable trips={upcomingTrips} title="Upcoming trips" />
+      <br />
       <ActionItems />
     </div>
   )

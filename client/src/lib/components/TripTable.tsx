@@ -6,6 +6,7 @@ import { dateFormatter } from '../utils/dateFormatter'
 import { AvatarGroup } from '@heroui/avatar'
 import CrewAvatar from './CrewAvatar'
 import TableRow from './layout/TableRow'
+import DashboardSectionHeader from '@/app/(boundary)/(app)/dashboard/DashboardSectionHeader'
 
 interface TripTableProps {
   trips: Trip[]
@@ -15,7 +16,7 @@ interface TripTableProps {
 export default function TripTable({ trips, title }: TripTableProps) {
   return (
     <div>
-      <div className="text-xl font-bold my-4">{title}</div>
+      <DashboardSectionHeader title={title} />
       {trips.length ? (
         trips
           .sort((a, b) => (a.startDate > b.startDate ? 1 : -1)) // TODO: use trip sort here
@@ -24,23 +25,23 @@ export default function TripTable({ trips, title }: TripTableProps) {
               <Link href={`/trip/${trip.id}`} key={trip.id}>
                 <TableRow>
                   <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
-                    <span className="px-2 inline-flex text-lg font-semibold">{trip.name}</span>
+                    <span className="px-2 inline-flex font-semibold">{trip.name}</span>
                     <span className="text-right px-2 inline-flex font-semibold">
                       {dateFormatter(trip.startDate)}{' '}
                       {trip.endDate && ' - ' + dateFormatter(trip.endDate)}
                     </span>
                   </div>
                   <span className="px-2 basis-1/4 sm:basis-1/5 inline-flex items-center shrink-0">
-                    <AvatarGroup isBordered max={6} classNames={{ base: 'w-full' }}>
+                    <AvatarGroup isBordered max={6} classNames={{ base: 'w-full gap-x-2' }}>
                       {Object.values(trip.attendees)
                         .slice(0, 5)
                         .map((user) => {
-                          return <CrewAvatar user={user} size="sm" key={user.id} />
+                          return <CrewAvatar user={user} size="xs" key={user.id} />
                         })}
                       {Object.values(trip.attendees).length > 5 ? (
                         <CrewAvatar
                           name={`+${Object.values(trip.attendees).length - 5}`}
-                          size="sm"
+                          size="xs"
                         />
                       ) : null}
                     </AvatarGroup>
