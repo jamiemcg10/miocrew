@@ -13,6 +13,8 @@ interface TripTableProps {
   title: string
 }
 
+const avatarGroupClasses = { base: 'w-full gap-x-2' }
+
 export default function TripTable({ trips, title }: TripTableProps) {
   return (
     <div>
@@ -32,7 +34,7 @@ export default function TripTable({ trips, title }: TripTableProps) {
                     </span>
                   </div>
                   <span className="px-2 basis-1/4 sm:basis-1/5 inline-flex items-center shrink-0">
-                    <AvatarGroup isBordered max={6} classNames={{ base: 'w-full gap-x-2' }}>
+                    <AvatarGroup isBordered max={6} classNames={avatarGroupClasses}>
                       {Object.values(trip.attendees)
                         .slice(0, 5)
                         .map((user) => {
