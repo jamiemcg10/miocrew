@@ -26,8 +26,8 @@ export default function TripTable({ trips, title }: TripTableProps) {
             <Link href={`/trip/${trip.id}`} key={trip.id}>
               <TableRow>
                 <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
-                  <span className="px-2 inline-flex font-semibold">{trip.name}</span>
-                  <span className="text-right px-2 inline-flex font-semibold">
+                  <span className="px-2 inline-flex">{trip.name}</span>
+                  <span className="text-right px-2 inline-flex">
                     {dateFormatter(trip.startDate)}{' '}
                     {trip.endDate && ' - ' + dateFormatter(trip.endDate)}
                   </span>
