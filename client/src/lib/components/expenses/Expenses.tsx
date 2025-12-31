@@ -11,6 +11,7 @@ import { UserContext } from '@/lib/utils/contexts/UserContext'
 import CrewAvatar from '../CrewAvatar'
 import Reimbursements from './utils/Reimbursements'
 import ExpenseItem from './ExpenseItem'
+import { expenseSort } from '@/lib/utils/sortFns'
 
 interface ExpensesProps {
   expenses: Expense[]
@@ -60,7 +61,9 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
       .filter((expense) => (updatedCrewFilter ? expense.paidBy.id === updatedCrewFilter : true))
 
     setFilteredExpenses(
-      !updatedFilters.length && !updatedCrewFilter?.length ? expenses : _filteredExpenses
+      (!updatedFilters.length && !updatedCrewFilter?.length ? expenses : _filteredExpenses).sort(
+        expenseSort
+      )
     )
   }
 
@@ -76,7 +79,7 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
   if (!attendees || !user) return
 
   useEffect(() => {
-    setFilteredExpenses(expenses)
+    setFilteredExpenses(expenses.sort(expenseSort))
   }, [expenses])
 
   return (
