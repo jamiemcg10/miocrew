@@ -82,7 +82,7 @@ export default function TripPage() {
         <div className="line-clamp-1">{trip.name}</div>
       </div>
       <TabNav page={page} setPage={setPage} />
-      <div className="py-8 px-8 sm:px-16 sm:py-4 flex flex-col overflow-y-hidden font-bold space-y-4 grow">
+      <div className="py-8 px-8 sm:px-16 sm:py-4 flex flex-col overflow-y-hidden space-y-4 grow">
         <TripContext value={trip}>
           <TripWrapper tripId={trip.id}>{renderPage()}</TripWrapper>
         </TripContext>

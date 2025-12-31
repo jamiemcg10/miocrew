@@ -88,10 +88,10 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
         onClick={onClickAddButton}>
         Add Expense
       </Button>
-      <div className="@container flex grow flex-wrap-reverse overflow-hidden">
+      <div className="@container flex grow flex-wrap-reverse items-end mt-auto overflow-hidden">
         <div className="grow w-[654px] flex flex-col h-full relative @max-[890px]:h-2/3">
           <div className="w-full h-2 absolute bottom-0  bg-linear-to-t from-(--background) to-transparent"></div>
-          <div className="flex flex-wrap mb-8 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
+          <div className="flex flex-wrap mb-8 font-semibold space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
             <Chip
               label="Paid"
               icon={<CheckBoxOutlineBlankRoundedIcon />}
@@ -121,8 +121,8 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
             {filteredExpenses.length ? (
               <div className="w-full">
                 <div className="h-10 sticky -top-1 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
-                  <div className="flex">
-                    <div className="w-1/4 sm:w-1/5">Date</div>
+                  <div className="flex font-semibold tracking-wide">
+                    <div className="w-1/4 sm:w-1/5 pl-2">Date</div>
                     <div className="flex flex-col sm:flex-row grow">
                       <div className="flex grow">
                         <div className="grow px-2">Expense</div>

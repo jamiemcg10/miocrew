@@ -30,7 +30,7 @@ function calculateReimbursements(expenses: Expense[]) {
 function formatReimbursements(reimbursements: Record<string, TotalOwed>, userId?: string) {
   return Object.entries(reimbursements).map(([id, amt]) => {
     return (
-      <div key={id}>
+      <div key={id} className="text-sm">
         {id === userId ? 'You' : `${amt.firstName} ${amt.lastName.charAt(0)}.`}{' '}
         <span className="text-red-700">
           {id === userId ? 'owe' : 'owes'} ${(+amt.total.toFixed(2)).toLocaleString('en-US')}
@@ -47,7 +47,7 @@ export default function Reimbursements({ expenses }: ReimbursementsProps) {
   return (
     <div className="relative  @max-[890px]:h-1/4 @max-[890px]:grow">
       <div className="vertical-scroll min-w-50 h-full mb-8 border border-transparent border-l-(--foreground) pl-4 overflow-y-scroll">
-        <div className="text-2xl mb-2 -ml-1 sticky top-0  bg-linear-to-b from-(--background) from-80% to-transparent">
+        <div className="text-xl mb-1 -ml-1 sticky top-0  bg-linear-to-b from-(--background) from-80% to-transparent">
           Who owes what
         </div>
         <div>{formatReimbursements(reimbursements, user?.id)}</div>

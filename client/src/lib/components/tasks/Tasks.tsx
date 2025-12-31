@@ -87,7 +87,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
         onClick={() => setOpenCreateDialog(true)}>
         Create task
       </Button>
-      <div className="flex flex-wrap mb-2 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
+      <div className="flex flex-wrap font-semibold mb-2 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
         <Chip
           label="Active"
           icon={<CheckBoxOutlineBlankRoundedIcon />}
@@ -126,7 +126,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
             {filteredTasks
               .sort((a, b) => (a.dueDate > b.dueDate ? 1 : -1))
               .map((task) => {
-                return <TaskItem task={task} key={task.id} onClick={() => setActiveTask(task)} />
+                return <TaskItem task={task} key={task.id} setActiveTask={setActiveTask} />
               })}
           </div>
         ) : (

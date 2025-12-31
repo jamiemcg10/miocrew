@@ -14,7 +14,7 @@ interface TripTableProps {
   title: string
 }
 
-const avatarGroupClasses = { base: 'w-full gap-x-2' }
+const avatarGroupClasses = { base: 'w-full gap-x-2 justify-end' }
 
 export default function TripTable({ trips, title }: TripTableProps) {
   return (
@@ -26,13 +26,13 @@ export default function TripTable({ trips, title }: TripTableProps) {
             <Link href={`/trip/${trip.id}`} key={trip.id}>
               <TableRow>
                 <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
-                  <span className="px-2 inline-flex">{trip.name}</span>
+                  <span className="mr-2 inline-flex">{trip.name}</span>
                   <span className="text-right px-2 inline-flex">
                     {dateFormatter(trip.startDate)}{' '}
                     {trip.endDate && ' - ' + dateFormatter(trip.endDate)}
                   </span>
                 </div>
-                <span className="px-2 basis-1/4 sm:basis-1/5 inline-flex items-center shrink-0">
+                <span className="ml-2 basis-1/4 sm:basis-1/5 inline-flex items-center shrink-0">
                   <AvatarGroup isBordered max={6} classNames={avatarGroupClasses}>
                     {Object.values(trip.attendees)
                       .slice(0, 5)

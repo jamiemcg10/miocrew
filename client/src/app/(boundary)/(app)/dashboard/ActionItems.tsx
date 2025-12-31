@@ -1,14 +1,15 @@
-import { Expense, Task } from '@/lib/types'
+import { Expense, isTask, Task } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useContext, useEffect, useState } from 'react'
 import TaskView from '@/lib/components/tasks/TaskView'
 import ExpenseView from '@/lib/components/expenses/ExpenseView'
-import ActionItem from './ActionItem'
 import { getActionItems } from '@/db'
 import TaskDialog from '@/lib/components/tasks/TaskDialog'
 import ExpenseDialog from '@/lib/components/expenses/ExpenseDialog'
 import { LocalStorage } from '@/lib/utils/LocalStorage'
 import DashboardSectionHeader from './DashboardSectionHeader'
+import TaskItem from '@/lib/components/tasks/TaskItem'
+import ExpenseItem from '@/lib/components/expenses/ExpenseItem'
 
 export default function ActionItems() {
   function formatActionItems() {
@@ -78,14 +79,15 @@ export default function ActionItems() {
       <DashboardSectionHeader title="Action items" />
       {actionItems ? (
         <div>
-          {actionItems.map((item) => {
-            return (
-              <ActionItem
-                item={item}
-                key={item.id}
-                setActiveTask={setActiveTask}
+          {actionItems.map((item, i) => {
+            return isTask(item) ? (
+              <TaskItem task={item} setActiveTask={setActiveTask} key={i} />
+            ) : (
+              <ExpenseItem
+                expense={item}
                 setActiveExpense={setActiveExpense}
-                userId={user.id}
+                isActionItem={true}
+                key={i}
               />
             )
           })}

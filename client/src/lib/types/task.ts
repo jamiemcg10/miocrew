@@ -1,3 +1,4 @@
+import { Expense } from './expense'
 import { CrewMember } from './user'
 
 interface BaseTask {
@@ -35,11 +36,12 @@ export interface GeneralTask extends BaseTask {
 
 export type Task = PollTask | GeneralTask
 
-export function isTask(open: string | boolean | undefined | Task | any[]): open is Task {
+export function isTask(open: string | boolean | undefined | Task | Expense | any[]): open is Task {
   return (
     typeof open !== 'boolean' &&
     typeof open !== 'string' &&
     typeof open !== 'undefined' &&
-    Object.hasOwn(open, 'name')
+    Object.hasOwn(open, 'name') &&
+    Object.hasOwn(open, 'type')
   )
 }
