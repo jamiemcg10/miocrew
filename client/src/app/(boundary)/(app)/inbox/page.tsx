@@ -1,5 +1,6 @@
 'use client'
 
+import '@/lib/styles/VerticalScroll.css'
 import Button from '@mui/material/Button'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
@@ -85,6 +86,14 @@ export default function InboxPage() {
     return () => clearInterval(refreshInterval)
   }, [user])
 
+  function clickMarkRead() {
+    batchToggleStatus('read')
+  }
+
+  function clickMarkUnread() {
+    batchToggleStatus('unread')
+  }
+
   return (
     <>
       <div className="flex flex-col h-full p-8">
@@ -101,7 +110,7 @@ export default function InboxPage() {
               <Button
                 size="small"
                 startIcon={<DraftsOutlinedIcon />}
-                onClick={() => batchToggleStatus('read')}
+                onClick={clickMarkRead}
                 sx={noTextTransformSx}>
                 Mark read
               </Button>
@@ -110,7 +119,7 @@ export default function InboxPage() {
               <Button
                 size="small"
                 startIcon={<MarkunreadOutlinedIcon />}
-                onClick={() => batchToggleStatus('unread')}
+                onClick={clickMarkUnread}
                 sx={noTextTransformSx}>
                 Mark unread
               </Button>
@@ -118,7 +127,7 @@ export default function InboxPage() {
             <Button
               size="small"
               startIcon={<DeleteRoundedIcon />}
-              onClick={() => batchDelete()}
+              onClick={batchDelete}
               sx={noTextTransformSx}
               color="error">
               Delete
