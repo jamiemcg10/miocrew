@@ -1,11 +1,11 @@
 export const activityColors = [
   'orangered',
   'teal',
-  'violet',
+  'darkviolet',
   'goldenrod',
   'navy',
   'mediumseagreen',
-  'lime',
+  'sienna',
   'royalblue',
   'mediumvioletred',
   'tomato',
