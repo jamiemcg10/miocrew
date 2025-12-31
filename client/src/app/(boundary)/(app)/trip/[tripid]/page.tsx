@@ -1,4 +1,6 @@
 'use client'
+import '@/lib/styles/VerticalScroll.css'
+import '@/lib/styles/HorizontalScroll.css'
 
 import { useContext, useEffect, useState } from 'react'
 import TabNav from './TabNav'

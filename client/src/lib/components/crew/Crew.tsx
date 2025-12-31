@@ -1,5 +1,3 @@
-import '../../styles/VerticalScroll.css'
-
 import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import CrewMenu from './CrewMenu'
 import { attendeeSort } from '@/lib/utils/sortFns'
@@ -71,7 +69,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
       </Button>
 
       <div className="relative flex flex-col overflow-y-hidden grow">
-        <div className="relative overflow-y-scroll py-2">
+        <div className="vertical-scroll relative overflow-y-scroll py-2">
           <div className="flex sm:flex-wrap flex-col sm:flex-row space-y-4">
             {trip &&
               Object.values(trip.attendees)

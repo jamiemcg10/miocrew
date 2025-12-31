@@ -1,4 +1,4 @@
-import './Schedule.css'
+import '@/lib/styles/HorizontalScroll.css'
 import Button from '@mui/material/Button'
 import dayjs from 'dayjs'
 import EventRoundedIcon from '@mui/icons-material/EventRounded'
@@ -62,7 +62,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
         <div className="grow relative mt-4 mb-1 overflow-y-hidden">
           <div className="absolute w-8 z-2 content-center top-0 bottom-4 left-0 bg-linear-to-l from-transparent to-(--background)"></div>
           <div
-            className="flex justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
+            className="horizontal-scroll flex justify-between px-8 space-x-6 overflow-x-scroll h-full pb-2"
             style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}>
             {Object.values(days).map((day, i) => {
               return <ScheduleDay day={day} index={i} key={i} />

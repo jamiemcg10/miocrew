@@ -1,5 +1,3 @@
-import '@/lib/styles/VerticalScroll.css'
-
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'

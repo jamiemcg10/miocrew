@@ -1,4 +1,3 @@
-import '../../styles/VerticalScroll.css'
 import { Dispatch, SetStateAction, useState, useContext, useEffect } from 'react'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -118,7 +117,7 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
               )
             })}
           </div>
-          <div className="pr-0 sm:pr-4 overflow-y-scroll">
+          <div className="vertical-scroll pr-0 sm:pr-4 overflow-y-scroll">
             {filteredExpenses.length ? (
               <div className="w-full">
                 <div className="h-10 sticky -top-1 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
