@@ -122,7 +122,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
       <div className="vertical-scroll pr-0 sm:pr-4 overflow-y-scroll grow">
         {filteredTasks.length ? (
           <div className="w-full">
-            <div className="h-4 sticky -top-1 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent"></div>
+            <div className="h-4 sticky -top-1 z-1 py-1 bg-linear-to-b from-background from-80% to-transparent"></div>
             {filteredTasks
               .sort((a, b) => (a.dueDate > b.dueDate ? 1 : -1))
               .map((task) => {

@@ -78,7 +78,7 @@ export default function TripPage() {
   return (
     <div className="relative overflow-hidden flex flex-col grow">
       <div
-        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 text-(--dk-blue) dark:!text-(--lt-blue) border-b-4 !border-b-(--dk-blue) dark:!border-b-(--lt-blue)"
+        className="my-4 shrink-0 font-bold text-3xl mx-4 pb-4 z-1 text-(--dk-blue) dark:text-(--lt-blue)! border-b-4 border-b-(--dk-blue)! dark:border-b-(--lt-blue)!"
         style={{ borderStyle: 'double' }}>
         <div className="line-clamp-1">{trip.name}</div>
       </div>
