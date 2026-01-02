@@ -1,40 +1,26 @@
-import { Dispatch, Key, SetStateAction } from 'react'
-import { Tabs, Tab } from '@heroui/tabs'
+import Tab from '@/lib/components/layout/Tabs/Tab'
+import Tabs from '@/lib/components/layout/Tabs/Tabs'
+import { Value } from '@/lib/components/layout/Tabs/types'
+import { Dispatch, SetStateAction } from 'react'
 
 interface TabNavProps {
   page: string
   setPage: Dispatch<SetStateAction<string>>
 }
 
-const tabClassNames = {
-  base: 'sm:mx-4 w-auto',
-  tab: 'max-sm:px-2 font-semibold',
-  tabList: 'bg-(--background) max-sm:gap-1 w-full',
-  cursor: 'bg-(--dk-blue) dark:bg-(--lt-blue) rounded-sm',
-  tabContent:
-    'group-data-[selected=true]:text-slate-100 dark:group-data-[selected=true]:text-slate-800'
-}
-
 export default function TabNav({ page, setPage }: TabNavProps) {
-  function handlePageChange(key: Key) {
-    localStorage.setItem('tab', `${key as string}`)
-    setPage(key as string)
+  function handlePageChange(value: Value) {
+    localStorage.setItem('tab', `${value as string}`)
+    setPage(value as string)
   }
 
   return (
-    <Tabs
-      aria-label="tab-nav"
-      size="md"
-      fullWidth
-      radius="none"
-      selectedKey={page}
-      onSelectionChange={handlePageChange}
-      classNames={tabClassNames}>
-      <Tab title="Schedule" key="schedule" />
-      <Tab title="Tasks" key="tasks" />
-      <Tab title="Ideas" key="ideas" />
-      <Tab title="Expenses" key="expenses" />
-      <Tab title="Crew" key="crew" />
+    <Tabs selectedPage={page} onSelectionChange={handlePageChange}>
+      <Tab title="Schedule" value="schedule"></Tab>
+      <Tab title="Tasks" value="tasks"></Tab>
+      <Tab title="Ideas" value="ideas"></Tab>
+      <Tab title="Expenses" value="expenses"></Tab>
+      <Tab title="Crew" value="crew"></Tab>
     </Tabs>
   )
 }
