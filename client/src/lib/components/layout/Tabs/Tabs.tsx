@@ -23,8 +23,10 @@ export default function Tabs({ children, selectedPage, onSelectionChange = () =>
   }
 
   function handleResize() {
-    setCursorPosition(getWidth() * selected)
-    setCursorWidth(getWidth())
+    requestAnimationFrame(() => {
+      setCursorPosition(getWidth() * selected)
+      setCursorWidth(getWidth())
+    })
   }
 
   const navRef = useRef<HTMLDivElement | null>(null)
