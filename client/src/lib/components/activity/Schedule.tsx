@@ -8,7 +8,6 @@ import { Dispatch, SetStateAction, useContext } from 'react'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { ActivitiesContext } from '@/app/(boundary)/(app)/trip/[tripid]/TripWrapper'
-import { ScrollShadow } from '@heroui/scroll-shadow'
 
 interface ScheduleProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean | Activity>>
