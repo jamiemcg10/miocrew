@@ -8,6 +8,7 @@ import { getIdeaLikes } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import { IdeasContext } from '@/app/(boundary)/(app)/trip/[tripid]/TripWrapper'
+import VerticalScrollShadow from '../layout/VerticalScrollShadow'
 
 interface IdeasProps {
   setOpenAddDialog: Dispatch<SetStateAction<Idea | boolean>>
@@ -52,27 +53,23 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
         onClick={onClickAddButton}>
         Add idea
       </Button>
-      <div className="vertical-scroll relative overflow-y-auto px-8 md:px-0">
-        <div className="sticky -top-1 z-1 w-full h-3 bg-linear-to-b from-background to-transparent"></div>
-        <div className="relative overflow-y-hidden p-4">
-          <div className="relative grid grid-cols-[repeat(1,1fr)] md:grid-cols-[repeat(2,1fr)] lg:grid-cols-[repeat(3,1fr)] 2xl:grid-cols-[repeat(4,1fr)] gap-6 md:gap-4">
-            {ideas.map((idea) => {
-              return (
-                <IdeaCard
-                  idea={idea}
-                  key={idea.id}
-                  favorite={favorites.includes(idea.id)}
-                  setActiveIdea={setActiveIdea}
-                  onEditIdea={() => {
-                    setOpenAddDialog(idea)
-                  }}
-                />
-              )
-            })}
-          </div>
+      <VerticalScrollShadow>
+        <div className="relative grid grid-cols-[repeat(1,1fr)] md:grid-cols-[repeat(2,1fr)] lg:grid-cols-[repeat(3,1fr)] 2xl:grid-cols-[repeat(4,1fr)] gap-6 md:gap-4 py-2">
+          {ideas.map((idea) => {
+            return (
+              <IdeaCard
+                idea={idea}
+                key={idea.id}
+                favorite={favorites.includes(idea.id)}
+                setActiveIdea={setActiveIdea}
+                onEditIdea={() => {
+                  setOpenAddDialog(idea)
+                }}
+              />
+            )
+          })}
         </div>
-        <div className="sticky -bottom-1 w-full h-3 bg-linear-to-t from-background to-transparent"></div>
-      </div>
+      </VerticalScrollShadow>
       <ActiveIdea activeIdea={activeIdea} setActiveIdea={setActiveIdea}></ActiveIdea>
     </>
   )

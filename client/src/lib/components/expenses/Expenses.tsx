@@ -12,6 +12,7 @@ import CrewAvatar from '../CrewAvatar'
 import Reimbursements from './utils/Reimbursements'
 import ExpenseItem from './ExpenseItem'
 import { expenseSort } from '@/lib/utils/sortFns'
+import VerticalScrollShadow from '../layout/VerticalScrollShadow'
 
 interface ExpensesProps {
   expenses: Expense[]
@@ -93,8 +94,7 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
       </Button>
       <div className="@container flex grow flex-wrap-reverse items-end mt-auto overflow-hidden">
         <div className="grow w-[654px] flex flex-col h-full relative @max-[890px]:h-2/3">
-          <div className="w-full h-2 absolute bottom-0  bg-linear-to-t from-background to-transparent"></div>
-          <div className="flex flex-wrap mb-8 font-semibold space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
+          <div className="flex flex-wrap mb-6 font-semibold space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
             <Chip
               label="Paid"
               icon={<CheckBoxOutlineBlankRoundedIcon />}
@@ -120,23 +120,21 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
               )
             })}
           </div>
-          <div className="vertical-scroll pr-0 sm:pr-4 overflow-y-scroll">
-            {filteredExpenses.length ? (
-              <div className="w-full">
-                <div className="h-10 sticky -top-1 z-1 py-1 bg-linear-to-b from-background from-80% to-transparent">
-                  <div className="flex font-semibold tracking-wide">
-                    <div className="w-1/4 sm:w-1/5 pl-2">Date</div>
-                    <div className="flex flex-col sm:flex-row grow">
-                      <div className="flex grow">
-                        <div className="grow px-2">Expense</div>
-                        <div className="w-1/3 justify-end sm:justify-start text-right sm:text-left">
-                          Paid by
-                        </div>
-                      </div>
-                      <div className="w-0 sm:w-1/4"></div>
-                    </div>
-                  </div>
+          <div className="flex px-2 font-semibold tracking-wide">
+            <div className="w-1/4 sm:w-1/5 pl-4">Date</div>
+            <div className="flex flex-col sm:flex-row grow">
+              <div className="flex grow">
+                <div className="grow pl-2">Expense</div>
+                <div className="w-1/3 justify-end sm:justify-start text-right sm:text-left">
+                  Paid by
                 </div>
+              </div>
+              <div className="w-0 sm:w-1/4"></div>
+            </div>
+          </div>
+          <VerticalScrollShadow>
+            {filteredExpenses.length ? (
+              <>
                 <div>
                   {filteredExpenses.map((expense) => {
                     return (
@@ -148,11 +146,11 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
                     )
                   })}
                 </div>
-              </div>
+              </>
             ) : (
               <div>There are no expenses or no expenses that match the current filters.</div>
             )}
-          </div>
+          </VerticalScrollShadow>
         </div>
         <Reimbursements expenses={expenses} />
       </div>

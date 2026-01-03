@@ -8,6 +8,7 @@ import { CrewMember } from '@/lib/types'
 import CrewMemberItem from './CrewMemberItem'
 import { removeCrew, toggleCrewType } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
+import VerticalScrollShadow from '../layout/VerticalScrollShadow'
 
 interface CrewProps {
   setOpenAddDialog: Dispatch<SetStateAction<boolean>>
@@ -68,28 +69,23 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
         Add crew
       </Button>
 
-      <div className="relative flex flex-col overflow-y-hidden grow">
-        <div className="vertical-scroll relative overflow-y-scroll py-2">
-          <div className="flex sm:flex-wrap flex-col sm:flex-row space-y-4">
-            {trip &&
-              Object.values(trip.attendees)
-                .sort(attendeeSort)
-                .map((a) => {
-                  return (
-                    <CrewMemberItem
-                      key={a.id}
-                      member={a}
-                      setAnchorEl={setAnchorEl}
-                      setActiveCrewMember={setActiveCrewMember}
-                    />
-                  )
-                })}
-          </div>
+      <VerticalScrollShadow>
+        <div className="flex sm:flex-wrap flex-col sm:flex-row space-y-4">
+          {trip &&
+            Object.values(trip.attendees)
+              .sort(attendeeSort)
+              .map((a) => {
+                return (
+                  <CrewMemberItem
+                    key={a.id}
+                    member={a}
+                    setAnchorEl={setAnchorEl}
+                    setActiveCrewMember={setActiveCrewMember}
+                  />
+                )
+              })}
         </div>
-        <div className="absolute h-2 w-full top-0 bg-linear-to-b from-(--background) to-transparent"></div>
-        <div className="absolute h-2 w-full bottom-0 bg-linear-to-t from-(--background) to-transparent"></div>
-      </div>
-
+      </VerticalScrollShadow>
       <CrewMenu
         anchorEl={anchorEl}
         onClose={handleCloseMenu}

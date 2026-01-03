@@ -4,26 +4,29 @@ import { scheduleSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
 import ActiveActivity from './ActiveActivity'
 import { useState } from 'react'
+import VerticalScrollShadow from '../layout/VerticalScrollShadow'
 
 interface ScheduleDayProps {
   day: { date: dayjs.Dayjs; activities: ActivityType[] }
   index: number
 }
 
+const classes = { base: 'grow flex flex-col', slot: 'h-full' }
+
 export default function ScheduleDay({ day, index }: ScheduleDayProps) {
   const [activeActivity, setActiveActivity] = useState<ActivityType | null>(null)
 
   return (
     <>
-      <div className="w-[92%] sm:w-[40%] md:w-[30%] shrink-0 h-full flex flex-col">
-        <div className="relative grow flex flex-col overflow-y-hidden">
-          <div className="text-center text-2xl sm:text-3xl">{day.date.format('dddd')}</div>
-          <div className="text-center text-xl mb-2 sm:mb-4 relative">
-            {day.date.format('MMMM D, YYYY')}
-            <div className="h-1 absolute -bottom-3 sm:-bottom-5 z-1 w-full rounded-t-sm bg-linear-to-b from-[#9b9bc7] dark:from-[#29293A] to-transparent"></div>
-          </div>
+      <div className="w-[92%] sm:w-[55%] md:w-[40%] lg:w-[30%] shrink-0 h-full flex flex-col">
+        <div className="text-center text-2xl lg:text-3xl">{day.date.format('dddd')}</div>
+        <div className="text-center text-xl mb-2 sm:mb-4 relative">
+          {day.date.format('MMMM D, YYYY')}
+        </div>
+
+        <VerticalScrollShadow classes={classes}>
           <div
-            className="relative bg-[#9b9bc7] dark:bg-[#29293A] rounded-sm grow py-1 overflow-y-scroll"
+            className="relative h-full bg-[#9b9bc7] dark:bg-[#29293A] rounded-sm grow py-0.5 overflow-y-scroll"
             style={{ scrollSnapAlign: 'start', scrollMargin: index ? '64px' : '32px' }}>
             <div className="flex flex-col space-y-3">
               {day.activities.sort(scheduleSort).map((activity) => {
@@ -37,9 +40,9 @@ export default function ScheduleDay({ day, index }: ScheduleDayProps) {
               })}
             </div>
           </div>
-          <div className="h-1 absolute bottom-0 w-full rounded-b-sm bg-linear-to-t from-[#9b9bc7] dark:from-[#29293A] to-transparent"></div>
-        </div>
+        </VerticalScrollShadow>
       </div>
+
       <ActiveActivity activeActivity={activeActivity} setActiveActivity={setActiveActivity} />
     </>
   )

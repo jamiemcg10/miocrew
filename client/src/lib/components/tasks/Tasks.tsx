@@ -11,6 +11,7 @@ import TaskView from './TaskView'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import CrewAvatar from '../CrewAvatar'
 import { TasksContext } from '@/app/(boundary)/(app)/trip/[tripid]/TripWrapper'
+import VerticalScrollShadow from '../layout/VerticalScrollShadow'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean | Task>>
@@ -119,10 +120,9 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
           )
         })}
       </div>
-      <div className="vertical-scroll pr-0 sm:pr-4 overflow-y-scroll grow">
+      <VerticalScrollShadow>
         {filteredTasks.length ? (
           <div className="w-full">
-            <div className="h-4 sticky -top-1 z-1 py-1 bg-linear-to-b from-background from-80% to-transparent"></div>
             {filteredTasks
               .sort((a, b) => (a.dueDate > b.dueDate ? 1 : -1))
               .map((task) => {
@@ -132,7 +132,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
         ) : (
           <div>There are no tasks or no tasks that match the current filters.</div>
         )}
-      </div>
+      </VerticalScrollShadow>
       <TaskView activeTask={activeTask} onEdit={onEditTask} onClose={() => setActiveTask(null)} />
     </>
   )

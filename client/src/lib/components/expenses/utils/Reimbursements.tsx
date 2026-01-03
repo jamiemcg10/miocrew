@@ -1,6 +1,7 @@
 import { Expense } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useContext } from 'react'
+import VerticalScrollShadow from '../../layout/VerticalScrollShadow'
 
 interface ReimbursementsProps {
   expenses: Expense[]
@@ -45,14 +46,13 @@ export default function Reimbursements({ expenses }: ReimbursementsProps) {
 
   const reimbursements = calculateReimbursements(expenses)
   return (
-    <div className="relative  @max-[890px]:h-1/4 @max-[890px]:grow">
-      <div className="vertical-scroll min-w-50 h-full mb-8 border border-transparent border-l-(--foreground) pl-4 overflow-y-scroll">
-        <div className="text-xl mb-1 -ml-1 sticky top-0  bg-linear-to-b from-(--background) from-80% to-transparent">
-          Who owes what
-        </div>
-        <div>{formatReimbursements(reimbursements, user?.id)}</div>
-      </div>
-      <div className="h-2 absolute bottom-0 w-full bg-linear-to-t from-(--background) to-transparent"></div>
+    <div className="flex flex-col @max-[890px]:h-1/4 @max-[890px]:grow">
+      <div className="text-xl -mb-1 pl-2 sticky top-0">Who owes what</div>
+      <VerticalScrollShadow>
+        <>
+          <div>{formatReimbursements(reimbursements, user?.id)}</div>
+        </>
+      </VerticalScrollShadow>
     </div>
   )
 }
