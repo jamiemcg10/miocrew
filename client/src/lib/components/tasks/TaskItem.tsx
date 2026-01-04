@@ -55,8 +55,8 @@ export default function TaskItem({ task, setActiveTask }: TaskItemProps) {
           {getImage(task.type)}
           {task.name}
         </span>
-        <div className="flex grow justify-between">
-          <span className="italic text-sm content-center">
+        <div className="flex grow justify-between items-end sm:items-center">
+          <span className="italic text-sm content-center mt-1.5 ml-1.5 sm:mt-0 sm:ml-0">
             {isPollTask(task) ? 'Everyone' : getAssigneeName(task.assignee)}
           </span>
           {task.dueDate && (

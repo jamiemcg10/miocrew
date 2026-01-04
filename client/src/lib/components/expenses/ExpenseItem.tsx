@@ -6,6 +6,7 @@ import CrewAvatar from '../CrewAvatar'
 import { Dispatch, SetStateAction, useContext } from 'react'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import TableRow from '../layout/TableRow'
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded'
 
 interface ExpenseItemProps {
   expense: Expense
@@ -17,6 +18,8 @@ const boltIconSx = {
   color: 'goldenrod',
   '.dark &': { color: 'yellow' }
 }
+
+const moneyIconSx = { mr: 1 }
 
 export default function ExpenseItem({ expense, setActiveExpense, isActionItem }: ExpenseItemProps) {
   function PaidBy() {
@@ -47,6 +50,7 @@ export default function ExpenseItem({ expense, setActiveExpense, isActionItem }:
       <div className="flex flex-col sm:flex-row grow">
         <div className="flex items-center grow">
           <div className="pr-2 grow">
+            {isActionItem && <MonetizationOnRoundedIcon sx={moneyIconSx} />}
             {expense.name}
             {expense.due === 'immediate' ? <BoltIcon sx={boltIconSx} /> : null}
           </div>
