@@ -12,6 +12,11 @@ import { TripContext } from '@/lib/utils/contexts/TripContext'
 import CrewAvatar from '../CrewAvatar'
 import { TasksContext } from '@/app/(boundary)/(app)/trip/[tripid]/TripWrapper'
 import VerticalScrollShadow from '../layout/VerticalScrollShadow'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { accordionSummarySx, accordionSx } from '@/lib/styles/sx'
 
 interface TasksProps {
   setOpenCreateDialog: Dispatch<SetStateAction<boolean | Task>>
@@ -88,38 +93,45 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
         onClick={() => setOpenCreateDialog(true)}>
         Create task
       </Button>
-      <div className="flex flex-wrap font-semibold mb-2 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
-        <Chip
-          label="Active"
-          icon={<CheckBoxOutlineBlankRoundedIcon />}
-          variant={filters.includes('Active') ? 'filled' : 'outlined'}
-          onClick={() => handleBasicFilterClick('Active')}
-        />
-        <Chip
-          label="Completed"
-          icon={<CheckBoxRoundedIcon />}
-          variant={filters.includes('Completed') ? 'filled' : 'outlined'}
-          onClick={() => handleBasicFilterClick('Completed')}
-        />
-        <Chip
-          label="Everyone"
-          avatar={<Avatar alt="Everyone">E</Avatar>}
-          variant={filters.includes('Everyone') ? 'filled' : 'outlined'}
-          onClick={() => handleBasicFilterClick('Everyone')}
-        />
-        {attendees?.map((a: User, i) => {
-          return (
+      <Accordion disableGutters={true} sx={accordionSx}>
+        <AccordionSummary sx={accordionSummarySx} expandIcon={<ArrowDropDownIcon />}>
+          Filters
+        </AccordionSummary>
+        <AccordionDetails>
+          <div className="flex flex-wrap font-semibold mb-2 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
             <Chip
-              label={a.firstName}
-              avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
-              key={i}
-              variant={crewFilter === a.id ? 'filled' : 'outlined'}
-              sx={chipSx}
-              onClick={() => handleCrewFilterClick(a.id)}
+              label="Active"
+              icon={<CheckBoxOutlineBlankRoundedIcon />}
+              variant={filters.includes('Active') ? 'filled' : 'outlined'}
+              onClick={() => handleBasicFilterClick('Active')}
             />
-          )
-        })}
-      </div>
+            <Chip
+              label="Completed"
+              icon={<CheckBoxRoundedIcon />}
+              variant={filters.includes('Completed') ? 'filled' : 'outlined'}
+              onClick={() => handleBasicFilterClick('Completed')}
+            />
+            <Chip
+              label="Everyone"
+              avatar={<Avatar alt="Everyone">E</Avatar>}
+              variant={filters.includes('Everyone') ? 'filled' : 'outlined'}
+              onClick={() => handleBasicFilterClick('Everyone')}
+            />
+            {attendees?.map((a: User, i) => {
+              return (
+                <Chip
+                  label={a.firstName}
+                  avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
+                  key={i}
+                  variant={crewFilter === a.id ? 'filled' : 'outlined'}
+                  sx={chipSx}
+                  onClick={() => handleCrewFilterClick(a.id)}
+                />
+              )
+            })}
+          </div>
+        </AccordionDetails>
+      </Accordion>
       <VerticalScrollShadow>
         {filteredTasks.length ? (
           <div className="w-full">

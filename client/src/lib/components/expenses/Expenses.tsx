@@ -13,6 +13,11 @@ import Reimbursements from './utils/Reimbursements'
 import ExpenseItem from './ExpenseItem'
 import { expenseSort } from '@/lib/utils/sortFns'
 import VerticalScrollShadow from '../layout/VerticalScrollShadow'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { accordionSummarySx, accordionSx } from '@/lib/styles/sx'
 
 interface ExpensesProps {
   expenses: Expense[]
@@ -94,38 +99,45 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
       </Button>
       <div className="@container flex grow flex-wrap-reverse items-end mt-auto overflow-hidden">
         <div className="grow w-[654px] flex flex-col h-full relative @max-[890px]:h-2/3">
-          <div className="flex flex-wrap mb-6 font-semibold space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
-            <Chip
-              label="Paid"
-              icon={<CheckBoxOutlineBlankRoundedIcon />}
-              variant={filters.includes('Settled') ? 'filled' : 'outlined'}
-              onClick={() => handleBasicFilterClick('Settled')}
-            />
-            <Chip
-              label="Unpaid"
-              icon={<CheckBoxRoundedIcon />}
-              variant={filters.includes('Unsettled') ? 'filled' : 'outlined'}
-              onClick={() => handleBasicFilterClick('Unsettled')}
-            />
-            {Object.values(attendees)?.map((a: User, i) => {
-              return (
+          <Accordion disableGutters={true} sx={accordionSx}>
+            <AccordionSummary sx={accordionSummarySx} expandIcon={<ArrowDropDownIcon />}>
+              Filters
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className="flex flex-wrap font-semibold space-x-1! space-y-1!">
                 <Chip
-                  label={`${a.firstName} ${a.lastName.charAt(0)}.`}
-                  avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
-                  key={i}
-                  variant={crewFilter === a.id ? 'filled' : 'outlined'}
-                  sx={chipSx}
-                  onClick={() => handleCrewFilterClick(a.id)}
+                  label="Paid"
+                  icon={<CheckBoxOutlineBlankRoundedIcon />}
+                  variant={filters.includes('Settled') ? 'filled' : 'outlined'}
+                  onClick={() => handleBasicFilterClick('Settled')}
                 />
-              )
-            })}
-          </div>
+                <Chip
+                  label="Unpaid"
+                  icon={<CheckBoxRoundedIcon />}
+                  variant={filters.includes('Unsettled') ? 'filled' : 'outlined'}
+                  onClick={() => handleBasicFilterClick('Unsettled')}
+                />
+                {Object.values(attendees)?.map((a: User, i) => {
+                  return (
+                    <Chip
+                      label={`${a.firstName} ${a.lastName.charAt(0)}.`}
+                      avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
+                      key={i}
+                      variant={crewFilter === a.id ? 'filled' : 'outlined'}
+                      sx={chipSx}
+                      onClick={() => handleCrewFilterClick(a.id)}
+                    />
+                  )
+                })}
+              </div>
+            </AccordionDetails>
+          </Accordion>
           <div className="flex px-2 font-semibold tracking-wide">
             <div className="w-1/4 sm:w-1/5 pl-4">Date</div>
             <div className="flex flex-col sm:flex-row grow">
               <div className="flex grow">
                 <div className="grow pl-2">Expense</div>
-                <div className="w-1/3 justify-end sm:justify-start text-right sm:text-left">
+                <div className="w-1/3 justify-end sm:justify-start text-right sm:text-left mr-12 sm:mr-0">
                   Paid by
                 </div>
               </div>

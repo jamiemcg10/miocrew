@@ -54,7 +54,7 @@ export default function Tabs({ children, selectedPage, onSelectionChange = () =>
 
   return (
     <TabsContext value={{ onSelectTab, selectedTab }}>
-      <div className="relative flex mx-4" ref={navRef}>
+      <div className="relative flex mx-1 xs:mx-4" ref={navRef}>
         <div
           className="absolute h-full -z-1 transition-left bg-(--dk-blue) dark:bg-(--lt-blue) rounded-sm"
           style={{
