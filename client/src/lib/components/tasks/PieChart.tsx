@@ -27,9 +27,9 @@ export default function PieChart({ results }: PieChartProps) {
   const gradientStr = `conic-gradient(${gradient.join(', ')})`
 
   return (
-    <div className="flex flex-col items-center sm:max-w-4/5">
+    <div className="flex flex-col grow self-center items-center sm:max-w-4/5">
       <div
-        className="w-92 h-auto rounded-full aspect-square max-w-full mb-8"
+        className="grow rounded-full aspect-square max-w-full mb-8"
         style={{ background: `${gradientStr}` }}></div>
       <legend className="flex flex-col sm:flex-row flex-wrap justify-center space-x-4 sm:max-w-4/5">
         {mappedResults.map((result, i) => {

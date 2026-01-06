@@ -51,6 +51,8 @@ export default function PollTaskView({ activeTask, closeView }: PollTaskViewProp
     }
   })
 
+  console.log({ activeTask })
+
   return (
     <>
       {activeTask.completed ? (
