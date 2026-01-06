@@ -48,7 +48,7 @@ export default function ContextMenu({
   }
   const onClickDelete: MouseEventHandler = (e) => {
     e.stopPropagation()
-    onDelete
+    onDelete()
   }
 
   return (
