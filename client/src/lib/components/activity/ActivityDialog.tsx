@@ -84,7 +84,7 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
 
   return (
     <Dialog open={!!open} setOpen={setOpen}>
-      <DialogTitle sx={dialogTitleSx}>{isActivity(open) ? 'Edit' : 'Add new'}Activity</DialogTitle>
+      <DialogTitle sx={dialogTitleSx}>{isActivity(open) ? 'Edit' : 'Add new'} activity</DialogTitle>
       <div className="flex flex-col m-10">
         <TextField
           label="Activity Name"
