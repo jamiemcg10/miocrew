@@ -39,7 +39,10 @@ interface ExpenseDialogProps {
 }
 
 const boltIconSx = { ml: -1, mr: -0.5, color: 'goldenrod', '.dark &': { color: 'yellow' } }
-const addExpenseBtnSx = { fontWeight: 700, mt: 5 }
+const addExpenseBtnSx = { fontWeight: 700, mt: 2 }
+const requestImmediatelySx = { ml: 0 }
+const splitExpenseSx = { ml: 1.5, mt: 0.5 }
+const checkboxSx = { padding: 0.75, '& .MuiSvgIcon-root': { fontSize: 16 } }
 
 export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   const trip = useContext(TripContext)
@@ -153,7 +156,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   return (
     <Dialog open={!!open} setOpen={setOpen}>
       <DialogTitle sx={dialogTitleSx}>{isExpense(open) ? 'Edit' : 'Add new'} expense</DialogTitle>
-      <div className="flex flex-col m-10 mt-4">
+      <div className="flex flex-col m-10 mt-4 pt-1 overflow-y-hidden">
         <TextField
           label="Name"
           required
@@ -201,7 +204,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
             }
           }}
         />
-        <FormControl>
+        <FormControl sx={splitExpenseSx}>
           <FormLabel id="expense-split-type-label">Split expense</FormLabel>
           <RadioGroup
             row
@@ -210,7 +213,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
             onChange={handleTypeChange}
             defaultValue="Evenly"
             name="radio-buttons-group">
-            <FormControlLabel value="Evenly" control={<Radio />} label="Evenly" />
+            <FormControlLabel value="Evenly" control={<Radio size="small" />} label="Evenly" />
             <NumberInput
               aria-label="total-cost"
               size="sm"
@@ -227,36 +230,40 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                 dispatch({ type: 'total', value: v })
               }}
               classNames={{
-                base: clsx('w-20 place-self-center -ml-3 mr-4'),
+                base: clsx('w-20 place-self-center -ml-2 mr-4'),
                 inputWrapper: 'h-9'
               }}
             />
-            <FormControlLabel value="Custom" control={<Radio />} label="Custom" />
+            <FormControlLabel value="Custom" control={<Radio size="small" />} label="Custom" />
           </RadioGroup>
         </FormControl>
-        <table className="my-4">
+        <table className="vertical-scroll flex my-4 overflow-y-scroll">
           <tbody>
             {attendeesWithRefs.map((a) => {
               return (
-                <tr key={a.id} className="items-center border-y-6 border-transparent">
+                <tr key={a.id} className="items-center border-y-4 border-transparent">
                   <td
                     className={clsx(
                       'w-4 transform-opacity',
-                      state.type.value === 'Custom' ? 'opacity-0' : 'opacity-100'
+                      state.type.value === 'Custom'
+                        ? 'opacity-0 pointer-events-none'
+                        : 'opacity-100'
                     )}>
                     <Checkbox
+                      id={a.id}
                       size="small"
+                      sx={checkboxSx}
                       checked={a.checked}
                       onClick={() => {
                         a.setChecked(!a.checked)
                       }}
                     />
                   </td>
-                  <td className="w-8">
-                    <CrewAvatar user={a} size="sm" />
+                  <td className="w-6 pl-1">
+                    <CrewAvatar user={a} size="xs" baseClasses="mr-2 ml-1.75" />
                   </td>
-                  <td className="w-50">
-                    <div>
+                  <td className="w-45">
+                    <div className="text-sm">
                       {a.firstName} {a.lastName}
                     </div>
                   </td>
@@ -274,7 +281,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                         style: 'currency',
                         currency: 'USD'
                       }}
-                      classNames={{ base: 'w-20', inputWrapper: 'h-9' }}
+                      classNames={{ base: 'w-20', inputWrapper: 'h-9 py-2' }}
                       onValueChange={(v) => a.setAmount(v)}
                     />
                   </td>
@@ -284,12 +291,19 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
           </tbody>
         </table>
         <FormControlLabel
+          sx={requestImmediatelySx}
           label={
             <div>
               <BoltIcon sx={boltIconSx} /> <span>Request immediately</span>
             </div>
           }
-          control={<Checkbox checked={state.immediately.value} onChange={onChangeImmediately} />}
+          control={
+            <Checkbox
+              size="small"
+              checked={state.immediately.value}
+              onChange={onChangeImmediately}
+            />
+          }
         />
         <Button
           variant="contained"

@@ -36,7 +36,7 @@ function getAvatarSize(size: CrewAvatarProps['size']) {
 function getFontSize(size: CrewAvatarProps['size']) {
   switch (size) {
     case 'xs':
-      return 'text-xs'
+      return 'text-[.625rem]'
     case 'sm':
       return 'text-sm'
     case 'lg':
