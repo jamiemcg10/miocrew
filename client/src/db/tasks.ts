@@ -7,6 +7,11 @@ interface BaseTaskArgs {
   tripId: string
 }
 
+interface BasePollArgs {
+  userId: string
+  taskId: string
+}
+
 interface CreateTaskArgs extends BaseTaskArgs {
   data: { task: TaskPayload; poll_options: PollTaskOption[] | null }
 }
@@ -15,11 +20,16 @@ interface UpdateTaskArgs extends BaseTaskArgs {
   data: { task: Partial<TaskPayload>; poll_options?: PollTaskOption[] | null }
 }
 
-interface UpdatePollVoteArgs extends BaseTaskArgs {
+interface UpdatePollVoteArgs extends BasePollArgs, BaseTaskArgs {
   ids: string[]
 }
 
-interface deleteTripArgs extends BaseTaskArgs {
+interface ClosePollArgs {
+  tripId: string
+  taskId: string
+}
+
+interface DeleteTaskArgs extends BaseTaskArgs {
   taskId: string
 }
 
@@ -59,10 +69,22 @@ export function updateTask(args: UpdateTaskArgs) {
   })
 }
 
-export function updatePollVote(args: UpdatePollVoteArgs) {
-  const { userId, tripId, ids } = args
+export function getPollVotes(args: BasePollArgs) {
+  const { userId, taskId } = args
 
-  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/poll/poll_options/update`
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/task/${taskId}/poll/votes/get`
+
+  return axios({
+    method: 'get',
+    url: requestUrl,
+    withCredentials: true
+  })
+}
+
+export function updatePollVote(args: UpdatePollVoteArgs) {
+  const { userId, tripId, taskId, ids } = args
+
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/task/${taskId}/poll/vote`
 
   return axios({
     method: 'patch',
@@ -72,7 +94,20 @@ export function updatePollVote(args: UpdatePollVoteArgs) {
   })
 }
 
-export function deleteTask(args: deleteTripArgs) {
+// export function closePoll(args: ClosePollArgs){
+//   const { userId, tripId, taskId } = args
+
+//   const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/trip/${tripId}/task/${taskId}/mark_complete`
+
+//   return axios({
+//     method: 'patch',
+//     url: requestUrl,
+//     data: ids,
+//     withCredentials: true
+//   })
+// }
+
+export function deleteTask(args: DeleteTaskArgs) {
   const { userId, tripId, taskId } = args
 
   const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/task/${taskId}/delete`
