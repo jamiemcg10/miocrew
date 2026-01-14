@@ -104,7 +104,7 @@ class Expenses(Base):
     date: Mapped[str] = mapped_column(String(20)) 
     notes: Mapped[Optional[str]] = mapped_column(String)
 
-class Debtors(Base): # go back to singular
+class Debtors(Base):
     __tablename__ = "debtors"
 
     id: Mapped[str] = mapped_column(primary_key=True)
@@ -133,13 +133,23 @@ class Tasks(Base):
     poll_question: Mapped[str] = mapped_column(String)
     options: Mapped[List[str]] = relationship("Poll_Task_Options", back_populates="task")
 
+class Poll_Task_Votes(Base):
+    __tablename__ = "poll_task_votes"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    task_id: Mapped[str] = mapped_column(String)
+    attendee_id: Mapped[str] = mapped_column(String)
+    option_id: Mapped[str] = mapped_column(String, ForeignKey("poll_task_options.id"))
+    vote: Mapped[int] = mapped_column(Integer)
+
+
 class Poll_Task_Options(Base):
     __tablename__ = "poll_task_options"
     id: Mapped[str] = mapped_column(String, primary_key=True)
     task_id: Mapped[str] = mapped_column(String, ForeignKey("tasks.id"))
     label: Mapped[str] = mapped_column(String)
-    votes: Mapped[int] = mapped_column(Integer)
     task: Mapped["Tasks"] = relationship("Tasks", back_populates="options")
+    votes = column_property(select(func.count(Poll_Task_Votes.vote)).where(Poll_Task_Votes.task_id == task_id).where(Poll_Task_Votes.option_id == id).correlate_except(Idea_Likes)
+        .scalar_subquery())
 
 class Activities(Base):
     __tablename__ = "activities"

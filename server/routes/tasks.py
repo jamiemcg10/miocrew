@@ -3,7 +3,7 @@ from typing import List
 import uuid
 from fastapi import APIRouter, Depends
 
-from models.models import Tasks, Attendees, Poll_Task_Options
+from models.models import Tasks, Attendees, Poll_Task_Options, Poll_Task_Votes
 
 from schemas import FullTaskBase, FullTaskUpdate
 from utils.is_valid_user import is_valid_user
@@ -12,7 +12,7 @@ from sqlalchemy import select, insert, delete, update
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import selectinload
 
-from utils.flatten import flatten_task
+from utils.flatten import flatten_task, flatten_vote
 from utils.get_user_db import get_user_db
 
 from websocket.connection_manager import manager
@@ -33,6 +33,18 @@ async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
         tasks.append(flatten_task(task))
 
     return {"tasks": tasks}
+
+@router.get("/user/{user_id}/task/{task_id}/poll/votes/get")
+async def get_votes(user_id: str, task_id: str, db: Session = Depends(get_user_db)):
+
+    votes_stmt = select(Poll_Task_Votes).where(Poll_Task_Votes.attendee_id == user_id).where(Poll_Task_Votes.task_id == task_id).where(Poll_Task_Votes.vote == 1)
+
+    votes = []
+    for vote in db.scalars(votes_stmt):
+        votes.append(flatten_vote(vote))
+
+    return {"votes": votes}
+
 
 @router.post("/user/{user_id}/trip/{trip_id}/task/create")
 async def create_task(user_id: str, trip_id: str, task: FullTaskBase, db: Session = Depends(get_user_db)):
@@ -70,37 +82,42 @@ async def update_task(user_id: str, trip_id: str, task: FullTaskUpdate, db: Sess
     # write
     task_update_stmt = update(Tasks).where(Tasks.id == updated_task.id).values(updated_task.dict(exclude_unset=True))
     options_delete_stmt = delete(Poll_Task_Options).where(Poll_Task_Options.task_id == updated_task.id)
-
+    
     db.execute(task_update_stmt)
     db.execute(options_delete_stmt)
-
+    
     if task['poll_options']:
         poll_options = list(map(lambda x: add_ids(x, updated_task.id), task['poll_options']))
 
         options_insert_stmt = insert(Poll_Task_Options).values(poll_options)
         db.execute(options_insert_stmt)
 
-
+    
     db.flush()
-
+    
     await manager.broadcast(trip_id, "tasks")
 
     return {"status": "updated", "id": updated_task.id}
 
-@router.patch("/user/{user_id}/trip/{trip_id}/poll/poll_options/update")
-async def update_poll_options(user_id: str, trip_id: str, options: List[str], db: Session = Depends(get_user_db)):
+@router.patch("/user/{user_id}/trip/{trip_id}/task/{task_id}/poll/vote")
+async def update_poll_options(user_id: str, trip_id: str, task_id: str, options: List[str], db: Session = Depends(get_user_db)):
     if not is_valid_user(user_id, trip_id, db):
         return {"status": "invalid request"}
+    
+    # remove old if exist
+    votes_delete_stmt = delete(Poll_Task_Votes).where(Poll_Task_Votes.task_id == task_id).where(Poll_Task_Votes.attendee_id == user_id)
+    
+    # add new
+    votes = list(map(lambda x: {"id": uuid.uuid4().hex[:4], "task_id": task_id, "attendee_id": user_id, "option_id": x, "vote": 1}, options))
 
-    update_stmt = update(Poll_Task_Options).where(Poll_Task_Options.id.in_(options)).values(votes=Poll_Task_Options.votes + 1)
+    votes_add_stmt = insert(Poll_Task_Votes).values(votes)
 
-    db.execute(update_stmt)
+    db.execute(votes_delete_stmt)
+    db.execute(votes_add_stmt)
 
     db.flush()
 
-    await manager.broadcast(trip_id, "tasks")
-
-    return {"status": "votes updated", "ids": options}
+    return {"status": "vote recorded", "ids": options}
 
 
 @router.delete("/user/{user_id}/trip/{trip_id}/task/{task_id}/delete")

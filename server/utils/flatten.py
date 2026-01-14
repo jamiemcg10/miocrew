@@ -118,6 +118,15 @@ def flatten_task(task):
         "type": task.type
     }
 
+def flatten_vote(vote):
+    return {
+        "id": vote.id,
+        "taskId": vote.task_id,
+        "attendeeId": vote.attendee_id,
+        "optionId": vote.option_id,
+        "vote": vote.vote
+    }
+
 def flatten_activity(activity):
     return {
         "id": activity.id,
