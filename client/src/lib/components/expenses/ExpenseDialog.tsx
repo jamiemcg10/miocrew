@@ -14,7 +14,6 @@ import {
 import Dialog from '../Dialog'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import CrewAvatar from '../CrewAvatar'
-import { NumberInput } from '@heroui/number-input'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
@@ -31,7 +30,8 @@ import { CalendarDate, parseDate } from '@internationalized/date'
 import { expenseReducer, initialExpenseState } from '@/lib/utils/reducers/expenseReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
-import DateInput from '../DateInput'
+import DateInput from '../inputs/DateInput'
+import NumberInput from '../inputs/NumberInput'
 
 interface ExpenseDialogProps {
   open: boolean | Expense

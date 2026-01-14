@@ -17,7 +17,7 @@ import { TaskPayload } from '@/db'
 import { taskReducer, initialTaskState } from '@/lib/utils/reducers/taskReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
-import DateInput from '../DateInput'
+import DateInput from '../inputs/DateInput'
 
 interface TaskDialogProps {
   open: boolean | Task

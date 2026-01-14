@@ -12,8 +12,8 @@ import { CalendarDate, parseDate, parseTime, Time } from '@internationalized/dat
 import { activityReducer, initialActivityState } from '@/lib/utils/reducers/activityReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
-import DateInput from '../DateInput'
-import TimeInput from '../TimeInput'
+import DateInput from '../inputs/DateInput'
+import TimeInput from '../inputs/TimeInput'
 
 interface ActivityDialogProps {
   open: boolean | Activity

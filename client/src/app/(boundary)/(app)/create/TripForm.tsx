@@ -10,7 +10,7 @@ import { CalendarDate, getLocalTimeZone, parseDate, today } from '@international
 import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/material/Snackbar'
-import DateInput from '@/lib/components/DateInput'
+import DateInput from '@/lib/components/inputs/DateInput'
 import CardTravelRoundedIcon from '@mui/icons-material/CardTravelRounded'
 
 const fieldStyles = { width: '100%' }

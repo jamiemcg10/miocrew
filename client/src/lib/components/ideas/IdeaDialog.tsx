@@ -15,9 +15,9 @@ import { assignAppColor } from '@/lib/utils/colors/assignColor'
 import { Idea, isIdea } from '@/lib/types'
 import { createIdea, updateIdea } from '@/db'
 import { ideaReducer, initialIdeaState } from '@/lib/utils/reducers/ideaReducer'
-import { NumberInput } from '@heroui/number-input'
 import { dialogTitleSx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
+import NumberInput from '../inputs/NumberInput'
 
 interface IdeaDialogProps {
   open: boolean | Idea
