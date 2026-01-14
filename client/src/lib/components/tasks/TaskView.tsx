@@ -6,13 +6,13 @@ import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutline
 import EventRoundedIcon from '@mui/icons-material/EventRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import PieChartRoundedIcon from '@mui/icons-material/PieChartRounded'
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
-import EditRoundedIcon from '@mui/icons-material/EditRounded'
-import IconButton from '@mui/material/IconButton'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useContext } from 'react'
-import { deleteTask } from '@/db/tasks'
+import { deleteTask, updateTask } from '@/db/tasks'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
+import ActionButtons from '../ActionButtons'
+import Button from '@mui/material/Button'
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded'
 
 interface TaskViewProps {
   activeTask: Task | null
@@ -38,20 +38,39 @@ export default function TaskView({ activeTask, onEdit, onClose }: TaskViewProps)
       .finally(onClose)
   }
 
+  function closeSurvey() {
+    if (!user || !trip || !activeTask) return
+
+    updateTask({
+      userId: user.id,
+      tripId: trip.id,
+      data: {
+        task: {
+          id: activeTask.id,
+          completed: true
+        }
+      }
+    })
+      .catch((e) => {
+        console.error(`Error closing poll`, e)
+      })
+      .finally()
+  }
+
   const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
 
   return (
     <Popup open={!!activeTask} onClose={onClose}>
       <>
-        {user?.id === activeTask?.creatorId ? (
+        {user?.id === activeTask?.creatorId && !activeTask?.completed ? (
           <div className="absolute bottom-8 right-8">
-            <IconButton size="small" onClick={onEdit}>
-              <EditRoundedIcon fontSize="small" />
-            </IconButton>
-            <IconButton size="small" color="error" onClick={onDelete}>
-              <DeleteRoundedIcon fontSize="small" />
-            </IconButton>
+            {activeTask?.type === 'poll' && (
+              <Button variant="text" startIcon={<CancelRoundedIcon />} onClick={closeSurvey}>
+                Close survey
+              </Button>
+            )}
+            <ActionButtons onEdit={onEdit} onDelete={onDelete} />
           </div>
         ) : null}
         <div className="flex text-2xl items-center space-x-2">

@@ -33,8 +33,8 @@ export default function GeneralTaskView({ activeTask, closeView }: GeneralTaskVi
     if (!user || !trip) return
 
     updateTask({
-      userId: user?.id,
-      tripId: trip?.id,
+      userId: user.id,
+      tripId: trip.id,
       data: getPayload()
     })
       .catch((e) => {

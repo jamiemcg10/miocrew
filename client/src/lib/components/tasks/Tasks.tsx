@@ -40,7 +40,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
 
     filterTasks({ updatedFilters })
   }
-
+  // START HERE: remove votes from options table and pull from votes table
   function handleCrewFilterClick(value: string) {
     const updatedCrewFilter = crewFilter === value ? null : value
     setCrewFilter(updatedCrewFilter)
@@ -83,6 +83,12 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
   useEffect(() => {
     filterTasks({})
   })
+
+  useEffect(() => {
+    if (activeTask) {
+      setActiveTask(tasks.find((task) => task.id === activeTask.id) || null)
+    }
+  }, [tasks])
 
   return (
     <>

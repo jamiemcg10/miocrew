@@ -27,6 +27,14 @@ export interface PollTask extends BaseTask {
   assigneeId: 'Everyone'
 }
 
+export interface Vote {
+  id: string
+  attendeeId: string
+  optionId: string
+  taskId: string
+  vote: number
+}
+
 export interface GeneralTask extends BaseTask {
   type: 'general'
   description: string
