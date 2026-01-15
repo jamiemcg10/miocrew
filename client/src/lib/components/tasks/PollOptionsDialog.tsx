@@ -48,8 +48,9 @@ export default function PollOptionsDialog({
                 size="small"
                 sx={optTextFieldSx}
                 onChange={(e) => {
-                  options[i].label = e.target.value
-                  onChangeOptions([...options])
+                  const newOptions = [...options]
+                  newOptions[i] = { ...newOptions[i], label: e.target.value }
+                  onChangeOptions([...newOptions])
                 }}
               />
               <IconButton

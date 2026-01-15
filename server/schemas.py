@@ -91,7 +91,7 @@ class DebtorsBase(BaseModel):
     owes: float
     paid: bool
 
-class FullExpense(TypedDict): # TODO: make Base
+class FullExpense(TypedDict):
     expense: ExpensesBase
     debtors: List[DebtorsBase]
 
@@ -99,7 +99,6 @@ class PollTaskOptionBase(BaseModel):
     id: Optional[str] = None
     task_id: Optional[str] = None
     label: str
-    votes: int
 
 class TaskBase(BaseModel):
     id: Optional[str] = None

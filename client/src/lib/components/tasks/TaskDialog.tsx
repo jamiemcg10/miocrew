@@ -58,8 +58,7 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
     return state.type.value === 'poll'
       ? state.pollOptions.value.map((opt) => {
           return {
-            ...opt,
-            votes: 0
+            ...opt
           }
         })
       : null

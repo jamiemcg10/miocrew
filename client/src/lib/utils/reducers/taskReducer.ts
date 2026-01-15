@@ -22,10 +22,7 @@ interface TaskState {
   pollOptions: Field<PollTaskOption[]>
 }
 
-const DEFAULT_POLL_OPTIONS = [
-  { label: '', votes: 0 },
-  { label: '', votes: 0 }
-]
+const DEFAULT_POLL_OPTIONS = [{ label: '' }, { label: '' }]
 
 const TASK_FIELDS = [
   'name',
@@ -67,6 +64,7 @@ export function taskReducer(
       return initialTaskState
     }
   }
+
   return {
     ...state,
     [action.type]: {

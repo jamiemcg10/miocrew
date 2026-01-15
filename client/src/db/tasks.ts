@@ -24,11 +24,6 @@ interface UpdatePollVoteArgs extends BasePollArgs, BaseTaskArgs {
   ids: string[]
 }
 
-interface ClosePollArgs {
-  tripId: string
-  taskId: string
-}
-
 interface DeleteTaskArgs extends BaseTaskArgs {
   taskId: string
 }
