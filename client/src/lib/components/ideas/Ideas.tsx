@@ -39,6 +39,7 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
     // TODO: move this to TripWrapper
     getIdeaLikes({ userId: user.id, tripId: trip.id })
       .then((res) => {
+        console.log({ res })
         setFavorites(res.data.idea_likes)
       })
       .catch((e) => console.error('Error getting likes', e))

@@ -3,7 +3,7 @@ import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import Checkbox from '@mui/material/Checkbox'
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
-import { useState, Dispatch, SetStateAction, useContext } from 'react'
+import { useState, useEffect, Dispatch, SetStateAction, useContext } from 'react'
 import ContextMenu from '../layout/ContextMenu'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
@@ -19,6 +19,8 @@ interface IdeaCardProps {
 const emojiIconSx = { fontSize: 68 }
 
 export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: IdeaCardProps) {
+  console.log({ idea, favorite })
+
   function onClick() {
     setActiveIdea(idea)
   }
@@ -44,8 +46,14 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: 
   const [menuOpen, setMenuOpen] = useState(false)
   const [like, setLike] = useState(favorite)
 
+  console.log({ idea, like })
+
   const { user } = useContext(UserContext)
   const trip = useContext(TripContext)
+
+  useEffect(() => {
+    setLike(favorite)
+  }, [favorite])
 
   return (
     <>

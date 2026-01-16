@@ -33,10 +33,15 @@ async def ideas(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
 
 @router.get("/user/{user_id}/trip/{trip_id}/ideas/likes")
 async def idea_likes(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
+    # Need to join to get the trip_id for the idea
     stmt = select(Idea_Likes).join(Ideas, Idea_Likes.idea_id == Ideas.id).where(Idea_Likes.attendee_id == user_id).where(Ideas.trip_id == trip_id)
 
+    print('USER_ID', user_id)
     results = db.execute(stmt).scalars().all()
 
+    print({**x.dict()} for x in results)
+
+    print('RESULTS', results)
     idea_likes = [x.idea_id for x in results if x.like == 1]
 
     return {"idea_likes": idea_likes}
@@ -79,6 +84,7 @@ async def toggle_like(user_id: str, trip_id: str, like: IdeaLikesBase, db: Sessi
     if not is_valid_user(user_id, trip_id, db):
         return {"status": "invalid request"}
     
+    print(like.dict())
     upsert_stmt = upsert(Idea_Likes).values({**like.dict(), "id": uuid.uuid4().hex[:8]}).on_conflict_do_update(index_elements=["attendee_id", "idea_id"], set_={"like": 1 if like.like == True else 0})
 
     db.execute(upsert_stmt)
