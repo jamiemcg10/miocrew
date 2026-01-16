@@ -37,9 +37,12 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
   function removeCrewMember() {
     if (!user || !trip || !activeCrewMember) return
 
-    removeCrew({ userId: user.id, tripId: trip.id, attendeeId: activeCrewMember.id }).catch((e) =>
-      console.error('Error removing crew', e)
-    )
+    removeCrew({
+      userId: user.id,
+      tripId: trip.id,
+      attendeeId: activeCrewMember.attendeeId
+    }).catch((e) => console.error('Error removing crew', e))
+
     handleCloseMenu()
   }
 
@@ -49,7 +52,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
     toggleCrewType({
       userId: user.id,
       tripId: trip.id,
-      attendeeId: activeCrewMember.id,
+      attendeeId: activeCrewMember.attendeeId,
       newType: activeCrewMember.type === 'Admin' ? 'Crew' : 'Admin'
     }).catch((e) => console.error('Error toggling crew type', e))
 
@@ -72,6 +75,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
       <VerticalScrollShadow>
         <div className="flex sm:flex-wrap flex-col sm:flex-row space-y-4">
           {trip &&
+            user &&
             Object.values(trip.attendees)
               .sort(attendeeSort)
               .map((a) => {
@@ -79,6 +83,7 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
                   <CrewMemberItem
                     key={a.id}
                     member={a}
+                    showActions={trip.attendees[user.id].type !== 'Crew'}
                     setAnchorEl={setAnchorEl}
                     setActiveCrewMember={setActiveCrewMember}
                   />
