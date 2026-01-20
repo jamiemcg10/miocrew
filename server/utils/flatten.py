@@ -41,7 +41,8 @@ def flatten_message(message):
         "id": message.message.id,
         "subject": message.message.subject,
         "body": message.message.body,
-        "sender": flatten_user(message.message.sender)
+        "sender": flatten_user(message.message.sender),
+        "sentDate": message.message.sent_date
         }
 
 def flatten_idea(idea, attendee):

@@ -15,6 +15,7 @@ import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 interface ComposeMessageDialogProps {
   open: boolean | BaseMessage
   onClose: () => void
+  fetchMessages: () => void
 }
 
 const textFieldSx = {
@@ -26,7 +27,11 @@ const msgFieldSx = { ...textFieldSx, height: '100%' }
 const editIconSx = { mr: 1 }
 const msgSlotProps = { input: { sx: { height: '100%', placeItems: 'self-start' } } }
 
-export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
+export default function ComposeMessageDialog({
+  open,
+  onClose,
+  fetchMessages
+}: ComposeMessageDialogProps) {
   function getOptionLabel(option: RecipientOption) {
     return option.name
   }
@@ -81,7 +86,9 @@ export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDi
     if (!user) return
 
     createMessage({ userId: user.id, data: state })
-      .then()
+      .then(() => {
+        fetchMessages()
+      })
       .catch((e) => console.error('Error sending message', e))
     dispatch({ type: 'reset-message' })
 

@@ -24,6 +24,7 @@ class MessageBase(BaseModel):
     subject: str
     body: str
     sender_id: Optional[str] = None
+    sent_date: str
 
     model_config = {
         "from_attributes": True

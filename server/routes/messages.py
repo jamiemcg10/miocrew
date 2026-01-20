@@ -33,7 +33,7 @@ async def get_messages(user_id: str, db: Session = Depends(get_user_db)):
 async def create_message(user_id: str, message: MessageBase, db: Session = Depends(get_user_db)):    
     msg_id = uuid.uuid4().hex[:8]
 
-    msg_with_id = { "subject": message.subject, "body": message.body, "sender_id": user_id, "id": msg_id}
+    msg_with_id = { "subject": message.subject, "body": message.body, "sender_id": user_id, "id": msg_id, "sent_date": message.sent_date}
 
     user_recipients = [x.id for x in message.recipients if x.type == 'user'] 
     trip_recipients =  [x.id for x in message.recipients if x.type == 'trip'] 

@@ -36,7 +36,12 @@ export function getMessages({ userId }: BaseMessagesProps) {
 export function createMessage({ userId, data }: CreateMessageProps) {
   const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/message/create`
 
-  return axios({ method: 'post', url: requestUrl, data, withCredentials: true })
+  return axios({
+    method: 'post',
+    url: requestUrl,
+    data: { ...data, sent_date: new Date().toISOString() },
+    withCredentials: true
+  })
 }
 
 export function toggleMessageReadStatus({ userId, messageId, status }: UpdateMessageProps) {

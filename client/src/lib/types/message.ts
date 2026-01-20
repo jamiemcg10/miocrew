@@ -9,6 +9,7 @@ export interface BaseMessage {
   senderId: string
   sender: User
   recipientId: string
+  sentDate: string
 }
 
 export interface RecipientOption {

@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
+import { dateFormatter, timeFormatter } from '@/lib/utils/dateFormatter'
 
 interface MessageViewProps {
   message: BaseMessage | null
@@ -31,7 +32,8 @@ export default function MessageView({
       <div className="h-full flex flex-col">
         <div className="font-bold text-2xl">{message?.subject}</div>
         <div className="italic text-sm">
-          {message?.sender.firstName} {message?.sender.lastName}
+          Sent by {message?.sender.firstName} {message?.sender.lastName} on{' '}
+          {dateFormatter(message?.sentDate)} {timeFormatter(message?.sentDate)}
         </div>
         <div className="mt-8">{message?.body}</div>
 

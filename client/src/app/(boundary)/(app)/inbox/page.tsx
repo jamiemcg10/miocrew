@@ -21,6 +21,7 @@ import {
   toggleMessageReadStatus
 } from '@/db'
 import { noTextTransformSx } from '@/lib/styles/sx'
+import { messageDateSort } from '@/lib/utils/sortFns'
 
 const composeBtnSx = { fontWeight: 700, ml: 4, mb: 2 }
 
@@ -44,6 +45,7 @@ export default function InboxPage() {
   function onDeleteMessage(messageId: string) {
     if (!user) return
 
+    setMessages(messages.filter((m) => m.id !== messageId))
     deleteMessage({ userId: user.id, messageId }).catch((e) =>
       console.error('Error deleting message', e)
     )
@@ -52,6 +54,9 @@ export default function InboxPage() {
   function batchDelete() {
     if (!user) return
 
+    const checkedIds = checked.map((m) => m.id)
+
+    setMessages(messages.filter((m) => !checkedIds.includes(m.id)))
     bulkDeleteMessage({ userId: user.id, messageIds: checked.map((m) => m.id) }).catch((e) =>
       console.error('Error deleting messages', e)
     )
@@ -62,6 +67,13 @@ export default function InboxPage() {
   function batchToggleStatus(status: 'read' | 'unread') {
     if (!user) return
 
+    const checkedIds = checked.map((m) => m.id)
+
+    setMessages(
+      messages.map((m) => {
+        return checkedIds.includes(m.id) ? { ...m, read: !m.read } : m
+      })
+    )
     bulkToggleMessageReadStatus({
       userId: user.id,
       messageIds: checked.map((m) => m.id),
@@ -104,7 +116,8 @@ export default function InboxPage() {
         <div className="py-4 flex flex-wrap-reverse justify-end">
           <div
             className={
-              (!!checked.length ? 'opacity-1--' : 'opacity-0') + ' transform-opacity space-x-4'
+              (!!checked.length ? 'opacity-1--' : 'opacity-0 pointer-events-none') +
+              ' transform-opacity space-x-4'
             }>
             {checked.every((m) => !m.read) && (
               <Button
@@ -143,8 +156,8 @@ export default function InboxPage() {
           </Button>
         </div>
         <div className="text-xl mb-4">Messages</div>
-        <div className="overflow-y-auto">
-          {messages.map((m, i) => {
+        <div className="overflow-y-auto vertical-scroll">
+          {messages.sort(messageDateSort).map((m, i) => {
             return (
               <MessageItem
                 message={m}
@@ -169,6 +182,7 @@ export default function InboxPage() {
                 onToggleRead={() => {
                   if (!user) return
 
+                  setMessages(messages.map((m, j) => (i === j ? { ...m, read: !m.read } : m)))
                   toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: !m.read })
                 }}
               />
@@ -204,7 +218,11 @@ export default function InboxPage() {
           setActiveMessage(null)
         }}
       />
-      <ComposeMessageDialog open={composing} onClose={() => setComposing(false)} />
+      <ComposeMessageDialog
+        open={composing}
+        onClose={() => setComposing(false)}
+        fetchMessages={fetchMessages}
+      />
     </>
   )
 }

@@ -53,6 +53,7 @@ class Messages(Base):
     body: Mapped[str] = mapped_column(String)
     sender_id: Mapped[str] = mapped_column(String(8), ForeignKey("users.id"))
     sender: Mapped['Users'] = relationship(lazy="joined")
+    sent_date: Mapped[str] = mapped_column(String)
     message_recipients: Mapped[List["Message_Recipients"]] = relationship() 
 
 class Message_Recipients(Base):
