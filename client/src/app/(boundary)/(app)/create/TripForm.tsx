@@ -14,6 +14,10 @@ import DateInput from '@/lib/components/inputs/DateInput'
 import CardTravelRoundedIcon from '@mui/icons-material/CardTravelRounded'
 
 const fieldStyles = { width: '100%' }
+const autocompleteSx = {
+  '.MuiInputBase-root': { alignItems: 'flex-start' }
+}
+const crewFieldSx = { ...fieldStyles, placeItems: 'flex-start', alignItems: 'flex-start!important' }
 const createTripBtnSx = {
   marginTop: '3rem',
   padding: '12px',
@@ -179,6 +183,7 @@ export default function TripForm() {
           multiple
           freeSolo
           clearText="Clear"
+          sx={autocompleteSx}
           onChange={(_e, value) => {
             dispatch({ type: 'crewMembers', value: value as User[] })
           }}
@@ -219,7 +224,7 @@ export default function TripForm() {
               required
               disabled={saving}
               error={!tripState.crewMembers.valid}
-              sx={fieldStyles}
+              sx={crewFieldSx}
             />
           )}
         />
