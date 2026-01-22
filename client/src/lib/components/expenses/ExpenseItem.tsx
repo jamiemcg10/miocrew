@@ -48,7 +48,7 @@ export default function ExpenseItem({ expense, setActiveExpense, isActionItem }:
         {dateFormatter(expense.date)}
       </div>
       <div className="flex flex-col sm:flex-row grow">
-        <div className="flex items-center grow">
+        <div className="flex items-center grow w-3/4">
           <div className="pr-2 grow">
             {isActionItem && <MonetizationOnRoundedIcon sx={moneyIconSx} />}
             {expense.name}
@@ -62,8 +62,7 @@ export default function ExpenseItem({ expense, setActiveExpense, isActionItem }:
         </div>
         <div
           className={
-            'flex items-center w-1/4 shrink-0 whitespace-nowrap mr-4' +
-            (isActionItem && ' text-end')
+            'flex items-center shrink-0 grow whitespace-nowrap' + (isActionItem && ' text-end')
           }>
           <BalanceText expense={expense} userId={user?.id} />{' '}
           {isActionItem && (
