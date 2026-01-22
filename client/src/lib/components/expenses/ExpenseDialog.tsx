@@ -87,7 +87,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
       const involvedCrew = attendeesWithRefs.filter((a) => a.checked)
       return involvedCrew.map((a) => {
         return {
-          user_id: a.id,
+          user_id: a.attendeeId,
           owes: state.total.value / involvedCrew.length,
           paid: user?.id === a.id
         }
