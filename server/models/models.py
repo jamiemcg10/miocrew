@@ -22,7 +22,7 @@ class Users(Base):
     message_sender: Mapped["Messages"] = relationship("Messages", foreign_keys="Messages.sender_id", back_populates="sender")
 
     def __repr__(self) -> str:
-        return f"User(id={self.id!r}, firstName={self.first_name!r})"
+        return f"User(id={self.id!r}, first_name={self.first_name!r} last_name={self.last_name!r})"
 
 class Trips(Base):
     __tablename__ = "trips"
@@ -105,6 +105,9 @@ class Expenses(Base):
     date: Mapped[str] = mapped_column(String(20)) 
     notes: Mapped[Optional[str]] = mapped_column(String)
 
+    def __repr__(self) -> str:
+        return f"id={self.id} trip_id={self.trip_id} name={self.name} paid_by_id={self.paid_by_id} paid_by={self.paid_by} total={self.total} split={self.split} settled={self.settled} owe={self.owe} due={self.due} date={self.date} notes={self.notes}"
+
 class Debtors(Base):
     __tablename__ = "debtors"
 
@@ -115,6 +118,9 @@ class Debtors(Base):
     owes: Mapped[float] = mapped_column(Float)
     paid: Mapped[bool] = mapped_column(Integer)
     expense = relationship("Expenses", back_populates="owe")
+
+    def __repr__(self) -> str:
+        return f"id={self.id} expense_id={self.expense_id} user_id={self.user_id} debtor={self.debtor} owes={self.owes} paid={self.paid} expense={self.paid}"
 
 class Tasks(Base):
     __tablename__ = "tasks"
