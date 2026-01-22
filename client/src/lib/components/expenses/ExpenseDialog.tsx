@@ -215,7 +215,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
             name="radio-buttons-group">
             <FormControlLabel value="Evenly" control={<Radio size="small" />} label="Evenly" />
             <NumberInput
-              aria-label="total-cost"
+              ariaLabel="total-cost"
               size="sm"
               hideStepper
               placeholder="$0.00"
@@ -273,7 +273,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                       state.type.value === 'Evenly' ? 'opacity-0' : 'opacity-100'
                     )}>
                     <NumberInput
-                      aria-label={`${a.firstName}-share`}
+                      ariaLabel={`${a.firstName}-share`}
                       size="sm"
                       hideStepper
                       placeholder="$0.00"

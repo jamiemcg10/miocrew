@@ -1,7 +1,12 @@
 import { NumberInput, NumberInputProps } from '@heroui/number-input'
 
+interface _NumberInputProps extends NumberInputProps {
+  ariaLabel?: string
+}
+
 export default function _NumberInput({
   label,
+  ariaLabel,
   size = 'md',
   hideStepper = true,
   variant = 'flat',
@@ -16,7 +21,7 @@ export default function _NumberInput({
   formatOptions,
   onValueChange,
   placeholder
-}: NumberInputProps) {
+}: _NumberInputProps) {
   const combinedClassNames = {
     base: classNames?.base || '',
     label:
@@ -31,6 +36,7 @@ export default function _NumberInput({
   return (
     <NumberInput
       label={label}
+      aria-label={ariaLabel}
       variant={variant}
       size={size}
       placeholder={placeholder}
