@@ -27,9 +27,9 @@ export default function ExpenseItem({ expense, setActiveExpense, isActionItem }:
       <>
         {' '}
         <CrewAvatar user={expense.paidBy} size="xs" />
-        <span className="mx-2 text-sm whitespace-nowrap">
+        <div className="mx-2 text-sm whitespace-nowrap">
           {expense.paidBy.firstName} {expense.paidBy.lastName.charAt(0)}.
-        </span>
+        </div>
       </>
     )
   }
@@ -44,25 +44,30 @@ export default function ExpenseItem({ expense, setActiveExpense, isActionItem }:
 
   return (
     <TableRow onClick={onClick}>
-      <div className={'w-1/4 sm:w-1/5 text-sm shrink-0 mr-2' + (isActionItem && ' hidden')}>
+      <div
+        className={
+          'w-1/4 sm:w-1/5 min-w-13 text-sm shrink-0 mr-6 @xs:mr-4 ' +
+          (isActionItem ? ' hidden' : '')
+        }>
         {dateFormatter(expense.date)}
       </div>
-      <div className="flex flex-col sm:flex-row grow">
-        <div className="flex items-center grow w-3/4">
-          <div className="pr-2 grow">
+      <div className={'flex grow flex-wrap gap-y-1.5 ' + (isActionItem ? 'flex-row' : 'flex-col')}>
+        <div className="flex flex-col @xs:flex-row items-center grow shrink-0 flex-wrap gap-y-1">
+          <div className="self-start pr-2 grow shrink-0">
             {isActionItem && <MonetizationOnRoundedIcon sx={moneyIconSx} />}
             {expense.name}
             {expense.due === 'immediate' ? <BoltIcon sx={boltIconSx} /> : null}
           </div>
           {!isActionItem && (
-            <div className="flex items-center w-1/3 shrink-0 justify-end sm:justify-start">
+            <div className="flex items-center grow shrink-0 self-start @xs:justify-end">
               <PaidBy />
             </div>
           )}
         </div>
         <div
           className={
-            'flex items-center shrink-0 grow whitespace-nowrap' + (isActionItem && ' text-end')
+            'flex items-center shrink-0 grow whitespace-nowrap' +
+            (isActionItem ? ' text-end justify-end' : '')
           }>
           <BalanceText expense={expense} userId={user?.id} />{' '}
           {isActionItem && (

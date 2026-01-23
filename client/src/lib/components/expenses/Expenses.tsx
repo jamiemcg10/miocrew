@@ -98,7 +98,7 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
         Add Expense
       </Button>
       <div className="@container flex grow flex-wrap-reverse items-end mt-auto overflow-hidden">
-        <div className="grow w-163.5 flex flex-col h-full relative @max-[890px]:h-2/3">
+        <div className="grow w-full flex flex-col h-full relative @max-[890px]:h-2/3">
           <Accordion disableGutters={true} sx={accordionSx}>
             <AccordionSummary sx={accordionSummarySx} expandIcon={<ArrowDropDownIcon />}>
               Filters
@@ -132,16 +132,13 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
               </div>
             </AccordionDetails>
           </Accordion>
-          <div className="flex px-2 font-semibold tracking-wide">
-            <div className="w-1/4 sm:w-1/5 pl-4">Date</div>
+          <div className="hidden @xs:flex px-4 font-semibold tracking-wide">
+            <div className="w-1/4 sm:w-1/5 min-w-13 pl-2 mr-6 @xs:mr-2">Date</div>
             <div className="flex flex-col sm:flex-row grow">
               <div className="flex grow">
                 <div className="grow pl-2">Expense</div>
-                <div className="w-1/3 justify-end sm:justify-start text-right sm:text-left mr-12 sm:mr-0">
-                  Paid by
-                </div>
+                <div className="w-1/3 justify-end text-right mr-6 grow">Paid by</div>
               </div>
-              <div className="w-0 sm:w-1/4"></div>
             </div>
           </div>
           <VerticalScrollShadow>
