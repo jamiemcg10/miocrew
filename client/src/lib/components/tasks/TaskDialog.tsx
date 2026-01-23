@@ -28,7 +28,12 @@ const createTaskBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
   const [state, dispatch] = useReducer(taskReducer, initialTaskState)
-  const valid = !!(state.name.value && (state.assigneeId.value || state.type.value === 'poll'))
+  const valid = !!(
+    state.name.value &&
+    (state.assigneeId.value || state.type.value === 'poll') &&
+    (state.type.value === 'general' ||
+      (state.pollQuestion.value && state.pollOptions.value.every((o) => !!o.label)))
+  )
 
   const trip = useContext(TripContext)
   const { user } = useContext(UserContext)
@@ -98,91 +103,98 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
   return (
     <Dialog open={!!open} setOpen={setOpen}>
       <DialogTitle sx={dialogTitleSx}>{isTask(open) ? 'Edit' : 'Add new'} task</DialogTitle>
-      <form className="flex flex-col m-10">
-        <TextField
-          label="Task Name"
-          required
-          autoFocus={isTask(open) ? false : true}
-          sx={mb2Sx}
-          value={state.name.value}
-          error={!state.name.valid}
-          onChange={(e) => {
-            dispatch({ type: 'name', value: e.target.value })
-          }}
-        />
-        <FormControl fullWidth sx={mb2Sx}>
-          <InputLabel>Task Type</InputLabel>
-          <Select
-            label="Task Type"
+      <form className="flex flex-col m-10 overflow-hidden">
+        <div className="vertical-scroll flex flex-col pt-2 pr-2 overflow-y-scroll">
+          <TextField
+            label="Task Name"
             required
-            value={state.type.value}
+            autoFocus={isTask(open) ? false : true}
+            sx={mb2Sx}
+            value={state.name.value}
+            error={!state.name.valid}
             onChange={(e) => {
-              dispatch({ type: 'type', value: e.target.value })
-            }}>
-            <MenuItem value="general">General</MenuItem>
-            <MenuItem value="poll">Poll</MenuItem>
-          </Select>
-        </FormControl>
-        {state.type.value === 'poll' ? (
-          <PollOptionsDialog
-            question={state.pollQuestion.value}
-            options={state.pollOptions.value}
-            onChangeOptions={(value: PollTaskOption[]) => dispatch({ type: 'pollOptions', value })}
-            onChangeQuestion={(value: string) => dispatch({ type: 'pollQuestion', value })}
+              dispatch({ type: 'name', value: e.target.value })
+            }}
           />
-        ) : (
-          <>
-            <TextField
-              label="Description"
-              multiline
-              rows={3}
-              sx={mb2Sx}
-              value={state.description.value}
+          <FormControl fullWidth sx={mb2Sx}>
+            <InputLabel>Task Type</InputLabel>
+            <Select
+              label="Task Type"
+              required
+              value={state.type.value}
               onChange={(e) => {
-                dispatch({ type: 'description', value: e.target.value })
-              }}
+                dispatch({ type: 'type', value: e.target.value })
+              }}>
+              <MenuItem value="general">General</MenuItem>
+              <MenuItem value="poll">Poll</MenuItem>
+            </Select>
+          </FormControl>
+          {state.type.value === 'poll' ? (
+            <PollOptionsDialog
+              question={state.pollQuestion.value}
+              options={state.pollOptions.value}
+              onChangeOptions={(value: PollTaskOption[]) =>
+                dispatch({ type: 'pollOptions', value })
+              }
+              onChangeQuestion={(value: string) => dispatch({ type: 'pollQuestion', value })}
             />
-            <FormControl required>
-              <InputLabel>Assignee</InputLabel>
-              <Select
-                label="Assignee"
-                value={state.assigneeId.value}
+          ) : (
+            <>
+              <TextField
+                label="Description"
+                multiline
+                rows={3}
                 sx={mb2Sx}
-                error={!state.assigneeId.valid}
+                value={state.description.value}
                 onChange={(e) => {
-                  dispatch({ type: 'assigneeId', value: e.target.value })
-                }}>
-                {Object.values(trip?.attendees || {}).map((a: CrewMember) => {
-                  return (
-                    <MenuItem value={a.attendeeId} key={a.attendeeId}>
-                      {a.firstName} {a.lastName}
-                    </MenuItem>
-                  )
-                })}
-              </Select>
-            </FormControl>
-          </>
-        )}
-        <DateInput
-          className="w-3/5 mb-2"
-          label="Due Date"
-          variant="bordered"
-          size="sm"
-          value={state.dueDate.value ? (parseDate(state.dueDate.value) as CalendarDate) : undefined}
-          isDateUnavailable={(date) => {
-            return date < today(getLocalTimeZone())
-          }}
-          classNames={{
-            label: 'group-data-[required=true]:after:text-inherit',
-            inputWrapper: 'group-data-[invalid=true]:focus-within:border-danger',
-            segment: 'data-[invalid=true]:data-[editable=true]:data-[placeholder=true]:text-danger'
-          }}
-          onChange={(e) => {
-            if (!e) return
+                  dispatch({ type: 'description', value: e.target.value })
+                }}
+              />
+              <FormControl required>
+                <InputLabel>Assignee</InputLabel>
+                <Select
+                  label="Assignee"
+                  value={state.assigneeId.value}
+                  sx={mb2Sx}
+                  error={!state.assigneeId.valid}
+                  onChange={(e) => {
+                    dispatch({ type: 'assigneeId', value: e.target.value })
+                  }}>
+                  {Object.values(trip?.attendees || {}).map((a: CrewMember) => {
+                    return (
+                      <MenuItem value={a.attendeeId} key={a.attendeeId}>
+                        {a.firstName} {a.lastName}
+                      </MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+            </>
+          )}
+          <DateInput
+            className="w-3/5 mb-2"
+            label="Due Date"
+            variant="bordered"
+            size="sm"
+            value={
+              state.dueDate.value ? (parseDate(state.dueDate.value) as CalendarDate) : undefined
+            }
+            isDateUnavailable={(date) => {
+              return date < today(getLocalTimeZone())
+            }}
+            classNames={{
+              label: 'group-data-[required=true]:after:text-inherit',
+              inputWrapper: 'group-data-[invalid=true]:focus-within:border-danger',
+              segment:
+                'data-[invalid=true]:data-[editable=true]:data-[placeholder=true]:text-danger'
+            }}
+            onChange={(e) => {
+              if (!e) return
 
-            dispatch({ type: 'dueDate', value: e.toString() })
-          }}
-        />
+              dispatch({ type: 'dueDate', value: e.toString() })
+            }}
+          />
+        </div>
         <Button
           variant="contained"
           ref={submitBtnRef}
