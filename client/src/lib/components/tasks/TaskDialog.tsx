@@ -32,7 +32,8 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
     state.name.value &&
     (state.assigneeId.value || state.type.value === 'poll') &&
     (state.type.value === 'general' ||
-      (state.pollQuestion.value && state.pollOptions.value.every((o) => !!o.label)))
+      (state.pollQuestion.value && state.pollOptions.value.every((o) => !!o.label))) &&
+    state.dueDate.value
   )
 
   const trip = useContext(TripContext)
@@ -182,6 +183,7 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
             isDateUnavailable={(date) => {
               return date < today(getLocalTimeZone())
             }}
+            isRequired
             classNames={{
               label: 'group-data-[required=true]:after:text-inherit',
               inputWrapper: 'group-data-[invalid=true]:focus-within:border-danger',
