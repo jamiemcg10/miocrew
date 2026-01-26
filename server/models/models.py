@@ -140,6 +140,9 @@ class Tasks(Base):
     poll_question: Mapped[str] = mapped_column(String)
     options: Mapped[List[str]] = relationship("Poll_Task_Options", back_populates="task")
 
+    def __repr__(self) -> str:
+        return f"id={self.id} trip_id={self.trip_id} name={self.name} description={self.description} type={self.type} due_date={self.due_date} multiple={self.multiple} assignee_id={self.assignee_id} assignee={self.assignee} creator_id={self.creator_id} creator={self.creator} completed={self.completed} notes={self.notes} poll_question={self.poll_question} options={self.options}"
+
 class Poll_Task_Votes(Base):
     __tablename__ = "poll_task_votes"
     id: Mapped[str] = mapped_column(String, primary_key=True)
@@ -155,8 +158,11 @@ class Poll_Task_Options(Base):
     task_id: Mapped[str] = mapped_column(String, ForeignKey("tasks.id"))
     label: Mapped[str] = mapped_column(String)
     task: Mapped["Tasks"] = relationship("Tasks", back_populates="options")
-    votes = column_property(select(func.count(Poll_Task_Votes.vote)).where(Poll_Task_Votes.task_id == task_id).where(Poll_Task_Votes.option_id == id).correlate_except(Idea_Likes)
+    votes = column_property(select(func.count(Poll_Task_Votes.vote)).where(Poll_Task_Votes.task_id == task_id).where(Poll_Task_Votes.option_id == id).correlate_except(Poll_Task_Votes)
         .scalar_subquery())
+
+    def __repr__(self) -> str:
+        return f"{{id={self.id} task_id={self.task_id} label={self.label} votes={self.votes}}}"
 
 class Activities(Base):
     __tablename__ = "activities"

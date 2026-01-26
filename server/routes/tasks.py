@@ -35,7 +35,7 @@ async def tasks(user_id: str, trip_id: str, db: Session = Depends(get_user_db)):
     return {"tasks": tasks}
 
 @router.get("/user/{user_id}/task/{task_id}/poll/votes/get")
-async def get_votes(user_id: str, task_id: str, db: Session = Depends(get_user_db)):
+async def get_user_votes(user_id: str, task_id: str, db: Session = Depends(get_user_db)):
 
     votes_stmt = select(Poll_Task_Votes).where(Poll_Task_Votes.attendee_id == user_id).where(Poll_Task_Votes.task_id == task_id).where(Poll_Task_Votes.vote == 1)
 
@@ -81,16 +81,18 @@ async def update_task(user_id: str, trip_id: str, task: FullTaskUpdate, db: Sess
 
     # write
     task_update_stmt = update(Tasks).where(Tasks.id == updated_task.id).values(updated_task.dict(exclude_unset=True))
-    options_delete_stmt = delete(Poll_Task_Options).where(Poll_Task_Options.task_id == updated_task.id)
     
     db.execute(task_update_stmt)
-    db.execute(options_delete_stmt)
-    
-    if task['poll_options']:
-        poll_options = list(map(lambda x: add_ids(x, updated_task.id), task['poll_options']))
 
-        options_insert_stmt = insert(Poll_Task_Options).values(poll_options)
-        db.execute(options_insert_stmt)
+    if updated_task.completed != True:
+        options_delete_stmt = delete(Poll_Task_Options).where(Poll_Task_Options.task_id == updated_task.id)
+        db.execute(options_delete_stmt)
+    
+        if task['poll_options']:
+            poll_options = list(map(lambda x: add_ids(x, updated_task.id), task['poll_options']))
+
+            options_insert_stmt = insert(Poll_Task_Options).values(poll_options)
+            db.execute(options_insert_stmt)
 
     
     db.flush()

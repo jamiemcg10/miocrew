@@ -45,6 +45,7 @@ export default function TripWrapper({ tripId, children }: TripProps) {
     getTasks({ userId: user!.id, tripId: tripId })
       .then((response) => {
         if (response.data.tasks) {
+          console.log(response.data.tasks)
           setTasks(response.data.tasks)
           LocalStorage.set(`${trip?.id}:tasks`, response.data.tasks)
         }

@@ -20,14 +20,14 @@ export default function PieChart({ results }: PieChartProps) {
   let lastStop = 0
   mappedResults.forEach((result, i) => {
     const currentStop = Math.round(360 * result.pct) + lastStop
-    gradient.push(`${appColors[19 - i]} ${lastStop ? lastStop + 'deg' : ''} ${currentStop}deg`)
+    gradient.push(`${appColors[19 - i]} ${lastStop + 'deg'} ${currentStop}deg`)
     lastStop = currentStop
   })
 
   const gradientStr = `conic-gradient(${gradient.join(', ')})`
 
   return (
-    <div className="flex flex-col grow self-center items-center sm:max-w-4/5">
+    <div className="flex flex-col grow self-center items-center sm:w-4/5 sm:max-w-4/5">
       <div
         className="grow rounded-full aspect-square max-w-full mb-8"
         style={{ background: `${gradientStr}` }}></div>

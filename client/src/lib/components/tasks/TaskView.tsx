@@ -67,7 +67,7 @@ export default function TaskView({ activeTask, onEdit, onClose }: TaskViewProps)
           <div className="absolute bottom-8 right-8">
             {activeTask?.type === 'poll' && (
               <Button variant="text" startIcon={<CancelRoundedIcon />} onClick={closeSurvey}>
-                Close survey
+                Close poll
               </Button>
             )}
             <ActionButtons onEdit={onEdit} onDelete={onDelete} />
