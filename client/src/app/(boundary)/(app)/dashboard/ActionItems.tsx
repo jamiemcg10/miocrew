@@ -10,14 +10,16 @@ import { LocalStorage } from '@/lib/utils/LocalStorage'
 import DashboardSectionHeader from './DashboardSectionHeader'
 import TaskItem from '@/lib/components/tasks/TaskItem'
 import ExpenseItem from '@/lib/components/expenses/ExpenseItem'
+import TripTableLoading from '@/lib/components/loading/TripTableLoading'
 
 export default function ActionItems() {
   function formatActionItems() {
+    if (!tasks && !expenses) return
     setActionItems([
-      ...tasks.filter((t) => {
+      ...(tasks || []).filter((t) => {
         return (t.assigneeId === 'Everyone' || t.assigneeId === user?.id) && !t.completed
       }),
-      ...expenses.filter((e) => {
+      ...(expenses || []).filter((e) => {
         return e.due === 'immediate' && user?.id && e.owe[user.id]?.paid === false
       })
     ])
@@ -45,9 +47,11 @@ export default function ActionItems() {
 
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
-  const [expenses, setExpenses] = useState<Expense[]>(storedActionItemsExpenses || [])
-  const [tasks, setTasks] = useState<Task[]>(storedActionItemsTasks || [])
-  const [actionItems, setActionItems] = useState<(Expense | Task)[]>([])
+  const [expenses, setExpenses] = useState<Expense[] | undefined>(
+    storedActionItemsExpenses || undefined
+  )
+  const [tasks, setTasks] = useState<Task[] | undefined>(storedActionItemsTasks || undefined)
+  const [actionItems, setActionItems] = useState<(Expense | Task)[] | undefined>(undefined)
 
   const [addExpenseDialogOpen, setAddExpenseDialogOpen] = useState<boolean | Expense>(false)
   const [createTaskDialogOpen, setCreateTaskDialogOpen] = useState<boolean | Task>(false)
@@ -77,7 +81,9 @@ export default function ActionItems() {
   return (
     <>
       <DashboardSectionHeader title="Action items" />
-      {actionItems ? (
+      {!actionItems ? (
+        <TripTableLoading />
+      ) : actionItems.length ? (
         <div>
           {actionItems.map((item, i) => {
             return isTask(item) ? (

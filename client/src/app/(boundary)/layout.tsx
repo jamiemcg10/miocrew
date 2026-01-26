@@ -1,5 +1,8 @@
 'use client'
 
+import '@/lib/styles/VerticalScroll.css'
+import '@/lib/styles/HorizontalScroll.css'
+
 import { ReactNode, useState } from 'react'
 import { User } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'

@@ -1,4 +1,3 @@
-import '@/lib/styles/HorizontalScroll.css'
 import Button from '@mui/material/Button'
 import dayjs from 'dayjs'
 import EventRoundedIcon from '@mui/icons-material/EventRounded'

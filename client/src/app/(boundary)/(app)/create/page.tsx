@@ -1,5 +1,4 @@
 'use client'
-import '@/lib/styles/VerticalScroll.css'
 import TripForm from './TripForm'
 
 export default function CreatePage() {

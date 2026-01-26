@@ -19,7 +19,7 @@ export default function DashboardPage() {
 
   const storedTrips = LocalStorage.get<Trip[]>('upcoming-trips')
 
-  const [upcomingTrips, setUpcomingTrips] = useState<Trip[]>(storedTrips || [])
+  const [upcomingTrips, setUpcomingTrips] = useState<Trip[] | undefined>(storedTrips || undefined)
 
   function fetchTrips() {
     getTrips({ userId: user!.id })

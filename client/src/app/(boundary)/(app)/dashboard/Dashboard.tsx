@@ -7,14 +7,14 @@ import ActionItems from './ActionItems'
 import { Trip } from '@/lib/types'
 
 interface DashboardProps {
-  upcomingTrips: Trip[]
+  upcomingTrips?: Trip[]
 }
 
 const buttonSx = { margin: '16px 0 16px 0', alignSelf: 'end', width: 'initial', fontWeight: 600 }
 
 export default function Dashboard({ upcomingTrips }: DashboardProps) {
   return (
-    <div className="flex flex-col px-4 overflow-y-auto">
+    <div className="vertical-scroll flex flex-col px-4 overflow-y-auto pb-4">
       <Button
         href="/create"
         color="info"

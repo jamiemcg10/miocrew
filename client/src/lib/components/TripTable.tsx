@@ -8,9 +8,10 @@ import CrewAvatar from './CrewAvatar'
 import TableRow from './layout/TableRow'
 import DashboardSectionHeader from '@/app/(boundary)/(app)/dashboard/DashboardSectionHeader'
 import { tripSort } from '../utils/sortFns'
+import TripTableLoading from './loading/TripTableLoading'
 
 interface TripTableProps {
-  trips: Trip[]
+  trips?: Trip[]
   title: string
 }
 
@@ -20,7 +21,10 @@ export default function TripTable({ trips, title }: TripTableProps) {
   return (
     <div>
       <DashboardSectionHeader title={title} />
-      {trips.length ? (
+
+      {!trips ? (
+        <TripTableLoading />
+      ) : trips.length ? (
         trips.sort(tripSort).map((trip) => {
           return (
             <Link href={`/trip/${trip.id}`} key={trip.id}>

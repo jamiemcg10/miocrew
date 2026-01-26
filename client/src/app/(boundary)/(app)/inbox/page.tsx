@@ -1,6 +1,5 @@
 'use client'
 
-import '@/lib/styles/VerticalScroll.css'
 import Button from '@mui/material/Button'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
@@ -108,7 +107,7 @@ export default function InboxPage() {
 
   return (
     <>
-      <div className="flex flex-col h-full p-8">
+      <div className="flex flex-col h-full p-8 overflow-y-hidden">
         <div className="text-3xl">
           <DraftsOutlinedIcon />
           <span className="ml-2">Inbox</span>
