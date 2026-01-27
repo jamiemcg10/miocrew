@@ -32,11 +32,15 @@ export default function InboxPage() {
   const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
   const [composing, setComposing] = useState<boolean | BaseMessage>(false)
 
+  function updateLocalMessages(messages: BaseMessage[]) {
+    setMessages(messages)
+    LocalStorage.set('messages', messages)
+  }
+
   function fetchMessages() {
     getMessages({ userId: user!.id })
       .then((response) => {
-        setMessages(response.data.messages)
-        LocalStorage.set('messages', response.data.messages)
+        updateLocalMessages(response.data.messages)
       })
       .catch((e) => console.error('Error fetching messages', e))
   }
@@ -44,7 +48,7 @@ export default function InboxPage() {
   function onDeleteMessage(messageId: string) {
     if (!user) return
 
-    setMessages(messages.filter((m) => m.id !== messageId))
+    updateLocalMessages(messages.filter((m) => m.id !== messageId))
     deleteMessage({ userId: user.id, messageId }).catch((e) =>
       console.error('Error deleting message', e)
     )
@@ -55,7 +59,7 @@ export default function InboxPage() {
 
     const checkedIds = checked.map((m) => m.id)
 
-    setMessages(messages.filter((m) => !checkedIds.includes(m.id)))
+    updateLocalMessages(messages.filter((m) => !checkedIds.includes(m.id)))
     bulkDeleteMessage({ userId: user.id, messageIds: checked.map((m) => m.id) }).catch((e) =>
       console.error('Error deleting messages', e)
     )
@@ -68,7 +72,7 @@ export default function InboxPage() {
 
     const checkedIds = checked.map((m) => m.id)
 
-    setMessages(
+    updateLocalMessages(
       messages.map((m) => {
         return checkedIds.includes(m.id) ? { ...m, read: !m.read } : m
       })
@@ -166,22 +170,24 @@ export default function InboxPage() {
                 onClick={() => {
                   if (!user) return
 
-                  setActiveMessage(m)
-
                   if (!m.read) {
                     const statusUpdate = messages.map((m, _i) =>
                       i !== _i ? m : { ...m, read: true }
                     )
-                    setMessages(statusUpdate)
+                    updateLocalMessages(statusUpdate)
                     toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: true })
                     LocalStorage.set('messages', statusUpdate)
                   }
+
+                  setActiveMessage(m)
                 }}
                 onDelete={() => onDeleteMessage(m.id)}
                 onToggleRead={() => {
                   if (!user) return
 
-                  setMessages(messages.map((m, j) => (i === j ? { ...m, read: !m.read } : m)))
+                  updateLocalMessages(
+                    messages.map((m, j) => (i === j ? { ...m, read: !m.read } : m))
+                  )
                   toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: !m.read })
                 }}
               />

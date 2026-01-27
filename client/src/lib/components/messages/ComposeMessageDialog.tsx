@@ -45,6 +45,8 @@ export default function ComposeMessageDialog({
   const [state, dispatch] = useReducer(messageReducer, initialMessageState)
   const sendBtnRef = useRef<HTMLButtonElement>(null)
 
+  const [messageFocused, setMessageFocused] = useState(false)
+
   const valid = !!(state.subject && state.body && !!state.recipients.length)
 
   useEffect(() => {
@@ -99,7 +101,7 @@ export default function ComposeMessageDialog({
     dispatch({ type: 'recipients', value })
   }
 
-  useSubmitOnEnter(() => sendBtnRef.current!.click(), valid)
+  useSubmitOnEnter(() => sendBtnRef.current!.click(), valid && !messageFocused)
 
   if (!user) return
 
@@ -138,6 +140,8 @@ export default function ComposeMessageDialog({
           label="Message"
           required
           value={state.body}
+          onFocus={() => setMessageFocused(true)}
+          onBlur={() => setMessageFocused(false)}
           onChange={(e) => dispatch({ type: 'body', value: e.target.value })}
           sx={msgFieldSx}
           slotProps={msgSlotProps}
