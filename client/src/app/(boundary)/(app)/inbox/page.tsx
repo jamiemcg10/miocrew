@@ -21,6 +21,7 @@ import {
 } from '@/db'
 import { noTextTransformSx } from '@/lib/styles/sx'
 import { messageDateSort } from '@/lib/utils/sortFns'
+import InboxLoading from '@/lib/components/loading/InboxLoading'
 
 const composeBtnSx = { fontWeight: 700, ml: 4, mb: 2 }
 
@@ -28,7 +29,7 @@ export default function InboxPage() {
   const { user } = useContext(UserContext)
 
   const storedMessages = LocalStorage.get<BaseMessage[]>('messages')
-  const [messages, setMessages] = useState<BaseMessage[]>(storedMessages || [])
+  const [messages, setMessages] = useState<BaseMessage[] | undefined>(storedMessages || undefined)
   const [activeMessage, setActiveMessage] = useState<BaseMessage | null>(null)
   const [composing, setComposing] = useState<boolean | BaseMessage>(false)
 
@@ -46,7 +47,7 @@ export default function InboxPage() {
   }
 
   function onDeleteMessage(messageId: string) {
-    if (!user) return
+    if (!user || !messages) return
 
     updateLocalMessages(messages.filter((m) => m.id !== messageId))
     deleteMessage({ userId: user.id, messageId }).catch((e) =>
@@ -55,7 +56,7 @@ export default function InboxPage() {
   }
 
   function batchDelete() {
-    if (!user) return
+    if (!user || !messages) return
 
     const checkedIds = checked.map((m) => m.id)
 
@@ -68,7 +69,7 @@ export default function InboxPage() {
   }
 
   function batchToggleStatus(status: 'read' | 'unread') {
-    if (!user) return
+    if (!user || !messages) return
 
     const checkedIds = checked.map((m) => m.id)
 
@@ -160,39 +161,43 @@ export default function InboxPage() {
         </div>
         <div className="text-xl mb-4">Messages</div>
         <div className="overflow-y-auto vertical-scroll">
-          {messages.sort(messageDateSort).map((m, i) => {
-            return (
-              <MessageItem
-                message={m}
-                checked={checked}
-                setChecked={setChecked}
-                key={i}
-                onClick={() => {
-                  if (!user) return
+          {!messages ? (
+            <InboxLoading />
+          ) : (
+            messages.sort(messageDateSort).map((m, i) => {
+              return (
+                <MessageItem
+                  message={m}
+                  checked={checked}
+                  setChecked={setChecked}
+                  key={i}
+                  onClick={() => {
+                    if (!user) return
 
-                  if (!m.read) {
-                    const statusUpdate = messages.map((m, _i) =>
-                      i !== _i ? m : { ...m, read: true }
+                    if (!m.read) {
+                      const statusUpdate = messages.map((m, _i) =>
+                        i !== _i ? m : { ...m, read: true }
+                      )
+                      updateLocalMessages(statusUpdate)
+                      toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: true })
+                      LocalStorage.set('messages', statusUpdate)
+                    }
+
+                    setActiveMessage({ ...m, read: true })
+                  }}
+                  onDelete={() => onDeleteMessage(m.id)}
+                  onToggleRead={() => {
+                    if (!user) return
+
+                    updateLocalMessages(
+                      messages.map((m, j) => (i === j ? { ...m, read: !m.read } : m))
                     )
-                    updateLocalMessages(statusUpdate)
-                    toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: true })
-                    LocalStorage.set('messages', statusUpdate)
-                  }
-
-                  setActiveMessage({ ...m, read: true })
-                }}
-                onDelete={() => onDeleteMessage(m.id)}
-                onToggleRead={() => {
-                  if (!user) return
-
-                  updateLocalMessages(
-                    messages.map((m, j) => (i === j ? { ...m, read: !m.read } : m))
-                  )
-                  toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: !m.read })
-                }}
-              />
-            )
-          })}
+                    toggleMessageReadStatus({ userId: user.id, messageId: m.id, status: !m.read })
+                  }}
+                />
+              )
+            })
+          )}
         </div>
       </div>
 
@@ -213,7 +218,7 @@ export default function InboxPage() {
           setActiveMessage(null)
         }}
         onToggleRead={() => {
-          if (!user || !activeMessage) return
+          if (!user || !messages || !activeMessage) return
 
           updateLocalMessages(
             messages.map((m) => {
