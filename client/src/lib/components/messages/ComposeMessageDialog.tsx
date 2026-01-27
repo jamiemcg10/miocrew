@@ -114,7 +114,7 @@ export default function ComposeMessageDialog({
         <TextField
           label="Subject"
           required
-          autoFocus
+          autoFocus={!isMessage(open)}
           sx={textFieldSx}
           value={state.subject}
           onChange={(e) => dispatch({ type: 'subject', value: e.target.value })}
@@ -140,6 +140,7 @@ export default function ComposeMessageDialog({
           label="Message"
           required
           value={state.body}
+          autoFocus={isMessage(open)}
           onFocus={() => setMessageFocused(true)}
           onBlur={() => setMessageFocused(false)}
           onChange={(e) => dispatch({ type: 'body', value: e.target.value })}
