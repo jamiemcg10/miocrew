@@ -179,7 +179,7 @@ export default function InboxPage() {
                     LocalStorage.set('messages', statusUpdate)
                   }
 
-                  setActiveMessage(m)
+                  setActiveMessage({ ...m, read: true })
                 }}
                 onDelete={() => onDeleteMessage(m.id)}
                 onToggleRead={() => {
@@ -215,6 +215,11 @@ export default function InboxPage() {
         onToggleRead={() => {
           if (!user || !activeMessage) return
 
+          updateLocalMessages(
+            messages.map((m) => {
+              return m.id === activeMessage.id ? { ...m, read: !activeMessage.read } : m
+            })
+          )
           toggleMessageReadStatus({
             userId: user.id,
             messageId: activeMessage.id,

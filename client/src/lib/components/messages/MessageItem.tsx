@@ -39,7 +39,7 @@ export default function MessageItem({
   const isChecked = !!checked.filter((m) => m.id === message.id).length
 
   const messageClasses =
-    'group h-10 border-b-gray-300/20 rounded-xs border-b-1 flex items-center justify-start cursor-pointer bg-[#cccccc]' +
+    'group min-h-10 py-1 border-b-gray-300/20 rounded-xs border-b-1 flex items-center justify-start cursor-pointer bg-[#cccccc]' +
     (message.read
       ? ' bg-black/5  dark:bg-white/5  hover:bg-black/8  dark:hover:bg-white/8  active:bg-black/5  dark:active:bg-white/5'
       : ' bg-black/10 dark:bg-white/10 hover:bg-black/13 dark:hover:bg-white/13 active:bg-black/10 dark:active:bg-white/10')

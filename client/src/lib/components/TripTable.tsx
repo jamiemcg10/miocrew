@@ -31,7 +31,7 @@ export default function TripTable({ trips, title }: TripTableProps) {
               <TableRow>
                 <div className="flex grow justify-between mr-4 flex-col sm:flex-row">
                   <span className="mr-2 inline-flex">{trip.name}</span>
-                  <span className="text-right px-2 inline-flex">
+                  <span className="text-right pr-2 inline-flex">
                     {dateFormatter(trip.startDate)}{' '}
                     {trip.endDate && ' - ' + dateFormatter(trip.endDate)}
                   </span>
