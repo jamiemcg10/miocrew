@@ -13,16 +13,22 @@ import ExpenseItem from '@/lib/components/expenses/ExpenseItem'
 import TripTableLoading from '@/lib/components/loading/TripTableLoading'
 
 export default function ActionItems() {
-  function formatActionItems() {
+  function getFilteredActionItems() {
     if (!tasks && !expenses) return
-    setActionItems([
+
+    return [
       ...(tasks || []).filter((t) => {
         return (t.assigneeId === 'Everyone' || t.assigneeId === user?.id) && !t.completed
       }),
       ...(expenses || []).filter((e) => {
         return e.due === 'immediate' && user?.id && e.owe[user.id]?.paid === false
       })
-    ])
+    ]
+  }
+
+  function formatActionItems() {
+    if (!tasks && !expenses) return
+    setActionItems(getFilteredActionItems())
   }
 
   function fetchActionItems() {
@@ -51,7 +57,9 @@ export default function ActionItems() {
     storedActionItemsExpenses || undefined
   )
   const [tasks, setTasks] = useState<Task[] | undefined>(storedActionItemsTasks || undefined)
-  const [actionItems, setActionItems] = useState<(Expense | Task)[] | undefined>(undefined)
+  const [actionItems, setActionItems] = useState<(Expense | Task)[] | undefined>(
+    getFilteredActionItems
+  )
 
   const [addExpenseDialogOpen, setAddExpenseDialogOpen] = useState<boolean | Expense>(false)
   const [createTaskDialogOpen, setCreateTaskDialogOpen] = useState<boolean | Task>(false)
