@@ -14,5 +14,5 @@ export default function Logout() {
     redirect('/login', RedirectType.replace)
   })
 
-  return <div className="w-full h-full">Logging out...</div>
+  return <div className="flex w-screen h-screen justify-center items-center">Logging out...</div>
 }
