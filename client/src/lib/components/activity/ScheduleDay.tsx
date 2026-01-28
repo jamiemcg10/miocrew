@@ -2,7 +2,7 @@ import Activity from './Activity'
 import { type Activity as ActivityType } from '@/lib/types'
 import { scheduleSort } from '@/lib/utils/sortFns'
 import dayjs from 'dayjs'
-import ActiveActivity from './ActiveActivity'
+import ActivityView from './ActivityView'
 import { useState } from 'react'
 import VerticalScrollShadow from '../layout/VerticalScrollShadow'
 
@@ -43,7 +43,7 @@ export default function ScheduleDay({ day, index }: ScheduleDayProps) {
         </VerticalScrollShadow>
       </div>
 
-      <ActiveActivity activeActivity={activeActivity} setActiveActivity={setActiveActivity} />
+      <ActivityView activeActivity={activeActivity} setActiveActivity={setActiveActivity} />
     </>
   )
 }
