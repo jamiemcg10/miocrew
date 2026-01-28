@@ -1,10 +1,12 @@
 import { Activity, isActivity } from '@/lib/types'
+import { parseDate, parseTime } from '@internationalized/date'
 
 type Field<T> = {
   // TODO: Can probably move this
   value: T
   valid: boolean
 }
+
 interface ActivityState {
   name: Field<string>
   description: Field<string>
@@ -88,11 +90,69 @@ export function activityReducer(
     }
   }
 
-  return {
+  const newState = {
     ...state,
     [action.type]: {
       value: action.value,
       valid: !!action.value
     }
   }
+
+  if (
+    action.type === 'startDate' ||
+    action.type === 'endDate' ||
+    action.type === 'startTime' ||
+    action.type === 'endTime'
+  ) {
+    newState.startDate = {
+      value: newState.startDate.value,
+      valid: !!(
+        newState.startDate.value &&
+        (!newState.endDate.value ||
+          parseDate(newState.startDate.value) <= parseDate(newState.endDate.value))
+      )
+    }
+
+    newState.startTime = {
+      value: newState.startTime.value,
+      valid: !!(
+        newState.startTime.value &&
+        (!newState.endTime.value ||
+          parseTime(newState.startTime.value) < parseTime(newState.endTime.value) ||
+          !newState.startDate.value ||
+          !newState.endDate.value ||
+          parseDate(newState.endDate.value) > parseDate(newState.startDate.value))
+      )
+    }
+
+    newState.endDate = {
+      value: newState.endDate.value,
+      valid:
+        (!newState.endDate.value && !newState.endTime.value) ||
+        !!(
+          newState.startDate.value &&
+          newState.endDate.value &&
+          parseDate(newState.startDate.value) <= parseDate(newState.endDate.value)
+        )
+    }
+
+    newState.endTime = {
+      value: newState.endTime.value,
+      valid:
+        !newState.endDate.value ||
+        !!(
+          newState.endTime.value &&
+          newState.startTime.value &&
+          parseTime(newState.startTime.value) < parseTime(newState.endTime.value)
+        ) ||
+        !!(
+          newState.endTime.value &&
+          newState.endDate.value &&
+          newState.startDate.value &&
+          parseDate(newState.endDate.value) > parseDate(newState.startDate.value)
+        )
+    }
+  }
+
+  return newState
 }

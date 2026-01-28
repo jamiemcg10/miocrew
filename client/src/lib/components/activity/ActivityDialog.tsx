@@ -44,7 +44,6 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
   }
 
   function saveActivity() {
-    // TODO: Make sure end time and date is after start time and date
     if (!user || !trip) return
 
     const args = { userId: user.id, tripId: trip?.id, data: getPayload() }
@@ -82,6 +81,8 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
     dispatch({ type: 'set-activity', value: isActivity(open) ? open : undefined })
   }, [open])
 
+  if (!trip) return
+
   return (
     <Dialog open={!!open} setOpen={setOpen}>
       <DialogTitle sx={dialogTitleSx}>{isActivity(open) ? 'Edit' : 'Add new'} activity</DialogTitle>
@@ -91,6 +92,7 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
           required
           autoFocus={isActivity(open) ? false : true}
           value={state.name.value}
+          error={!state.name.valid}
           onChange={(e) => dispatch({ type: 'name', value: e.target.value })}
           sx={mb2Sx}
         />
@@ -115,31 +117,42 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
             variant="bordered"
             size="sm"
             isRequired
+            showMonthAndYearPickers
             value={
               state.startDate.value ? (parseDate(state.startDate.value) as CalendarDate) : null
+            }
+            isInvalid={
+              !state.startDate.valid ||
+              !!(
+                state.startDate.value &&
+                (parseDate(state.startDate.value) < parseDate(trip.startDate) ||
+                  parseDate(state.startDate.value) > parseDate(trip.endDate))
+              )
             }
             onChange={(e) => {
               if (!e) return
 
               dispatch({ type: 'startDate', value: e.toString() })
             }}
-            classNames={{
-              label: 'group-data-[required=true]:after:text-inherit'
+            isDateUnavailable={(date) => {
+              return !!(
+                date < parseDate(trip.startDate) ||
+                (trip.endDate && date > parseDate(trip.endDate))
+              )
             }}
           />
           <TimeInput
             className="w-2/5 ml-2"
             label="Start time"
+            size="sm"
             variant="bordered"
             isRequired
+            isInvalid={!state.startTime.valid}
             value={state.startTime.value ? (parseTime(state.startTime.value) as Time) : null}
             onChange={(e) => {
               if (!e) return
 
               dispatch({ type: 'startTime', value: e.toString() })
-            }}
-            classNames={{
-              label: 'group-data-[required=true]:after:text-inherit'
             }}
           />
         </div>
@@ -149,7 +162,23 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
             label="End date"
             variant="bordered"
             size="sm"
+            showMonthAndYearPickers
             value={state.endDate.value ? (parseDate(state.endDate.value) as CalendarDate) : null}
+            isInvalid={
+              !state.endDate.valid ||
+              !!(
+                state.endDate.value &&
+                (parseDate(state.endDate.value) < parseDate(trip.startDate) ||
+                  parseDate(state.endDate.value) > parseDate(trip.endDate))
+              )
+            }
+            isDateUnavailable={(date) => {
+              return !!(
+                date < parseDate(trip.startDate) ||
+                date > parseDate(trip.endDate) ||
+                (state.startDate.value && date < parseDate(state.startDate.value))
+              )
+            }}
             onChange={(e) => {
               if (!e) return
 
@@ -160,6 +189,8 @@ export default function ActivityDialog({ open, setOpen }: ActivityDialogProps) {
             className="w-2/5 ml-2"
             label="End time"
             variant="bordered"
+            size="sm"
+            isInvalid={!state.endTime.valid}
             value={state.endTime.value ? (parseTime(state.endTime.value) as Time) : null}
             onChange={(e) => {
               if (!e) return

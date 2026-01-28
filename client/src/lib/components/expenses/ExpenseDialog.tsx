@@ -193,11 +193,6 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
 
             dispatch({ type: 'date', value: e.toString() })
           }}
-          classNames={{
-            label: 'group-data-[required=true]:after:text-inherit',
-            inputWrapper: 'group-data-[invalid=true]:focus-within:border-danger',
-            segment: 'data-[invalid=true]:data-[editable=true]:data-[placeholder=true]:text-danger'
-          }}
           errorMessage={(value) => {
             if (value.isInvalid) {
               return 'Please enter a valid date.'
