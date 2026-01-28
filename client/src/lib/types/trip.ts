@@ -6,6 +6,6 @@ export interface Trip {
   location: string
   description: string
   startDate: string
-  endDate?: string
+  endDate: string
   attendees: Record<string, CrewMember>
 }

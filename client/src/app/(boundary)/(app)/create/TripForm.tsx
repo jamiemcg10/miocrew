@@ -51,7 +51,7 @@ export default function TripForm() {
       location: tripState.location.value,
       description: tripState.description.value,
       start_date: tripState.startDate.value,
-      end_date: tripState.endDate.value ? tripState.endDate.value : null,
+      end_date: tripState.endDate.value || tripState.startDate.value,
       ids: tripState.crewMembers.value.map((u) => u.id)
     } as CreateTripProps['data']
   }
