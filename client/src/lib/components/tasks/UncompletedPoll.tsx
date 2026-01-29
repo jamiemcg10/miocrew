@@ -10,18 +10,10 @@ import FormGroup from '@mui/material/FormGroup'
 import FormLabel from '@mui/material/FormLabel'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 interface UncompletedPollTaskViewProps {
   activeTask: PollTask
-  // options: {
-  //   checked: boolean
-  //   setChecked: Dispatch<SetStateAction<boolean>>
-  //   label: string
-  //   id?: string
-  //   taskId?: string
-  //   votes?: number
-  // }[]
   closeView: () => void
 }
 
