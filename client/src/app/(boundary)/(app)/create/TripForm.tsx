@@ -6,7 +6,13 @@ import { getUsers } from '@/db/users'
 import { User } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { initialTripState, tripReducer } from '@/lib/utils/reducers/tripReducer'
-import { CalendarDate, parseDate } from '@internationalized/date'
+import {
+  CalendarDate,
+  DateValue,
+  getLocalTimeZone,
+  parseDate,
+  today
+} from '@internationalized/date'
 import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/material/Snackbar'
@@ -89,6 +95,10 @@ export default function TripForm() {
       .catch((e) => console.error('Error getting users', e))
   }, [])
 
+  function isDateUnavailable(date: DateValue) {
+    return date < today(getLocalTimeZone())
+  }
+
   const valid =
     !Object.values(tripState).some((v) => !v.valid) &&
     !Object.values(tripState).some((v) => !v.value) &&
@@ -128,6 +138,7 @@ export default function TripForm() {
           variant="bordered"
           isDisabled={saving}
           isInvalid={!tripState.date.valid}
+          isDateUnavailable={isDateUnavailable}
           showMonthAndYearPickers
           className="w-full sm:w-1/2"
           value={

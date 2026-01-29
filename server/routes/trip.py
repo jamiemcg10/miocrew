@@ -55,9 +55,13 @@ async def create_trip(user_id: str, trip: TripBase, db: Session = Depends(get_us
                    "description": trip.description,
                    "start_date": trip.start_date,
                    "end_date": trip.end_date}
+
+    print(trip_values)
     
     mapped_new_crew = list(map(lambda x: map_id_to_attendee(x, id, "Crew"), trip.ids)) 
-    mapped_new_crew.append(map_id_to_attendee(user_id, id, "Owner"))
+    mapped_new_crew.append(map_id_to_attendee(user_id, id, "Captain"))
+
+    print(mapped_new_crew)
  
     trip_stmt = insert(Trips).values(trip_values)
     add_crew_stmt = insert(Attendees).values(mapped_new_crew)
