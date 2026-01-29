@@ -145,7 +145,7 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
             {filteredExpenses.length ? (
               <>
                 <div>
-                  {filteredExpenses.map((expense) => {
+                  {filteredExpenses.sort(expenseSort).map((expense) => {
                     return (
                       <ExpenseItem
                         expense={expense}

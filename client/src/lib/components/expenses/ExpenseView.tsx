@@ -7,7 +7,7 @@ import CrewAvatar from '../CrewAvatar'
 import clsx from 'clsx'
 import BoltIcon from '@mui/icons-material/Bolt'
 import Tooltip from '@mui/material/Tooltip'
-import { deleteExpense } from '@/db'
+import { deleteExpense, markExpensePaid } from '@/db'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import ActionButtons from '../ActionButtons'
 import Button from '@mui/material/Button'
@@ -35,6 +35,16 @@ export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseV
       expenseId: activeExpense.id
     })
       .catch((e) => console.error(`Error deleting expense`, e))
+      .finally(() => {
+        onClose()
+      })
+  }
+
+  function onMarkExpensePaid() {
+    if (!user || !trip || !activeExpense) return
+
+    markExpensePaid({ userId: user.id, tripId: trip.id, expenseId: activeExpense.id })
+      .catch((e) => console.error(`Error marking expense paid`, e))
       .finally(() => {
         onClose()
       })
@@ -98,13 +108,14 @@ export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseV
                   {owes.owes.toLocaleString('en-US')}
                 </span>
 
-                {id === user.id ? (
+                {id === user.id && !owes.paid ? (
                   <div className="h-6 flex">
                     <Button
                       size="small"
                       startIcon={<PriceCheckRoundedIcon />}
                       color="success"
-                      sx={shrinkSx}>
+                      sx={shrinkSx}
+                      onClick={onMarkExpensePaid}>
                       Mark paid
                     </Button>
                   </div>

@@ -33,6 +33,8 @@ import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 import DateInput from '../inputs/DateInput'
 import NumberInput from '../inputs/NumberInput'
 import { futureDatesUnavailable } from '@/lib/utils/isDateUnavailable'
+import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined'
+import CheckBoxIcon from '@mui/icons-material/CheckBox'
 
 interface ExpenseDialogProps {
   open: boolean | Expense
@@ -90,7 +92,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
         return {
           user_id: a.attendeeId,
           owes: state.total.value / involvedCrew.length,
-          paid: user?.id === a.id
+          paid: user?.id === a.attendeeId
         }
       })
     } else {
@@ -98,7 +100,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
         return {
           user_id: a.id,
           owes: a.amount,
-          paid: user?.id === a.id
+          paid: user?.id === a.attendeeId
         }
       })
     }
@@ -145,6 +147,9 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
     ((state.type.value === 'Evenly' && state.total.valid) ||
       (state.type.value === 'Custom' && attendeesWithRefs.some((a) => a.amount > 0)))
   )
+
+  const atLeastSomeChecked = attendeesWithRefs.some((a) => a.checked)
+  const allChecked = attendeesWithRefs.every((a) => a.checked)
 
   useSubmitOnEnter(() => submitBtnRef.current!.click(), valid)
 
@@ -235,6 +240,24 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
             <FormControlLabel value="Custom" control={<Radio size="small" />} label="Custom" />
           </RadioGroup>
         </FormControl>
+        {state.type.value === 'Evenly' ? (
+          <div className="-mb-6 w-fit border-b-1 border-b-foreground-500">
+            <Checkbox
+              id="bulk-toggle"
+              size="small"
+              sx={checkboxSx}
+              checked={atLeastSomeChecked}
+              checkedIcon={allChecked ? <CheckBoxIcon /> : <IndeterminateCheckBoxOutlinedIcon />}
+              onClick={() => {
+                if (!atLeastSomeChecked) {
+                  attendeesWithRefs.forEach((a) => a.setChecked(true))
+                } else {
+                  attendeesWithRefs.forEach((a) => a.setChecked(false))
+                }
+              }}
+            />
+          </div>
+        ) : null}
         <table className="vertical-scroll flex my-4 overflow-y-scroll">
           <tbody>
             {attendeesWithRefs.map((a) => {

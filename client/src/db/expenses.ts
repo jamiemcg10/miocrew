@@ -6,11 +6,15 @@ interface BaseExpenseArgs {
   tripId: string
 }
 
-interface addExpenseArgs extends BaseExpenseArgs {
+interface AddExpenseArgs extends BaseExpenseArgs {
   data: { expense: ExpensePayload; debtors: DebtorPayload[] }
 }
 
-interface deleteExpenseArgs extends BaseExpenseArgs {
+interface MarkExpensePaidArgs extends BaseExpenseArgs {
+  expenseId: string
+}
+
+interface DeleteExpenseArgs extends BaseExpenseArgs {
   expenseId: string
 }
 
@@ -20,7 +24,7 @@ export function getExpenses({ userId, tripId }: BaseExpenseArgs) {
   return axios.get(requestUrl, { withCredentials: true })
 }
 
-export function addExpense(args: addExpenseArgs) {
+export function addExpense(args: AddExpenseArgs) {
   const { userId, tripId, data } = args
 
   const isUpdate = !!data.expense.id
@@ -37,7 +41,19 @@ export function addExpense(args: addExpenseArgs) {
   })
 }
 
-export function deleteExpense(args: deleteExpenseArgs) {
+export function markExpensePaid(args: MarkExpensePaidArgs) {
+  const { userId, tripId, expenseId } = args
+
+  const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/expense/${expenseId}/mark_paid`
+
+  return axios({
+    method: 'patch',
+    url: requestUrl,
+    withCredentials: true
+  })
+}
+
+export function deleteExpense(args: DeleteExpenseArgs) {
   const { userId, tripId, expenseId } = args
 
   const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/user/${userId}/trip/${tripId}/expense/${expenseId}/delete`

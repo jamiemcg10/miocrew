@@ -57,6 +57,28 @@ async def create_expense(user_id: str, trip_id: str, expense: FullExpense, db: S
 
     return {"status": "created", "id": expense_id}
 
+@router.patch("/user/{user_id}/trip/{trip_id}/expense/{expense_id}/mark_paid")
+async def update_expense_paid(user_id: str, trip_id: str, expense_id: str, db: Session = Depends(get_user_db)):
+    if not is_valid_user(user_id, trip_id, db):
+        return {"status": "invalid request"}
+
+    # write
+    debtors_update_stmt = update(Debtors).where(Debtors.expense_id == expense_id).where(Debtors.user_id == user_id).values({"paid": True })
+    db.execute(debtors_update_stmt)
+
+    paid_expenses_stmt = select(Debtors).where(Debtors.expense_id == expense_id).where(Debtors.paid == False)
+    print(len(list(db.scalars(paid_expenses_stmt))))
+
+    if (len(list(db.scalars(paid_expenses_stmt))) == 0):
+        expense_update_stmt = update(Expenses).where(Expenses.id == expense_id).values({"settled": True})
+        db.execute(expense_update_stmt)
+
+    db.flush()
+
+    await manager.broadcast(trip_id, "expenses")
+    
+    return {"status": "updated", "id": expense_id}
+
 @router.patch("/user/{user_id}/trip/{trip_id}/expense/update")
 async def update_expense(user_id: str, trip_id: str, expense: FullExpense, db: Session = Depends(get_user_db)):
     if not is_valid_user(user_id, trip_id, db):
