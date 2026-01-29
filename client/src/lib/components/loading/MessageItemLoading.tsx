@@ -1,6 +1,5 @@
+import { noShrinkSx } from '@/lib/styles/sx'
 import Skeleton from '@mui/material/Skeleton'
-
-const noShrinkSx = { flexShrink: 0 }
 
 export default function MessageItemLoading() {
   return (

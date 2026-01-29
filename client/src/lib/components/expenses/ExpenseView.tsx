@@ -10,6 +10,9 @@ import Tooltip from '@mui/material/Tooltip'
 import { deleteExpense } from '@/db'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import ActionButtons from '../ActionButtons'
+import Button from '@mui/material/Button'
+import PriceCheckRoundedIcon from '@mui/icons-material/PriceCheckRounded'
+import { shrinkSx } from '@/lib/styles/sx'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
@@ -90,10 +93,22 @@ export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseV
                 <span className="ml-2 mr-1">
                   {id === user.id ? 'You' : `${owes.firstName} ${owes.lastName.charAt(0)}.`}
                 </span>
-                <span className={clsx(!owes.paid && 'text-red-700 font-semibold')}>
+                <span className={clsx('mr-2', !owes.paid && 'text-red-700 font-semibold')}>
                   {owes.paid ? 'paid' : id === user.id ? 'owe' : 'owes'} $
                   {owes.owes.toLocaleString('en-US')}
                 </span>
+
+                {id === user.id ? (
+                  <div className="h-6 flex">
+                    <Button
+                      size="small"
+                      startIcon={<PriceCheckRoundedIcon />}
+                      color="success"
+                      sx={shrinkSx}>
+                      Mark paid
+                    </Button>
+                  </div>
+                ) : null}
               </div>
             )
           })}

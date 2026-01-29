@@ -15,17 +15,20 @@ interface TotalOwed {
 
 function calculateReimbursements(expenses: Expense[]) {
   // TODO: Simplify this
-  return expenses.reduce((p, exp) => {
-    Object.entries(exp.owe).forEach(([id, cost]) => {
-      p[id] = {
-        total: (p[id]?.total || 0) + (!cost.paid ? cost.owes : 0),
-        firstName: cost.firstName,
-        lastName: cost.lastName
-      }
-    })
+  return expenses.reduce(
+    (p, exp) => {
+      Object.entries(exp.owe).forEach(([id, cost]) => {
+        p[id] = {
+          total: (p[id]?.total || 0) + (!cost.paid ? cost.owes : 0),
+          firstName: cost.firstName,
+          lastName: cost.lastName
+        }
+      })
 
-    return p
-  }, {} as Record<string, TotalOwed>)
+      return p
+    },
+    {} as Record<string, TotalOwed>
+  )
 }
 
 function formatReimbursements(reimbursements: Record<string, TotalOwed>, userId?: string) {
