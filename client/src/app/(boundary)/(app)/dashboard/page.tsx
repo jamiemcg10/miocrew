@@ -25,8 +25,8 @@ export default function DashboardPage() {
     getTrips({ userId: user!.id })
       .then((response) => {
         const _upcomingTrips = response.data.trips.filter((trip: Trip) => {
-          const startDate = getDate(trip.startDate)
-          return startDate >= today
+          const endDate = getDate(trip.endDate)
+          return endDate >= today
         })
         setUpcomingTrips(_upcomingTrips)
         LocalStorage.set('upcoming-trips', _upcomingTrips)

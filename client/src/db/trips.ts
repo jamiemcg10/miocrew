@@ -11,7 +11,7 @@ export interface CreateTripProps extends BaseProps {
     location: string
     description: string
     start_date: string
-    end_date?: string
+    end_date: string
     ids: string[]
   }
 }

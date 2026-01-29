@@ -5,12 +5,16 @@ type Field<T> = {
   valid: boolean
 }
 
+interface Date {
+  start: string
+  end: string
+}
+
 interface TripState {
   name: Field<string>
   location: Field<string>
   description: Field<string>
-  startDate: Field<string>
-  endDate: Field<string>
+  date: Field<Date | null>
   crewMembers: Field<User[]>
 }
 
@@ -18,24 +22,26 @@ export const initialTripState = {
   name: getInitialValue(''),
   location: getInitialValue(''),
   description: getInitialValue(''),
-  startDate: getInitialValue(''),
-  endDate: getInitialValue(''),
+  date: getInitialValue(null),
   crewMembers: getInitialValue([] as User[])
 } as TripState
 
-function getInitialValue(value?: string | User[]) {
+function getInitialValue(value?: string | null | User[]) {
   return {
     value,
     valid: true
   }
 }
 
-export function tripReducer(state: TripState, action: { type: string; value: string | User[] }) {
+export function tripReducer(
+  state: TripState,
+  action: { type: string; value: string | Date | User[] }
+) {
   return {
     ...state,
     [action.type]: {
       value: action.value,
-      valid: !!action.value && !!action.value.length
+      valid: (!Array.isArray(action.value) && !!action.value) || !!action.value.length
     }
   }
 }

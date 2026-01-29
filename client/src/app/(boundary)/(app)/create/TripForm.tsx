@@ -6,12 +6,12 @@ import { getUsers } from '@/db/users'
 import { User } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { initialTripState, tripReducer } from '@/lib/utils/reducers/tripReducer'
-import { CalendarDate, getLocalTimeZone, parseDate, today } from '@internationalized/date'
+import { CalendarDate, parseDate } from '@internationalized/date'
 import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/material/Snackbar'
-import DateInput from '@/lib/components/inputs/DateInput'
 import CardTravelRoundedIcon from '@mui/icons-material/CardTravelRounded'
+import DateRangeInput from '@/lib/components/inputs/DateRangeInput'
 
 const fieldStyles = { width: '100%' }
 const autocompleteSx = {
@@ -29,6 +29,10 @@ const createTripBtnSx = {
     width: 'auto'
   }
 }
+const snackbarSlotProps = {
+  content: { sx: { bgcolor: 'background.paper', color: 'primary.main', fontWeight: 600 } }
+}
+const snackbarAnchorOrigin = { vertical: 'bottom' as const, horizontal: 'center' as const }
 
 export default function TripForm() {
   const { user } = useContext(UserContext)
@@ -50,8 +54,8 @@ export default function TripForm() {
       name: tripState.name.value,
       location: tripState.location.value,
       description: tripState.description.value,
-      start_date: tripState.startDate.value,
-      end_date: tripState.endDate.value || tripState.startDate.value,
+      start_date: tripState.date.value?.start,
+      end_date: tripState.date.value?.end,
       ids: tripState.crewMembers.value.map((u) => u.id)
     } as CreateTripProps['data']
   }
@@ -67,7 +71,9 @@ export default function TripForm() {
     })
       .then(() => {
         setSaved(true)
-        router.push('/dashboard')
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 2000)
       })
       .catch((e) => console.error('Error creating trip', e))
   }
@@ -82,6 +88,11 @@ export default function TripForm() {
       })
       .catch((e) => console.error('Error getting users', e))
   }, [])
+
+  const valid =
+    !Object.values(tripState).some((v) => !v.valid) &&
+    !Object.values(tripState).some((v) => !v.value) &&
+    !saving
 
   return (
     <>
@@ -110,54 +121,27 @@ export default function TripForm() {
         />
       </div>
       <div className="flex justify-between">
-        <DateInput
-          className="w-2/5"
-          label="Start date"
-          variant="bordered"
+        <DateRangeInput
+          aria-label="Trip dates"
+          label="Trip date(s) *" // hack because setting isRequired initially renders the field in an error state
           size="sm"
-          isRequired
-          isInvalid={!tripState.startDate.valid}
+          variant="bordered"
           isDisabled={saving}
+          isInvalid={!tripState.date.valid}
+          showMonthAndYearPickers
+          className="w-full sm:w-1/2"
           value={
-            tripState.startDate.value
-              ? (parseDate(tripState.startDate.value) as CalendarDate)
+            tripState.date.value
+              ? {
+                  start: parseDate(tripState.date.value.start) as CalendarDate,
+                  end: parseDate(tripState.date.value.end) as CalendarDate
+                }
               : null
           }
           onChange={(e) => {
-            dispatch({
-              type: 'startDate',
-              value:
-                e &&
-                e.year >= today(getLocalTimeZone()).year &&
-                e.year <= today(getLocalTimeZone()).year + 50
-                  ? e.toString()
-                  : ''
-            })
-          }}
-        />
-        <span className="self-center italic text-gray-500">to</span>
-        <DateInput
-          className="w-2/5"
-          label="End date"
-          variant="bordered"
-          size="sm"
-          isInvalid={!tripState.endDate.valid}
-          isDisabled={saving}
-          value={
-            tripState.endDate.value ? (parseDate(tripState.endDate.value) as CalendarDate) : null
-          }
-          onChange={(e) => {
-            dispatch({
-              type: 'endDate',
-              value:
-                e &&
-                e.year >= today(getLocalTimeZone()).year &&
-                e.year <= today(getLocalTimeZone()).year + 50 &&
-                tripState.startDate.value &&
-                e >= parseDate(tripState.startDate.value)
-                  ? e.toString()
-                  : ''
-            })
+            if (!e) return
+
+            dispatch({ type: 'date', value: { start: e.start.toString(), end: e.end.toString() } })
           }}
         />
       </div>
@@ -231,7 +215,7 @@ export default function TripForm() {
       </div>
       <Button
         variant="contained"
-        disabled={Object.values(tripState).some((v) => !v.valid) || saving}
+        disabled={!valid}
         startIcon={<CardTravelRoundedIcon />}
         onClick={saveTrip}
         sx={createTripBtnSx}>
@@ -240,10 +224,8 @@ export default function TripForm() {
       <Snackbar
         open={saved}
         message="Trip created!"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        slotProps={{
-          content: { sx: { bgcolor: 'background.paper', color: 'primary.main', fontWeight: 600 } }
-        }}></Snackbar>
+        anchorOrigin={snackbarAnchorOrigin}
+        slotProps={snackbarSlotProps}></Snackbar>
     </>
   )
 }
