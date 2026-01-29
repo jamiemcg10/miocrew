@@ -144,7 +144,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   const valid = !!(
     state.name.value &&
     state.date.value &&
-    ((state.type.value === 'Evenly' && state.total.valid) ||
+    ((state.type.value === 'Evenly' && state.total.value && state.total.valid) ||
       (state.type.value === 'Custom' && attendeesWithRefs.some((a) => a.amount > 0)))
   )
 
