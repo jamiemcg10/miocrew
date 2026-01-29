@@ -11,6 +11,7 @@ import { Dispatch, SetStateAction } from 'react'
 interface TaskItemProps {
   task: Task
   setActiveTask: Dispatch<SetStateAction<Task | null>>
+  isActionItem?: boolean
 }
 
 export function getImage(type: string) {
@@ -37,7 +38,7 @@ function getAssigneeName(assignee: User) {
   )
 }
 
-export default function TaskItem({ task, setActiveTask }: TaskItemProps) {
+export default function TaskItem({ task, setActiveTask, isActionItem = false }: TaskItemProps) {
   function onClick() {
     setActiveTask(task)
   }
@@ -50,12 +51,16 @@ export default function TaskItem({ task, setActiveTask }: TaskItemProps) {
           <CheckBoxOutlineBlankRoundedIcon fontSize="small" />
         )}
       </div>
-      <div className="flex grow justify-between ml-2 flex-col sm:flex-row">
+      <div
+        className={
+          'flex grow justify-between ml-2 flex-col gap-y-1.5 ' +
+          (isActionItem ? ' md:flex-row' : 'lg:flex-row')
+        }>
         <span className="pr-4 inline-flex items-center gap-2 basis-3/5">
           {getImage(task.type)}
           {task.name}
         </span>
-        <div className="flex grow justify-between items-end sm:items-center">
+        <div className="flex ml-1 grow justify-end items-end sm:items-center shrink-0">
           <span className="italic text-sm content-center mt-1.5 ml-1.5 sm:mt-0 sm:ml-0">
             {isPollTask(task) ? 'Everyone' : getAssigneeName(task.assignee)}
           </span>

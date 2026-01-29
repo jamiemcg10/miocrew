@@ -95,12 +95,12 @@ export default function ActionItems() {
         <div>
           {actionItems.map((item, i) => {
             return isTask(item) ? (
-              <TaskItem task={item} setActiveTask={setActiveTask} key={i} />
+              <TaskItem task={item} setActiveTask={setActiveTask} key={i} isActionItem />
             ) : (
               <ExpenseItem
                 expense={item}
                 setActiveExpense={setActiveExpense}
-                isActionItem={true}
+                isActionItem
                 key={i}
               />
             )
