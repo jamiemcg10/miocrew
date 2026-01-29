@@ -139,7 +139,7 @@ export default function IdeaDialog({ open, setOpen }: IdeaDialogProps) {
             value={state.cost.value}
             startContent={<InputAdornment position="start">$</InputAdornment>}
             minValue={0}
-            classNames={{ base: 'w-25 mr-2' }}
+            classNames={{ base: 'w-25 mr-4' }}
             formatOptions={{
               maximumFractionDigits: 2
             }}
