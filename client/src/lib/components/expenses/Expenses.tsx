@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
-import { Expense, User } from '@/lib/types'
+import { CrewMember, Expense } from '@/lib/types'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import ExpenseView from './ExpenseView'
@@ -107,25 +107,25 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
               <div className="flex flex-wrap font-semibold space-x-1! space-y-1!">
                 <Chip
                   label="Paid"
-                  icon={<CheckBoxOutlineBlankRoundedIcon />}
+                  icon={<CheckBoxRoundedIcon />}
                   variant={filters.includes('Settled') ? 'filled' : 'outlined'}
                   onClick={() => handleBasicFilterClick('Settled')}
                 />
                 <Chip
                   label="Unpaid"
-                  icon={<CheckBoxRoundedIcon />}
+                  icon={<CheckBoxOutlineBlankRoundedIcon />}
                   variant={filters.includes('Unsettled') ? 'filled' : 'outlined'}
                   onClick={() => handleBasicFilterClick('Unsettled')}
                 />
-                {Object.values(attendees)?.map((a: User, i) => {
+                {Object.values(attendees)?.map((a: CrewMember, i) => {
                   return (
                     <Chip
                       label={`${a.firstName} ${a.lastName.charAt(0)}.`}
                       avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
                       key={i}
-                      variant={crewFilter === a.id ? 'filled' : 'outlined'}
+                      variant={crewFilter === a.attendeeId ? 'filled' : 'outlined'}
                       sx={chipSx}
-                      onClick={() => handleCrewFilterClick(a.id)}
+                      onClick={() => handleCrewFilterClick(a.attendeeId)}
                     />
                   )
                 })}

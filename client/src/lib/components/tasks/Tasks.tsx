@@ -6,7 +6,7 @@ import Chip from '@mui/material/Chip'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 import Avatar from '@mui/material/Avatar'
-import { Task, User } from '@/lib/types'
+import { CrewMember, Task } from '@/lib/types'
 import TaskView from './TaskView'
 import { TripContext } from '@/lib/utils/contexts/TripContext'
 import CrewAvatar from '../CrewAvatar'
@@ -40,7 +40,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
 
     filterTasks({ updatedFilters })
   }
-  // START HERE: remove votes from options table and pull from votes table
+
   function handleCrewFilterClick(value: string) {
     const updatedCrewFilter = crewFilter === value ? null : value
     setCrewFilter(updatedCrewFilter)
@@ -82,7 +82,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
 
   useEffect(() => {
     filterTasks({})
-  })
+  }, [])
 
   useEffect(() => {
     if (activeTask) {
@@ -123,15 +123,15 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
               variant={filters.includes('Everyone') ? 'filled' : 'outlined'}
               onClick={() => handleBasicFilterClick('Everyone')}
             />
-            {attendees?.map((a: User, i) => {
+            {attendees?.map((a: CrewMember, i) => {
               return (
                 <Chip
                   label={a.firstName}
                   avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
                   key={i}
-                  variant={crewFilter === a.id ? 'filled' : 'outlined'}
+                  variant={crewFilter === a.attendeeId ? 'filled' : 'outlined'}
                   sx={chipSx}
-                  onClick={() => handleCrewFilterClick(a.id)}
+                  onClick={() => handleCrewFilterClick(a.attendeeId)}
                 />
               )
             })}
