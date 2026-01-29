@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/material/Snackbar'
 import CardTravelRoundedIcon from '@mui/icons-material/CardTravelRounded'
 import DateRangeInput from '@/lib/components/inputs/DateRangeInput'
+import { pastDatesUnavailable } from '@/lib/utils/isDateUnavailable'
 
 const fieldStyles = { width: '100%' }
 const autocompleteSx = {
@@ -95,10 +96,6 @@ export default function TripForm() {
       .catch((e) => console.error('Error getting users', e))
   }, [])
 
-  function isDateUnavailable(date: DateValue) {
-    return date < today(getLocalTimeZone())
-  }
-
   const valid =
     !Object.values(tripState).some((v) => !v.valid) &&
     !Object.values(tripState).some((v) => !v.value) &&
@@ -138,7 +135,7 @@ export default function TripForm() {
           variant="bordered"
           isDisabled={saving}
           isInvalid={!tripState.date.valid}
-          isDateUnavailable={isDateUnavailable}
+          isDateUnavailable={pastDatesUnavailable}
           showMonthAndYearPickers
           className="w-full sm:w-1/2"
           value={

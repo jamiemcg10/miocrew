@@ -18,6 +18,7 @@ import { taskReducer, initialTaskState } from '@/lib/utils/reducers/taskReducer'
 import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 import DateInput from '../inputs/DateInput'
+import { pastDatesUnavailable } from '@/lib/utils/isDateUnavailable'
 
 interface TaskDialogProps {
   open: boolean | Task
@@ -180,9 +181,7 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
             value={
               state.dueDate.value ? (parseDate(state.dueDate.value) as CalendarDate) : undefined
             }
-            isDateUnavailable={(date) => {
-              return date < today(getLocalTimeZone())
-            }}
+            isDateUnavailable={pastDatesUnavailable}
             isRequired
             classNames={{
               label: 'group-data-[required=true]:after:text-inherit',

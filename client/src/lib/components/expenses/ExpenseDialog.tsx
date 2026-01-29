@@ -32,6 +32,7 @@ import { dialogTitleSx, mb2Sx } from '@/lib/styles/sx'
 import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 import DateInput from '../inputs/DateInput'
 import NumberInput from '../inputs/NumberInput'
+import { futureDatesUnavailable } from '@/lib/utils/isDateUnavailable'
 
 interface ExpenseDialogProps {
   open: boolean | Expense
@@ -188,6 +189,8 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
           value={state.date.value ? (parseDate(state.date.value) as CalendarDate) : null}
           isRequired
           isInvalid={!state.date.valid}
+          showMonthAndYearPickers
+          isDateUnavailable={futureDatesUnavailable}
           onChange={(e) => {
             if (!e) return
 
