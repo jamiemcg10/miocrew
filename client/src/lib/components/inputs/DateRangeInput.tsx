@@ -1,5 +1,9 @@
 import { DateRangePicker, DateRangePickerProps } from '@heroui/date-picker'
 
+interface LocalDateRangePickerProps extends DateRangePickerProps {
+  label?: string
+}
+
 const classNames = {
   label:
     'group-focus-within:text-[#1976d2] dark:group-focus-within:text-(--lt-blue) group-data-[required=true]:after:text-inherit',
@@ -23,11 +27,12 @@ export default function DateRangeInput({
   value,
   onChange,
   isDateUnavailable
-}: DateRangePickerProps) {
+}: LocalDateRangePickerProps) {
   return (
     <DateRangePicker
       className={className}
       label={label}
+      aria-label={label}
       variant={variant}
       size={size}
       classNames={classNames}
