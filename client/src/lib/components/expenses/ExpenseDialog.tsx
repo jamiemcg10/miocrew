@@ -261,7 +261,6 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
         <table className="vertical-scroll flex my-4 overflow-y-scroll">
           <tbody>
             {attendeesWithRefs.map((a) => {
-              console.log({ a })
               return (
                 <tr key={a.id} className="items-center border-y-4 border-transparent">
                   <td

@@ -230,7 +230,7 @@ export default function InboxPage() {
             messageId: activeMessage.id,
             status: !activeMessage.read
           })
-          setActiveMessage(null)
+          setActiveMessage({ ...activeMessage, read: !activeMessage.read })
         }}
       />
       <ComposeMessageDialog
