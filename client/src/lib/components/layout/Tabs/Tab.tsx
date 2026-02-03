@@ -12,7 +12,7 @@ export default function Tab({ title, value }: TabProps) {
     <div
       onClick={onSelectTab}
       className={
-        'text-sm max-sm:px-2 font-semibold grow shrink basis-0 cursor-pointer h-8 text-center content-center ' +
+        'text-sm max-sm:px-2 font-semibold grow shrink basis-0 cursor-pointer h-8 text-center content-center tracking-wide ' +
         (selectedTab === value && 'text-slate-100 dark:text-slate-800')
       }>
       {title}
