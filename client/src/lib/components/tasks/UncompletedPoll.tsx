@@ -40,6 +40,7 @@ export default function UncompletedPoll({ activeTask, closeView }: UncompletedPo
       .catch((e) => console.error('Error voting', e))
   }
 
+  const [submitBtnText, setSubmitBtnText] = useState('Submit')
   const [radioValue, setRadioValue] = useState<string | null>(null)
   const options = activeTask.pollOptions.map((opt) => {
     const [checked, setChecked] = useState(false)
@@ -58,6 +59,7 @@ export default function UncompletedPoll({ activeTask, closeView }: UncompletedPo
       .then((res) => {
         const votes = res.data.votes
         if (votes.length) {
+          setSubmitBtnText('Update')
           if (activeTask.multiple) {
             votes.forEach((vote: Vote) => {
               options.find((opt) => opt.id === vote.optionId)?.setChecked(true)
@@ -113,7 +115,7 @@ export default function UncompletedPoll({ activeTask, closeView }: UncompletedPo
         )}
       </FormControl>
       <Button variant="contained" sx={submitBtnSx} onClick={submitPoll}>
-        Submit
+        {submitBtnText}
       </Button>
     </form>
   )
