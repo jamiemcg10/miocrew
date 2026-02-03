@@ -94,6 +94,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
             </ListItemButton>
           </ListItem>
           <Divider />
+          {/* TODO: Implement settings 
           <ListItem key={'Settings'} disablePadding>
             <ListItemButton href="/settings">
               <ListItemIcon>
@@ -102,7 +103,7 @@ export default function Menu({ open, handleClose, matches }: MenuProps) {
               <ListItemText primary="Settings" />
             </ListItemButton>
           </ListItem>
-          <Divider />
+          <Divider /> */}
           <div className="absolute bottom-0 w-full">
             <Divider />
             <ListItem key={'Log out'} disablePadding>
