@@ -10,6 +10,7 @@ export function useSubmitOnEnter(saveFn: Function, valid: boolean) {
       }
 
       if (e.key === 'Enter') {
+        e.preventDefault()
         saveFn()
       }
     }
