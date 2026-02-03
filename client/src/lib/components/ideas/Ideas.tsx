@@ -54,21 +54,25 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
         Add idea
       </Button>
       <VerticalScrollShadow>
-        <div className="relative grid grid-cols-[repeat(1,1fr)] md:grid-cols-[repeat(2,1fr)] lg:grid-cols-[repeat(3,1fr)] 2xl:grid-cols-[repeat(4,1fr)] gap-6 md:gap-4 py-2">
-          {ideas.map((idea) => {
-            return (
-              <IdeaCard
-                idea={idea}
-                key={idea.id}
-                favorite={favorites.includes(idea.id)}
-                setActiveIdea={setActiveIdea}
-                onEditIdea={() => {
-                  setOpenAddDialog(idea)
-                }}
-              />
-            )
-          })}
-        </div>
+        {ideas.length ? (
+          <div className="relative grid grid-cols-[repeat(1,1fr)] md:grid-cols-[repeat(2,1fr)] lg:grid-cols-[repeat(3,1fr)] 2xl:grid-cols-[repeat(4,1fr)] gap-6 md:gap-4 py-2">
+            {ideas.map((idea) => {
+              return (
+                <IdeaCard
+                  idea={idea}
+                  key={idea.id}
+                  favorite={favorites.includes(idea.id)}
+                  setActiveIdea={setActiveIdea}
+                  onEditIdea={() => {
+                    setOpenAddDialog(idea)
+                  }}
+                />
+              )
+            })}
+          </div>
+        ) : (
+          <div className="tracking-wide">There are no ideas yet. Add some now!</div>
+        )}
       </VerticalScrollShadow>
       <ActiveIdea activeIdea={activeIdea} setActiveIdea={setActiveIdea}></ActiveIdea>
     </>
