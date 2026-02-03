@@ -10,7 +10,7 @@ interface ExpenseState {
   notes: Field<string>
   date: Field<string>
   total: Field<number>
-  type: Field<'Evenly' | 'Custom'>
+  split: Field<'Evenly' | 'Custom'>
   immediately: Field<boolean>
 }
 
@@ -19,11 +19,11 @@ export const initialExpenseState = {
   notes: getInitialValue(''),
   date: getInitialValue(''),
   total: getInitialValue(0),
-  type: getInitialValue('Evenly'),
+  split: getInitialValue('Evenly'),
   immediately: getInitialValue(false)
 } as ExpenseState
 
-const EXPENSE_FIELDS = ['name', 'notes', 'date', 'total', 'type', 'immediately']
+const EXPENSE_FIELDS = ['name', 'notes', 'date', 'total', 'split', 'immediately']
 
 function getInitialValue(value?: string | number | boolean) {
   // TODO: can probably move this to a higher file
@@ -40,6 +40,7 @@ export function expenseReducer(
   if (action.type === 'set-expense') {
     if (isExpense(action.value)) {
       const value = action.value
+      console.log({ value })
 
       const generalFields = EXPENSE_FIELDS.reduce((acc, c) => {
         const k = c as keyof Expense

@@ -51,8 +51,8 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   const trip = useContext(TripContext)
   const { user } = useContext(UserContext)
 
-  function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
-    dispatch({ type: 'type', value: e.target.value })
+  function handleSplitChange(e: ChangeEvent<HTMLInputElement>) {
+    dispatch({ type: 'split', value: e.target.value })
   }
 
   function onChangeImmediately(e: ChangeEvent<HTMLInputElement>) {
@@ -65,13 +65,13 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
       name: state.name.value,
       paid_by_id: user?.id,
       total:
-        state.type.value === 'Evenly'
+        state.split.value === 'Evenly'
           ? state.total.value
           : attendeesWithRefs.reduce((acc, c) => {
               acc += c.amount
               return acc
             }, 0),
-      split: state.type.value,
+      split: state.split.value,
       settled: false,
       due: state.immediately.value ? 'immediate' : 'end',
       date: state.date.value,
@@ -86,7 +86,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   }
 
   function getDebtorsPayload() {
-    if (state.type.value === 'Evenly') {
+    if (state.split.value === 'Evenly') {
       const involvedCrew = attendeesWithRefs.filter((a) => a.checked)
       return involvedCrew.map((a) => {
         return {
@@ -127,7 +127,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   const submitBtnRef = useRef<HTMLButtonElement>(null)
 
   const attendeesWithRefs = Object.values(trip?.attendees || {}).map((a) => {
-    const aOpen = isExpense(open) ? open['owe'][a.id] : undefined
+    const aOpen = isExpense(open) ? open['owe'][a.attendeeId] : undefined
 
     const [checked, setChecked] = useState(isExpense(open) ? !!aOpen?.owes : true)
     const [amount, setAmount] = useState(aOpen?.owes || 0)
@@ -144,8 +144,8 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
   const valid = !!(
     state.name.value &&
     state.date.value &&
-    ((state.type.value === 'Evenly' && state.total.value && state.total.valid) ||
-      (state.type.value === 'Custom' && attendeesWithRefs.some((a) => a.amount > 0)))
+    ((state.split.value === 'Evenly' && state.total.value && state.total.valid) ||
+      (state.split.value === 'Custom' && attendeesWithRefs.some((a) => a.amount > 0)))
   )
 
   const atLeastSomeChecked = attendeesWithRefs.some((a) => a.checked)
@@ -208,12 +208,12 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
           }}
         />
         <FormControl sx={splitExpenseSx}>
-          <FormLabel id="expense-split-type-label">Split expense</FormLabel>
+          <FormLabel id="expense-split-label">Split expense</FormLabel>
           <RadioGroup
             row
-            aria-labelledby="expense-split-type-label"
-            value={state.type.value}
-            onChange={handleTypeChange}
+            aria-labelledby="expense-split-label"
+            value={state.split.value}
+            onChange={handleSplitChange}
             defaultValue="Evenly"
             name="radio-buttons-group">
             <FormControlLabel value="Evenly" control={<Radio size="small" />} label="Evenly" />
@@ -227,8 +227,8 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                 currency: 'USD'
               }}
               defaultValue={isExpense(open) ? open.total : undefined}
-              isDisabled={state.type.value === 'Custom'}
-              isInvalid={state.type.value === 'Evenly' && !state.total.valid}
+              isDisabled={state.split.value === 'Custom'}
+              isInvalid={state.split.value === 'Evenly' && !state.total.valid}
               onValueChange={(v) => {
                 dispatch({ type: 'total', value: v })
               }}
@@ -240,7 +240,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
             <FormControlLabel value="Custom" control={<Radio size="small" />} label="Custom" />
           </RadioGroup>
         </FormControl>
-        {state.type.value === 'Evenly' ? (
+        {state.split.value === 'Evenly' ? (
           <div className="-mb-6 w-fit border-b-1 border-b-foreground-500">
             <Checkbox
               id="bulk-toggle"
@@ -261,12 +261,13 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
         <table className="vertical-scroll flex my-4 overflow-y-scroll">
           <tbody>
             {attendeesWithRefs.map((a) => {
+              console.log({ a })
               return (
                 <tr key={a.id} className="items-center border-y-4 border-transparent">
                   <td
                     className={clsx(
                       'w-4 transform-opacity',
-                      state.type.value === 'Custom'
+                      state.split.value === 'Custom'
                         ? 'opacity-0 pointer-events-none'
                         : 'opacity-100'
                     )}>
@@ -291,7 +292,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                   <td
                     className={clsx(
                       'transform-opacity',
-                      state.type.value === 'Evenly' ? 'opacity-0' : 'opacity-100'
+                      state.split.value === 'Evenly' ? 'opacity-0' : 'opacity-100'
                     )}>
                     <NumberInput
                       ariaLabel={`${a.firstName}-share`}
