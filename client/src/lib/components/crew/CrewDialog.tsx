@@ -89,7 +89,7 @@ export default function CrewDialog({ open, setOpen }: CrewDialogProps) {
         setUserDetails(userEmails)
       })
       .catch((e) => console.error('Error fetching users', e))
-  }, [])
+  }, [open])
 
   useSubmitOnEnter(() => saveBtnRef.current!.click(), valid)
 
@@ -104,6 +104,7 @@ export default function CrewDialog({ open, setOpen }: CrewDialogProps) {
             getOptionLabel={getOptionLabel}
             onChange={onChangeInvitedCrew}
             value={invitedCrew}
+            disabled={!userDetails.length}
             multiple
             freeSolo
             clearText="Clear"
@@ -130,6 +131,7 @@ export default function CrewDialog({ open, setOpen }: CrewDialogProps) {
                 multiline
                 minRows={8}
                 maxRows={10}
+                disabled={!userDetails.length}
                 sx={textFieldSx}
               />
             )}
