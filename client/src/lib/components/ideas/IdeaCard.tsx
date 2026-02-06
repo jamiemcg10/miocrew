@@ -68,7 +68,7 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: 
           <div className="line-clamp-2 text-sm" title={idea.name}>
             {idea.name}
           </div>
-          <div className="flex justify-between items-center h-6 -mx-[7px]">
+          <div className="flex justify-between items-center h-6 -mx-1.75">
             <ContextMenu
               open={menuOpen}
               setMenuOpen={setMenuOpen}
@@ -77,7 +77,7 @@ export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: 
               onEdit={onEditIdea}
             />
             <div>
-              <span className="font-light text-sm -mr-[7px]">{idea.likes ? idea.likes : null}</span>
+              <span className="font-light text-sm -mr-1.75">{idea.likes ? idea.likes : null}</span>
               <Checkbox
                 checked={like}
                 onClick={(e) => {
