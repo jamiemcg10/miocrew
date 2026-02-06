@@ -29,6 +29,6 @@ def make_scratch_session() -> Session:
     src.close()
 
     # Build SQLAlchhemy engine bound to this connection
-    engine = create_engine("sqlite://", creator=lambda: dest, future=True, echo=True)
+    engine = create_engine("sqlite://", creator=lambda: dest, future=True, echo=False)
     SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
     return SessionLocal()
