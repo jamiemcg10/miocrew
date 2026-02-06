@@ -55,7 +55,7 @@ export default function TripWrapper({ tripId, children }: TripProps) {
   function fetchIdeas() {
     getIdeas({ userId: user!.id, tripId: tripId })
       .then((response) => {
-        if (response.data.ideas?.length) {
+        if (response.data.ideas) {
           setIdeas(response.data.ideas)
           LocalStorage.set(`${trip!.id}:ideas`, response.data.ideas)
         }
