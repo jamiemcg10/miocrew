@@ -123,6 +123,14 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
       })
   }
 
+  function handleBulkToggle() {
+    if (!atLeastSomeChecked) {
+      attendeesWithRefs.forEach((a) => a.setChecked(true))
+    } else {
+      attendeesWithRefs.forEach((a) => a.setChecked(false))
+    }
+  }
+
   const [state, dispatch] = useReducer(expenseReducer, initialExpenseState)
   const submitBtnRef = useRef<HTMLButtonElement>(null)
 
@@ -141,15 +149,18 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
     }
   })
 
+  const atLeastSomeChecked = attendeesWithRefs.some((a) => a.checked)
+  const allChecked = attendeesWithRefs.every((a) => a.checked)
+
   const valid = !!(
     state.name.value &&
     state.date.value &&
-    ((state.split.value === 'Evenly' && state.total.value && state.total.valid) ||
+    ((state.split.value === 'Evenly' &&
+      atLeastSomeChecked &&
+      state.total.value &&
+      state.total.valid) ||
       (state.split.value === 'Custom' && attendeesWithRefs.some((a) => a.amount > 0)))
   )
-
-  const atLeastSomeChecked = attendeesWithRefs.some((a) => a.checked)
-  const allChecked = attendeesWithRefs.every((a) => a.checked)
 
   useSubmitOnEnter(() => submitBtnRef.current!.click(), valid)
 
@@ -248,13 +259,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
               sx={checkboxSx}
               checked={atLeastSomeChecked}
               checkedIcon={allChecked ? <CheckBoxIcon /> : <IndeterminateCheckBoxOutlinedIcon />}
-              onClick={() => {
-                if (!atLeastSomeChecked) {
-                  attendeesWithRefs.forEach((a) => a.setChecked(true))
-                } else {
-                  attendeesWithRefs.forEach((a) => a.setChecked(false))
-                }
-              }}
+              onClick={handleBulkToggle}
             />
           </div>
         ) : null}
