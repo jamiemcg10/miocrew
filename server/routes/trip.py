@@ -71,8 +71,6 @@ async def create_trip(user_id: str, trip: TripBase, db: Session = Depends(get_us
    
     db.flush()
 
-    # TODO: find a way to make trip list update when trip added for all users
-
     return {"status": "trip created"}
 
 @router.post("/user/{user_id}/trip/{trip_id}/crew/add")
