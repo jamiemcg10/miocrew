@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react
 import Button from '@mui/material/Button'
 import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import IdeaCard from './IdeaCard'
-import ActiveIdea from './ActiveIdea'
+import IdeaView from './IdeaView'
 import { Idea } from '@/lib/types'
 import { getIdeaLikes } from '@/db'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
@@ -74,7 +74,7 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
           <div className="tracking-wide">There are no ideas yet. Add some now!</div>
         )}
       </VerticalScrollShadow>
-      <ActiveIdea activeIdea={activeIdea} setActiveIdea={setActiveIdea}></ActiveIdea>
+      <IdeaView activeIdea={activeIdea} setActiveIdea={setActiveIdea}></IdeaView>
     </>
   )
 }
