@@ -82,7 +82,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
 
   useEffect(() => {
     filterTasks({})
-  }, [])
+  }, [tasks])
 
   useEffect(() => {
     if (activeTask) {

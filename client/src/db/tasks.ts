@@ -89,19 +89,6 @@ export function updatePollVote(args: UpdatePollVoteArgs) {
   })
 }
 
-// export function closePoll(args: ClosePollArgs){
-//   const { userId, tripId, taskId } = args
-
-//   const requestUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/trip/${tripId}/task/${taskId}/mark_complete`
-
-//   return axios({
-//     method: 'patch',
-//     url: requestUrl,
-//     data: ids,
-//     withCredentials: true
-//   })
-// }
-
 export function deleteTask(args: DeleteTaskArgs) {
   const { userId, tripId, taskId } = args
 
