@@ -57,7 +57,7 @@ export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseV
 
   return (
     <Popup open={!!activeExpense} onClose={onClose}>
-      <>
+      <div className="p-1">
         {user?.id == activeExpense.paidBy.id ? (
           <div className="absolute bottom-8 right-8">
             <ActionButtons onEdit={onEdit} onDelete={onDelete} />
@@ -124,7 +124,7 @@ export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseV
             )
           })}
         </div>
-      </>
+      </div>
     </Popup>
   )
 }
