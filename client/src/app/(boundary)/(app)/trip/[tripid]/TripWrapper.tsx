@@ -18,7 +18,7 @@ export const ExpensesContext = createContext<Expense[]>([])
 
 export default function TripWrapper({ tripId, children }: TripProps) {
   const { user } = useContext(UserContext)
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
 
   const storedActivities = LocalStorage.get<Activity[]>(`${trip?.id}:activities`)
   const storedTasks = LocalStorage.get<Task[]>(`${trip?.id}:tasks`)

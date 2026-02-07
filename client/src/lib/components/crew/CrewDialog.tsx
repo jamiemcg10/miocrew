@@ -34,7 +34,7 @@ const textFieldSx = {
 const addCrewBtnSx = { fontWeight: 700, mt: 5 }
 
 export default function CrewDialog({ open, setOpen }: CrewDialogProps) {
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const { user } = useContext(UserContext)
 
   const [userDetails, setUserDetails] = useState<CrewSelectOption[]>([])

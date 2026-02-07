@@ -34,7 +34,7 @@ const addExpenseBtnSx = {
 const chipSx = { pl: '8px' }
 
 export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) {
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const { user } = useContext(UserContext)
   const attendees = trip?.attendees
 

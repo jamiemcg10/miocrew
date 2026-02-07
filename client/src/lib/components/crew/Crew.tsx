@@ -22,7 +22,7 @@ const addCrewBtnSx = {
 }
 
 export default function Crew({ setOpenAddDialog }: CrewProps) {
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const { user } = useContext(UserContext)
 
   function handleCloseMenu() {

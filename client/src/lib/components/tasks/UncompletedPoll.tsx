@@ -20,7 +20,7 @@ interface UncompletedPollTaskViewProps {
 const submitBtnSx = { mt: 4, fontWeight: 700, width: 'fit-content' }
 
 export default function UncompletedPoll({ activeTask, closeView }: UncompletedPollTaskViewProps) {
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const { user } = useContext(UserContext)
 
   function submitPoll() {

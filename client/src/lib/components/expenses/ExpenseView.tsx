@@ -51,7 +51,7 @@ export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseV
   }
 
   const { user } = useContext(UserContext)
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
 
   if (!activeExpense || !user) return
 

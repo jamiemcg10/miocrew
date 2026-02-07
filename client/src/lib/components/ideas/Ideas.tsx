@@ -27,7 +27,7 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
   }
 
   const { user } = useContext(UserContext)
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const ideas = useContext(IdeasContext)
 
   const [activeIdea, setActiveIdea] = useState<Idea | null>(null)

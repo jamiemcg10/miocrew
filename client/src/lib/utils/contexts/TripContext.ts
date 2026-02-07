@@ -1,4 +1,9 @@
 import { createContext } from 'react'
 import { Trip } from '../../types'
 
-export const TripContext = createContext<Trip | null>(null)
+interface TripContextType {
+  trip: Trip | null
+  tripIsOver: boolean
+}
+
+export const TripContext = createContext<TripContextType>({ trip: null, tripIsOver: false })

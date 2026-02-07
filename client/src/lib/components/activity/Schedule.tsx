@@ -19,7 +19,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
     setOpenAddDialog(true)
   }
 
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const { user } = useContext(UserContext)
   const activities = useContext(ActivitiesContext)
 

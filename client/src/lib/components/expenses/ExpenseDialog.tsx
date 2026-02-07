@@ -48,7 +48,7 @@ const splitExpenseSx = { ml: 1.5, mt: 0.5 }
 const checkboxSx = { padding: 0.75, '& .MuiSvgIcon-root': { fontSize: 16 } }
 
 export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const { user } = useContext(UserContext)
 
   function handleSplitChange(e: ChangeEvent<HTMLInputElement>) {

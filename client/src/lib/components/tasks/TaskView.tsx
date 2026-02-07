@@ -58,7 +58,7 @@ export default function TaskView({ activeTask, onEdit, onClose }: TaskViewProps)
   }
 
   const { user } = useContext(UserContext)
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
 
   return (
     <Popup open={!!activeTask} onClose={onClose}>

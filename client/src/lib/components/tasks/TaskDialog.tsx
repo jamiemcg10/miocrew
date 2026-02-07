@@ -37,7 +37,7 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
     state.dueDate.value
   )
 
-  const trip = useContext(TripContext)
+  const { trip } = useContext(TripContext)
   const { user } = useContext(UserContext)
 
   function getTaskPayload() {

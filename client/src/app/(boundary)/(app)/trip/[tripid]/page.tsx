@@ -10,6 +10,7 @@ import { CrewMember, Trip } from '@/lib/types'
 import { getTrip } from '@/db'
 import { addMessageListener, openWebSocket, websocket } from '@/db/websocket'
 import TripWrapper from './TripWrapper'
+import dayjs from 'dayjs'
 
 const IdeasPage = lazy(() => import('@/lib/components/ideas/IdeasPage'))
 const ExpensesPage = lazy(() => import('@/lib/components/expenses/ExpensesPage'))
@@ -20,6 +21,7 @@ const TasksPage = lazy(() => import('@/lib/components/tasks/TasksPage'))
 export default function TripPage() {
   const { user } = useContext(UserContext)
   const [trip, setTrip] = useState<Trip | null>(null)
+  const [tripIsOver, setTripIsOver] = useState(false)
 
   const { tripid } = useParams<{ tripid: string }>()
 
@@ -41,6 +43,7 @@ export default function TripPage() {
 
         if (response.data.trip) {
           setTrip({ ...response.data.trip, attendees })
+          setTripIsOver(dayjs().endOf('day').isAfter(dayjs(response.data.trip.endDate)))
           !websocket && openWebSocket(tripid)
         } else {
           notFound()
@@ -82,7 +85,7 @@ export default function TripPage() {
       </div>
       <TabNav page={page} setPage={setPage} />
       <div className="py-8 px-8 sm:px-16 sm:py-4 flex flex-col overflow-y-hidden space-y-4 grow">
-        <TripContext value={trip}>
+        <TripContext value={{ trip, tripIsOver }}>
           <TripWrapper tripId={trip.id}>{renderPage()}</TripWrapper>
         </TripContext>
       </div>
