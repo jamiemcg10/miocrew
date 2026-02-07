@@ -1,10 +1,8 @@
-import { Dispatch, SetStateAction, useContext } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Activity } from '@/lib/types'
 import dayjs from 'dayjs'
 import { dateFormatter, timeFormatter } from '@/lib/utils/dateFormatter'
 import Popup from '../Popup'
-import ActionButtons from '../ActionButtons'
-import { ScheduleContext } from '@/lib/utils/contexts/ScheduleContext'
 
 interface ActiveActivityProps {
   activeActivity: Activity | null
@@ -15,8 +13,6 @@ export default function ActiveActivity({ activeActivity, setActiveActivity }: Ac
   function closeActiveActivity() {
     setActiveActivity(null)
   }
-
-  const { onEdit } = useContext(ScheduleContext)
 
   const startTime = timeFormatter(activeActivity?.startTime)
   const endTime = timeFormatter(activeActivity?.endTime)
