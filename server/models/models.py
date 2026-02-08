@@ -22,7 +22,7 @@ class Users(Base):
     message_sender: Mapped["Messages"] = relationship("Messages", foreign_keys="Messages.sender_id", back_populates="sender")
 
     def __repr__(self) -> str:
-        return f"User(id={self.id!r}, first_name={self.first_name!r} last_name={self.last_name!r})"
+        return f"\nUser(id={self.id!r}, first_name={self.first_name!r} last_name={self.last_name!r})"
 
 class Trips(Base):
     __tablename__ = "trips"
@@ -56,6 +56,9 @@ class Messages(Base):
     sent_date: Mapped[str] = mapped_column(String)
     message_recipients: Mapped[List["Message_Recipients"]] = relationship() 
 
+    def __repr__(self) -> str:
+        return f"\nMessage(id={self.id} subject={self.subject} body={self.body} sender_id={self.sender_id} sender={self.sender} sent_date={self.sent_date} message_recipients={self.message_recipients})"
+
 class Message_Recipients(Base):
     __tablename__ = 'message_recipients'
 
@@ -64,6 +67,9 @@ class Message_Recipients(Base):
     recipient_id: Mapped[str] = mapped_column(String)
     read: Mapped[int] = mapped_column(Integer)
     message: Mapped["Messages"] = relationship(back_populates="message_recipients")
+
+    def __repr__(self) -> str:
+        return f"\nMessage_Recipient(id={self.id} message_id={self.message_id} recipient_id={self.recipient_id} read={self.read} message={self.message})"
 
 class Idea_Likes(Base):
     __tablename__ = "idea_likes"
@@ -106,7 +112,7 @@ class Expenses(Base):
     notes: Mapped[Optional[str]] = mapped_column(String)
 
     def __repr__(self) -> str:
-        return f"id={self.id} trip_id={self.trip_id} name={self.name} paid_by_id={self.paid_by_id} paid_by={self.paid_by} total={self.total} split={self.split} settled={self.settled} owe={self.owe} due={self.due} date={self.date} notes={self.notes}"
+        return f"\nExense(id={self.id} trip_id={self.trip_id} name={self.name} paid_by_id={self.paid_by_id} paid_by={self.paid_by} total={self.total} split={self.split} settled={self.settled} owe={self.owe} due={self.due} date={self.date} notes={self.notes})"
 
 class Debtors(Base):
     __tablename__ = "debtors"
@@ -120,7 +126,7 @@ class Debtors(Base):
     expense = relationship("Expenses", back_populates="owe")
 
     def __repr__(self) -> str:
-        return f"id={self.id} expense_id={self.expense_id} user_id={self.user_id} debtor={self.debtor} owes={self.owes} paid={self.paid} expense={self.paid}"
+        return f"\nDebtor(id={self.id} expense_id={self.expense_id} user_id={self.user_id} debtor={self.debtor} owes={self.owes} paid={self.paid} expense={self.paid})"
 
 class Tasks(Base):
     __tablename__ = "tasks"
@@ -141,7 +147,7 @@ class Tasks(Base):
     options: Mapped[List[str]] = relationship("Poll_Task_Options", back_populates="task")
 
     def __repr__(self) -> str:
-        return f"id={self.id} trip_id={self.trip_id} name={self.name} description={self.description} type={self.type} due_date={self.due_date} multiple={self.multiple} assignee_id={self.assignee_id} assignee={self.assignee} creator_id={self.creator_id} creator={self.creator} completed={self.completed} notes={self.notes} poll_question={self.poll_question} options={self.options}"
+        return f"\nTask(id={self.id} trip_id={self.trip_id} name={self.name} description={self.description} type={self.type} due_date={self.due_date} multiple={self.multiple} assignee_id={self.assignee_id} assignee={self.assignee} creator_id={self.creator_id} creator={self.creator} completed={self.completed} notes={self.notes} poll_question={self.poll_question} options={self.options})"
 
 class Poll_Task_Votes(Base):
     __tablename__ = "poll_task_votes"
@@ -162,7 +168,7 @@ class Poll_Task_Options(Base):
         .scalar_subquery())
 
     def __repr__(self) -> str:
-        return f"{{id={self.id} task_id={self.task_id} label={self.label} votes={self.votes}}}"
+        return f"\nPoll_Task_Option(id={self.id} task_id={self.task_id} label={self.label} votes={self.votes})"
 
 class Activities(Base):
     __tablename__ = "activities"
