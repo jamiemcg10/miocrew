@@ -22,7 +22,7 @@ const addCrewBtnSx = {
 }
 
 export default function Crew({ setOpenAddDialog }: CrewProps) {
-  const { trip } = useContext(TripContext)
+  const { trip, tripIsOver } = useContext(TripContext)
   const { user } = useContext(UserContext)
 
   function handleCloseMenu() {
@@ -64,13 +64,15 @@ export default function Crew({ setOpenAddDialog }: CrewProps) {
 
   return (
     <>
-      <Button
-        variant="contained"
-        startIcon={<PersonAddRoundedIcon />}
-        sx={addCrewBtnSx}
-        onClick={onClickAddButton}>
-        Add crew
-      </Button>
+      {user && trip?.attendees[user.id].type !== 'Crew' ? (
+        <Button
+          variant="contained"
+          startIcon={<PersonAddRoundedIcon />}
+          sx={addCrewBtnSx}
+          onClick={onClickAddButton}>
+          Add crew
+        </Button>
+      ) : null}
 
       <VerticalScrollShadow>
         <div className="flex sm:flex-wrap flex-col sm:flex-row space-y-4">

@@ -19,7 +19,7 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
     setOpenAddDialog(true)
   }
 
-  const { trip } = useContext(TripContext)
+  const { trip, tripIsOver } = useContext(TripContext)
   const { user } = useContext(UserContext)
   const activities = useContext(ActivitiesContext)
 
@@ -50,13 +50,15 @@ export default function Schedule({ setOpenAddDialog }: ScheduleProps) {
     <>
       <div className="mb-8 sm:my-0 flex flex-col grow overflow-y-hidden">
         <div className="flex w-full justify-end pr-4">
-          <Button
-            variant="contained"
-            startIcon={<EventRoundedIcon />}
-            sx={addActivityBtnSx}
-            onClick={setOpenAddDialogTrue}>
-            Add activity
-          </Button>
+          {!tripIsOver ? (
+            <Button
+              variant="contained"
+              startIcon={<EventRoundedIcon />}
+              sx={addActivityBtnSx}
+              onClick={setOpenAddDialogTrue}>
+              Add activity
+            </Button>
+          ) : null}
         </div>
         <div className="grow relative mt-4 mb-1 overflow-y-hidden">
           <div className="absolute w-2 z-2 content-center top-0 bottom-0 left-0 bg-linear-to-l from-transparent to-background"></div>

@@ -70,7 +70,7 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
     setActiveTask(null)
   }
 
-  const { trip } = useContext(TripContext)
+  const { trip, tripIsOver } = useContext(TripContext)
   const tasks = useContext(TasksContext)
 
   const attendees = Object.values(trip?.attendees || {})
@@ -92,13 +92,15 @@ export default function Tasks({ setOpenCreateDialog }: TasksProps) {
 
   return (
     <>
-      <Button
-        variant="contained"
-        startIcon={<AddTaskRoundedIcon />}
-        sx={createTaskBtnSx}
-        onClick={() => setOpenCreateDialog(true)}>
-        Create task
-      </Button>
+      {!tripIsOver ? (
+        <Button
+          variant="contained"
+          startIcon={<AddTaskRoundedIcon />}
+          sx={createTaskBtnSx}
+          onClick={() => setOpenCreateDialog(true)}>
+          Create task
+        </Button>
+      ) : null}
       <Accordion disableGutters={true} sx={accordionSx}>
         <AccordionSummary sx={accordionSummarySx} expandIcon={<ArrowDropDownIcon />}>
           Filters

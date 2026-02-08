@@ -27,7 +27,7 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
   }
 
   const { user } = useContext(UserContext)
-  const { trip } = useContext(TripContext)
+  const { trip, tripIsOver } = useContext(TripContext)
   const ideas = useContext(IdeasContext)
 
   const [activeIdea, setActiveIdea] = useState<Idea | null>(null)
@@ -46,13 +46,15 @@ export default function Ideas({ setOpenAddDialog }: IdeasProps) {
 
   return (
     <>
-      <Button
-        variant="contained"
-        startIcon={<EmojiObjectsRoundedIcon />}
-        sx={addIdeaBtnSx}
-        onClick={onClickAddButton}>
-        Add idea
-      </Button>
+      {!tripIsOver ? (
+        <Button
+          variant="contained"
+          startIcon={<EmojiObjectsRoundedIcon />}
+          sx={addIdeaBtnSx}
+          onClick={onClickAddButton}>
+          Add idea
+        </Button>
+      ) : null}
       <VerticalScrollShadow>
         {ideas.length ? (
           <div className="relative grid grid-cols-[repeat(1,1fr)] md:grid-cols-[repeat(2,1fr)] lg:grid-cols-[repeat(3,1fr)] 2xl:grid-cols-[repeat(4,1fr)] gap-6 md:gap-4 py-2">
