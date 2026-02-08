@@ -280,6 +280,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                       size="small"
                       sx={checkboxSx}
                       checked={a.checked}
+                      tabIndex={0}
                       onClick={() => {
                         a.setChecked(!a.checked)
                       }}
@@ -307,6 +308,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                         style: 'currency',
                         currency: 'USD'
                       }}
+                      tabIndex={state.split.value === 'Custom' ? 0 : 1}
                       classNames={{ base: 'w-20', inputWrapper: 'h-9 py-2' }}
                       onValueChange={(v) => a.setAmount(v)}
                     />
