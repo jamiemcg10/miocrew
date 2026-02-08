@@ -20,7 +20,8 @@ export default function _NumberInput({
   minValue,
   formatOptions,
   onValueChange,
-  placeholder
+  placeholder,
+  tabIndex
 }: _NumberInputProps) {
   const combinedClassNames = {
     base: classNames?.base || '',
@@ -51,6 +52,7 @@ export default function _NumberInput({
       isInvalid={isInvalid}
       isDisabled={isDisabled}
       onValueChange={onValueChange}
+      tabIndex={tabIndex}
     />
   )
 }
