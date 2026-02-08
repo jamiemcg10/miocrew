@@ -98,7 +98,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
     } else {
       return attendeesWithRefs.map((a) => {
         return {
-          user_id: a.id,
+          user_id: a.attendeeId,
           owes: a.amount,
           paid: user?.id === a.attendeeId
         }
