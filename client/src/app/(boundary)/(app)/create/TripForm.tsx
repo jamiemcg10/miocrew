@@ -6,13 +6,7 @@ import { getUsers } from '@/db/users'
 import { User } from '@/lib/types'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { initialTripState, tripReducer } from '@/lib/utils/reducers/tripReducer'
-import {
-  CalendarDate,
-  DateValue,
-  getLocalTimeZone,
-  parseDate,
-  today
-} from '@internationalized/date'
+import { CalendarDate, parseDate } from '@internationalized/date'
 import { createTrip, CreateTripProps } from '@/db'
 import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/material/Snackbar'
