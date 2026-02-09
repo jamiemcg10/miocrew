@@ -24,7 +24,7 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import clsx from 'clsx'
 import { UserContext } from '@/lib/utils/contexts/UserContext'
-import { addExpense, ExpensePayload } from '@/db'
+import { addExpense, DebtorPayload, ExpensePayload } from '@/db'
 import { Expense, isExpense } from '@/lib/types'
 import { CalendarDate, parseDate } from '@internationalized/date'
 import { expenseReducer, initialExpenseState } from '@/lib/utils/reducers/expenseReducer'
@@ -68,7 +68,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
         state.split.value === 'Evenly'
           ? state.total.value
           : attendeesWithRefs.reduce((acc, c) => {
-              acc += c.amount
+              acc += c.amount || 0
               return acc
             }, 0),
       split: state.split.value,
@@ -96,13 +96,15 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
         }
       })
     } else {
-      return attendeesWithRefs.map((a) => {
-        return {
-          user_id: a.attendeeId,
-          owes: a.amount,
-          paid: user?.id === a.attendeeId
-        }
-      })
+      return attendeesWithRefs
+        .filter((a) => a.amount)
+        .map((a) => {
+          return {
+            user_id: a.attendeeId,
+            owes: a.amount,
+            paid: user?.id === a.attendeeId
+          }
+        })
     }
   }
 
@@ -115,7 +117,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
     addExpense({
       userId: user.id,
       tripId: trip.id,
-      data: { expense: expensesPayload, debtors: debtorsPayload }
+      data: { expense: expensesPayload, debtors: debtorsPayload as DebtorPayload[] }
     })
       .catch((e) => console.error(`Error ${isExpense(open) ? 'editing' : 'adding'} expense`, e))
       .finally(() => {
@@ -138,7 +140,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
     const aOpen = isExpense(open) ? open['owe'][a.attendeeId] : undefined
 
     const [checked, setChecked] = useState(isExpense(open) ? !!aOpen?.owes : true)
-    const [amount, setAmount] = useState(aOpen?.owes || 0)
+    const [amount, setAmount] = useState(aOpen?.owes || null)
 
     return {
       ...a,
@@ -159,7 +161,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
       atLeastSomeChecked &&
       state.total.value &&
       state.total.valid) ||
-      (state.split.value === 'Custom' && attendeesWithRefs.some((a) => a.amount > 0)))
+      (state.split.value === 'Custom' && attendeesWithRefs.some((a) => !!a.amount)))
   )
 
   useSubmitOnEnter(() => submitBtnRef.current!.click(), valid)
@@ -168,6 +170,16 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
     if (!trip || !user) return
 
     dispatch({ type: 'set-expense', value: isExpense(open) ? open : undefined })
+
+    attendeesWithRefs.forEach((a) => {
+      if (!isExpense(open)) {
+        a.setAmount(null)
+        a.setChecked(true)
+      } else {
+        a.setAmount(open.owe[a.attendeeId]?.owes || null)
+        a.setChecked(open.split === 'Evenly' ? !!open.owe[a.attendeeId]?.owes : true)
+      }
+    })
   }, [open])
 
   return (
@@ -304,6 +316,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                       size="sm"
                       hideStepper
                       placeholder="$0.00"
+                      value={a.amount as number}
                       formatOptions={{
                         style: 'currency',
                         currency: 'USD'

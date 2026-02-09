@@ -40,7 +40,6 @@ export function expenseReducer(
   if (action.type === 'set-expense') {
     if (isExpense(action.value)) {
       const value = action.value
-      console.log({ value })
 
       const generalFields = EXPENSE_FIELDS.reduce((acc, c) => {
         const k = c as keyof Expense
