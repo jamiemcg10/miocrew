@@ -12,6 +12,8 @@ interface Debtor {
   email: string
 }
 
+type Debtors = Record<string, Debtor>
+
 export interface Expense {
   id: string
   tripId: string
@@ -19,7 +21,7 @@ export interface Expense {
   paidBy: CrewMember
   total: number
   split: 'Evenly' | 'Custom'
-  owe: Record<string, Debtor> // TODO: change this to debtors
+  owe: Debtors
   settled: boolean
   due: 'immediate' | 'end'
   date: string
