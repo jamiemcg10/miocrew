@@ -42,7 +42,6 @@ export default function ActionItems() {
           setTasks(response.data.tasks)
           LocalStorage.set('action-items:tasks', response.data.tasks)
         }
-        actionItemsRefreshInterval = setInterval(fetchActionItems, 30000)
       })
       .catch((e) => console.error('Error fetching action items', e))
   }
@@ -65,8 +64,6 @@ export default function ActionItems() {
   const [addExpenseDialogOpen, setAddExpenseDialogOpen] = useState<boolean | Expense>(false)
   const [createTaskDialogOpen, setCreateTaskDialogOpen] = useState<boolean | Task>(false)
 
-  let actionItemsRefreshInterval: NodeJS.Timeout
-
   function onCloseTaskView() {
     setActiveTask(null)
   }
@@ -75,26 +72,16 @@ export default function ActionItems() {
     setActiveExpense(null)
   }
 
-  function handleVisibilityChange() {
-    if (document.hidden) {
-      clearInterval(actionItemsRefreshInterval)
-    } else {
-      fetchActionItems()
-    }
-  }
-
   useEffect(formatActionItems, [expenses, tasks])
 
   useEffect(() => {
     if (!user) return
 
     fetchActionItems()
-    document.addEventListener('visibilitychange', handleVisibilityChange)
 
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      clearInterval(actionItemsRefreshInterval)
-    }
+    const actionItemsRefreshInterval = setInterval(fetchActionItems, 30000)
+
+    return () => clearInterval(actionItemsRefreshInterval)
   }, [])
 
   if (!user) return

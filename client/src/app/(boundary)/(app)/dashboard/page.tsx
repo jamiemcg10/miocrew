@@ -18,8 +18,6 @@ export default function DashboardPage() {
 
   const [upcomingTrips, setUpcomingTrips] = useState<Trip[] | undefined>(storedTrips || undefined)
 
-  let tripRefreshInterval: NodeJS.Timeout
-
   function fetchTrips() {
     getTrips({ userId: user!.id })
       .then((response) => {
@@ -28,27 +26,16 @@ export default function DashboardPage() {
         })
         setUpcomingTrips(_upcomingTrips)
         LocalStorage.set('upcoming-trips', _upcomingTrips)
-        tripRefreshInterval = setInterval(fetchTrips, 30000)
       })
       .catch((e) => console.error('Error fetching upcoming trips', e))
   }
 
-  function handleVisibilityChange() {
-    if (document.hidden) {
-      clearInterval(tripRefreshInterval)
-    } else {
-      fetchTrips()
-    }
-  }
-
   useEffect(() => {
     fetchTrips()
-    document.addEventListener('visibilitychange', handleVisibilityChange)
 
-    return () => {
-      clearInterval(tripRefreshInterval)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
+    const tripFetchInterval = setInterval(fetchTrips, 30000)
+
+    return () => clearInterval(tripFetchInterval)
   }, [user])
 
   return (
