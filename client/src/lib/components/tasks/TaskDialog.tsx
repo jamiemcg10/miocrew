@@ -124,6 +124,7 @@ export default function TaskDialog({ open, setOpen }: TaskDialogProps) {
               label="Task Type"
               required
               value={state.type.value}
+              disabled={isTask(open)}
               onChange={(e) => {
                 dispatch({ type: 'type', value: e.target.value })
               }}>
