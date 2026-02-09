@@ -280,7 +280,7 @@ export default function ExpenseDialog({ open, setOpen }: ExpenseDialogProps) {
                       size="small"
                       sx={checkboxSx}
                       checked={a.checked}
-                      tabIndex={0}
+                      tabIndex={-1}
                       onClick={() => {
                         a.setChecked(!a.checked)
                       }}
