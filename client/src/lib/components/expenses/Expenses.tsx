@@ -98,7 +98,7 @@ export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) 
         Add Expense
       </Button>
       <div className="@container flex grow flex-wrap-reverse items-end mt-auto overflow-hidden">
-        <div className="grow w-full flex flex-col h-full relative @max-[890px]:h-2/3">
+        <div className="grow w-full flex flex-col relative h-2/3">
           <Accordion disableGutters={true} sx={accordionSx}>
             <AccordionSummary sx={accordionSummarySx} expandIcon={<ArrowDropDownIcon />}>
               Filters
