@@ -43,7 +43,9 @@ export default function TripPage() {
 
         if (response.data.trip) {
           setTrip({ ...response.data.trip, attendees })
-          setTripIsOver(dayjs().endOf('day').isAfter(dayjs(response.data.trip.endDate)))
+          setTripIsOver(
+            dayjs().endOf('day').isAfter(dayjs(response.data.trip.endDate).endOf('day'))
+          )
           !websocket && openWebSocket(tripid)
         } else {
           notFound()
