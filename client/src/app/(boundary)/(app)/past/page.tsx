@@ -26,7 +26,7 @@ export default function PastTripsPage() {
 
   const storedPastTrips = LocalStorage.get<Trip[]>('past-trips')
 
-  const [pastTrips, setPastTrips] = useState(storedPastTrips || [])
+  const [pastTrips, setPastTrips] = useState<Trip[] | undefined>(storedPastTrips || undefined)
 
   useEffect(() => {
     if (!user) return
