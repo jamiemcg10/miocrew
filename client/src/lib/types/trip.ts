@@ -3,7 +3,9 @@ import { CrewMember } from './user'
 export interface Trip {
   id: string
   name: string
-  startDate: Date
-  endDate?: Date
+  location: string
+  description: string
+  startDate: string
+  endDate: string
   attendees: Record<string, CrewMember>
 }

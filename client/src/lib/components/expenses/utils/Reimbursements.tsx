@@ -1,36 +1,47 @@
 import { CrewMember, Expense } from '@/lib/types'
-import { TripContext } from '@/lib/utils/TripContext'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import { useContext } from 'react'
+import VerticalScrollShadow from '../../layout/VerticalScrollShadow'
+import clsx from 'clsx'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 
 interface ReimbursementsProps {
   expenses: Expense[]
 }
 
-function calculateReimbursements(expenses: Expense[]) {
-  // TODO: Simplify this
-  return expenses.reduce((p, exp) => {
-    Object.entries(exp.owe).forEach(([id, cost]) => {
-      p[id] = (p[id] || 0) + (!cost.paid ? cost.owes : 0)
-    })
-
-    return p
-  }, {} as Record<string, number>)
+interface TotalOwed {
+  total: number
+  firstName: string
+  lastName: string
 }
 
-function formatReimbursements(
-  reimbursements: Record<string, number>,
-  attendees?: Record<string, CrewMember>,
-  userId?: string
-) {
-  if (!attendees) return
+function getCaculateReimbursementsAcc(attendees: CrewMember[]) {
+  return attendees.reduce(
+    (acc, c) => {
+      acc[c.attendeeId] = { total: 0, firstName: c.firstName, lastName: c.lastName }
+      return acc
+    },
+    {} as Record<string, TotalOwed>
+  )
+}
 
+function calculateReimbursements(attendees: CrewMember[], expenses: Expense[]) {
+  return expenses.reduce((acc, exp) => {
+    Object.entries(exp.owe).forEach(([id, cost]) => {
+      acc[id].total = acc[id].total + (!cost.paid ? cost.owes : 0)
+    })
+
+    return acc
+  }, getCaculateReimbursementsAcc(attendees))
+}
+
+function formatReimbursements(reimbursements: Record<string, TotalOwed>, userId?: string) {
   return Object.entries(reimbursements).map(([id, amt]) => {
     return (
-      <div key={id}>
-        {id === userId ? 'You' : `${attendees[id].firstName} ${attendees[id].lastName.charAt(0)}.`}{' '}
-        <span className="text-red-700">
-          {id === userId ? 'owe' : 'owes'} ${(+amt.toFixed(2)).toLocaleString('en-US')}
+      <div key={id} className="text-sm">
+        {id === userId ? 'You' : `${amt.firstName} ${amt.lastName.charAt(0)}.`}{' '}
+        <span className={clsx(amt.total && 'text-red-700')}>
+          {id === userId ? 'owe' : 'owes'} ${(+amt.total.toFixed(2)).toLocaleString('en-US')}
         </span>
       </div>
     )
@@ -38,19 +49,20 @@ function formatReimbursements(
 }
 
 export default function Reimbursements({ expenses }: ReimbursementsProps) {
-  const trip = useContext(TripContext)
-  const user = useContext(UserContext)
+  const { user } = useContext(UserContext)
+  const { trip } = useContext(TripContext)
 
-  const reimbursements = calculateReimbursements(expenses)
+  const attendees = Object.values(trip?.attendees || {})
+
+  const reimbursements = calculateReimbursements(attendees, expenses)
   return (
-    <div className="relative  @max-[890px]:h-1/4 @max-[890px]:grow">
-      <div className="min-w-50 h-full mb-8 border border-transparent border-l-(--foreground) pl-4 overflow-y-scroll">
-        <div className="text-2xl mb-2 sticky top-0  bg-linear-to-b from-(--background) from-80% to-transparent">
-          Who owes what
-        </div>
-        <div>{formatReimbursements(reimbursements, trip?.attendees, user?.id)}</div>
-      </div>
-      <div className="h-2 absolute bottom-0 w-full bg-linear-to-t from-(--background) to-transparent"></div>
+    <div className="flex flex-col @max-[890px]:h-1/4 @max-[890px]:grow">
+      <div className="text-xl -mb-1 pl-2 sticky top-0">Who owes what</div>
+      <VerticalScrollShadow>
+        <>
+          <div>{formatReimbursements(reimbursements, user?.id)}</div>
+        </>
+      </VerticalScrollShadow>
     </div>
   )
 }

@@ -1,0 +1,33 @@
+.horizontal-scroll {
+  scrollbar-color: '#2c2c2c' transparent;
+}
+
+/* Legacy browsers with `::-webkit-scrollbar-*` support */
+@supports selector(::-webkit-scrollbar) {
+  .horizontal-scroll {
+    scrollbar-color: #2c2c2c;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-button {
+    height: 4px;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 10px;
+  }
+  .horizontal-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .horizontal-scroll::-webkit-scrollbar,
+  .horizontal-scroll *::-webkit-scrollbar {
+    max-height: 8px;
+    max-width: 0 !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .horizontal-scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+  }
+}

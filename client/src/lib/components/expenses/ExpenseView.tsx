@@ -2,15 +2,21 @@ import { Expense } from '@/lib/types'
 import Popup from '../Popup'
 import { dateFormatter } from '@/lib/utils/dateFormatter'
 import { useContext } from 'react'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import CrewAvatar from '../CrewAvatar'
 import clsx from 'clsx'
 import BoltIcon from '@mui/icons-material/Bolt'
 import Tooltip from '@mui/material/Tooltip'
-import { users } from '@/lib/utils/dummyData/users'
+import { deleteExpense, markExpensePaid } from '@/db'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
+import ActionButtons from '../ActionButtons'
+import Button from '@mui/material/Button'
+import PriceCheckRoundedIcon from '@mui/icons-material/PriceCheckRounded'
+import { shrinkSx } from '@/lib/styles/sx'
 
 interface ExpenseViewProps {
   activeExpense: Expense | null
+  onEdit: () => void
   onClose: () => void
 }
 
@@ -19,14 +25,44 @@ const tooltipSlotProps = {
   popper: { modifiers: [{ name: 'offset', options: { offset: [12, -14] } }] }
 }
 
-export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps) {
-  const user = useContext(UserContext)
+export default function ExpenseView({ activeExpense, onEdit, onClose }: ExpenseViewProps) {
+  async function onDelete() {
+    if (!user || !trip || !activeExpense) return
+
+    deleteExpense({
+      userId: user.id,
+      tripId: trip.id,
+      expenseId: activeExpense.id
+    })
+      .catch((e) => console.error(`Error deleting expense`, e))
+      .finally(() => {
+        onClose()
+      })
+  }
+
+  function onMarkExpensePaid() {
+    if (!user || !trip || !activeExpense) return
+
+    markExpensePaid({ userId: user.id, tripId: trip.id, expenseId: activeExpense.id })
+      .catch((e) => console.error(`Error marking expense paid`, e))
+      .finally(() => {
+        onClose()
+      })
+  }
+
+  const { user } = useContext(UserContext)
+  const { trip } = useContext(TripContext)
 
   if (!activeExpense || !user) return
 
   return (
     <Popup open={!!activeExpense} onClose={onClose}>
-      <>
+      <div className="p-1">
+        {user?.id == activeExpense.paidBy.id ? (
+          <div className="absolute bottom-8 right-8">
+            <ActionButtons onEdit={onEdit} onDelete={onDelete} />
+          </div>
+        ) : null}
         <div className="flex text-2xl items-center space-x-2 font-bold">
           {activeExpense.due === 'immediate' ? (
             <Tooltip title="Pay now" slotProps={tooltipSlotProps}>
@@ -63,21 +99,32 @@ export default function ExpenseView({ activeExpense, onClose }: ExpenseViewProps
           {Object.entries(activeExpense?.owe || {}).map(([id, owes]) => {
             return (
               <div key={id} className="flex items-center my-2">
-                <CrewAvatar user={users[id]} size="xs" />
+                <CrewAvatar user={owes} size="xs" />
                 <span className="ml-2 mr-1">
-                  {id === user.id
-                    ? 'You'
-                    : `${users[id].firstName} ${users[id].lastName.charAt(0)}.`}
+                  {id === user.id ? 'You' : `${owes.firstName} ${owes.lastName.charAt(0)}.`}
                 </span>
-                <span className={clsx(!owes.paid && 'text-red-700 font-semibold')}>
+                <span className={clsx('mr-2', !owes.paid && 'text-red-700 font-semibold')}>
                   {owes.paid ? 'paid' : id === user.id ? 'owe' : 'owes'} $
                   {owes.owes.toLocaleString('en-US')}
                 </span>
+
+                {id === user.id && !owes.paid ? (
+                  <div className="h-6 flex">
+                    <Button
+                      size="small"
+                      startIcon={<PriceCheckRoundedIcon />}
+                      color="success"
+                      sx={shrinkSx}
+                      onClick={onMarkExpensePaid}>
+                      Mark paid
+                    </Button>
+                  </div>
+                ) : null}
               </div>
             )
           })}
         </div>
-      </>
+      </div>
     </Popup>
   )
 }

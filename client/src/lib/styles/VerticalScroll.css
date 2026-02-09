@@ -1,25 +1,25 @@
-div {
+.vertical-scroll {
   scrollbar-color: '#2c2c2c' transparent;
 }
 
 /* Legacy browsers with `::-webkit-scrollbar-*` support */
 @supports selector(::-webkit-scrollbar) {
-  :root {
+  .vertical-scroll {
     scrollbar-color: #2c2c2c;
   }
 
-  *::-webkit-scrollbar-button {
+  .vertical-scroll::-webkit-scrollbar-button {
     height: 4px;
   }
 
-  *::-webkit-scrollbar-thumb {
+  .vertical-scroll::-webkit-scrollbar-thumb {
     background: #999999;
     border-radius: 10px;
   }
-  *::-webkit-scrollbar-track {
+  .vertical-scroll::-webkit-scrollbar-track {
     background: transparent;
   }
-  *::-webkit-scrollbar {
+  .vertical-scroll::-webkit-scrollbar {
     max-width: 4px;
     /* max-height is test */
     max-height: 8px;
@@ -27,7 +27,7 @@ div {
 }
 
 @media (prefers-color-scheme: dark) {
-  *::-webkit-scrollbar-thumb {
+  .vertical-scroll::-webkit-scrollbar-thumb {
     border-radius: 10px;
   }
 }

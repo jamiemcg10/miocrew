@@ -31,7 +31,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+client/.env*
 
 # vercel
 .vercel
@@ -42,6 +42,11 @@ next-env.d.ts
 
 
 # server
-server/__pycache__/
-*storybook.log
-storybook-static
+*.pyc
+__pycache__/
+server/models/__pycache__/*
+server/utils/__pycache__/
+server/routes/__pycache__/
+server/websocket/__pycache__/
+server/venv/
+

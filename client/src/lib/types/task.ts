@@ -1,26 +1,55 @@
-import { User } from './user'
+import { Expense } from './expense'
+import { CrewMember } from './user'
 
 interface BaseTask {
   id: string
+  tripId: string
   name: string
-  dueDate: Date
-  creator: User
+  dueDate: string
+  creatorId: string
+  creator: CrewMember
   completed: boolean
   notes?: string
 }
 
+export interface PollTaskOption {
+  label: string
+  id?: string
+  taskId?: string
+  votes?: number
+}
+
 export interface PollTask extends BaseTask {
   type: 'poll'
-  question: string
   multiple: boolean
-  options: string[]
-  assignee: 'Everyone'
+  pollQuestion: string
+  pollOptions: PollTaskOption[]
+  assigneeId: 'Everyone'
+}
+
+export interface Vote {
+  id: string
+  attendeeId: string
+  optionId: string
+  taskId: string
+  vote: number
 }
 
 export interface GeneralTask extends BaseTask {
   type: 'general'
   description: string
-  assignee: User
+  assigneeId: string
+  assignee: CrewMember
 }
 
 export type Task = PollTask | GeneralTask
+
+export function isTask(open: string | boolean | undefined | Task | Expense | any[]): open is Task {
+  return (
+    typeof open !== 'boolean' &&
+    typeof open !== 'string' &&
+    typeof open !== 'undefined' &&
+    Object.hasOwn(open, 'name') &&
+    Object.hasOwn(open, 'type')
+  )
+}

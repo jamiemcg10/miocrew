@@ -1,21 +1,27 @@
-import '../../styles/VerticalScroll.css'
-import { Dispatch, SetStateAction, useState, useContext } from 'react'
+import { Dispatch, SetStateAction, useState, useContext, useEffect } from 'react'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
-import { expenses } from '@/lib/utils/dummyData'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
-import { Expense, User } from '@/lib/types'
-import { TripContext } from '@/lib/utils/TripContext'
+import { CrewMember, Expense } from '@/lib/types'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import ExpenseView from './ExpenseView'
-import { UserContext } from '@/lib/utils/UserContext'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 import CrewAvatar from '../CrewAvatar'
 import Reimbursements from './utils/Reimbursements'
 import ExpenseItem from './ExpenseItem'
+import { expenseSort } from '@/lib/utils/sortFns'
+import VerticalScrollShadow from '../layout/VerticalScrollShadow'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { accordionSummarySx, accordionSx } from '@/lib/styles/sx'
 
-interface TasksProps {
-  setOpenAddDialog: Dispatch<SetStateAction<boolean>>
+interface ExpensesProps {
+  expenses: Expense[]
+  setAddDialogOpen: Dispatch<SetStateAction<boolean | Expense>>
 }
 
 const addExpenseBtnSx = {
@@ -27,9 +33,9 @@ const addExpenseBtnSx = {
 
 const chipSx = { pl: '8px' }
 
-export default function Expenses({ setOpenAddDialog }: TasksProps) {
-  const trip = useContext(TripContext)
-  const user = useContext(UserContext)
+export default function Expenses({ expenses, setAddDialogOpen }: ExpensesProps) {
+  const { trip } = useContext(TripContext)
+  const { user } = useContext(UserContext)
   const attendees = trip?.attendees
 
   function handleBasicFilterClick(value: string) {
@@ -49,7 +55,7 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
   }
 
   function filterExpenses({ updatedFilters = filters, updatedCrewFilter = crewFilter }) {
-    const _filteredExpenses = tripExpenses
+    const _filteredExpenses = expenses
       .filter((expense) =>
         updatedFilters.includes('Unsettled') ? !expense.owe[user!.id]?.paid : true
       )
@@ -61,21 +67,26 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
       .filter((expense) => (updatedCrewFilter ? expense.paidBy.id === updatedCrewFilter : true))
 
     setFilteredExpenses(
-      !updatedFilters.length && !updatedCrewFilter?.length ? tripExpenses : _filteredExpenses
+      (!updatedFilters.length && !updatedCrewFilter?.length ? expenses : _filteredExpenses).sort(
+        expenseSort
+      )
     )
   }
 
   function onClickAddButton() {
-    setOpenAddDialog(true)
+    setAddDialogOpen(true)
   }
 
-  const tripExpenses = expenses.filter((expense) => expense.tripId === trip?.id)
-  const [filteredExpenses, setFilteredExpenses] = useState(tripExpenses)
+  const [filteredExpenses, setFilteredExpenses] = useState(expenses)
   const [filters, setFilters] = useState<string[]>([])
   const [crewFilter, setCrewFilter] = useState<string | null>(null)
   const [activeExpense, setActiveExpense] = useState<Expense | null>(null)
 
   if (!attendees || !user) return
+
+  useEffect(() => {
+    setFilteredExpenses(expenses.sort(expenseSort))
+  }, [expenses])
 
   return (
     <>
@@ -86,54 +97,55 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
         onClick={onClickAddButton}>
         Add Expense
       </Button>
-      <div className="@container flex grow flex-wrap-reverse overflow-hidden">
-        <div className="grow w-[654px] flex flex-col h-full relative @max-[890px]:h-2/3">
-          <div className="w-full h-2 absolute bottom-0  bg-linear-to-t from-(--background) to-transparent"></div>
-          <div className="flex flex-wrap mb-8 space-x-2! space-y-2! sm:space-x-1! sm:space-y-1!">
-            <Chip
-              label="Paid"
-              icon={<CheckBoxOutlineBlankRoundedIcon />}
-              variant={filters.includes('Settled') ? 'filled' : 'outlined'}
-              onClick={() => handleBasicFilterClick('Settled')}
-            />
-            <Chip
-              label="Unpaid"
-              icon={<CheckBoxRoundedIcon />}
-              variant={filters.includes('Unsettled') ? 'filled' : 'outlined'}
-              onClick={() => handleBasicFilterClick('Unsettled')}
-            />
-            {Object.values(attendees)?.map((a: User, i) => {
-              return (
+      <div className="@container flex grow flex-wrap-reverse items-end mt-auto overflow-hidden">
+        <div className="grow w-full flex flex-col relative h-2/3">
+          <Accordion disableGutters={true} sx={accordionSx}>
+            <AccordionSummary sx={accordionSummarySx} expandIcon={<ArrowDropDownIcon />}>
+              Filters
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className="flex flex-wrap font-semibold space-x-1! space-y-1!">
                 <Chip
-                  label={`${a.firstName} ${a.lastName.charAt(0)}.`}
-                  avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
-                  key={i}
-                  variant={crewFilter === a.id ? 'filled' : 'outlined'}
-                  sx={chipSx}
-                  onClick={() => handleCrewFilterClick(a.id)}
+                  label="Paid"
+                  icon={<CheckBoxRoundedIcon />}
+                  variant={filters.includes('Settled') ? 'filled' : 'outlined'}
+                  onClick={() => handleBasicFilterClick('Settled')}
                 />
-              )
-            })}
+                <Chip
+                  label="Unpaid"
+                  icon={<CheckBoxOutlineBlankRoundedIcon />}
+                  variant={filters.includes('Unsettled') ? 'filled' : 'outlined'}
+                  onClick={() => handleBasicFilterClick('Unsettled')}
+                />
+                {Object.values(attendees)?.map((a: CrewMember, i) => {
+                  return (
+                    <Chip
+                      label={`${a.firstName} ${a.lastName.charAt(0)}.`}
+                      avatar={<CrewAvatar user={a} size="xs" baseClasses="-mr-1" />}
+                      key={i}
+                      variant={crewFilter === a.attendeeId ? 'filled' : 'outlined'}
+                      sx={chipSx}
+                      onClick={() => handleCrewFilterClick(a.attendeeId)}
+                    />
+                  )
+                })}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+          <div className="hidden @xs:flex px-4 font-semibold tracking-wide">
+            <div className="w-1/4 sm:w-1/5 min-w-13 pl-2 mr-6 @xs:mr-2">Date</div>
+            <div className="flex flex-col sm:flex-row grow">
+              <div className="flex grow">
+                <div className="grow pl-2">Expense</div>
+                <div className="w-1/3 justify-end text-right mr-6 grow">Paid by</div>
+              </div>
+            </div>
           </div>
-          <div className="pr-0 sm:pr-4 overflow-y-scroll">
+          <VerticalScrollShadow>
             {filteredExpenses.length ? (
-              <div className="w-full">
-                <div className="h-10 sticky -top-1 z-1 py-1 bg-linear-to-b from-(--background) from-80% to-transparent">
-                  <div className="flex">
-                    <div className="w-1/4 sm:w-1/5">Date</div>
-                    <div className="flex flex-col sm:flex-row grow">
-                      <div className="flex grow">
-                        <div className="grow px-2">Expense</div>
-                        <div className="w-1/3 justify-end sm:justify-start text-right sm:text-left">
-                          Paid by
-                        </div>
-                      </div>
-                      <div className="w-0 sm:w-1/4"></div>
-                    </div>
-                  </div>
-                </div>
+              <>
                 <div>
-                  {filteredExpenses.map((expense) => {
+                  {filteredExpenses.sort(expenseSort).map((expense) => {
                     return (
                       <ExpenseItem
                         expense={expense}
@@ -143,15 +155,24 @@ export default function Expenses({ setOpenAddDialog }: TasksProps) {
                     )
                   })}
                 </div>
-              </div>
+              </>
             ) : (
               <div>There are no expenses or no expenses that match the current filters.</div>
             )}
-          </div>
+          </VerticalScrollShadow>
         </div>
-        <Reimbursements expenses={tripExpenses} />
+        <Reimbursements expenses={expenses} />
       </div>
-      <ExpenseView activeExpense={activeExpense} onClose={() => setActiveExpense(null)} />
+      <ExpenseView
+        activeExpense={activeExpense}
+        onClose={() => setActiveExpense(null)}
+        onEdit={() => {
+          if (!activeExpense) return
+
+          setAddDialogOpen(activeExpense)
+          setActiveExpense(null)
+        }}
+      />
     </>
   )
 }

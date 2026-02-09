@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles'
 
 interface DialogProps {
   open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+  setOpen: Dispatch<SetStateAction<boolean | any>>
   children: ReactNode
 }
 
@@ -41,6 +41,7 @@ export default function Dialog({ open, setOpen, children }: DialogProps) {
       open={open}
       fullScreen={fullScreen}
       slots={{ transition: Transition }}
+      disableRestoreFocus={true}
       slotProps={dialogSlotProps}
       onClose={onClose}>
       <IconButton sx={closeBtnSx} onClick={onClose}>

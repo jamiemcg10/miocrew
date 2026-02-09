@@ -3,30 +3,58 @@ import EmojiObjectsRoundedIcon from '@mui/icons-material/EmojiObjectsRounded'
 import Checkbox from '@mui/material/Checkbox'
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
-import IconButton from '@mui/material/IconButton'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { useState, useRef, Dispatch, SetStateAction } from 'react'
-import IdeaMenu from './IdeaMenu'
+import { useState, useEffect, Dispatch, SetStateAction, useContext } from 'react'
+import ContextMenu from '../layout/ContextMenu'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { TripContext } from '@/lib/utils/contexts/TripContext'
+import { deleteIdea, updateIdeaLike } from '@/db'
 
 interface IdeaCardProps {
   idea: Idea
   setActiveIdea: Dispatch<SetStateAction<Idea | null>>
+  onEditIdea: () => void
+  favorite: boolean
 }
 
 const emojiIconSx = { fontSize: 68 }
 
-export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
+export default function IdeaCard({ idea, setActiveIdea, onEditIdea, favorite }: IdeaCardProps) {
   function onClick() {
     setActiveIdea(idea)
   }
 
-  const menuRef = useRef(null)
+  function onDeleteIdea() {
+    if (!user || !trip) return
+
+    deleteIdea({ tripId: trip.id, userId: user.id, ideaId: idea.id })
+      .catch((e) => console.error('Error deleting idea', e))
+      .finally(() => setMenuOpen(false))
+  }
+
+  function onFavoriteIdea() {
+    if (!user || !trip) return
+
+    updateIdeaLike({ userId: user.id, tripId: trip.id, ideaId: idea.id, like: !like })
+      .then(() => {
+        setLike(!like) // Might not need this with websockets
+      })
+      .catch((e) => console.error(`Error liking idea`, e))
+  }
+
   const [menuOpen, setMenuOpen] = useState(false)
+  const [like, setLike] = useState(favorite)
+
+  const { user } = useContext(UserContext)
+  const { trip } = useContext(TripContext)
+
+  useEffect(() => {
+    setLike(favorite)
+  }, [favorite])
 
   return (
     <>
       <div
-        className="shrink-0 cursor-pointer relative inline-flex justify-between space-y-2 flex-col p-2 rounded-md h-52 transition-transform hover:scale-105 active:scale-100"
+        className="shrink-0 font-semibold tracking-wide cursor-pointer relative inline-flex justify-between space-y-2 flex-col p-2 rounded-md h-52 transition-transform hover:scale-105 active:scale-100"
         style={{ backgroundColor: idea.color }}
         onClick={onClick}>
         <div className="basis-3/5 min-h-3/5 max-h-3/5 bg-gray-500 flex justify-center items-center rounded-sm">
@@ -40,20 +68,22 @@ export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
           <div className="line-clamp-2 text-sm" title={idea.name}>
             {idea.name}
           </div>
-          <div className="flex justify-between items-center h-6 -mx-[7px]">
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation()
-                setMenuOpen(true)
-              }}
-              ref={menuRef}
-              size="small">
-              <MoreHorizIcon fontSize="small" />
-            </IconButton>
-            <div className="">
-              <span className="font-light text-sm -mr-[7px]">{idea.likes ? idea.likes : null}</span>
+          <div className="flex justify-between items-center h-6 -mx-1.75">
+            <ContextMenu
+              open={menuOpen}
+              setMenuOpen={setMenuOpen}
+              onClose={() => setMenuOpen(false)}
+              onDelete={onDeleteIdea}
+              onEdit={onEditIdea}
+            />
+            <div>
+              <span className="font-light text-sm -mr-1.75">{idea.likes ? idea.likes : null}</span>
               <Checkbox
-                onClick={(e) => e.stopPropagation()}
+                checked={like}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onFavoriteIdea()
+                }}
                 icon={<FavoriteBorderRoundedIcon fontSize="small" />}
                 checkedIcon={<FavoriteRoundedIcon fontSize="small" />}
               />
@@ -61,7 +91,6 @@ export default function IdeaCard({ idea, setActiveIdea }: IdeaCardProps) {
           </div>
         </div>
       </div>
-      <IdeaMenu anchorEl={menuRef.current} open={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   )
 }

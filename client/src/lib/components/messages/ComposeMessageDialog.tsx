@@ -3,12 +3,19 @@ import Popup from '../Popup'
 import TextField from '@mui/material/TextField'
 import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
-import { dummyEmails, trips } from '@/lib/utils/dummyData'
 import Autocomplete from '@mui/material/Autocomplete'
+import { useContext, useEffect, useState, useReducer, useRef } from 'react'
+import { Trip, User, RecipientOption, BaseMessage, isMessage } from '@/lib/types'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
+import { getUsers } from '@/db/users'
+import { getTrips, createMessage } from '@/db'
+import { messageReducer, initialMessageState } from '@/lib/utils/reducers/messageReducer'
+import { useSubmitOnEnter } from '@/lib/utils/useSubmitOnEnter'
 
 interface ComposeMessageDialogProps {
-  open: boolean
+  open: boolean | BaseMessage
   onClose: () => void
+  fetchMessages: () => void
 }
 
 const textFieldSx = {
@@ -20,54 +27,133 @@ const msgFieldSx = { ...textFieldSx, height: '100%' }
 const editIconSx = { mr: 1 }
 const msgSlotProps = { input: { sx: { height: '100%', placeItems: 'self-start' } } }
 
-export default function ComposeMessageDialog({ open, onClose }: ComposeMessageDialogProps) {
-  function getOptionLabel(
-    option:
-      | string
-      | {
-          email: string
-          id: string
-          type: string
-        }
-  ) {
-    return typeof option === 'string' ? option : option.email
+export default function ComposeMessageDialog({
+  open,
+  onClose,
+  fetchMessages
+}: ComposeMessageDialogProps) {
+  function getOptionLabel(option: RecipientOption) {
+    return option.name
   }
 
-  const tripOptions = trips.map((t) => {
-    return { email: t.name, id: t.id, type: 'trip' }
-  })
-  const combinedRecipientOptions = [...tripOptions, ...dummyEmails]
+  const { user } = useContext(UserContext)
+
+  const [users, setUsers] = useState<User[]>([])
+  const [trips, setTrips] = useState<Trip[]>([])
+  const [combinedRecipientOptions, setCombinedRecipientOptions] = useState<RecipientOption[]>([])
+
+  const [state, dispatch] = useReducer(messageReducer, initialMessageState)
+  const sendBtnRef = useRef<HTMLButtonElement>(null)
+
+  const [messageFocused, setMessageFocused] = useState(false)
+
+  const valid = !!(state.subject && state.body && !!state.recipients.length)
+
+  useEffect(() => {
+    if (!user) return
+
+    getTrips({ userId: user.id })
+      .then((response) => {
+        if (response.data.trips) {
+          setTrips(response.data.trips)
+        }
+      })
+      .catch((e) => console.error('Error fetching trips', e))
+
+    getUsers()
+      .then((response) => {
+        if (response.data.users) {
+          setUsers(response.data.users)
+        }
+      })
+      .catch((e) => console.error('Error fetching users', e))
+  }, [user])
+
+  useEffect(() => {
+    const tripOptions = trips.map((t) => {
+      return { name: t.name, id: t.id, type: 'trip' }
+    })
+
+    const userOptions = Object.values(users).map((u) => {
+      return { name: `${u.firstName} ${u.lastName}`, id: u.id, type: 'user' }
+    })
+    setCombinedRecipientOptions([...tripOptions, ...userOptions])
+
+    if (isMessage(open)) {
+      dispatch({ type: 'set-reply', value: open })
+    }
+  }, [users, trips, open])
+
+  function saveMessage() {
+    if (!user) return
+
+    createMessage({ userId: user.id, data: state })
+      .then(() => {
+        fetchMessages()
+      })
+      .catch((e) => console.error('Error sending message', e))
+    dispatch({ type: 'reset-message' })
+
+    onClose()
+  }
+
+  function setRecipients(_e: any, value: (string | RecipientOption)[]) {
+    dispatch({ type: 'recipients', value })
+  }
+
+  useSubmitOnEnter(() => sendBtnRef.current!.click(), valid && !messageFocused)
+
+  if (!user) return
 
   return (
-    <Popup open={open} onClose={onClose}>
+    <Popup open={!!open} onClose={onClose}>
       <div className="h-full flex flex-col space-y-4">
         <div className="font-bold text-2xl flex items-center">
           <EditRoundedIcon sx={editIconSx} /> Compose
         </div>
-        <TextField label="Subject" required sx={textFieldSx} />
+        <TextField
+          label="Subject"
+          required
+          autoFocus={!isMessage(open)}
+          sx={textFieldSx}
+          value={state.subject}
+          onChange={(e) => dispatch({ type: 'subject', value: e.target.value })}
+        />
         <Autocomplete
           id="add-recipients"
           options={combinedRecipientOptions}
           getOptionLabel={getOptionLabel}
           multiple
-          freeSolo
+          value={state.recipients}
+          onChange={setRecipients}
           filterOptions={(options, params) => {
             const filtered = options.filter((option) =>
-              option.email?.toLowerCase().includes(params.inputValue.toLowerCase())
+              option.name?.toLowerCase().includes(params.inputValue.toLowerCase())
             )
-            if (
-              params.inputValue !== '' &&
-              !options.some((opt) => opt.email === params.inputValue)
-            ) {
-              filtered.push({ id: '', email: params.inputValue, type: 'user' })
-            }
             return filtered
           }}
           renderInput={(params) => <TextField {...params} label="To" required sx={textFieldSx} />}
         />
 
-        <TextField multiline label="Message" required sx={msgFieldSx} slotProps={msgSlotProps} />
-        <Button variant="contained" startIcon={<SendRoundedIcon />} sx={sendBtnSx}>
+        <TextField
+          multiline
+          label="Message"
+          required
+          value={state.body}
+          autoFocus={isMessage(open)}
+          onFocus={() => setMessageFocused(true)}
+          onBlur={() => setMessageFocused(false)}
+          onChange={(e) => dispatch({ type: 'body', value: e.target.value })}
+          sx={msgFieldSx}
+          slotProps={msgSlotProps}
+        />
+        <Button
+          variant="contained"
+          startIcon={<SendRoundedIcon />}
+          ref={sendBtnRef}
+          disabled={!valid}
+          onClick={saveMessage}
+          sx={sendBtnSx}>
           Send
         </Button>
       </div>

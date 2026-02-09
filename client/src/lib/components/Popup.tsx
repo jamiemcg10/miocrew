@@ -37,6 +37,7 @@ export default function Popup({ open, onClose, backgroundColor, children }: Popu
     <Dialog
       slots={{ transition: Transition }}
       open={open}
+      disableRestoreFocus={true}
       sx={dialogSx}
       slotProps={{
         paper: {
@@ -55,7 +56,7 @@ export default function Popup({ open, onClose, backgroundColor, children }: Popu
       <IconButton sx={closeBtnSx} onClick={onClose}>
         <CloseRoundedIcon />
       </IconButton>
-      <div className="m-8 sm:m-12 h-full">{children}</div>
+      <div className="flex flex-col m-8 sm:m-12 h-full overflow-y-hidden">{children}</div>
     </Dialog>
   )
 }

@@ -17,7 +17,7 @@ export const ringMap: Record<UserColor, string> = {
   navy: 'ring-[navy]',
   green: 'ring-[green]',
   red: 'ring-[red]',
-  black: 'ring-[black]',
+  dimgrey: 'ring-[dimgrey]',
   purple: 'ring-[purple]',
   turquoise: 'ring-[turquoise]'
 }
@@ -36,7 +36,7 @@ function getAvatarSize(size: CrewAvatarProps['size']) {
 function getFontSize(size: CrewAvatarProps['size']) {
   switch (size) {
     case 'xs':
-      return 'text-xs'
+      return 'text-[.625rem]'
     case 'sm':
       return 'text-sm'
     case 'lg':
@@ -49,6 +49,9 @@ export default function CrewAvatar({ user, size, name, baseClasses }: CrewAvatar
   return (
     <Avatar
       name={getInitials(user) || name}
+      getInitials={() => {
+        return getInitials(user) || name || ''
+      }}
       isBordered
       classNames={{
         base: clsx(user && ringMap[user.color], getAvatarSize(size), 'shrink-0', baseClasses),

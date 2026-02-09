@@ -1,24 +1,29 @@
 import { type CrewMember } from '@/lib/types'
 import IconButton from '@mui/material/IconButton'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import { SetStateAction, Dispatch } from 'react'
+import { SetStateAction, Dispatch, useContext } from 'react'
 import { User } from '@heroui/user'
 import { ringMap } from '../CrewAvatar'
 import { getInitials } from '@/lib/utils/getInitials'
+import { UserContext } from '@/lib/utils/contexts/UserContext'
 
 interface CrewMemberItemProps {
   member: CrewMember
+  showActions: boolean
   setAnchorEl: Dispatch<SetStateAction<HTMLButtonElement | null>>
-  setActiveCrewMemberType: Dispatch<SetStateAction<CrewMember['type'] | undefined>>
+  setActiveCrewMember: Dispatch<SetStateAction<CrewMember | undefined>>
 }
+
+const iconBtnSx = { height: 'max-content', alignSelf: 'center' }
 
 export default function CrewMemberItem({
   member,
+  showActions,
   setAnchorEl,
-  setActiveCrewMemberType
+  setActiveCrewMember
 }: CrewMemberItemProps) {
   return (
-    <div className="flex justify-start basis-full sm:basis-1/2">
+    <div className="flex justify-start basis-full grow-0 shrink-0 md:basis-1/2 h-full gap-x-2 py-0.5">
       <div className="ml-4 basis-2/3 flex items-center space-x-2 sm:space-x-4">
         <User
           avatarProps={{
@@ -26,7 +31,7 @@ export default function CrewMemberItem({
             isBordered: true,
             size: 'sm',
             classNames: {
-              base: ringMap[member.color],
+              base: 'shrink-0 mr-2 ' + ringMap[member.color],
               name: 'font-bold text-lg'
             }
           }}
@@ -34,13 +39,15 @@ export default function CrewMemberItem({
           name={`${member.firstName} ${member.lastName}`}
         />
       </div>
-      {member.type !== 'Captain' ? (
+      {showActions && member.type !== 'Captain' ? (
         <IconButton
+          size="small"
+          sx={iconBtnSx}
           onClick={(e) => {
             setAnchorEl(e.currentTarget)
-            setActiveCrewMemberType(member.type)
+            setActiveCrewMember(member)
           }}>
-          <MoreHorizIcon />
+          <MoreHorizIcon fontSize="small" />
         </IconButton>
       ) : null}
     </div>
