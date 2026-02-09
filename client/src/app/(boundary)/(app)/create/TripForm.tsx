@@ -41,6 +41,8 @@ const snackbarSlotProps = {
 }
 const snackbarAnchorOrigin = { vertical: 'bottom' as const, horizontal: 'center' as const }
 
+// TODO: pull logic out of inline handlers to make page faster
+
 export default function TripForm() {
   const { user } = useContext(UserContext)
   const [tripState, dispatch] = useReducer(tripReducer, initialTripState)
