@@ -42,6 +42,7 @@ export default function InboxPage() {
     getMessages({ userId: user!.id })
       .then((response) => {
         updateLocalMessages(response.data.messages)
+        refreshInterval = setInterval(fetchMessages, 30000)
       })
       .catch((e) => console.error('Error fetching messages', e))
   }
@@ -87,19 +88,31 @@ export default function InboxPage() {
     setChecked([])
   }
 
+  function handleVisibilityChange() {
+    if (document.hidden) {
+      clearInterval(refreshInterval)
+    } else {
+      fetchMessages()
+    }
+  }
+
   const checkedMessages: BaseMessage[] = []
 
   const [checked, setChecked] = useState(checkedMessages)
+
+  let refreshInterval: NodeJS.Timeout
 
   // TODO: Make this a component
   useEffect(() => {
     if (!user) return
 
     fetchMessages()
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
-    const refreshInterval = setInterval(fetchMessages, 30000)
-
-    return () => clearInterval(refreshInterval)
+    return () => {
+      clearInterval(refreshInterval)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [user])
 
   function clickMarkRead() {
