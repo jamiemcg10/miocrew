@@ -56,7 +56,7 @@ export default function Reimbursements({ expenses }: ReimbursementsProps) {
 
   const reimbursements = calculateReimbursements(attendees, expenses)
   return (
-    <div className="flex flex-col @max-[890px]:h-1/4 @max-[890px]:grow">
+    <div className="flex flex-col h-1/4 w-full">
       <div className="text-xl -mb-1 pl-2 sticky top-0">Who owes what</div>
       <VerticalScrollShadow>
         <>
