@@ -1,5 +1,5 @@
 export const appColors = [
-  'lightpink',
+  'crimson',
   'midnightblue',
   'orange',
   'mediumseagreen',
@@ -15,7 +15,7 @@ export const appColors = [
   'darkkhaki',
   'dimgrey',
   'lightcoral',
-  'aquamarine',
+  'teal',
   'sandybrown',
   'green',
   'blueviolet'
