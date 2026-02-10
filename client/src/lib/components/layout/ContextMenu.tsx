@@ -61,7 +61,10 @@ export default function ContextMenu({
         anchorEl={menuRef?.current}
         anchorOrigin={origin.anchor}
         transformOrigin={origin.transform}
-        onClose={onClose}>
+        onClose={(e: Event, reason) => {
+          e.stopPropagation()
+          setMenuOpen(false)
+        }}>
         <MenuItem dense onClick={onClickEdit}>
           <ListItemIcon>
             <EditRoundedIcon fontSize="small" />
