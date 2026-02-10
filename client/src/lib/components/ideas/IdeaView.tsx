@@ -24,7 +24,7 @@ export default function ActiveIdea({ activeIdea, setActiveIdea }: ActiveIdeaProp
 
   return (
     <Popup backgroundColor={activeIdea.color} open={!!activeIdea} onClose={onClose}>
-      <div className="vertical-scroll overflow-y-auto">
+      <div className="vertical-scroll overflow-y-auto h-full">
         <div className="flex items-center space-x-1">
           <div className="font-bold text-2xl">{activeIdea.name}</div>
           {activeIdea.url ? (
