@@ -24,7 +24,7 @@ app = FastAPI()
 # Allow React dev server to talk to FastAPI
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://miocrew.vercel.app", "https://miocrew.com"],
+    allow_origins=["http://localhost:3000", "https://miocrew.vercel.app", "https://www.miocrew.com"],
     allow_origin_regex="https://miocrew-.*-jamiemcg10s-projects\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
