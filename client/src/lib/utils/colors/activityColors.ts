@@ -3,7 +3,7 @@ export const activityColors = [
   'teal',
   'darkviolet',
   'goldenrod',
-  'navy',
+  'blue',
   'mediumseagreen',
   'sienna',
   'royalblue',

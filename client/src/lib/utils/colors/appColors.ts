@@ -1,6 +1,6 @@
 export const appColors = [
   'crimson',
-  'midnightblue',
+  'blue',
   'orange',
   'mediumseagreen',
   'cornflowerblue',
