@@ -75,7 +75,7 @@ export default function UncompletedPoll({ activeTask, closeView }: UncompletedPo
   }, [])
 
   return (
-    <form className="flex flex-col mt-8">
+    <form className="flex flex-col mt-8 pl-4">
       <FormControl>
         <FormLabel>{activeTask?.pollQuestion}</FormLabel>
         {activeTask?.multiple ? (
