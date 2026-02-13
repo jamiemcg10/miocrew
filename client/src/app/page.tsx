@@ -12,7 +12,7 @@ export default function Home() {
       <div>
         <span className="text-9xl font-bold text-blue-400">Mio</span>
         <span
-          className="text-gray-400 text-4xl font-bold
+          className="text-gray-500 dark:text-gray-400 text-4xl font-bold
       ">
           Crew
         </span>
