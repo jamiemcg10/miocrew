@@ -24,3 +24,27 @@ The back end was built with **Python** and **FastAPI**. Its main function is to 
 7/22/25: Front end is almost complete, with only the login and settings pages missing, along with some final cleanup. Backend still not implemented.
 
 7/9/25: Front end is almost complete, with only the login and expenses pages missing. As there is no backend, some of the current data is shared between trips.
+
+<br />
+
+## Running the app locally
+
+To run this app locally,
+
+1.  Create a .env file in the client folder with the following key/value pairs. If the server opened in the next step opens on a port other than 8000, these will need to be updated:
+
+        NEXT_PUBLIC_SERVER_BASE_URL = http://localhost:8000
+        NEXT_PUBLIC_WEBSOCKET_BASE_URL = ws://localhost:8000
+
+1.  Navigate to the server folder and start the server by running the following commands:
+
+        venv\Scripts\activate
+        uvicorn main:app --reload
+
+    The API can be accessed directly at http://127.0.0.1:8000/docs. If the server is activated on a port other than 8000, use that port instead.
+
+1.  Navigate to the client folder and start the dev server by running
+
+        npm run dev
+
+    You can then access the app at http://localhost:3000. As with the server, if the dev server is activated on a different port, use that instead.
