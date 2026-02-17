@@ -5,6 +5,7 @@ import Theme from '@/lib/components/layout/Theme'
 import { HeroUIProvider } from '@heroui/system'
 import { ReactNode } from 'react'
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript'
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,6 +34,7 @@ export default function RootLayout({
         <HeroUIProvider>
           <Theme>{children}</Theme>
         </HeroUIProvider>
+        <Analytics />
       </body>
     </html>
   )
